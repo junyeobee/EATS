@@ -29,7 +29,7 @@
     flex-direction: column;
     align-items: center;
 }
-.text-wrapper input[type="text"]{
+.text-wrapper input{
 	width:95%;
     margin-top: 20px;
     background-color: #FFF8EB;
@@ -88,7 +88,7 @@
 		</div>
 		<div class="text-wrapper">
 			<input type="text" name="userId" id="userId" placeholder="아이디" value="${cookie.saveId.value }">
-			<input type="text" name="userPwd" id="userPwd" placeholder="비밀번호">
+			<input type="password" name="userPwd" id="userPwd" placeholder="비밀번호">
 		</div>
 		<div class="saveId-wrapper">
 			<input type="checkbox" name="saveId" value="on" ${empty cookie.saveId?'':'checked'}>
