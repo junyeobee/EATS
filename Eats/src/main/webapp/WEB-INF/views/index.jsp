@@ -614,6 +614,7 @@ menu, ol, ul {
 		</div>
 
 		<div class="footer">footer</div>
+>>>>>>> develop
 	</div>
 
 </body>
