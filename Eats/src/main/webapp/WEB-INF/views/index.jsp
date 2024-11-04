@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="./css/user/indexCss.css">
+<link rel="stylesheet" href="./css/user/modalCss.css">
 
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +16,10 @@
 	rel="stylesheet">
 
 <style>
+body {
+	height: 100%;
+}
+
 a, button, input, select, h1, h2, h3, h4, h5, * {
 	box-sizing: border-box;
 	margin: 0;
@@ -47,28 +53,88 @@ menu, ol, ul {
 }
 </style>
 
-<title>Insert title here</title>
+<title>Document</title>
 </head>
+
 <body>
-	<header>
-		<div class="header_box">
-			<img class="logo" src="/svg/logo_icon.svg" />
-			<div class="profile_box">
-				<a href="userLogin">로그인</a> <img class="proicons-person-circle"
-					src="/svg/profile_icon.svg" />
-				<div class="profile_msg">
-					<div class="user_name">먹어츠</div>
-					<div class="user_alert">알림 0건</div>
+	<!-- modal window-->
+	<div class="modal_background" id="modal">
+		<div class="area-searching">
+			<div class="area_container">
+				<div class="mini_search_box">
+					<input type="text" class="mini_search_input" placeholder="지역 검색">
+					<img class="search_icon_yellow" src="/svg/search_icon_yellow.svg" />
+				</div>
+				<div class="area_box">
+					<div class="area_big">
+						<div class="area_big_key">시/도 선택</div>
+						<div class="area_big_value">
+							<div class="area_big_value_text">서울</div>
+							<div class="area_big_value_text">인천</div>
+							<div class="area_big_value_text">대전</div>
+							<div class="area_big_value_text">광주</div>
+							<div class="area_big_value_text">부산</div>
+							<div class="area_big_value_text">대구</div>
+							<div class="area_big_value_text">세종</div>
+							<div class="area_big_value_text">강원도</div>
+							<div class="area_big_value_text">경기도</div>
+							<div class="area_big_value_text">전라도</div>
+							<div class="area_big_value_text">충청도</div>
+							<div class="area_big_value_text">경상도</div>
+						</div>
+					</div>
+
+					<div class="area_small">
+						<div class="area_small_key">시/구/군 선택</div>
+						<div class="area_small_value_box">
+							<div class="area_small_value">
+								<div class="area_small_value_text">수성구</div>
+								<div class="area_small_value_text">군위군</div>
+								<div class="area_small_value_text">서구</div>
+								<div class="area_small_value_text">달성군</div>
+								<div class="area_small_value_text">달서구</div>
+								<div class="area_small_value_text">동구</div>
+								<div class="area_small_value_text">북구</div>
+								<div class="area_small_value_text">남구</div>
+								<div class="area_small_value_text">중구</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<!---->
+	<header id="main_header">
+		<div class="header_box">
+			<img class="logo" src="/svg/logo_icon.svg" />
+			<div class="profile_box">
+				<c:if test="${empty user_idx }">
+					<a href="userLogin">로그인</a>
+					|
+					<a href="openUserJoin">회원가입</a>
+				</c:if>
+				
+				<c:if test="${!empty user_idx }">
+					<img class="proicons-person-circle" src="/svg/profile_icon.svg" />
+					<div class="profile_msg">
+						<div class="user_name">${user_nickname }</div>
+						<a href="userLogout">로그아웃</a>
+					</div>
+				</c:if>
+			</div>
+		</div>
+
 	</header>
-	<div class="main">
+	<div class="main" id="main">
 		<div class="search_box">
-			<div class="location_box">
+			<div class="location_box" id="locaton_box">
 				<img class="ep-location" src="/svg/location_icon.svg" />
 				<div class="locaton_text">지역</div>
 			</div>
+
+
+
 			<div class="search_input_box">
 				<input type="text" class="search_input"> <label
 					class="search_label">‘한식대첩’을 검색해보세요</label>
@@ -614,8 +680,23 @@ menu, ol, ul {
 		</div>
 
 		<div class="footer">footer</div>
->>>>>>> develop
 	</div>
 
 </body>
+<script>
+    var locatonBox = document.getElementById("locaton_box");
+    locatonBox.addEventListener('click', function () {
+        var modal = document.getElementById("modal");
+        modal.style.display = 'flex';
+        var main = document.getElementById('main');
+        var header = document.getElementById('main_header');
+        var h = main.scrollHeight+header.scrollHeight;
+        modal.style.height = h+'px';
+
+        var area = modal.firstElementChild;
+        
+        var middle = ((window.innerWidth -  area.scrollWidth)/2)/window.innerWidth*100;
+        area.style.left=middle+'%';        
+    });
+</script>
 </html>
