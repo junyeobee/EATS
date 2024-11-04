@@ -1,4 +1,4 @@
-package com.eats.user.eatsUser.model;
+package com.eats.user.model;
 
 import java.sql.Date;
 
