@@ -10,6 +10,6 @@ public class ImgController {
 	@GetMapping("/store/storeImg")
 	public String storeImg() {
 		
-		return "store/imgControl/imgList";
+		return "store/imgControl/imgCont";
 	}
 }
