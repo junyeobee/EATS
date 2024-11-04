@@ -34,9 +34,6 @@
 		<div class="findAcc-wrapper">
 			<a href="#">아이디 찾기</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#">비밀번호 찾기</a>
 		</div>
-		<div>
-		으아앙
-		</div>
 	</div>
 </form>
 </body>
