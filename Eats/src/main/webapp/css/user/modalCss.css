@@ -27,6 +27,11 @@
   position: absolute;
   top: 250px;
 }
+.exitbtn {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+}
 
 .area_container {
     display: flex;
