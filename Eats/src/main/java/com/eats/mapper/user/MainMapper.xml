@@ -4,5 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eats.mapper.user.MainMapper">
-
+	<select id="getCateKey" resultType="com.eats.user.model.CateKeyDTO">
+		select * from cate_key order by cate_key_idx asc
+	</select>
+	
+	<select id="getValueList" parameterType="Integer" resultType="String">
+		select cate_value_name from cate_value where cate_key_idx=#{cate_key_idx}
+	</select>
 </mapper>

@@ -60,6 +60,7 @@ menu, ol, ul {
 	<!-- modal window-->
 	<div class="modal_background" id="modal">
 		<div class="area-searching">
+		<img class="exitbtn" src="/img/exit.png">
 			<div class="area_container">
 				<div class="mini_search_box">
 					<input type="text" class="mini_search_input" placeholder="지역 검색">
@@ -133,8 +134,6 @@ menu, ol, ul {
 				<div class="locaton_text">지역</div>
 			</div>
 
-
-
 			<div class="search_input_box">
 				<input type="text" class="search_input"> <label
 					class="search_label">‘한식대첩’을 검색해보세요</label>
@@ -142,197 +141,38 @@ menu, ol, ul {
 			<img class="fe-search" src="/svg/search_icon.svg" />
 		</div>
 		<div class="categorys">
-			<div class="food cate_box">
-				<div class="food_text cate_text">
-					<div class="food_title cate_title">음식 종류</div>
-					<div class="food_sub cate_sub">
-						어떤 요리를<br>찾으시나요?
-					</div>
-				</div>
-
-				<div class="subcate_box">
-					<div class="food_cate sub_one">
-						<div class="text">한식</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">카페</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">
-							아시아<br>요리
-						</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">분식</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">일식</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">중식</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">양식</div>
-					</div>
-					<div class="food_cate sub_one">
-						<div class="text">뷔페</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="purpose cate_box">
+		
+		<c:forEach var="values" items="${valueList }">
+			<div class="cate_box">
 				<div class="cate_text">
-					<div class="cate_text cate_title">목적</div>
+					<div class="cate_title">${values.key }</div>
 					<div class="cate_sub">
-						어떤 공간을<br>원하시나요?
+						<c:if test="${values.key.contains(' ')}">
+							원하는 ${values.key.split(" ")[0]}<br>찾으셨나요?
+						</c:if>
+						<c:if test="${!values.key.contains(' ')}">
+							원하는 ${values.key}<br>찾으셨나요?
+						</c:if>
 					</div>
 				</div>
 
 				<div class="subcate_box">
-					<div class="sub_one">
 
-						<div class="text">모임</div>
-					</div>
-					<div class="sub_one">
-
-						<div class="text">프로포즈</div>
-					</div>
-					<div class="sub_one">
-
-						<div class="text">비즈니스</div>
-					</div>
-					<div class="sub_one">
-
-						<div class="text">상견례</div>
-					</div>
-					<div class="sub_one">
-
-						<div class="text">생일 파티</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">데이트</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">대화</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">혼밥</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">혼술</div>
-					</div>
+					<c:forEach var="keyvalue" items="${values.value}">
+						<div class="sub_one">
+							<div class="text">
+								<c:if test="${keyvalue.length()>5}">
+									${keyvalue.replace(" ", "<br>")}
+								</c:if>
+								<c:if test="${keyvalue.length()<=5}">
+									${keyvalue}
+								</c:if>
+							</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
-			<div class="source cate_box">
-				<div class="cate_text">
-					<div class="cate_text cate_title">식재료</div>
-					<div class="cate_sub">
-						어떤 식재료를<br>좋아하시나요?
-					</div>
-				</div>
-
-				<div class="subcate_box">
-					<div class="sub_one">
-						<div class="text">육류</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">채소</div>
-					</div>
-					<div class="sub_one">
-						<div class="text">해산물</div>
-					</div>
-				</div>
-				<div class="sub_sort_box">
-					<div class="sub_sort">
-						<div class="sub_sort_text">돼지</div>
-					</div>
-					<div class="sub_sort">
-						<div class="sub_sort_text">소</div>
-					</div>
-					<div class="sub_sort">
-						<div class="sub_sort_text">닭</div>
-					</div>
-					<div class="sub_sort">
-						<div class="sub_sort_text">오리</div>
-					</div>
-					<div class="sub_sort">
-						<div class="sub_sort_text">양</div>
-					</div>
-				</div>
-			</div>
-			<div class="convenience cate_box">
-				<div class="cate_text">
-					<div class="cate_text cate_title">편의시설</div>
-					<div class="cate_sub">
-						필요하신<br>편의 사항이<br>있나요?
-					</div>
-				</div>
-
-				<div class="subcate_box">
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="wifi_icon icon_circle" src="/svg/wifi_icon.svg" />
-						</div>
-						<div class="text">와이파이</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="parkinglot_icon icon_circle"
-								src="/svg/parkinglot_icon.svg" />
-						</div>
-						<div class="text">주차장</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="playroom_icon icon_circle"
-								src="/svg/playroom_icon.svg" />
-						</div>
-						<div class="text">놀이방</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="group_icon icon_circle" src="/svg/group_icon.svg" />
-						</div>
-						<div class="text">단체</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="one_icon icon_circle" src="/svg/one_icon.svg" />
-						</div>
-						<div class="text">1인석</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="handicap_icon icon_circle"
-								src="/svg/handicap_icon.svg" />
-						</div>
-						<div class="text">
-							장애인<br>편의시설
-						</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="waitingArea_icon icon_circle"
-								src="/svg/waitingroom_icon.svg" />
-						</div>
-						<div class="text">대기 공간</div>
-					</div>
-
-					<div class="sub_one_box">
-						<div class="sub_one_circle">
-							<img class="reantal_icon icon_circle" src="/svg/reantal_icon.svg" />
-						</div>
-						<div class="text">대관</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		</c:forEach>
 
 		<div class="banner_box">
 			<div class="banner_swiper">
