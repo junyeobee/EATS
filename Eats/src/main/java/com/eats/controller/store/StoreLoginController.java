@@ -125,6 +125,7 @@ public class StoreLoginController {
 			@RequestParam(value="store_email", required=true)String store_email,
 			HttpSession session) {
 		
+		
 		String validCode = emailService.makeCode();
 		
 		emailService.sendCode(store_email, validCode);
@@ -132,14 +133,24 @@ public class StoreLoginController {
 		session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
 		
 		ModelAndView mav= new ModelAndView();
-		mav.setViewName("store/login/storeFindPwd");
+		
 		mav.addObject("store_id",store_id);
 		mav.addObject("store_email",store_email);
-		
-		System.out.println(store_email+"로 인증코드 전송");
+		mav.addObject("msg","이메일로 인증코드가 발송되었습니다.");
+		mav.setViewName("store/login/storeFindPwd");
 		
 		return mav;
 	}
 	
+	@PostMapping("/storecheckCode")
+	public ModelAndView st_validateCode(
+			@RequestParam(value="storeCode", required=true)String storeCode,
+			HttpSession session) {
+		String validCode=(String)session.getAttribute("validCode");
+		LocalDateTime expiration
+		
+		
+		
+	}
 	
 }

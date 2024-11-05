@@ -200,14 +200,17 @@
 				<div class="frame-8">
 					<div class="div6">
 						<input type="submit" value="인증번호 발송">
+						
 					</div>
+					
 				</div>
+				<p>${msg}</p>
 			</form>
 
 			<form name="storecheckCode" action="storeCheckCode" method="post">
 				<div class="div4">
 					<input type="text" name="store_code" placeholder="인증번호 입력">
-					<input type="submit" value="인증번호 확인">
+					<input type="button" value="인증번호 확인" onclick="st_validateCode();">
 				</div>
 			</form>
 
