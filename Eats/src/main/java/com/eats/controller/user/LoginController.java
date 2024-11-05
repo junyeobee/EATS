@@ -1,5 +1,6 @@
 package com.eats.controller.user;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.email.service.EmailService;
 import com.eats.user.service.UserLoginService;
 
 import jakarta.servlet.http.Cookie;
@@ -21,6 +23,9 @@ public class LoginController {
 	
 	@Autowired
 	private UserLoginService service;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping("/userLogin")
 	public String goLogin() {
@@ -73,5 +78,29 @@ public class LoginController {
 		session.invalidate();
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/userFindId")
+	public String goFindId() {
+		
+		return "user/login/userFindId";
+	}
+	
+	@PostMapping("/sendCode")
+	public ModelAndView sendCode(
+			@RequestParam(value="user_name", required=true)String user_name,
+			@RequestParam(value="user_email", required=true)String user_email,
+			HttpSession session) {
+		
+		String validCode=emailService.makeCode();
+		
+		emailService.sendCode(user_email, validCode);
+		session.setAttribute("validCode", validCode);
+		session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+		
+		ModelAndView mv=new ModelAndView();
+		
+		System.out.println(user_name+"님의 이메일"+user_email+"로 인증코드 "+validCode+"전송");
+		return mv;
 	}
 }
