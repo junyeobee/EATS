@@ -179,23 +179,43 @@
 </style>
 </head>
 <body>
-	<form name="store_findPwd_form" action="storeFindPwd" method="post">
+	
 		<div class="store-update-pwd">
 			<div class="rectangle-3"></div>
 			<div class="rectangle-4"></div>
 			<div class="rectangle-7"></div>
 			<div class="rectangle-5"></div>
-			<div class="div"><input type="submit" value="비밀번호 찾기" ></div>
-			<div class="div2">비밀번호 찾기</div>
-			<div class="div3"><input type="text" name="store_id" placeholder="아이디를 입력하세요."></div>
-			<div class="eats-email-com"><input type="text" name="store_email" placeholder="이메일 예) eats@email.com"></div>
-			<div class="div4"><input type="text" name="number" placeholder="인증번호 입력"></div>
-			<div class="div5">이메일로 인증번호를 발송해드려요.</div>
-			<div class="frame-8">
-				<div class="div6"><input type="button" value="인증번호 발송" ></div>
+			<div class="div">
+				<input type="submit" value="비밀번호 찾기">
 			</div>
+			<div class="div2">비밀번호 찾기</div>
+
+			<form name="store_sendCode" action="store_sendCode" method="post">
+				<div class="div3">
+					<input type="text" name="store_id" placeholder="아이디를 입력하세요." value="${store_id}">
+				</div>
+				<div class="eats-email-com">
+					<input type="text" name="store_email" placeholder="이메일 예) eats@email.com" value="${store_email}">
+				</div>
+				<div class="frame-8">
+					<div class="div6">
+						<input type="submit" value="인증번호 발송">
+					</div>
+				</div>
+			</form>
+
+			<form name="storecheckCode" action="storeCheckCode" method="post">
+				<div class="div4">
+					<input type="text" name="store_code" placeholder="인증번호 입력">
+					<input type="submit" value="인증번호 확인">
+				</div>
+			</form>
+
+
+			<div class="div5">이메일로 인증번호를 발송해드려요.</div>
+
 			<div class="_3-00">남은시간(3:00)</div>
 		</div>
-	</form>
+	
 </body>
 </html>

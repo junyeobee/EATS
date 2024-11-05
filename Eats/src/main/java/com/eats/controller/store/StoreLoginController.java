@@ -1,5 +1,7 @@
 package com.eats.controller.store;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.email.service.EmailService;
 import com.eats.store.model.EatsStoreDTO;
 import com.eats.store.service.StoreLoginService;
 
@@ -22,7 +25,10 @@ public class StoreLoginController {
 
 	@Autowired
 	private StoreLoginService service;
-
+	
+	@Autowired
+	private EmailService emailService;
+	
 	@GetMapping("/storeLogin")
 	public String storeLoginMain() {
 
@@ -111,11 +117,28 @@ public class StoreLoginController {
 		return "store/login/storeFindPwd";
 	}
 
-	@PostMapping("/storeFindPwd")
-	public String postMethodName(@RequestBody String entity) {
-		//TODO: process POST request
+	
+	
+	@PostMapping("/store_sendCode")
+	public ModelAndView sendCode(
+			@RequestParam(value="store_id", required=true)String store_id,
+			@RequestParam(value="store_email", required=true)String store_email,
+			HttpSession session) {
 		
-		return entity;
+		String validCode = emailService.makeCode();
+		
+		emailService.sendCode(store_email, validCode);
+		session.setAttribute("validCode", validCode);
+		session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+		
+		ModelAndView mav= new ModelAndView();
+		mav.setViewName("store/login/storeFindPwd");
+		mav.addObject("store_id",store_id);
+		mav.addObject("store_email",store_email);
+		
+		System.out.println(store_email+"로 인증코드 전송");
+		
+		return mav;
 	}
 	
 	
