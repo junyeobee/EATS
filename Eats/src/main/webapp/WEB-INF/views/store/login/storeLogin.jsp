@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,13 +155,14 @@
   <div class="rectangle-6"></div>
   <div class="rectangle-5"></div>
   <div><input type="submit" value="로그인하기" class="div"></div>
-  <div class="div2">아이디 찾기 | 비밀번호 찾기</div>
-  <div class="div3">아이디 저장</div>
+  <div class="div2"><a href="/storeFindId">아이디 찾기</a> | 비밀번호 찾기</div>
+  <div class="div3">
+  <input type="checkbox" name="check" <c:if test="${!empty cookie.saveid}">checked</c:if>>
+  아이디 저장</div>
   <div class="div4">매장회원 로그인</div>
-  <input type="text" name="storeId" id="storeId" class="div5" placeholder="아이디를 입력해주세요.">
+  <input type="text" name="storeId" id="storeId" class="div5" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
   <input type="password" name="storePwd" id="storePwd" class="div6" placeholder="비밀번호를 입력해주세요.">
   <img class="clip-path-group" src="img/store_logo.png"/>
- 
 </div>
 
 </form>

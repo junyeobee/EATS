@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.service.StoreLoginService;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -29,6 +30,7 @@ public class StoreLoginController {
 	public ModelAndView storeLoginSubmit(
 			@RequestParam(value="storeId", required=true)String storeId,
 			@RequestParam(value="storePwd", required=true)String storePwd,
+			@RequestParam(value="check", required=false)String ch,
 			HttpSession session, 
 			HttpServletResponse resp) {
 		
@@ -42,6 +44,19 @@ public class StoreLoginController {
 			msg="로그인 성공";
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl","storeLogin");
+			
+			Cookie ck= new Cookie("saveid",storeId);
+			
+			if(ck==null || ch.equals("")) {
+				ck.setMaxAge(0);
+				
+			}else {
+				ck.setMaxAge(60*60*30);
+				
+			}
+			
+			resp.addCookie(ck);
+			
 		}else {
 			
 			msg="아이디 또는 비밀번호를 확인하세요.";
@@ -56,5 +71,11 @@ public class StoreLoginController {
 		
 	}
 	
+	//아이디 찾기
 	
+	@GetMapping("/storeFindId")
+	public String storeFindId() {
+		
+		return "store/login/storeFindId";
+	}
 } 
