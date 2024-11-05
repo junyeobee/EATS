@@ -153,4 +153,10 @@ public class LoginController {
 		session.removeAttribute("userId");
 		return mv;
 	}
+	
+	@GetMapping("/userFindPwd")
+	public String userFindPwd() {
+		
+		return "user/login/userFindPwd";
+	}
 }

@@ -1,0 +1,28 @@
+@charset "UTF-8";
+body{
+	font-family: "Noto Sans KR", sans-serif;
+}
+.id-show-wrapper{
+	width:50%;
+	margin:100px auto;
+}
+.logo-wrapper{
+	width:20%;
+	margin:auto;
+	text-align:center;
+}
+.logo-wrapper img{
+	width:100%;
+}
+.id-wrapper{
+	margin:30px auto;
+	border:2px solid #FFB53C;
+	border-radius:10px;
+	background-color:#FFF8EB;
+	text-align:center;
+	width:80%;
+	height:350px;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

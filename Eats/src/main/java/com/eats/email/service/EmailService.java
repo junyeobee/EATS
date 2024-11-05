@@ -29,7 +29,6 @@ public class EmailService {
 		msg.setText("인증번호는 "+code+"입니다.");
 		
 		mailSender.send(msg);
-		System.out.println("mailSender호출");
 	}
 	
 

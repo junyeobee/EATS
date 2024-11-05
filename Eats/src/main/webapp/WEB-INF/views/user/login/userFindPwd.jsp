@@ -5,19 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="js/httpRequest.js"></script>
 <script>
 var sendState=false;
 //코드 전송
 function sendCode(){
-	var inputName=document.getElementById('userName').value;
+	var inputId=document.getElementById('userId').value;
 	var inputEmail=document.getElementById('userEmail').value;
 	
 	//이메일 형식 확인
 	var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 	
 	var check=true;
-	if(inputName===null || inputName ===''){
+	if(inputId===null || inputId ===''){
 		document.getElementById('name-message').style.color='red';
 		//document.getElementById('name-message').textContent='ddd';
 		check=false;
@@ -38,7 +37,7 @@ function sendCode(){
 	}
 	
 	if(check){
-		var params='userName='+inputName+'&userEmail='+inputEmail;
+		var params='userId='+inputId+'&userEmail='+inputEmail;
 		sendRequest('sendCode', params, showAlert, 'POST');
 		sendState=true;
 	}
@@ -106,8 +105,8 @@ function showResult(){
 			<table>
 				<tr>
 					<td>
-						<input type="text" id="userName" placeholder="이름">
-						<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
+						<input type="text" id="userId" placeholder="ID">
+						<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">아이디를 입력해주세요.</div>
 					</td>
 				</tr>
 				<tr>
