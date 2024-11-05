@@ -175,6 +175,7 @@ align-items: center;
   display: flex;
   flex-direction: row;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .sub_one {
@@ -184,6 +185,8 @@ align-items: center;
   border-radius: 27px;
   box-shadow: 0px 0px 6px 0px rgba(238, 179, 163, 1);
   margin-right: 15px;
+  margin-top: 8px;
+  margin-bottom:8px;
 
   display: flex;
   justify-content: center;
