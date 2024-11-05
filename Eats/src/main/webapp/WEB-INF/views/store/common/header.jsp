@@ -12,7 +12,8 @@
 	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#DAF0FF;}
 	.contents .mainCont {width:calc(100% - 200px); padding:20px 30px;}
 	
-	.contents .mainCont .mainCon_1 {width:40%;}
+	.contents .mainCont .mainCon_1 {width:400px;}
+	.contents .mainCont .mainCon_2 {} 
 	
 	
 	/* 이미지관리-저장버튼 박스 */
@@ -30,23 +31,19 @@
 	
 	
 	.mainCon_2 .mc2_imgBox {}
-	.mainCon_2 .mc2_imgBox > span {display:inline-block; width:19%;}
+	.mainCon_2 .mc2_imgBox > span {display:inline-block; width:220px;}
 	
-	.mainCon_2 .mc2_imgBox span img {width:90%; margin:0 4%;}
-	
-	.mainCon_2 .mc2_imgBox > span > span {float:right; width:13%; font-size:20px;}
-	/*
-	.mainCon_2 .mc2_imgBox span input {width:26%; margin:0 37%;}
-	*/
+	.mainCon_2 .mc2_imgBox span img {width:200px; margin:0 4%;}
+	.mainCon_2 .mc2_imgBox > span > span {float:right; margin-right:20px; font-size:20px;}
 	
 	/* 이미지관리 - 상단컨텐츠 박스 */
 	.mb60 {margin-bottom:60px;}
 	
 	/* 이미지관리 - 저장버튼 */
-	.btn_black {background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
+	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
 	
 	/* 이미지관리 - 삭제버튼 */
-	.btn_gray {background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
+	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
 	
 </style>
 
