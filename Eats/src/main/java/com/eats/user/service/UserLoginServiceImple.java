@@ -1,11 +1,14 @@
 package com.eats.user.service;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.UserMapper;
+import com.eats.user.model.EatsUserDTO;
 
 @Service
 public class UserLoginServiceImple implements UserLoginService {
@@ -42,5 +45,15 @@ public class UserLoginServiceImple implements UserLoginService {
 		
 		return map;
 	}
+	
+	@Override
+	public String findId(String userName, String userEmail) {
 
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userName", userName);
+		map.put("userEmail", userEmail);
+		String userId=mapper.findId(map);
+        
+		return userId;
+	}
 }
