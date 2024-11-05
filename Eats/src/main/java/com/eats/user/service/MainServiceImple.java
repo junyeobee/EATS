@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.MainMapper;
+import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
 
@@ -24,6 +25,18 @@ public class MainServiceImple implements MainService {
 	@Override
 	public List<String> getValueList(int cate_key_idx) {
 		List<String> list = mp.getValueList(cate_key_idx);
+		return list;
+	}
+	
+	@Override
+	public List<AreaDTO> getCityList() {
+		List<AreaDTO> list = mp.getCityList();
+		return list;
+	}
+	
+	@Override
+	public List<String> getUnitList(int area_idx) {
+		List<String> list = mp.getUnitList(area_idx);
 		return list;
 	}
 }

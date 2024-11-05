@@ -15,6 +15,7 @@
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
 
+<script src="js/ajaxJs.js"></script>
 <style>
 body {
 	height: 100%;
@@ -60,7 +61,7 @@ menu, ol, ul {
 	<!-- modal window-->
 	<div class="modal_background" id="modal">
 		<div class="area-searching">
-		<img class="exitbtn" src="/img/exit.png">
+		<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
 			<div class="area_container">
 				<div class="mini_search_box">
 					<input type="text" class="mini_search_input" placeholder="지역 검색">
@@ -70,35 +71,16 @@ menu, ol, ul {
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
 						<div class="area_big_value">
-							<div class="area_big_value_text">서울</div>
-							<div class="area_big_value_text">인천</div>
-							<div class="area_big_value_text">대전</div>
-							<div class="area_big_value_text">광주</div>
-							<div class="area_big_value_text">부산</div>
-							<div class="area_big_value_text">대구</div>
-							<div class="area_big_value_text">세종</div>
-							<div class="area_big_value_text">강원도</div>
-							<div class="area_big_value_text">경기도</div>
-							<div class="area_big_value_text">전라도</div>
-							<div class="area_big_value_text">충청도</div>
-							<div class="area_big_value_text">경상도</div>
+						<c:forEach var="city" items="${cityList }">
+							<div class="area_big_value_text" onclick="selectCity(${city.area_idx})">${city.area_name }</div>
+						</c:forEach>
 						</div>
 					</div>
 
 					<div class="area_small">
 						<div class="area_small_key">시/구/군 선택</div>
-						<div class="area_small_value_box">
-							<div class="area_small_value">
-								<div class="area_small_value_text">수성구</div>
-								<div class="area_small_value_text">군위군</div>
-								<div class="area_small_value_text">서구</div>
-								<div class="area_small_value_text">달성군</div>
-								<div class="area_small_value_text">달서구</div>
-								<div class="area_small_value_text">동구</div>
-								<div class="area_small_value_text">북구</div>
-								<div class="area_small_value_text">남구</div>
-								<div class="area_small_value_text">중구</div>
-							</div>
+						<div class="area_small_value_box" id="unitbox">
+							<div class="area_small_value_empty">시/도를 먼저 선택해주세요.</div>
 						</div>
 					</div>
 				</div>
@@ -108,7 +90,7 @@ menu, ol, ul {
 	<!---->
 	<header id="main_header">
 		<div class="header_box">
-			<img class="logo" src="/svg/logo_icon.svg" />
+			<img class="logo" id="logoicon" src="/svg/logo_icon.svg" />
 			<div class="profile_box">
 				<c:if test="${empty user_idx }">
 					<a href="userLogin">로그인</a>
@@ -125,20 +107,25 @@ menu, ol, ul {
 				</c:if>
 			</div>
 		</div>
-
 	</header>
+	
 	<div class="main" id="main">
 		<div class="search_box">
-			<div class="location_box" id="locaton_box">
-				<img class="ep-location" src="/svg/location_icon.svg" />
-				<div class="locaton_text">지역</div>
+			<div class="location_box" id="location_box" data-target="modalArea" data-toggle="modal">
+				<c:if test="${empty selectArea }">
+					<img class="ep-location" src="/svg/location_icon.svg" />
+					<div class="locaton_text">지역</div>
+				</c:if>
+				<c:if test="${!empty selectArea }">
+					<img class="ep-location" src="/svg/location_icon_tomato.svg" />
+					<div class="locaton_text">${selectArea }</div>
+				</c:if>
 			</div>
 
 			<div class="search_input_box">
-				<input type="text" class="search_input"> <label
-					class="search_label">‘한식대첩’을 검색해보세요</label>
+				<input type="text" class="search_input" placeholder="‘한식대첩’을 검색해보세요">
 			</div>
-			<img class="fe-search" src="/svg/search_icon.svg" />
+			<img class="fe-search" src="/svg/search_icon.svg" onclick="location.href='searchStore';"/>
 		</div>
 		<div class="categorys">
 		
@@ -157,9 +144,8 @@ menu, ol, ul {
 				</div>
 
 				<div class="subcate_box">
-
 					<c:forEach var="keyvalue" items="${values.value}">
-						<div class="sub_one">
+						<div class="sub_one" id="${keyvalue }" onclick="searchThisWord(this)">
 							<div class="text">
 								<c:if test="${keyvalue.length()>5}">
 									${keyvalue.replace(" ", "<br>")}
@@ -521,13 +507,20 @@ menu, ol, ul {
 
 		<div class="footer">footer</div>
 	</div>
-
+	</div>
 </body>
 <script>
-    var locatonBox = document.getElementById("locaton_box");
-    locatonBox.addEventListener('click', function () {
-        var modal = document.getElementById("modal");
-        modal.style.display = 'flex';
+	var locationBox = document.getElementById("location_box");
+	var modal = document.getElementById("modal");
+	var exitbtn = document.getElementById("exitbtn");
+	var logo = document.getElementById("logoicon");
+	
+ 	exitbtn.addEventListener('click', function(){
+		modal.style.display='none';
+	});
+
+     locationBox.addEventListener('click', function () {
+    	modal.style.display='flex';
         var main = document.getElementById('main');
         var header = document.getElementById('main_header');
         var h = main.scrollHeight+header.scrollHeight;
@@ -536,7 +529,57 @@ menu, ol, ul {
         var area = modal.firstElementChild;
         
         var middle = ((window.innerWidth -  area.scrollWidth)/2)/window.innerWidth*100;
-        area.style.left=middle+'%';        
+        area.style.left=middle+'%';    
     });
+    
+   modal.addEventListener('click', function(e){
+    	if(e.target.id=='modal'){
+			modal.style.display='none';
+		}
+    });
+    
+    logo.addEventListener('click',function(){
+    	location.href='/';
+    });
+    
+    function searchThisWord(t){
+    	location.href="searchStore?word="+t.id;
+    }
+    
+    function selectThisArea(t){
+    	location.href="?selectArea="+t.innerText;
+    }
+    
+    
+    function selectCity(cityIdx){
+    	var params = 'cityIdx='+cityIdx;
+    	sendRequest('selectUnit', params,showUnit,'GET');
+    }
+    
+    function showUnit(){
+    	if(XHR.readyState==4){
+    		if(XHR.status==200){
+    			var data = XHR.responseText;
+    			var jd = JSON.parse(data);
+
+				var unitbox = document.getElementById('unitbox');
+				unitbox.innerHTML='';
+				
+				var svalue = document.createElement('div');
+				svalue.setAttribute('class','area_small_value');
+				
+				jd.list.forEach(function(unit) {
+					var value_text = document.createElement('div');
+					value_text.setAttribute('class','area_small_value_text');
+					value_text.setAttribute('onclick','selectThisArea(this)');
+					value_text.innerHTML=unit;
+					
+					svalue.appendChild(value_text);
+				});
+				
+				unitbox.appendChild(svalue);
+    		}
+    	}
+    }
 </script>
 </html>
