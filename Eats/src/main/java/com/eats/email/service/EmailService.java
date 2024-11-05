@@ -31,4 +31,6 @@ public class EmailService {
 		mailSender.send(msg);
 		System.out.println("mailSender호출");
 	}
+	
+
 }
