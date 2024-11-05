@@ -11,4 +11,12 @@
 	<select id="getValueList" parameterType="Integer" resultType="String">
 		select cate_value_name from cate_value where cate_key_idx=#{cate_key_idx}
 	</select>
+	
+	<select id="getCityList" resultType="com.eats.user.model.AreaDTO">
+		select * from area where area_lev=1
+	</select>
+	
+	<select id="getUnitList" parameterType="Integer" resultType="String">
+		select area_name from area where area_lev=2 and parent_idx=#{area_idx}
+	</select>
 </mapper>

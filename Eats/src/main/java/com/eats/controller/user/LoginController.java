@@ -88,19 +88,69 @@ public class LoginController {
 	
 	@PostMapping("/sendCode")
 	public ModelAndView sendCode(
-			@RequestParam(value="user_name", required=true)String user_name,
-			@RequestParam(value="user_email", required=true)String user_email,
+			@RequestParam(value="userName", required=true)String userName,
+			@RequestParam(value="userEmail", required=true)String userEmail,
 			HttpSession session) {
 		
-		String validCode=emailService.makeCode();
+		ModelAndView mv=new ModelAndView();
+		String userId=service.findId(userName, userEmail);
 		
-		emailService.sendCode(user_email, validCode);
-		session.setAttribute("validCode", validCode);
-		session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+		if(userId!=null && userId!="") {
+			String validCode=emailService.makeCode();
+			
+			emailService.sendCode(userEmail, validCode);
+			session.setAttribute("validCode", validCode);
+			session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+			session.setAttribute("userId", userId);
+		}
+		
+		mv.addObject("msg", "이메일 전송이 완료되었습니다.");
+		mv.setViewName("user/login/findIdCheck");
+		
+		return mv;
+	}
+	
+	@PostMapping("/checkCode")
+	public ModelAndView validateCode(
+			@RequestParam(value="userCode", required=true)String userCode,
+			HttpSession session) {
+		String validCode=(String)session.getAttribute("validCode");
+		LocalDateTime expiration = (LocalDateTime) session.getAttribute("codeTime");
+		
+		String result="0";
 		
 		ModelAndView mv=new ModelAndView();
 		
-		System.out.println(user_name+"님의 이메일"+user_email+"로 인증코드 "+validCode+"전송");
+		if(validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
+			//시간 만료
+			result="0";
+		}else {
+			if(userCode.equals(validCode)) {
+				//인증번호 일치
+				session.removeAttribute("validCode");
+		        session.removeAttribute("codeTime");
+		        result="1";
+			}else {
+				//인증번호 불일치
+				result="2";
+			}
+		}
+		
+		mv.addObject("msg", result);
+		mv.setViewName("user/login/findIdCheck");
+		
+		return mv;
+	}
+	
+	@GetMapping("/showUserId")
+	public ModelAndView showUserId(HttpSession session) {
+		
+		ModelAndView mv=new ModelAndView();
+		String savedId=(String)session.getAttribute("userId");
+		mv.addObject("userId", savedId);
+		mv.setViewName("user/login/showId");
+		
+		session.removeAttribute("userId");
 		return mv;
 	}
 }

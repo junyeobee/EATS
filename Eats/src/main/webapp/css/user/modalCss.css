@@ -29,8 +29,15 @@
 }
 .exitbtn {
 	position: absolute;
-	width: 20px;
-	height: 20px;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	
+	color: #c7c7c7;
+}
+.exitbtn:hover {
+	cursor: pointer;
 }
 
 .area_container {
@@ -163,6 +170,7 @@
     height: 250px;
     
     padding-left: 30px;
+    overflow:auto;
 }
 .area_small_value {
     display: grid;
@@ -188,4 +196,8 @@
 .area_small_value_text:hover {
     cursor: pointer;
     background-color: #ffb53c;
+}
+.area_small_value_empty {
+	text-align: left;
+    margin-top: 100px;
 }
