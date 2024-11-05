@@ -159,4 +159,99 @@ public class LoginController {
 		
 		return "user/login/userFindPwd";
 	}
+	
+	@PostMapping("/idExist")
+	public ModelAndView idCheckForFindPwd(String userId, HttpSession session) {
+		
+		String dbEmail=service.idCheckForFindId(userId);
+		
+		ModelAndView mv=new ModelAndView();
+		boolean result;
+		if(dbEmail==null || dbEmail=="") {
+			result=false;
+		}else {
+			result=true;
+			session.setAttribute("userId", userId);
+		}
+		
+		mv.addObject("result", result);
+		mv.setViewName("user/login/findPwdResult");
+		
+		return mv;
+	}
+	
+	@PostMapping("/sendCodeForFindPwd")
+	public ModelAndView sendCodeForFindPwd(String userEmail, HttpSession session) {
+		
+		String userId=(String)session.getAttribute("userId");
+		String dbEmail=service.idCheckForFindId(userId);
+		System.out.println("userID="+userId+"/userEmail="+userEmail);
+		if(dbEmail!=null && dbEmail!="") {
+			if(dbEmail.equals(userEmail)) {
+				String validCode=emailService.makeCode();
+				emailService.sendCode(userEmail, validCode);
+				
+				session.setAttribute("validCode", validCode);
+				session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+			}
+		}
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("result", "인증코드를 전송했습니다.");
+		mv.setViewName("user/login/findPwdResult");
+		
+		return mv;
+	}
+	
+	@PostMapping("/checkPwdCode")
+	public ModelAndView validatePwdCode(
+			@RequestParam(value="userCode", required=true)String userCode,
+			HttpSession session) {
+		String validCode=(String)session.getAttribute("validCode");
+		LocalDateTime expiration = (LocalDateTime) session.getAttribute("codeTime");
+		
+		String result="0";
+		
+		ModelAndView mv=new ModelAndView();
+		
+		if(validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
+			//시간 만료
+			result="0";
+		}else {
+			if(userCode.equals(validCode)) {
+				//인증번호 일치
+				session.removeAttribute("validCode");
+		        session.removeAttribute("codeTime");
+		        result="1";
+			}else {
+				//인증번호 불일치
+				result="2";
+			}
+		}
+		
+		mv.addObject("result", result);
+		mv.setViewName("user/login/findPwdResult");
+		
+		return mv;
+	}
+	
+	@GetMapping("userResetPwd")
+	public String resetPwdForm() {
+		
+		return "user/login/resetPwd";
+	}
+	
+	@PostMapping("userResetPwd")
+	public ModelAndView resetPwd(String newPwd, HttpSession session) {
+		String userId=(String)session.getAttribute("userId");
+		int result=service.userResetPwd(userId, newPwd);
+		
+		String msg=(result>0)?"비밀번호 변경 완료":"비밀번호 변경 실패";
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("result", msg);
+		mv.setViewName("user/login/userPwdUpdate_ok");
+		
+		return mv;
+	}
 }

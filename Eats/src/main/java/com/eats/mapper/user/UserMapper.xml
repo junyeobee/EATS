@@ -39,4 +39,20 @@
 		AND
 			USER_NAME=#{userName}
 	</select>
+	<select id="idCheckForFindPwd">
+		SELECT
+			USER_EMAIL
+		FROM
+			EATS_USER
+		WHERE
+			USER_ID=#{userId}
+	</select>
+	<update id="userResetPwd" parameterType="map">
+		UPDATE
+			EATS_USER
+		SET 
+			USER_PWD=#{newPwd}
+		WHERE
+			USER_ID=#{userId}
+	</update>
 </mapper>
