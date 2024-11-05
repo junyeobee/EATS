@@ -115,17 +115,18 @@
 </style>
 </head>
 <body>
+<form name ="findId" id="findId" action="storeFindId" method="post">
 <div class="store-findid">
   <div class="rectangle-3"></div>
   <div class="rectangle-4"></div>
   <div class="rectangle-6"></div>
   <div class="rectangle-5"></div>
-  <div class="div">아이디 찾기</div>
+  <div class="div"><input type="submit" value="아이디 찾기" ></div>
   <div class="div2">아이디 찾기</div>
-  <input type="text" name="name" placeholder="이름을 입력하세요." class="div3">
- <input type="text" name="email" placeholder="이메일 예) eats@email.com" class="eats-email-com">
+  <input type="text" name="store_ceo" placeholder="이름을 입력하세요." class="div3">
+ <input type="email" name="store_email" placeholder="이메일 예) eats@email.com" class="eats-email-com">
   <div class="div4">가입된 회원정보로 아이디를 확인하세요.</div>
 </div>
-
+</form>
 </body>
 </html>

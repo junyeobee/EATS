@@ -155,7 +155,7 @@
   <div class="rectangle-6"></div>
   <div class="rectangle-5"></div>
   <div><input type="submit" value="로그인하기" class="div"></div>
-  <div class="div2"><a href="/storeFindId">아이디 찾기</a> | 비밀번호 찾기</div>
+  <div class="div2"><a href="/storeFindIdPage">아이디 찾기</a> | <a href="/storeFindPwdPage">비밀번호 찾기</a></div>
   <div class="div3">
   <input type="checkbox" name="check" <c:if test="${!empty cookie.saveid}">checked</c:if>>
   아이디 저장</div>
