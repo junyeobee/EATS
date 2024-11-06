@@ -5,6 +5,7 @@ import java.util.List;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
+import com.eats.user.model.ReviewDTO;
 
 public interface MainService {
 
@@ -13,4 +14,10 @@ public interface MainService {
 	
 	public List<AreaDTO> getCityList();
 	public List<String> getUnitList(int area_idx);
+	
+	public List<Integer> getPopularReviews();
+	public ReviewDTO getReview(int rev_idx);
+	public Double getStorePoint(int store_idx);
+	public Integer getLikeCount(int rev_idx);
+	public Integer getFollowerCount(int user_idx);
 }
