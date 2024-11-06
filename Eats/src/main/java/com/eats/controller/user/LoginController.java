@@ -1,5 +1,6 @@
 package com.eats.controller.user;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.email.service.EmailService;
 import com.eats.user.service.UserLoginService;
 
 import jakarta.servlet.http.Cookie;
@@ -21,6 +23,9 @@ public class LoginController {
 	
 	@Autowired
 	private UserLoginService service;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping("/userLogin")
 	public String goLogin() {
@@ -73,5 +78,79 @@ public class LoginController {
 		session.invalidate();
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/userFindId")
+	public String goFindId() {
+		
+		return "user/login/userFindId";
+	}
+	
+	@PostMapping("/sendCode")
+	public ModelAndView sendCode(
+			@RequestParam(value="userName", required=true)String userName,
+			@RequestParam(value="userEmail", required=true)String userEmail,
+			HttpSession session) {
+		
+		ModelAndView mv=new ModelAndView();
+		String userId=service.findId(userName, userEmail);
+		
+		if(userId!=null && userId!="") {
+			String validCode=emailService.makeCode();
+			
+			emailService.sendCode(userEmail, validCode);
+			session.setAttribute("validCode", validCode);
+			session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+			session.setAttribute("userId", userId);
+		}
+		
+		mv.addObject("msg", "이메일 전송이 완료되었습니다.");
+		mv.setViewName("user/login/findIdCheck");
+		
+		return mv;
+	}
+	
+	@PostMapping("/checkCode")
+	public ModelAndView validateCode(
+			@RequestParam(value="userCode", required=true)String userCode,
+			HttpSession session) {
+		String validCode=(String)session.getAttribute("validCode");
+		LocalDateTime expiration = (LocalDateTime) session.getAttribute("codeTime");
+		
+		String result="0";
+		
+		ModelAndView mv=new ModelAndView();
+		
+		if(validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
+			//시간 만료
+			result="0";
+		}else {
+			if(userCode.equals(validCode)) {
+				//인증번호 일치
+				session.removeAttribute("validCode");
+		        session.removeAttribute("codeTime");
+		        result="1";
+			}else {
+				//인증번호 불일치
+				result="2";
+			}
+		}
+		
+		mv.addObject("msg", result);
+		mv.setViewName("user/login/findIdCheck");
+		
+		return mv;
+	}
+	
+	@GetMapping("/showUserId")
+	public ModelAndView showUserId(HttpSession session) {
+		
+		ModelAndView mv=new ModelAndView();
+		String savedId=(String)session.getAttribute("userId");
+		mv.addObject("userId", savedId);
+		mv.setViewName("user/login/showId");
+		
+		session.removeAttribute("userId");
+		return mv;
 	}
 }

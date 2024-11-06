@@ -97,6 +97,13 @@
 		    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
 		    <version>3.0.1</version>
 		</dependency>
+    
+		<!--mail sender-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+    </dependencie>
 
 		
 		<!-- Spring Boot JPA Starter 의존성 추가 -->
