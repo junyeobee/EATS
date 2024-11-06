@@ -1,7 +1,7 @@
 package com.eats.user.service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Map; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import com.eats.mapper.user.MainMapper;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
+import com.eats.user.model.ReviewDTO;
 
 @Service
 public class MainServiceImple implements MainService {
@@ -38,5 +39,35 @@ public class MainServiceImple implements MainService {
 	public List<String> getUnitList(int area_idx) {
 		List<String> list = mp.getUnitList(area_idx);
 		return list;
+	}
+	
+	@Override
+	public List<Integer> getPopularReviews() {
+		List<Integer> list = mp.getPopularReviews();
+		return list;
+	}
+	
+	@Override
+	public ReviewDTO getReview(int rev_idx) {
+		ReviewDTO dto = mp.getReview(rev_idx);
+		return dto;
+	}
+	
+	@Override
+	public Double getStorePoint(int store_idx) {
+		double storePoint = mp.getStorePoint(store_idx);
+		return storePoint;
+	}
+	
+	@Override
+	public Integer getLikeCount(int rev_idx) {
+		int likeCount = mp.getLikeCount(rev_idx);
+		return likeCount;
+	}
+	
+	@Override
+	public Integer getFollowerCount(int user_idx) {
+		int followCount = mp.getFollowerCount(user_idx);
+		return followCount;
 	}
 }

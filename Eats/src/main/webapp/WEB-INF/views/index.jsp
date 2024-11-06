@@ -87,7 +87,7 @@ menu, ol, ul {
 				<div class="area_box">
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
-						<div class="area_big_value">
+						<div class="area_big_value scrollCss">
 							<c:forEach var="city" items="${cityList }">
 								<div class="area_big_value_text"
 									onclick="selectCity(${city.area_idx})">${city.area_name }</div>
@@ -97,7 +97,7 @@ menu, ol, ul {
 
 					<div class="area_small">
 						<div class="area_small_key">시/구/군 선택</div>
-						<div class="area_small_value_box" id="unitbox">
+						<div class="area_small_value_box scrollCss" id="unitbox">
 							<div class="area_small_value_empty">시/도를 먼저 선택해주세요.</div>
 						</div>
 					</div>
@@ -131,13 +131,13 @@ menu, ol, ul {
 		<div class="search_box">
 			<div class="location_box" id="location_box" data-target="modalArea"
 				data-toggle="modal">
-				<c:if test="${empty selectArea }">
+				<c:if test="${empty cookie.areaCk.value }">
 					<img class="ep-location" src="/svg/location_icon.svg" />
 					<div class="locaton_text">지역</div>
 				</c:if>
-				<c:if test="${!empty selectArea }">
+				<c:if test="${!empty cookie.areaCk.value }">
 					<img class="ep-location" src="/svg/location_icon_tomato.svg" />
-					<div class="locaton_text">${selectArea }</div>
+					<div class="locaton_text">${cookie.areaCk.value }</div>
 				</c:if>
 			</div>
 
@@ -146,7 +146,7 @@ menu, ol, ul {
 				<form name="searchForm" id="form" action="searchStore" method="GET">
 					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
 					<input type="hidden" id="word" name="word">
-					<input type="hidden" id="areaWord" name="areaWord" value="${areaCk }">
+					<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
 				</form>
 			</div>
 			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
@@ -171,7 +171,7 @@ menu, ol, ul {
 					<div class="subcate_box">
 						<c:forEach var="keyvalue" items="${values.value}">
 							<div class="sub_one" id="${keyvalue }"
-								onclick="searchThisWord(this)">
+								onclick="searchThisTag(this)">
 								<div class="text">
 									<c:if test="${keyvalue.length()>5}">
 									${keyvalue.replace(" ", "<br>")}
@@ -218,23 +218,23 @@ menu, ol, ul {
 					<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
 				</div>
 				<div class="review_container">
+				<c:forEach var="reviews" items="${reviewData }" varStatus="cnt">
 					<div class="user_review">
 						<div class="user_info">
 							<img src="/svg/profile_icon.svg">
 							<div class="user_pro">
 								<div class="user_id_info">
-									<div class="user_id">까마귀 고기</div>
-									<div class="user_follow">팔로워 10</div>
+									<div class="user_id">${reviews.user_nickname }</div>
+									<div class="user_follow">팔로워 ${followCount.get(cnt.index) }</div>
 								</div>
 								<div class="user_date_info">
 									<div class="user_date_text">방문일</div>
-									<div class="user_date">2024.10.29</div>
+									<div class="user_date">${reviews.reserve_date }</div>
 								</div>
 							</div>
 						</div>
 						<div class="user_review_box">
-							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
+							<div class="user_review_text">${reviews.rev_content }</div>
 							<div class="user_review_sub">
 								<div class="review_tag_box">
 									<div class="review_tag">
@@ -246,77 +246,25 @@ menu, ol, ul {
 								</div>
 								<div class="fork_info">
 									<img class="fork_img" src="/svg/fork_icon.svg" />
-									<div class="fork_text">125</div>
+									<div class="fork_text">${likeCount.get(cnt.index) }</div>
+								</div>
+							</div>
+						</div>
+						<div class="review_store_box">
+							<div class="review_store_name">${reviews.store_name }</div>
+							<div class="review_store_info">
+								<div class="review_store_star">
+									<img src="/svg/star_icon.svg">
+									<div class="store_star_text">${storePoint.get(cnt.index) }</div>
+								</div>
+								<div class="review_store_location">
+									<img src="/svg/location_icon.svg">
+									<div class="review_store_location_text">${reviews.store_addr }</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="user_review">
-						<div class="user_info">
-							<img src="/svg/profile_icon.svg">
-							<div class="user_pro">
-								<div class="user_id_info">
-									<div class="user_id">까마귀 고기</div>
-									<div class="user_follow">팔로워 10</div>
-								</div>
-								<div class="user_date_info">
-									<div class="user_date_text">방문일</div>
-									<div class="user_date">2024.10.29</div>
-								</div>
-							</div>
-						</div>
-						<div class="user_review_box">
-							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
-							<div class="user_review_sub">
-								<div class="review_tag_box">
-									<div class="review_tag">
-										<div class="review_tag_text">가족 모임</div>
-									</div>
-									<div class="review_tag">
-										<div class="review_tag_text">편한 좌석</div>
-									</div>
-								</div>
-								<div class="fork_info">
-									<img class="fork_img" src="/svg/fork_icon.svg" />
-									<div class="fork_text">125</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="user_review">
-						<div class="user_info">
-							<img src="/svg/profile_icon.svg">
-							<div class="user_pro">
-								<div class="user_id_info">
-									<div class="user_id">까마귀 고기</div>
-									<div class="user_follow">팔로워 10</div>
-								</div>
-								<div class="user_date_info">
-									<div class="user_date_text">방문일</div>
-									<div class="user_date">2024.10.29</div>
-								</div>
-							</div>
-						</div>
-						<div class="user_review_box">
-							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
-							<div class="user_review_sub">
-								<div class="review_tag_box">
-									<div class="review_tag">
-										<div class="review_tag_text">가족 모임</div>
-									</div>
-									<div class="review_tag">
-										<div class="review_tag_text">편한 좌석</div>
-									</div>
-								</div>
-								<div class="fork_info">
-									<img class="fork_img" src="/svg/fork_icon.svg" />
-									<div class="fork_text">125</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				</c:forEach>
 				</div>
 			</div>
 
@@ -576,22 +524,23 @@ menu, ol, ul {
     	location.href='/';
     });
     
-    function searchThisWord(t){
-    	location.href="searchStore?word="+t.id;
+    function searchThisTag(t){
+    	location.href="searchStore?tagWord="+t.id;
     }
     
     function selectThisArea(t){
-    	/* location.href="?selectArea="+t.innerText; */
     	var param = 'selectArea='+t.innerText;
-    	console.log(param);
-    	sendRequest('/', param , showSelectArea, 'GET');
+    	sendRequest('selectArea', param , showSelectArea, 'GET');
+    	
+    	locationBox.firstElementChild.src = '/svg/location_icon_tomato.svg';
+    	locationBox.lastElementChild.innerText=t.innerText;
+    	areaWord.value=t.innerText;
     }
     
     function showSelectArea(){
     	if(XHR.readyState==4){
     		if(XHR.status==200){
-    			console.log('here');
-    			areaWord.value="${cookie.areaCk.value}";
+    			modal.style.display='none';
     		}
     	}
     }
