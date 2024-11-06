@@ -14,12 +14,28 @@ public class AdminLoginServiceImple implements AdminLoginService{
 	@Override
 	public int loginAuth(String userId, String userPwd) {
 		
-		return 0;
+		String dbpwd = mapper.loginAuth(userId);
+		
+		int result = 0;
+		
+		if(dbpwd==null || dbpwd=="") {
+			result = 1;
+		}else {
+			if(userPwd.equals(dbpwd)) {
+				result = 3;
+			}else {
+				result = 2;
+			}
+		}
+		
+		return result;
 	}
 	
 	@Override
 	public int getAdmin(String userId) {
 		
-		return 0;
+		int adminidx = mapper.getAdmin(userId);
+		
+		return adminidx;
 	}
 }
