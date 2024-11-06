@@ -4,7 +4,7 @@
 
 <%@include file="../common/header.jsp"%>
 
-<div class="mainCon_1">
+<div class="mainCon_400">
 	<form name="imgSave" action="imgSave" method="post" enctype="multipart/form-data">
 		<input type="text" name="store_idx" id="" value="1">
 		<h2>이미지 관리</h2>
@@ -48,9 +48,9 @@
 	</form>
 </div>
   
-<div class="mainCon_2">
+<div class="mainCon_0">
 	<h3>등록된 이미지 확인</h3>
-	<div class="mc2_imgBox">
+	<div class="mc0_imgBox">
 	
 	<c:if test="${empty data}">
 		<span>등록된 사원이 없습니다.</span>

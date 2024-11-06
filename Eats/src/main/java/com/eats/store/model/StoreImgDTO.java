@@ -6,8 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class StoreImgDTO {
 
-    private int si_idx;                  // 이미지 ID (자동 증가값)
-    private int store_idx;               // 가게 ID
+    private int si_idx;
+    private int store_idx;
     
     private String store_img1, store_img2, store_img3, store_img4, store_img5;
     
