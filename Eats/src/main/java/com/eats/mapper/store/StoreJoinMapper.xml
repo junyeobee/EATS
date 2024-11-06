@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eats.mapper.store.StoreJoinMapper">
+
+ <insert id="insertStoreJoin" parameterType="com.eats.store.model.StoreJoinDTO">
+    <selectKey keyProperty="sj_idx" resultType="int" order="BEFORE">
+        SELECT SJ_IDX_SEQ.NEXTVAL FROM DUAL
+    </selectKey>
+    INSERT INTO STORE_JOIN (
+        SJ_IDX, SJ_NAME, BIZ_NUM, OWNER_NAME, OWNER_TEL, SJ_EMAIL, SJ_ADDR, SJ_DADDR, SJ_ID, SJ_PWD
+    ) VALUES (
+        #{sj_idx}, #{sj_name}, #{biz_num}, #{owner_name}, #{owner_tel}, #{sj_email},
+        #{sj_addr}, #{sj_daddr}, #{sj_id}, #{sj_pwd}
+    )
+</insert>
+
+</mapper>
