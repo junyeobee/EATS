@@ -3,13 +3,14 @@ package com.eats.store.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eats.mapper.store.StoreMapper;
+import com.eats.mapper.store.LoginMapper;
+import com.eats.store.model.EatsStoreDTO;
 
 @Service
 public class StoreLoginServiceImple implements StoreLoginService {
 
 	@Autowired
-	private StoreMapper mapper;
+	private LoginMapper mapper;
 
 	public static final int NOT_ID = 1;
 	public static final int NOT_PWD = 2; // PW 틀렸을 때 쓸 값
@@ -36,5 +37,14 @@ public class StoreLoginServiceImple implements StoreLoginService {
 		}
 
 		return result;
+	}
+	
+	
+	
+	@Override
+	public String findId(EatsStoreDTO dto) {
+		String store_id = mapper.findId(dto);
+
+		return store_id;
 	}
 }
