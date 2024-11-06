@@ -1,4 +1,10 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'KCCMurukmuruk';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCMurukmuruk.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 body{
 	font-family: "Noto Sans KR", sans-serif;
 }
@@ -25,4 +31,9 @@ body{
 	display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+p{
+	font-family: 'KCCMurukmuruk';	
+	font-size:30px;
 }
