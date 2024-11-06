@@ -15,6 +15,11 @@
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
 
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script src="js/ajaxJs.js"></script>
 <style>
 body {
@@ -38,19 +43,31 @@ menu, ol, ul {
 }
 
 .banner_swiper {
-	margin: 150px 0;
+	margin: 150px auto;
 	text-align: center;
+	width: 1200px;
 }
 
 .swiper {
 	width: 100%;
-	height: 240px;
+	height: 300px;
 }
 
 .swiper-slide img {
-	width: 1170px;
-	height: auto;
+	width: 1100px;
 	object-fit: cover;
+	position: absolute;
+	top: -200px;
+	left: 50px;
+}
+
+.swiper-pagination-bullet {
+	background-color: rgba(217, 217, 217, 0.75);
+	margin: 0 var(--swiper-pagination-bullet-horizontal-gap, 8px);
+}
+
+.swiper-pagination-bullet-active {
+	background-color: #f3553c;
 }
 </style>
 
@@ -61,7 +78,7 @@ menu, ol, ul {
 	<!-- modal window-->
 	<div class="modal_background" id="modal">
 		<div class="area-searching">
-		<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
+			<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
 			<div class="area_container">
 				<div class="mini_search_box">
 					<input type="text" class="mini_search_input" placeholder="지역 검색">
@@ -71,9 +88,10 @@ menu, ol, ul {
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
 						<div class="area_big_value">
-						<c:forEach var="city" items="${cityList }">
-							<div class="area_big_value_text" onclick="selectCity(${city.area_idx})">${city.area_name }</div>
-						</c:forEach>
+							<c:forEach var="city" items="${cityList }">
+								<div class="area_big_value_text"
+									onclick="selectCity(${city.area_idx})">${city.area_name }</div>
+							</c:forEach>
 						</div>
 					</div>
 
@@ -97,7 +115,7 @@ menu, ol, ul {
 					|
 					<a href="openUserJoin">회원가입</a>
 				</c:if>
-				
+
 				<c:if test="${!empty user_idx }">
 					<img class="proicons-person-circle" src="/svg/profile_icon.svg" />
 					<div class="profile_msg">
@@ -108,10 +126,11 @@ menu, ol, ul {
 			</div>
 		</div>
 	</header>
-	
+
 	<div class="main" id="main">
 		<div class="search_box">
-			<div class="location_box" id="location_box" data-target="modalArea" data-toggle="modal">
+			<div class="location_box" id="location_box" data-target="modalArea"
+				data-toggle="modal">
 				<c:if test="${empty selectArea }">
 					<img class="ep-location" src="/svg/location_icon.svg" />
 					<div class="locaton_text">지역</div>
@@ -122,391 +141,401 @@ menu, ol, ul {
 				</c:if>
 			</div>
 
+
 			<div class="search_input_box">
-				<input type="text" class="search_input" placeholder="‘한식대첩’을 검색해보세요">
+				<form name="searchForm" id="form" action="searchStore" method="GET">
+					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
+					<input type="hidden" id="word" name="word">
+					<input type="hidden" id="areaWord" name="areaWord" value="${areaCk }">
+				</form>
 			</div>
-			<img class="fe-search" src="/svg/search_icon.svg" onclick="location.href='searchStore';"/>
+			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
 		</div>
+
 		<div class="categorys">
-		
-		<c:forEach var="values" items="${valueList }">
-			<div class="cate_box">
-				<div class="cate_text">
-					<div class="cate_title">${values.key }</div>
-					<div class="cate_sub">
-						<c:if test="${values.key.contains(' ')}">
+
+			<c:forEach var="values" items="${valueList }">
+				<div class="cate_box">
+					<div class="cate_text">
+						<div class="cate_title">${values.key }</div>
+						<div class="cate_sub">
+							<c:if test="${values.key.contains(' ')}">
 							원하는 ${values.key.split(" ")[0]}<br>찾으셨나요?
 						</c:if>
-						<c:if test="${!values.key.contains(' ')}">
+							<c:if test="${!values.key.contains(' ')}">
 							원하는 ${values.key}<br>찾으셨나요?
 						</c:if>
+						</div>
 					</div>
-				</div>
 
-				<div class="subcate_box">
-					<c:forEach var="keyvalue" items="${values.value}">
-						<div class="sub_one" id="${keyvalue }" onclick="searchThisWord(this)">
-							<div class="text">
-								<c:if test="${keyvalue.length()>5}">
+					<div class="subcate_box">
+						<c:forEach var="keyvalue" items="${values.value}">
+							<div class="sub_one" id="${keyvalue }"
+								onclick="searchThisWord(this)">
+								<div class="text">
+									<c:if test="${keyvalue.length()>5}">
 									${keyvalue.replace(" ", "<br>")}
 								</c:if>
-								<c:if test="${keyvalue.length()<=5}">
+									<c:if test="${keyvalue.length()<=5}">
 									${keyvalue}
 								</c:if>
+								</div>
 							</div>
-						</div>
-					</c:forEach>
+						</c:forEach>
+					</div>
 				</div>
-			</div>
-		</c:forEach>
-
+			</c:forEach>
+		</div>
 		<div class="banner_box">
 			<div class="banner_swiper">
+
+				<!-- Slider main container -->
 				<div class="swiper">
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
 						<!-- Slides -->
 						<div class="swiper-slide">
-							<img src="/img/banner_img.png">
+							<img src="/img/banner_img.jpg">
 						</div>
-						<!-- <div class="swiper-slide">
-                            <img src="/img/contents_img.png">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="/img/reserve_img.png">
-                        </div> -->
+						<div class="swiper-slide">
+							<img src="/img/banner_img2.jpg">
+						</div>
+						<div class="swiper-slide">
+							<img src="/img/banner_img3.jpg">
+						</div>
+
 					</div>
 					<!-- If we need pagination -->
 					<div class="swiper-pagination"></div>
-
 				</div>
 			</div>
 		</div>
 
-		<div class="review_box">
-			<div class="review_box_text">
-				<div class="review_title">리뷰 폭!</div>
-				<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
+		<div class="category">
+			<div class="review_box">
+				<div class="review_box_text">
+					<div class="review_title">리뷰 폭!</div>
+					<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
+				</div>
+				<div class="review_container">
+					<div class="user_review">
+						<div class="user_info">
+							<img src="/svg/profile_icon.svg">
+							<div class="user_pro">
+								<div class="user_id_info">
+									<div class="user_id">까마귀 고기</div>
+									<div class="user_follow">팔로워 10</div>
+								</div>
+								<div class="user_date_info">
+									<div class="user_date_text">방문일</div>
+									<div class="user_date">2024.10.29</div>
+								</div>
+							</div>
+						</div>
+						<div class="user_review_box">
+							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
+								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
+							<div class="user_review_sub">
+								<div class="review_tag_box">
+									<div class="review_tag">
+										<div class="review_tag_text">가족 모임</div>
+									</div>
+									<div class="review_tag">
+										<div class="review_tag_text">편한 좌석</div>
+									</div>
+								</div>
+								<div class="fork_info">
+									<img class="fork_img" src="/svg/fork_icon.svg" />
+									<div class="fork_text">125</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="user_review">
+						<div class="user_info">
+							<img src="/svg/profile_icon.svg">
+							<div class="user_pro">
+								<div class="user_id_info">
+									<div class="user_id">까마귀 고기</div>
+									<div class="user_follow">팔로워 10</div>
+								</div>
+								<div class="user_date_info">
+									<div class="user_date_text">방문일</div>
+									<div class="user_date">2024.10.29</div>
+								</div>
+							</div>
+						</div>
+						<div class="user_review_box">
+							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
+								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
+							<div class="user_review_sub">
+								<div class="review_tag_box">
+									<div class="review_tag">
+										<div class="review_tag_text">가족 모임</div>
+									</div>
+									<div class="review_tag">
+										<div class="review_tag_text">편한 좌석</div>
+									</div>
+								</div>
+								<div class="fork_info">
+									<img class="fork_img" src="/svg/fork_icon.svg" />
+									<div class="fork_text">125</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="user_review">
+						<div class="user_info">
+							<img src="/svg/profile_icon.svg">
+							<div class="user_pro">
+								<div class="user_id_info">
+									<div class="user_id">까마귀 고기</div>
+									<div class="user_follow">팔로워 10</div>
+								</div>
+								<div class="user_date_info">
+									<div class="user_date_text">방문일</div>
+									<div class="user_date">2024.10.29</div>
+								</div>
+							</div>
+						</div>
+						<div class="user_review_box">
+							<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
+								곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
+							<div class="user_review_sub">
+								<div class="review_tag_box">
+									<div class="review_tag">
+										<div class="review_tag_text">가족 모임</div>
+									</div>
+									<div class="review_tag">
+										<div class="review_tag_text">편한 좌석</div>
+									</div>
+								</div>
+								<div class="fork_info">
+									<img class="fork_img" src="/svg/fork_icon.svg" />
+									<div class="fork_text">125</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="review_container">
-				<div class="user_review">
-					<div class="user_info">
-						<img src="/svg/profile_icon.svg">
-						<div class="user_pro">
-							<div class="user_id_info">
-								<div class="user_id">까마귀 고기</div>
-								<div class="user_follow">팔로워 10</div>
-							</div>
-							<div class="user_date_info">
-								<div class="user_date_text">방문일</div>
-								<div class="user_date">2024.10.29</div>
-							</div>
-						</div>
+
+			<div class="reserve_box">
+				<div class="reserve_text">
+					<div class="reserve_title">
+						빠른 예약<br />가능 식당
 					</div>
-					<div class="user_review_box">
-						<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-							곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
-						<div class="user_review_sub">
-							<div class="review_tag_box">
-								<div class="review_tag">
-									<div class="review_tag_text">가족 모임</div>
-								</div>
-								<div class="review_tag">
-									<div class="review_tag_text">편한 좌석</div>
-								</div>
-							</div>
-							<div class="fork_info">
-								<img class="fork_img" src="/svg/fork_icon.svg" />
-								<div class="fork_text">125</div>
-							</div>
-						</div>
+					<div class="reserve_sub">
+						바로 예약 가능한<br />식당이 알고 싶다면?
 					</div>
 				</div>
-				<div class="user_review">
-					<div class="user_info">
-						<img src="/svg/profile_icon.svg">
-						<div class="user_pro">
-							<div class="user_id_info">
-								<div class="user_id">까마귀 고기</div>
-								<div class="user_follow">팔로워 10</div>
+
+				<div class="reserve_container">
+					<div class="store_reserve">
+						<div class="store_reserve_box">
+							<img class="reserve_img" src="/img/reserve_img.png" />
+
+							<div class="store_reserve_info">
+								<div class="store_reserve_info_box">
+									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
+									<div class="store_reserve_sub">
+										<div class="store_star">
+											<img class="star_icon" src="/svg/star_icon.svg" />
+											<div class="star_point">4.7</div>
+											<div class="review_count">(131)</div>
+										</div>
+										<div class="store_location">
+											<img class="location_icon" src="/svg/location_icon.svg" />
+											<div class="location_text">대전시 성심당</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="store_reserve_tag_box">
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">대화</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">야채</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">양식</div>
+									</div>
+								</div>
 							</div>
-							<div class="user_date_info">
-								<div class="user_date_text">방문일</div>
-								<div class="user_date">2024.10.29</div>
+						</div>
+						<div class="reserve_time_box">
+							<div class="reserve_time">
+								<div class="reserve_time_text">12:30</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">13:30</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">16:00</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">19:30</div>
 							</div>
 						</div>
 					</div>
-					<div class="user_review_box">
-						<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-							곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
-						<div class="user_review_sub">
-							<div class="review_tag_box">
-								<div class="review_tag">
-									<div class="review_tag_text">가족 모임</div>
+					<div class="store_reserve">
+						<div class="store_reserve_box">
+							<img class="reserve_img" src="/img/reserve_img.png" />
+
+							<div class="store_reserve_info">
+								<div class="store_reserve_info_box">
+									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
+									<div class="store_reserve_sub">
+										<div class="store_star">
+											<img class="star_icon" src="/svg/star_icon.svg" />
+											<div class="star_point">4.7</div>
+											<div class="review_count">(131)</div>
+										</div>
+										<div class="store_location">
+											<img class="location_icon" src="/svg/location_icon.svg" />
+											<div class="location_text">대전시 성심당</div>
+										</div>
+									</div>
 								</div>
-								<div class="review_tag">
-									<div class="review_tag_text">편한 좌석</div>
+
+								<div class="store_reserve_tag_box">
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">대화</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">야채</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">양식</div>
+									</div>
 								</div>
 							</div>
-							<div class="fork_info">
-								<img class="fork_img" src="/svg/fork_icon.svg" />
-								<div class="fork_text">125</div>
+						</div>
+						<div class="reserve_time_box">
+							<div class="reserve_time">
+								<div class="reserve_time_text">12:30</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">13:30</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">16:00</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">19:30</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="user_review">
-					<div class="user_info">
-						<img src="/svg/profile_icon.svg">
-						<div class="user_pro">
-							<div class="user_id_info">
-								<div class="user_id">까마귀 고기</div>
-								<div class="user_follow">팔로워 10</div>
-							</div>
-							<div class="user_date_info">
-								<div class="user_date_text">방문일</div>
-								<div class="user_date">2024.10.29</div>
+					<div class="store_reserve">
+						<div class="store_reserve_box">
+							<img class="reserve_img" src="/img/reserve_img.png" />
+
+							<div class="store_reserve_info">
+								<div class="store_reserve_info_box">
+									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
+									<div class="store_reserve_sub">
+										<div class="store_star">
+											<img class="star_icon" src="/svg/star_icon.svg" />
+											<div class="star_point">4.7</div>
+											<div class="review_count">(131)</div>
+										</div>
+										<div class="store_location">
+											<img class="location_icon" src="/svg/location_icon.svg" />
+											<div class="location_text">대전시 성심당</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="store_reserve_tag_box">
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">대화</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">야채</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">양식</div>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="user_review_box">
-						<div class="user_review_text">까마귀도 좋아하는 맛있는 파스타 근데 이제 푸실리를
-							곁들인 저희 할머니도 무척 맛있게 드셨어요. 최고의 오리엔탈 퓨전 파스타입니다. 추천해요~</div>
-						<div class="user_review_sub">
-							<div class="review_tag_box">
-								<div class="review_tag">
-									<div class="review_tag_text">가족 모임</div>
-								</div>
-								<div class="review_tag">
-									<div class="review_tag_text">편한 좌석</div>
-								</div>
+						<div class="reserve_time_box">
+							<div class="reserve_time">
+								<div class="reserve_time_text">12:30</div>
 							</div>
-							<div class="fork_info">
-								<img class="fork_img" src="/svg/fork_icon.svg" />
-								<div class="fork_text">125</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">13:30</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">16:00</div>
+							</div>
+							<div class="reserve_time">
+								<div class="reserve_time_text">19:30</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="content_box">
+				<div class="content_text">
+					<div class="content_title">
+						주변<br />문화콘텐츠
+					</div>
+					<div class="content_sub">밥 먹고 뭐 할까?</div>
+				</div>
+				<div class="content_container">
+					<div class="culture_content">
+						<div class="content_img_box">
+							<img src="/img/contents_img.png" alt="" class="content_img">
+						</div>
+						<div class="content_info">
+							<div class="place_name">수성못</div>
+							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
+						</div>
+					</div>
+					<div class="culture_content">
+						<div class="content_img_box">
+							<img src="/img/contents_img.png" alt="" class="content_img">
+						</div>
+						<div class="content_info">
+							<div class="place_name">수성못</div>
+							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
+						</div>
+					</div>
+					<div class="culture_content">
+						<div class="content_img_box">
+							<img src="/img/contents_img.png" alt="" class="content_img">
+						</div>
+						<div class="content_info">
+							<div class="place_name">수성못</div>
+							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
+						</div>
+					</div>
+					<div class="culture_content">
+						<div class="content_img_box">
+							<img src="/img/contents_img.png" alt="" class="content_img">
+						</div>
+						<div class="content_info">
+							<div class="place_name">수성못</div>
+							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
+						</div>
+					</div>
+					<div class="culture_content">
+						<div class="content_img_box">
+							<img src="/img/contents_img.png" alt="" class="content_img">
+						</div>
+						<div class="content_info">
+							<div class="place_name">수성못</div>
+							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">footer</div>
 		</div>
-
-		<div class="reserve_box">
-			<div class="reserve_text">
-				<div class="reserve_title">
-					빠른 예약<br />가능 식당
-				</div>
-				<div class="reserve_sub">
-					바로 예약 가능한<br />식당이 알고 싶다면?
-				</div>
-			</div>
-
-			<div class="reserve_container">
-				<div class="store_reserve">
-					<div class="store_reserve_box">
-						<img class="reserve_img" src="/img/reserve_img.png" />
-
-						<div class="store_reserve_info">
-							<div class="store_reserve_info_box">
-								<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-								<div class="store_reserve_sub">
-									<div class="store_star">
-										<img class="star_icon" src="/svg/star_icon.svg" />
-										<div class="star_point">4.7</div>
-										<div class="review_count">(131)</div>
-									</div>
-									<div class="store_location">
-										<img class="location_icon" src="/svg/location_icon.svg" />
-										<div class="location_text">대전시 성심당</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="store_reserve_tag_box">
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">대화</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">야채</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">양식</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="reserve_time_box">
-						<div class="reserve_time">
-							<div class="reserve_time_text">12:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">13:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">16:00</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">19:30</div>
-						</div>
-					</div>
-				</div>
-				<div class="store_reserve">
-					<div class="store_reserve_box">
-						<img class="reserve_img" src="/img/reserve_img.png" />
-
-						<div class="store_reserve_info">
-							<div class="store_reserve_info_box">
-								<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-								<div class="store_reserve_sub">
-									<div class="store_star">
-										<img class="star_icon" src="/svg/star_icon.svg" />
-										<div class="star_point">4.7</div>
-										<div class="review_count">(131)</div>
-									</div>
-									<div class="store_location">
-										<img class="location_icon" src="/svg/location_icon.svg" />
-										<div class="location_text">대전시 성심당</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="store_reserve_tag_box">
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">대화</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">야채</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">양식</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="reserve_time_box">
-						<div class="reserve_time">
-							<div class="reserve_time_text">12:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">13:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">16:00</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">19:30</div>
-						</div>
-					</div>
-				</div>
-				<div class="store_reserve">
-					<div class="store_reserve_box">
-						<img class="reserve_img" src="/img/reserve_img.png" />
-
-						<div class="store_reserve_info">
-							<div class="store_reserve_info_box">
-								<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-								<div class="store_reserve_sub">
-									<div class="store_star">
-										<img class="star_icon" src="/svg/star_icon.svg" />
-										<div class="star_point">4.7</div>
-										<div class="review_count">(131)</div>
-									</div>
-									<div class="store_location">
-										<img class="location_icon" src="/svg/location_icon.svg" />
-										<div class="location_text">대전시 성심당</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="store_reserve_tag_box">
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">대화</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">야채</div>
-								</div>
-								<div class="store_reserve_tag">
-									<div class="store_reserve_tag_text">양식</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="reserve_time_box">
-						<div class="reserve_time">
-							<div class="reserve_time_text">12:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">13:30</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">16:00</div>
-						</div>
-						<div class="reserve_time">
-							<div class="reserve_time_text">19:30</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="content_box">
-			<div class="content_text">
-				<div class="content_title">
-					주변<br />문화콘텐츠
-				</div>
-				<div class="content_sub">밥 먹고 뭐 할까?</div>
-			</div>
-			<div class="content_container">
-				<div class="culture_content">
-					<div class="content_img_box">
-						<img src="/img/contents_img.png" alt="" class="content_img">
-					</div>
-					<div class="content_info">
-						<div class="place_name">수성못</div>
-						<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-					</div>
-				</div>
-				<div class="culture_content">
-					<div class="content_img_box">
-						<img src="/img/contents_img.png" alt="" class="content_img">
-					</div>
-					<div class="content_info">
-						<div class="place_name">수성못</div>
-						<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-					</div>
-				</div>
-				<div class="culture_content">
-					<div class="content_img_box">
-						<img src="/img/contents_img.png" alt="" class="content_img">
-					</div>
-					<div class="content_info">
-						<div class="place_name">수성못</div>
-						<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-					</div>
-				</div>
-				<div class="culture_content">
-					<div class="content_img_box">
-						<img src="/img/contents_img.png" alt="" class="content_img">
-					</div>
-					<div class="content_info">
-						<div class="place_name">수성못</div>
-						<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-					</div>
-				</div>
-				<div class="culture_content">
-					<div class="content_img_box">
-						<img src="/img/contents_img.png" alt="" class="content_img">
-					</div>
-					<div class="content_info">
-						<div class="place_name">수성못</div>
-						<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="footer">footer</div>
-	</div>
 	</div>
 </body>
 <script>
@@ -514,6 +543,11 @@ menu, ol, ul {
 	var modal = document.getElementById("modal");
 	var exitbtn = document.getElementById("exitbtn");
 	var logo = document.getElementById("logoicon");
+	var fm = document.getElementById('form');
+	var searchIcon = document.getElementById('search_icon');
+	var searchInput = document.getElementById('search_input');
+	var word = document.getElementById('word');
+	var areaWord = document.getElementById('areaWord');
 	
  	exitbtn.addEventListener('click', function(){
 		modal.style.display='none';
@@ -547,13 +581,24 @@ menu, ol, ul {
     }
     
     function selectThisArea(t){
-    	location.href="?selectArea="+t.innerText;
+    	/* location.href="?selectArea="+t.innerText; */
+    	var param = 'selectArea='+t.innerText;
+    	console.log(param);
+    	sendRequest('/', param , showSelectArea, 'GET');
     }
     
+    function showSelectArea(){
+    	if(XHR.readyState==4){
+    		if(XHR.status==200){
+    			console.log('here');
+    			areaWord.value="${cookie.areaCk.value}";
+    		}
+    	}
+    }
     
     function selectCity(cityIdx){
     	var params = 'cityIdx='+cityIdx;
-    	sendRequest('selectUnit', params,showUnit,'GET');
+    	sendRequest('selectUnit', params, showUnit, 'GET');
     }
     
     function showUnit(){
@@ -581,5 +626,34 @@ menu, ol, ul {
     		}
     	}
     }
+    
+    //swiper script
+    const swiper = new Swiper('.swiper', {
+    	slidesPerView:1,
+    	spaceBetween: 20,
+    	loop: true,
+    	speed: 400,
+    	pagination: {
+    		el: '.swiper-pagination',
+    		clickable: true,
+    	},
+    	
+    	autoplay: {
+    		delay: 8000
+    	},
+    	
+    	navigation: {
+    	    nextEl: '.swiper-button-next',
+    	    prevEl: '.swiper-button-prev',
+    	  },	
+	});
+    
+   searchIcon.addEventListener('click', function(){
+	   fm.submit();
+   })
+   
+   searchInput.addEventListener('input', function(e){
+	   word.value=e.target.value;
+   })
 </script>
 </html>
