@@ -5,6 +5,111 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="js/httpRequest.js"></script>
+<script>
+var idCheckState=false;
+var sendState=false;
+
+function idExist(){
+	var inputId=document.getElementById('storeId').value;
+	if(inputId!=null && inputId!=''){
+		var params='storeId='+inputId;
+		sendRequest('storeIdExist', params, showIdMessage, 'GET');
+	}
+}
+
+
+function showIdMessage(){
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data).value;
+			if(jsondata[0]==='true'){
+				idCheckState=true;
+				document.getElementById('id-message').textContent='';
+			}else{
+				document.getElementById('id-message').textContent='아이디가 존재하지 않습니다.';
+			}
+		}
+	}
+}
+
+
+
+//코드 전송
+function sendCode(){
+	if(idCheckState==true){
+		var inputEmail=document.getElementById('storeEmail').value;
+		//alert(inputEmail);
+		if(inputEmail===null || inputEmail===''){
+			document.getElementById('email-message').textContent='이메일을 입력해주세요';
+			document.getElementById('email-message').style.color='red';
+		}else{
+			//이메일 형식 확인
+			var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			if(!emailPattern.test(inputEmail)){
+				document.getElementById('email-message').textContent='이메일 형식을 확인해주세요';
+				document.getElementById('email-message').style.color='red';
+			}else{
+				var params='storeEmail='+inputEmail;
+				sendRequest('storesendCodeForFindPwd', params, showSendResult, 'POST');
+				sendState=true;
+			}
+		}
+	}
+}
+
+//전송 후 alert창 띄우기
+function showSendResult(){
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data).value;
+			alert(jsondata);
+		}
+	}
+}
+
+
+	function storevalidateCode() {
+		if (sendState === true) {
+
+			var inputCode = document.getElementById('storeCode').value;
+
+			var params = 'storeCode=' + inputCode;
+			sendRequest('storecheckCode', params, showResult, 'GET');
+		} else {
+			alert('인증번호를 발송하지 않았습니다.')
+		}
+
+	}
+	
+	function showResult() {
+		if (XHR.readyState == 4) {
+
+			if (XHR.status == 200) {
+				var data = XHR.responseText;
+				console.log(data);
+				var errorMsg = document.getElementById('code-message');
+
+				var jsondata = JSON.parse(data);
+				
+				if (jsondata.value=='0'){
+					
+					errorMsg.textContent='시간이 만료되었습니다.';
+					
+				}else if(jsondata.value=='2'){
+					errorMsg.textContent='인증번호가 일치하지 않습니다.';
+					alert('블일치');
+					
+				}else if(jsondata.value=='1'){
+					location.href='store/login/storeUpdatePwd.jsp';
+				}
+			}
+		}
+
+	}
+</script>
 <style>
 .store-update-pwd, .store-update-pwd * {
 	box-sizing: border-box;
@@ -179,46 +284,52 @@
 </style>
 </head>
 <body>
-	
-		<div class="store-update-pwd">
-			<div class="rectangle-3"></div>
-			<div class="rectangle-4"></div>
-			<div class="rectangle-7"></div>
-			<div class="rectangle-5"></div>
-			<div class="div">
-				<input type="submit" value="비밀번호 찾기">
-			</div>
-			<div class="div2">비밀번호 찾기</div>
 
-			<form name="store_sendCode" action="store_sendCode" method="post">
-				<div class="div3">
-					<input type="text" name="store_id" placeholder="아이디를 입력하세요." value="${store_id}">
-				</div>
-				<div class="eats-email-com">
-					<input type="text" name="store_email" placeholder="이메일 예) eats@email.com" value="${store_email}">
-				</div>
-				<div class="frame-8">
-					<div class="div6">
-						<input type="submit" value="인증번호 발송">
-						
-					</div>
-					
-				</div>
-				<p>${msg}</p>
-			</form>
-
-			<form name="storecheckCode" action="storeCheckCode" method="post">
-				<div class="div4">
-					<input type="text" name="store_code" placeholder="인증번호 입력">
-					<input type="button" value="인증번호 확인" onclick="st_validateCode();">
-				</div>
-			</form>
-
-
-			<div class="div5">이메일로 인증번호를 발송해드려요.</div>
-
-			<div class="_3-00">남은시간(3:00)</div>
+	<div class="store-update-pwd">
+		<div class="rectangle-3"></div>
+		<div class="rectangle-4"></div>
+		<div class="rectangle-7"></div>
+		<div class="rectangle-5"></div>
+		<div class="div">
+		
+			<input type="submit" value="비밀번호 찾기">
 		</div>
-	
+		
+		
+		<div class="div2">비밀번호 찾기</div>
+
+		
+			<div class="div3">
+				<input type="text" name="storeId" id="storeId" placeholder="아이디를 입력하세요." onblur="idExist()">
+						<div id="id-message" style="margin-top:5px; font-size:10px; text-algin:start; color:red;"></div>
+			</div>
+			
+			<div class="eats-email-com">
+				<input type="text" name="storeEmail" id="storeEmail" placeholder="이메일 예) eats@email.com" >
+					<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
+			</div>
+			
+			<div class="frame-8">
+				<div class="div6">
+					<input type="button" value="인증번호 발송ㄱㄱ" onclick="sendCode();">
+				</div>
+			</div>
+		
+		
+
+		
+			<div class="div4">
+				<input type="text" name="storeCode" id="storeCode" placeholder="인증번호 입력">
+				<div id="code-message" style="color: red; font-size: 10px; margin-top: 5px; text-align: start; padding-left: 20px;"></div>
+				<input type="button" value="인증번호 확인" onclick="storevalidateCode();">
+			</div>
+		
+
+
+		<div class="div5">이메일로 인증번호를 발송해드려요.</div>
+
+
+	</div>
+
 </body>
 </html>

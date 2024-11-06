@@ -23,4 +23,25 @@
   		store_ceo=#{store_ceo}		
   	</select>
   
+  
+  <select id="storeidCheckForFindPwd">
+		SELECT
+			STORE_EMAIL
+		FROM
+			store_account_test
+		WHERE
+			STORE_ID=#{storeId}
+</select>
+	
+	
+<update id="storeUpdatePwd" parameterType="map">
+	UPDATE
+		store_account_test
+	set
+		store_pwd=#{newPwd}
+	where
+		store_id=#{storeId}
+</update>
+	
+	
   </mapper>
