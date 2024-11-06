@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.eats.controller.store.ImgContUpload;
 import com.eats.mapper.store.StoreImgMapper;
 import com.eats.store.model.StoreImgDTO;
 
