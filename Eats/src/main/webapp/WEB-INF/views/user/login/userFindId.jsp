@@ -96,10 +96,10 @@ function showResult(){
 <body>
 	<div class="form-wrapper">
 		<div class="logo-wrapper">
-			<img src="/img/eats_logo.png">
+			<a href="/"><img src="/img/eats_logo.png"></a>
 		</div>
 		<div class="title-wrapper">
-			<h3>아이디 찾기</h3>
+			<!-- <h3>아이디 찾기</h3> -->
 			<p>가입된 회원정보로 아이디를 확인하세요</p>
 		</div>
 		<div class="table-wrapper">
