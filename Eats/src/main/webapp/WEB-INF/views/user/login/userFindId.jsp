@@ -106,14 +106,19 @@ function showResult(){
 			<table>
 				<tr>
 					<td>
-						<input type="text" id="userName" placeholder="이름">
-						<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
+						<div>
+							<input type="text" id="userName" placeholder="이름">
+							<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
+						</div>
 					</td>
+					<!-- <td> </td> -->
 				</tr>
 				<tr>
 					<td>
-						<input type="text" id="userEmail" placeholder="이메일 예)example@naver.com">
-						<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
+						<div>
+							<input type="text" id="userEmail" placeholder="이메일 예)example@naver.com">
+							<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
+						</div>
 					</td>
 					<td>
 						<input type="button" value="인증번호 발송" onclick="sendCode();">
@@ -121,11 +126,15 @@ function showResult(){
 				</tr>
 				<tr>
 					<td>
-						<input type="text" id="userCode">
-						<div id="code-message" style="color:red; font-size:10px; margin-top:5px; text-align:start; padding-left:20px;"></div>
+						<div>
+							<input type="text" id="userCode">
+							<div id="code-message" style="color:red; font-size:10px; margin-top:5px; text-align:start; padding-left:20px;"></div>
+						</div>
 					</td>
 					<td>
-						<input type="button" value="인증번호 확인" onclick="validateCode();">
+						<div>
+							<input type="button" value="인증번호 확인" onclick="validateCode();">
+						</div>
 					</td>
 				</tr>
 			</table>

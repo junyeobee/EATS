@@ -28,8 +28,20 @@ body{
 .form-wrapper table div{
 	text-align:start;
 }
+.form-wrapper table tr td {
+	width: 100%;
+}
+.form-wrapper table tr td div {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.form-wrapper table tr td div  #name-message {
+	margin-top: 5px;
+    font-size: 13px;
+}
 .form-wrapper table tr td:first-child{
-	width:70%;
+	/* width:70%; */	
 	text-align:end;
 }
 .form-wrapper table tr td:nth-child(2){
@@ -37,15 +49,18 @@ body{
 	padding-left:10px;
 }
 .form-wrapper table tr{
+	width: 100%;
 	display: flex;
+    justify-content: space-between;
     align-items: baseline;
+    flex-direction: row;
 }
 .form-wrapper table td{
 	margin:10px 0px;
 }
 input[type="text"]{
-	width:70%;
-	padding:10px;
+	    width: 100%;
+    padding: 15px 0;
 	background-color: #FFF8EB;
     border: 1px solid gray;
     height: 30px;
@@ -56,8 +71,8 @@ input[type="text"]{
 }
 input[type="button"]{
 	font-size: 15px;
-    padding: 20px 0px;
-    margin: 10px 0px;
+        padding: 20px 20px;
+    margin: 0;
     border-radius: 5px;
     border: 0;
     font-family: "Noto Sans KR", sans-serif;
