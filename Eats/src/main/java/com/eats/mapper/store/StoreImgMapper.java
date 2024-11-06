@@ -9,5 +9,5 @@ import com.eats.store.model.StoreImgDTO;
 
 public interface StoreImgMapper {
 	public int storeImgInsert(StoreImgDTO dto);
-	public StoreImgDTO storeImgData();
+	public StoreImgDTO storeImgData(int store_idx);
 }

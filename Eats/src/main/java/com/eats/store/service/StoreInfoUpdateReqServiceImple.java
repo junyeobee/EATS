@@ -16,9 +16,9 @@ public class StoreInfoUpdateReqServiceImple implements StoreInfoUpdateReqService
 	private StoreInfoUpdateMapper mapper;
 	
 	@Override
-	public StoreDTO storeData() {
+	public StoreDTO storeData(int store_idx) {
 
-		StoreDTO data = mapper.storeData();
+		StoreDTO data = mapper.storeData(store_idx);
 		return data;
 		
 		

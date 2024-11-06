@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.store.model.StoreDTO;
 import com.eats.store.model.StoreImgDTO;
 import com.eats.store.service.StoreImgService;
 
@@ -41,9 +43,18 @@ public class ImgController {
     */
 
     @GetMapping("/store/storeImg")
-    public ModelAndView storeImg() {
-        // 서비스에서 하나의 StoreImgDTO 객체를 가져옴
-        StoreImgDTO data = service.storeImgData(); // 서비스에서 단일 객체를 반환
+    public ModelAndView storeImg(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
+    	//이미지 페이지 접속시 로그인한 매장의 이미지 데이터 불러옴
+
+    	System.out.println("dddddddddddddddddddddd");
+        // store_idx가 null이면 기본값을 1로 설정
+        if (store_idx == null) {
+            store_idx = 1;  // 기본값 설정
+        }
+
+    	System.out.println("rrrrrrrrrrrrrrrr");
+        StoreImgDTO data = service.storeImgData(store_idx); 
+    	System.out.println("ffffffffffffffffffff");
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data); // JSP로 객체 전달
         System.out.println(data.toString());
