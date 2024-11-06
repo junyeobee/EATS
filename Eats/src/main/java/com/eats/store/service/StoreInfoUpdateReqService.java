@@ -5,6 +5,6 @@ import com.eats.store.model.StoreInfoUpdateDTO;
 
 public interface StoreInfoUpdateReqService {
 
-	public StoreDTO storeData();
+	public StoreDTO storeData(int store_idx);
 	public int StoreInfoUpdateInsert(StoreInfoUpdateDTO dto);
 }

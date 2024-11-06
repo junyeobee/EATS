@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.eats.store.model.StoreDTO;
 import com.eats.store.model.StoreImgDTO;
 
 public interface StoreImgService {
 	public int storeImgInsert(StoreImgDTO dto);
-	public StoreImgDTO storeImgData();
+	public StoreImgDTO storeImgData(int store_idx);
 
     // 이미지 파일을 저장하는 메서드
     //String saveProfileImage(MultipartFile profileImage) throws IOException;
