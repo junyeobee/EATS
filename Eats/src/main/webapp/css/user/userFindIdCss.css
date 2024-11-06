@@ -1,0 +1,83 @@
+@charset "UTF-8";
+body{
+	font-family: "Noto Sans KR", sans-serif;
+}
+.logo-wrapper{
+	width:20%;
+	margin:20px auto;
+	text-align:center;
+}
+.logo-wrapper img{
+	width:50%;
+}
+.title-wrapper{
+	text-align:center;
+}
+.form-wrapper{
+	width:50%;
+	margin:100px auto;
+}
+.table-wrapper{
+	width:100%;
+	padding-left:30px;
+}
+.form-wrapper table{
+	width:80%;
+	margin:auto;
+}
+.form-wrapper table div{
+	text-align:start;
+}
+.form-wrapper table tr td {
+	width: 100%;
+}
+.form-wrapper table tr td div {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.form-wrapper table tr td div  #name-message {
+	margin-top: 5px;
+    font-size: 13px;
+}
+.form-wrapper table tr td:first-child{
+	/* width:70%; */	
+	text-align:end;
+}
+.form-wrapper table tr td:nth-child(2){
+	width:30%;
+	padding-left:10px;
+}
+.form-wrapper table tr{
+	width: 100%;
+	display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-direction: row;
+}
+.form-wrapper table td{
+	margin:10px 0px;
+}
+input[type="text"]{
+	    width: 100%;
+    padding: 15px 0;
+	background-color: #FFF8EB;
+    border: 1px solid gray;
+    height: 30px;
+    border-radius: 5px;
+    padding: 10px 5px 10px 10px;
+    color: #1E1E1E;
+    font-family: "Noto Sans KR", sans-serif;
+}
+input[type="button"]{
+	font-size: 15px;
+        padding: 20px 20px;
+    margin: 0;
+    border-radius: 5px;
+    border: 0;
+    font-family: "Noto Sans KR", sans-serif;
+	background-color:#FFB53C;
+	color:#FFF8EB;
+	border:0;
+	width:60%;
+}

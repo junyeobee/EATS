@@ -56,4 +56,22 @@ public class UserLoginServiceImple implements UserLoginService {
         
 		return userId;
 	}
+	
+	@Override
+	public String idCheckForFindId(String userId) {
+		
+		String userEmail=mapper.idCheckForFindPwd(userId);
+		return userEmail;
+	}
+	
+	@Override
+	public int userResetPwd(String userId, String newPwd) {
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("newPwd", newPwd);
+		
+		int result=mapper.userResetPwd(map);
+		
+		return result;
+	}
 }

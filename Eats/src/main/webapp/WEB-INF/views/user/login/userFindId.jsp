@@ -81,45 +81,64 @@ function showResult(){
 			} else if(jsondata.value=='1'){
 				location.href='showUserId';
 			}
-			
 		}
 	}
 }
 </script>
+<!-- noto sans kr font-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="css/user/userFindIdCss.css">
 </head>
 <body>
 	<div class="form-wrapper">
-		<table>
-			<tr>
-				<td>
-					<input type="text" id="userName" placeholder="이름">
-					<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" id="userEmail" placeholder="이메일 예)example@naver.com">
-					<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
-				</td>
-				<td>
-					<input type="button" value="인증번호 발송" onclick="sendCode();">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" id="userCode">
-					<div id="code-message" style="color:red; font-size:10px; margin-top:5px; text-align:start; padding-left:20px;"></div>
-				</td>
-				<td>
-					<input type="button" value="인증번호 확인" onclick="validateCode();">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="button" value="다음">
-				</td>
-			</tr>
-		</table>
+		<div class="logo-wrapper">
+			<img src="/img/eats_logo.png">
+		</div>
+		<div class="title-wrapper">
+			<h3>아이디 찾기</h3>
+			<p>가입된 회원정보로 아이디를 확인하세요</p>
+		</div>
+		<div class="table-wrapper">
+			<table>
+				<tr>
+					<td>
+						<div>
+							<input type="text" id="userName" placeholder="이름">
+							<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
+						</div>
+					</td>
+					<!-- <td> </td> -->
+				</tr>
+				<tr>
+					<td>
+						<div>
+							<input type="text" id="userEmail" placeholder="이메일 예)example@naver.com">
+							<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
+						</div>
+					</td>
+					<td>
+						<input type="button" value="인증번호 발송" onclick="sendCode();">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div>
+							<input type="text" id="userCode">
+							<div id="code-message" style="color:red; font-size:10px; margin-top:5px; text-align:start; padding-left:20px;"></div>
+						</div>
+					</td>
+					<td>
+						<div>
+							<input type="button" value="인증번호 확인" onclick="validateCode();">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </body>
 </html>
