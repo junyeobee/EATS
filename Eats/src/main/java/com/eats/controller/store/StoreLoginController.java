@@ -142,15 +142,41 @@ public class StoreLoginController {
 		return mav;
 	}
 	
+	
+	//인증코드 확인
 	@PostMapping("/storecheckCode")
 	public ModelAndView st_validateCode(
 			@RequestParam(value="storeCode", required=true)String storeCode,
 			HttpSession session) {
 		String validCode=(String)session.getAttribute("validCode");
-		LocalDateTime expiration
+		LocalDateTime expiration =(LocalDateTime)session.getAttribute("codeTime");
 		
+		String result="0";
 		
+		ModelAndView mav= new ModelAndView();
 		
-	}
+		if(validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
+			//시간 만료
+			result="0";
+		}else {
+			if(storeCode.equals(validCode)) {
+				//인증번호 일치
+				session.removeAttribute("validCode");
+		        session.removeAttribute("codeTime");
+		        result="1";
+			}else {
+				//인증번호 불일치
+				result="2";
+			}
+		}
+		
+		mav.addObject("msg", result);
+		mav.setViewName("user/login/findIdCheck");
+		
+		return mav;
+	
+}
+	
+	
 	
 }
