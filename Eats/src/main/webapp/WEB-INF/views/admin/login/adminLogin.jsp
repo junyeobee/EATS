@@ -120,10 +120,10 @@
   </div>
   <div class="div2">관리자 로그인</div>
   <div class="div3">
-  	<input type="text" id="userId" name="userId" placeholder="아이디">
+  	<input type="text" id="adminId" name="adminId" placeholder="아이디">
   </div>
   <div class="div4">
-  	<input type="password" id="userPwd" name="userPwd" placeholder="비밀번호">
+  	<input type="password" id="adminPwd" name="adminPwd" placeholder="비밀번호">
   </div>
   <img class="group-185" src="/svg/logo_icon.svg" />
 </div>
