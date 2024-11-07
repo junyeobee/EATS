@@ -146,7 +146,7 @@ menu, ol, ul {
 				<form name="searchForm" id="form" action="searchStore" method="GET">
 					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
 					<input type="hidden" id="word" name="word">
-					<input type="text" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
+					<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
 				</form>
 			</div>
 			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
@@ -155,6 +155,7 @@ menu, ol, ul {
 		<div class="categorys">
 
 			<c:forEach var="values" items="${valueList }">
+			<c:if test="${!empty values }">
 				<div class="cate_box">
 					<div class="cate_text">
 						<div class="cate_title">${values.key }</div>
@@ -184,6 +185,7 @@ menu, ol, ul {
 						</c:forEach>
 					</div>
 				</div>
+				</c:if>
 			</c:forEach>
 		</div>
 		<div class="banner_box">
@@ -212,14 +214,16 @@ menu, ol, ul {
 		</div>
 
 		<div class="category">
+		<c:if test="${!empty reviewData }">
 			<div class="review_box">
 				<div class="review_box_text">
 					<div class="review_title">리뷰 폭!</div>
 					<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
 				</div>
 				<div class="review_container">
-				<c:if test="${!empty reviewData }">
+				
 				<c:forEach var="reviews" items="${reviewData }" varStatus="cnt">
+				<c:if test="${!empty reviews }">
 					<div class="user_review">
 						<div class="user_info">
 							<img src="/svg/profile_icon.svg">
@@ -264,12 +268,11 @@ menu, ol, ul {
 							</div>
 						</div>
 					</div>
-				</c:forEach></c:if>
-				<c:if test="${empty reviewData }">
-					
 				</c:if>
+				</c:forEach>
 				</div>
 			</div>
+			</c:if>
 
 			<div class="reserve_box">
 				<div class="reserve_text">
@@ -540,7 +543,7 @@ menu, ol, ul {
     	var city = areaWord.value.split(" ");
 		var newparam = city[0]+' '+t.innerText;
 
-    	var param = 'selectArea='+newparam;
+    	var param = 'selectArea='+t.innerText;
     	sendRequest('selectArea', param , showSelectArea, 'GET');
     	
     	locationBox.firstElementChild.src = '/svg/location_icon_tomato.svg';
