@@ -1,5 +1,8 @@
 package com.eats.store.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +49,28 @@ public class StoreLoginServiceImple implements StoreLoginService {
 		String store_id = mapper.findId(dto);
 
 		return store_id;
+	}
+	
+	@Override
+	public String storeidCheckForFindId(String storeId) {
+		
+		String userEmail=mapper.storeidCheckForFindPwd(storeId);
+		return userEmail;
+		
+	}
+	
+	
+	@Override
+	public int storeUpdatePwd(String storeId, String newPwd) {
+		
+		Map<String, String> map= new HashMap<String, String>();
+		
+		map.put("storeId", storeId);
+		map.put("newPwd", newPwd);
+		
+		int result=mapper.storeUpdatePwd(map);
+		
+		
+		return result;
 	}
 }
