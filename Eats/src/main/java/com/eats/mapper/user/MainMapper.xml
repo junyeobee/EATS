@@ -20,7 +20,7 @@
 		select area_name from area where area_lev=2 and parent_idx=#{area_idx}
 	</select>
 	
-	<select id="getPopularReviews" resultType="Integer">
+<select id="getPopularReviews" resultType="Integer">
 		select rev_idx
 		from (select rownum rn, rev_idx
 			from (select rev_idx

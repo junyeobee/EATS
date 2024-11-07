@@ -42,8 +42,8 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
-	public List<Integer> getPopularReviews() {
-		List<Integer> list = mp.getPopularReviews();
+	public List<Integer> getPopularReviews(String areaWord) {
+		List<Integer> list = mp.getPopularReviews(areaWord);
 		return list;
 	}
 	
@@ -69,5 +69,11 @@ public class MainServiceImple implements MainService {
 	public Integer getFollowerCount(int user_idx) {
 		int followCount = mp.getFollowerCount(user_idx);
 		return followCount;
+	}
+	
+	@Override
+	public String getTag(int tag_idx) {
+		String tag = mp.getTag(tag_idx);
+		return tag;
 	}
 }
