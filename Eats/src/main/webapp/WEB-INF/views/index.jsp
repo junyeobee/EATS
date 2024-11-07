@@ -218,6 +218,7 @@ menu, ol, ul {
 					<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
 				</div>
 				<div class="review_container">
+				<c:if test="${!empty reviewData }">
 				<c:forEach var="reviews" items="${reviewData }" varStatus="cnt">
 					<div class="user_review">
 						<div class="user_info">
@@ -237,12 +238,11 @@ menu, ol, ul {
 							<div class="user_review_text">${reviews.rev_content }</div>
 							<div class="user_review_sub">
 								<div class="review_tag_box">
+								<c:forEach var="tag" items="${tags.get(cnt.index) }">
 									<div class="review_tag">
-										<div class="review_tag_text">가족 모임</div>
+										<div class="review_tag_text">${tag }</div>
 									</div>
-									<div class="review_tag">
-										<div class="review_tag_text">편한 좌석</div>
-									</div>
+								</c:forEach>
 								</div>
 								<div class="fork_info">
 									<img class="fork_img" src="/svg/fork_icon.svg" />
@@ -264,7 +264,10 @@ menu, ol, ul {
 							</div>
 						</div>
 					</div>
-				</c:forEach>
+				</c:forEach></c:if>
+				<c:if test="${empty reviewData }">
+					
+				</c:if>
 				</div>
 			</div>
 
@@ -525,14 +528,19 @@ menu, ol, ul {
     });
     
     function searchThisTag(t){
-    	location.href="searchStore?tagWord="+t.id;
+    	var url = "searchStore?tagWord="+t.id;
+    	
+    	if(areaWord.value!=''){
+    		url+="&areaWord="+areaWord.value;
+    	}
+    	location.href=url;
     }
     
     function selectThisArea(t){
-    	var city = areaWord.value.split(' ');
-    	var newparam = city[0]+' '+t.innerText;
-    	console.log(newparam);
-    	var param = 'selectArea='+param;
+    	var city = areaWord.value.split(" ");
+		var newparam = city[0]+' '+t.innerText;
+
+    	var param = 'selectArea='+newparam;
     	sendRequest('selectArea', param , showSelectArea, 'GET');
     	
     	locationBox.firstElementChild.src = '/svg/location_icon_tomato.svg';
@@ -543,7 +551,8 @@ menu, ol, ul {
     function showSelectArea(){
     	if(XHR.readyState==4){
     		if(XHR.status==200){
-    			modal.style.display='none';
+    			//modal.style.display='none';
+    			location.href='/?areaWord='+areaWord.value;
     		}
     	}
     }

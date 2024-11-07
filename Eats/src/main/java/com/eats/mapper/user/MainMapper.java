@@ -20,5 +20,6 @@ public interface MainMapper {
 	public Double getStorePoint(int store_idx);
 	public Integer getLikeCount(int rev_idx);
 	public Integer getFollowerCount(int user_idx);
-	public String getTag(int cate_value_idx);
+	public String getTag(int tag_idx);
+
 }

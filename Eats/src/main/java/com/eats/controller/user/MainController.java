@@ -41,7 +41,8 @@ public class MainController {
 		for (int i = 0; i < revIdxList.size(); i++) {
 			System.out.println(revIdxList.get(i));
 		}
-
+		System.out.println("-------------");
+		System.out.println(areaWord);
 		ModelAndView mv = new ModelAndView();
 
 		if (revIdxList.size() > 0) {
@@ -60,6 +61,7 @@ public class MainController {
 
 			for (ReviewDTO rev_dto : reviewData) {
 				storePoint.add(ms.getStorePoint(rev_dto.getStore_idx()));
+				System.out.println("1");
 				followCount.add(ms.getFollowerCount(rev_dto.getUser_idx()));
 
 				tagIdx_s = rev_dto.getRev_tag().split(",");

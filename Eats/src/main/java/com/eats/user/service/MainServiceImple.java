@@ -72,8 +72,8 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
-	public String getTag(int cate_value_idx) {
-		String tagName = mp.getTag(cate_value_idx);
-		return tagName;
+	public String getTag(int tag_idx) {
+		String tag = mp.getTag(tag_idx);
+		return tag;
 	}
 }
