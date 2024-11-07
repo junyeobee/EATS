@@ -1,71 +1,227 @@
 package com.eats.store.model;
 
-/*메뉴
-CREATE TABLE MENU(
+/*CREATE TABLE CATE_KEY_test(
+		CATE_KEY_IDX NUMBER(10) PRIMARY KEY
+		, CATE_KEY_NAME VARCHAR2(30) NOT NULL
+		, CATE_KEY_LEVEL NUMBER(1) NOT NULL
+	);
+	
+CREATE TABLE MENU_TEST(
 	MENU_IDX NUMBER(15) PRIMARY KEY
 	, M_CATE_IDX NUMBER(10) NOT NULL
 	, MENU_NAME VARCHAR2(50) NOT NULL
 	, MENU_PRICE NUMBER(10) NOT NULL
 	, MENU_INFO VARCHAR2(1000) NULL
-	, FOREIGN KEY(M_CATE_IDX) REFERENCES MENU_CATE(M_CATE_IDX)
-);*/
+	, STORE_IMG VARCHAR2(100) NOT NULL
+);
+	*/
+
+
+
 
 public class MenuDTO {
 
-	private int menuIdx;      
-    private int mcateIdx;    
-    private String menuName;    
-    private int menuPrice;   
-    private String menuInfo;
-    
-    
+	private int cate_key_idx;
+	private String cate_key_name;
+	private int cate_key_level;
+	private int menu_idx;
+	private int m_cate_idx;
+	private String menu_name;
+	private int menu_price;
+	private String menu_info;
+	private String menu_img;
+	
+	
 	public MenuDTO() {
 		
 	}
+
+
 	
+
 	
-	public MenuDTO(int menuIdx, int mcateIdx, String menuName, int menuPrice, String menuInfo) {
+
+	public MenuDTO(int cate_key_idx, String cate_key_name, int cate_key_level, int menu_idx, int m_cate_idx,
+			String menu_name, int menu_price, String menu_info, String menu_img) {
 		super();
-		this.menuIdx = menuIdx;
-		this.mcateIdx = mcateIdx;
-		this.menuName = menuName;
-		this.menuPrice = menuPrice;
-		this.menuInfo = menuInfo;
+		this.cate_key_idx = cate_key_idx;
+		this.cate_key_name = cate_key_name;
+		this.cate_key_level = cate_key_level;
+		this.menu_idx = menu_idx;
+		this.m_cate_idx = m_cate_idx;
+		this.menu_name = menu_name;
+		this.menu_price = menu_price;
+		this.menu_info = menu_info;
+		this.menu_img = menu_img;
 	}
-	
-	
-	public int getMenuIdx() {
-		return menuIdx;
+
+
+
+
+
+
+	public int getCate_key_idx() {
+		return cate_key_idx;
 	}
-	public void setMenuIdx(int menuIdx) {
-		this.menuIdx = menuIdx;
+
+
+
+
+
+
+	public void setCate_key_idx(int cate_key_idx) {
+		this.cate_key_idx = cate_key_idx;
 	}
-	public int getMcateIdx() {
-		return mcateIdx;
+
+
+
+
+
+
+	public String getCate_key_name() {
+		return cate_key_name;
 	}
-	public void setMcateIdx(int mcateIdx) {
-		this.mcateIdx = mcateIdx;
+
+
+
+
+
+
+	public void setCate_key_name(String cate_key_name) {
+		this.cate_key_name = cate_key_name;
 	}
-	public String getMenuName() {
-		return menuName;
+
+
+
+
+
+
+	public int getCate_key_level() {
+		return cate_key_level;
 	}
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
+
+
+
+
+
+
+	public void setCate_key_level(int cate_key_level) {
+		this.cate_key_level = cate_key_level;
 	}
-	public int getMenuPrice() {
-		return menuPrice;
+
+
+
+
+
+
+	public int getMenu_idx() {
+		return menu_idx;
 	}
-	public void setMenuPrice(int menuPrice) {
-		this.menuPrice = menuPrice;
+
+
+
+
+
+
+	public void setMenu_idx(int menu_idx) {
+		this.menu_idx = menu_idx;
 	}
-	public String getMenuInfo() {
-		return menuInfo;
+
+
+
+
+
+
+	public int getM_cate_idx() {
+		return m_cate_idx;
 	}
-	public void setMenuInfo(String menuInfo) {
-		this.menuInfo = menuInfo;
-	}   
-    
-    
-    
-	
+
+
+
+
+
+
+	public void setM_cate_idx(int m_cate_idx) {
+		this.m_cate_idx = m_cate_idx;
+	}
+
+
+
+
+
+
+	public String getMenu_name() {
+		return menu_name;
+	}
+
+
+
+
+
+
+	public void setMenu_name(String menu_name) {
+		this.menu_name = menu_name;
+	}
+
+
+
+
+
+
+	public int getMenu_price() {
+		return menu_price;
+	}
+
+
+
+
+
+
+	public void setMenu_price(int menu_price) {
+		this.menu_price = menu_price;
+	}
+
+
+
+
+
+
+	public String getMenu_info() {
+		return menu_info;
+	}
+
+
+
+
+
+
+	public void setMenu_info(String menu_info) {
+		this.menu_info = menu_info;
+	}
+
+
+
+
+
+
+	public String getMenu_img() {
+		return menu_img;
+	}
+
+
+
+
+
+
+	public void setMenu_img(String menu_img) {
+		this.menu_img = menu_img;
+	}
+
+
+
+
+
+
+
+
 }

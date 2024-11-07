@@ -38,10 +38,12 @@ public class StoreLoginController {
 	@PostMapping("/storeLogin")
 	public ModelAndView storeLoginSubmit(@RequestParam(value = "storeId", required = true) String storeId,
 			@RequestParam(value = "storePwd", required = true) String storePwd,
-			@RequestParam(value = "check", required = false) String ch, HttpSession session, HttpServletResponse resp) {
+			@RequestParam(value = "check", required = false) String ch, 
+			HttpSession session, HttpServletResponse resp) {
 
 		ModelAndView mav = new ModelAndView();
 
+		 
 		int result = service.storeLogin(storeId, storePwd);
 
 		String msg = "";
@@ -51,12 +53,13 @@ public class StoreLoginController {
 			
 			session.setAttribute("storeId",storeId);
 			
+			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeLogin");
+			mav.addObject("goUrl", "storeMenuListPage"); //매장 index생기면 추후 변경
 
 			Cookie ck = new Cookie("saveid", storeId);
 
-			if (ck == null || ch.equals("")) {
+			if (ch == null || ch.equals("")) {
 				ck.setMaxAge(0);
 
 			} else {
@@ -234,6 +237,15 @@ public class StoreLoginController {
 	}
 	
 	
+	@GetMapping("/storeLogout")
+	public String storeLogout(HttpSession session) {
+		
+		session.invalidate();
+		
+		return "index";
+	}
+	
+
 	
 	
 

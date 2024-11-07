@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.eats.mapper.store.storeMenuMapper">
+	<select id="storeCateList" resultType="com.eats.store.model.MenuDTO">
+		select * from CATE_KEY_TEST
+	</select>
+	
+	<select id="storeMenuList" resultType="com.eats.store.model.MenuDTO">
+		select * 
+		from 
+		MENU_TEST
+	</select>
+	
+	
+</mapper>
