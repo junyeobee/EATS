@@ -26,9 +26,9 @@ public class StoreImgServiceImple implements StoreImgService {
 	}
 	
 	@Override
-	public StoreImgDTO storeImgData() {
+	public StoreImgDTO storeImgData(int store_idx) {
 
-		StoreImgDTO data = mapper.storeImgData();
+		StoreImgDTO data = mapper.storeImgData(store_idx);
 		return data;
 		
 		

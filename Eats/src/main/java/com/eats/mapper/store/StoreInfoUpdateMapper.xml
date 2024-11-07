@@ -8,7 +8,7 @@
 		    ac.store_ceo 
 		FROM STORE st 
 		LEFT JOIN STORE_ACCOUNT ac ON st.store_idx = ac.store_idx 
-		WHERE st.store_idx = 1
+		WHERE st.store_idx = #{store_idx}
    </select>
    
    <insert id="StoreInfoUpdateInsert" parameterType="com.eats.store.model.StoreInfoUpdateDTO">

@@ -15,9 +15,10 @@ public interface MainMapper {
 	public List<AreaDTO> getCityList();
 	public List<String> getUnitList(int area_idx);
 	
-	public List<Integer> getPopularReviews();
+	public List<Integer> getPopularReviews(String areaWord);
 	public ReviewDTO getReview(int rev_idx);
 	public Double getStorePoint(int store_idx);
 	public Integer getLikeCount(int rev_idx);
 	public Integer getFollowerCount(int user_idx);
+	public String getTag(int cate_value_idx);
 }

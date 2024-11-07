@@ -90,7 +90,7 @@ menu, ol, ul {
 						<div class="area_big_value scrollCss">
 							<c:forEach var="city" items="${cityList }">
 								<div class="area_big_value_text"
-									onclick="selectCity(${city.area_idx})">${city.area_name }</div>
+									onclick="selectCity(${city.area_idx}, this)">${city.area_name }</div>
 							</c:forEach>
 						</div>
 					</div>
@@ -146,7 +146,7 @@ menu, ol, ul {
 				<form name="searchForm" id="form" action="searchStore" method="GET">
 					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
 					<input type="hidden" id="word" name="word">
-					<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
+					<input type="text" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
 				</form>
 			</div>
 			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
@@ -529,12 +529,15 @@ menu, ol, ul {
     }
     
     function selectThisArea(t){
-    	var param = 'selectArea='+t.innerText;
+    	var city = areaWord.value.split(' ');
+    	var newparam = city[0]+' '+t.innerText;
+    	console.log(newparam);
+    	var param = 'selectArea='+param;
     	sendRequest('selectArea', param , showSelectArea, 'GET');
     	
     	locationBox.firstElementChild.src = '/svg/location_icon_tomato.svg';
     	locationBox.lastElementChild.innerText=t.innerText;
-    	areaWord.value=t.innerText;
+    	areaWord.value=newparam;
     }
     
     function showSelectArea(){
@@ -545,7 +548,8 @@ menu, ol, ul {
     	}
     }
     
-    function selectCity(cityIdx){
+    function selectCity(cityIdx, t){
+    	areaWord.value=t.innerText;
     	var params = 'cityIdx='+cityIdx;
     	sendRequest('selectUnit', params, showUnit, 'GET');
     }
