@@ -44,7 +44,7 @@
 </update>
 	
 	
-	<select id="storeInfo" parameterType="String">
+	<select id="storeInfo" parameterType="String" resultType="String">
 		select 
 			store_ceo
 		from
@@ -53,4 +53,5 @@
 			store_id=#{storeId}
 	
 	</select>
+	
   </mapper>

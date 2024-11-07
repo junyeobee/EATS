@@ -48,6 +48,9 @@ public class StoreLoginController {
 
 		if (result == 3) {
 			msg = "로그인 성공";
+			
+			session.setAttribute("storeId",storeId);
+			
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl", "storeLogin");
 
