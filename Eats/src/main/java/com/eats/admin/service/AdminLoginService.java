@@ -2,7 +2,7 @@ package com.eats.admin.service;
 
 public interface AdminLoginService {
 
-	public int loginAuth(String userId, String userPwd);
-	public int getAdmin(String userId);
+	public int loginAuth(String adminId, String adminPwd);
+	public int getAdmin(String adminId);
 	
 }
