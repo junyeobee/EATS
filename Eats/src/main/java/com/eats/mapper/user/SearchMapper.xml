@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.eats.mapper.user.SearchMapper">	
+	<insert id="addSearchWord" parameterType="String">
+		insert into
+		search(search_idx, search_word)
+		values(search_idx_seq.nextval, #{searchWord})
+	</insert>
+	
+	<select id="isInIt" parameterType="String" resultType="Integer">
+		select count(*) from search where search_word = #{searchWord}
+	</select>
+	
+	<update id="addCount" parameterType="String">
+		update search set search_cnt=search_cnt+1 where search_word=#{searchWord}
+	</update>
+  </mapper>
