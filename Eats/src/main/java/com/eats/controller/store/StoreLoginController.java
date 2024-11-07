@@ -84,6 +84,7 @@ public class StoreLoginController {
 		return "store/login/storeFindId";
 	}
 
+	
 	@PostMapping("/storeFindId")
 	public ModelAndView storeFindId(EatsStoreDTO dto) {
 
@@ -194,15 +195,26 @@ public class StoreLoginController {
 			}
 		}
 		mav.addObject("result", result);
-		mav.setViewName("store/login/storeUpdatePwd");
+		mav.setViewName("store/login/storeCheckCode_ok");
 
 		return mav;
 
 	}
 	
 	
+	
+	
 	//비밀번호 재설정
-	@PostMapping("/storeUpdatePwd")
+	
+	@GetMapping("storeUpdatePwd")
+	public String storeUpdatePwd() {
+		
+		return "store/login/storeUpdatePwd";
+		
+	}
+	
+	
+	@PostMapping("storeUpdatePwd")
 	public ModelAndView storeUpdatePwd(String newPwd, HttpSession session){
 		
 		String storeId=(String)session.getAttribute("storeId");
@@ -217,6 +229,11 @@ public class StoreLoginController {
 		
 		return mav;
 	}
+	
+	
+	
+	
+
 
 
 }

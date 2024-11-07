@@ -89,10 +89,12 @@ function showSendResult(){
 
 			if (XHR.status == 200) {
 				var data = XHR.responseText;
-				console.log(data);
+				
 				var errorMsg = document.getElementById('code-message');
+				
 
 				var jsondata = JSON.parse(data);
+				
 				
 				if (jsondata.value=='0'){
 					
@@ -103,13 +105,15 @@ function showSendResult(){
 					alert('블일치');
 					
 				}else if(jsondata.value=='1'){
-					location.href='store/login/storeUpdatePwd.jsp';
+					location.href='storeUpdatePwd';
 				}
 			}
 		}
 
 	}
 </script>
+
+
 <style>
 .store-update-pwd, .store-update-pwd * {
 	box-sizing: border-box;

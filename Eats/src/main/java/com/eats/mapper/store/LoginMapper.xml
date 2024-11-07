@@ -44,4 +44,13 @@
 </update>
 	
 	
+	<select id="storeInfo" parameterType="String">
+		select 
+			store_ceo
+		from
+			store_acount_test
+		where 
+			store_id=#{storeId}
+	
+	</select>
   </mapper>
