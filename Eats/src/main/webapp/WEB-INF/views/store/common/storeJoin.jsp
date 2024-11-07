@@ -4,119 +4,233 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>입점 신청</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    .container {
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f0f8ff;
-        border-radius: 10px;
-    }
-    h2 {
-        text-align: center;
-    }
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-    input[type="text"], input[type="password"], .checkbox-container {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-    }
-    .checkbox-container input[type="checkbox"] {
-        width: auto;
-        margin-right: 10px;
-    }
-    .privacy-button {
-        margin-top: 10px;
-        display: block;
-        background-color: transparent;
-        border: none;
-        color: blue;
-        cursor: pointer;
-        text-decoration: underline;
-    }
-    .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-    .button {
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-    .submit-btn {
-        background-color: black;
-        color: white;
-    }
-    .cancel-btn {
-        background-color: #ccc;
-    }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f8ff;
+}
+
+.container {
+    width: 800px; /* 배경 가로 너비 증가 */
+    padding: 40px;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 180px; /* 라벨의 고정 너비 증가 */
+    margin-right: 10px;
+    font-weight: bold;
+    text-align: right; /* 오른쪽 정렬 */
+}
+
+input[type="text"], input[type="password"] {
+    flex: 1; /* 입력 필드가 가능한 공간을 차지하도록 설정 */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    height: 40px; /* 모든 입력 필드 높이를 동일하게 설정 */
+}
+
+.btn-check {
+    background-color: #00a2ff;
+    color: white;
+    padding: 10px 20px; /* 버튼 크기 증가 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px; /* 버튼 폰트 크기 증가 */
+    margin-left: 10px; /* 입력 필드와 버튼 간격 조정 */
+    white-space: nowrap;
+    height: 40px; /* 버튼 높이를 입력 필드와 동일하게 설정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-check:hover {
+    background-color: #008ae6;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 가운데 정렬 */
+    margin-bottom: 15px;
+    width: 100%; /* 체크박스와 텍스트가 한 줄에 나오도록 너비를 설정 */
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+}
+
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.privacy-button {
+    display: block;
+    background-color: transparent;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center; /* 버튼을 가운데 정렬 */
+    margin: 10px auto; /* 가운데 정렬을 위한 여백 설정 */
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: black;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+}
+
+/* Popup Styles */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.popup-content h3 {
+    margin-top: 0;
+}
+
 </style>
 </head>
 <body>
+
 <div class="container">
-	<h2>입점 신청</h2>
-	    <form method="post" modelAttribute="store" action="/store/apply">
+    <h2>입점 신청</h2>
+    <form method="post" action="/store/apply">
         <div class="form-group">
             <label for="storeName">신청자 매장 이름</label>
-            <form:input path="storeName" id="storeName" cssClass="form-control"/>
+            <input type="text" id="storeName" name="storeName" class="form-control" />
         </div>
         <div class="form-group">
             <label for="registrationNumber">사업자 등록 번호</label>
-            <form:input path="registrationNumber" id="registrationNumber" cssClass="form-control"/>
+            <input type="text" id="registrationNumber" name="registrationNumber" class="form-control" />
         </div>
         <div class="form-group">
             <label for="ownerName">점주 이름</label>
-            <form:input path="ownerName" id="ownerName" cssClass="form-control"/>
+            <input type="text" id="ownerName" name="ownerName" class="form-control" />
         </div>
         <div class="form-group">
             <label for="ownerContact">점주 연락처</label>
-            <form:input path="ownerContact" id="ownerContact" cssClass="form-control"/>
+            <input type="text" id="ownerContact" name="ownerContact" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="ownerEmail">점주 이메일</label>
+            <input type="text" id="ownerEmail" name="ownerEmail" class="form-control" />
         </div>
         <div class="form-group">
             <label for="storeAddress">매장 주소</label>
-            <form:input path="storeAddress" id="storeAddress" cssClass="form-control"/>
+            <input type="text" id="storeAddress" name="storeAddress" class="form-control" />
         </div>
         <div class="form-group">
             <label for="detailedAddress">매장 상세 주소</label>
-            <form:input path="detailedAddress" id="detailedAddress" cssClass="form-control"/>
+            <input type="text" id="detailedAddress" name="detailedAddress" class="form-control" />
         </div>
         <div class="form-group">
             <label for="approvalId">승인 시 사용할 아이디</label>
-            <form:input path="approvalId" id="approvalId" cssClass="form-control"/>
+            <input type="text" id="approvalId" name="approvalId" class="form-control" />
+            <button type="button" class="btn-check" onclick="checkDuplicateId()">중복 체크</button>
         </div>
         <div class="form-group">
             <label for="approvalPassword">승인 시 사용할 비밀번호</label>
-            <form:password path="approvalPassword" id="approvalPassword" cssClass="form-control"/>
+            <input type="password" id="approvalPassword" name="approvalPassword" class="form-control" />
         </div>
-        
-        <div class="form-group">
-            <input type="checkbox" id="agree" required>
+        <div class="form-group checkbox-container">
+            <input type="checkbox" id="agree" required />
             <label for="agree">개인정보 수집에 동의합니다.</label>
         </div>
-        
+
+        <button type="button" class="privacy-button" onclick="showPopup()">개인정보 수집</button>
+
         <div class="form-buttons">
-            <button type="submit" class="btn btn-primary">신청하기</button>
+            <button type="submit" class="btn btn-primary">신청</button>
             <button type="reset" class="btn btn-secondary">취소</button>
         </div>
     </form>
 </div>
+
+<!-- 팝업 -->
+<div id="privacy-popup" class="popup-overlay" onclick="hidePopup()">
+    <div class="popup-content">
+        <h3>개인정보 수집 및 이용 안내</h3>
+        <p>개인정보 수집 및 이용에 관한 내용</p>
+    </div>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById("privacy-popup").style.display = "flex";
+    }
+
+    function hidePopup() {
+        document.getElementById("privacy-popup").style.display = "none";
+    }
+
+    function checkDuplicateId() {
+        const id = document.getElementById("approvalId").value;
+        if (id) {
+            alert("중복 확인 중...");
+            // 실제 중복 확인 로직 추가
+        } else {
+            alert("아이디를 입력해주세요.");
+        }
+    }
+</script>
+
 </body>
 </html>
+

@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+	body {margin:0; padding:0; font-size:12px;}
+	.header {width:100%; height:80px; background:#DAF0FF;}
+	.contents {display: flex;}
+	.contents > * {float:left;}
+	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#DAF0FF;}
+	.contents .mainCont {width:calc(100% - 200px); padding:20px 30px;}
+	
+	
+	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
+	.mainCont .btnBox_top > * {float:right; margin-top:-40px;}
+	
+	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
+	
+	
+	/* 이미지관리-이미지등록 테이블박스 */
+	.contents .mainCont .mainCon_400 {width:400px;}
+	.mainCon_400 .tableWrite_2 {}
+	.mainCon_400 .tableWrite_2 table {width:100%;}
+	.mainCon_400 .tableWrite_2 table tr {height:40px; }
+	.mainCon_400 .tableWrite_2 table tr th {width:40%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr td {width:60%; border-bottom:1px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	/* 소식관리-소식등록, 소식상세보기 테이블박스 */
+	.contents .mainCont .mainCon_600 {width:600px;}
+	.mainCon_600 .tableWrite_2 {}
+	.mainCon_600 .tableWrite_2 table {width:100%;}
+	.mainCon_600 .tableWrite_2 table tr {height:40px; }
+	.mainCon_600 .tableWrite_2 table tr th {width:20%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
+	.mainCon_600 .tableWrite_2 table tr td {width:80%; border-bottom:1px solid #ddd;}
+	.mainCon_600 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_600 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
+	.contents .mainCont .mainCon_0 {} 
+	.mainCon_0 .mc0_imgBox {}
+	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px;}
+	
+	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
+	.mainCon_0 .mc0_imgBox > span > span {float:right; margin-right:20px; font-size:20px;}
+	
+	/* 정보수정신청 테이블박스 */
+	.contents .mainCont .mainCon_800 {width:800px;}
+	.mainCon_800 .tableWrite_4 {}
+	.mainCon_800 .tableWrite_4 table {width:100%;}
+	.mainCon_800 .tableWrite_4 table tr {height:60px;}
+	.mainCon_800 .tableWrite_4 table tr th {width:20%; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
+	.mainCon_800 .tableWrite_4 table tr td {width:30%; border-bottom:1px solid #eee;}
+	.mainCon_800 .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	/* 소식관리 - 리스트 박스 */
+	.contents .mainCont .mainCon_1400 {width:1400px;}
+	.mainCon_1400 .tableList {}
+	.mainCon_1400 .tableList table {width:100%;}
+	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
+	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
+	
+	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
+	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
+	
+	
+	
+	/* <버튼> */
+	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
+	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
+	
+	/* 이미지관리-삭제버튼 / 소식등록-취소버튼 */
+	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
+	
+	/* 소식관리-상세보기 버튼 */
+	.btn_skyblue {cursor:pointer; background:#349FFB; color:white; text-align:center; border:1px solid #2778BD; border-radius:5px; padding:5px 10px;}
+	
+	/* 정보수정신청 input */
+	input[type='text'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
+	input[type='text']:focus {
+	    outline: none;  /* 포커스 시 outline 제거 */
+	    border: none;   /* 포커스 시 border 제거 (선택 사항) */
+	    border-bottom:1px solid #ddd;
+	}
+	
+	/* 소식등록 textarea */
+	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
+	
+	/* 이미지관리 - 상단컨텐츠 박스 */
+	.mb60 {margin-bottom:60px;}
+	
+	/* 정보수정신청 주소input */
+	.ws400 {width:400px;}
+	.ws800 {width:800px;}
+	
+	.a_left {text-align:left; padding-left:10px;}
+	.a_center {text-align:center;}
+	.a_right {text-align:right; padding-right:10px;}
+	
