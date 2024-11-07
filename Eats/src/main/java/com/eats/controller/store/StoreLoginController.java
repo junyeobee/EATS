@@ -19,16 +19,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @Controller
 public class StoreLoginController {
 
 	@Autowired
 	private StoreLoginService service;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@GetMapping("/storeLogin")
 	public String storeLoginMain() {
 
@@ -49,6 +48,9 @@ public class StoreLoginController {
 
 		if (result == 3) {
 			msg = "로그인 성공";
+			
+			session.setAttribute("storeId",storeId);
+			
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl", "storeLogin");
 
@@ -85,6 +87,7 @@ public class StoreLoginController {
 		return "store/login/storeFindId";
 	}
 
+	
 	@PostMapping("/storeFindId")
 	public ModelAndView storeFindId(EatsStoreDTO dto) {
 
@@ -117,40 +120,123 @@ public class StoreLoginController {
 		return "store/login/storeFindPwd";
 	}
 
+
+	@PostMapping("/storesendCodeForFindPwd")
+	public ModelAndView storesendCodeForFindPwd(String storeEmail, HttpSession session) {
+
+		String storeId=(String)session.getAttribute("storeId");
+		String dbEmail=service.storeidCheckForFindId(storeId);
+		System.out.println("storeId="+storeId+"/storeEmail="+storeEmail);
+		if(dbEmail!=null && dbEmail!="") {
+			if(dbEmail.equals(storeEmail)) {
+				String validCode=emailService.makeCode();
+				emailService.sendCode(storeEmail, validCode);
+				
+				session.setAttribute("validCode", validCode);
+				session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+				System.out.println(validCode);
+				System.out.println(LocalDateTime.now().plusMinutes(5));
+			}
+		}
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("result", "인증코드를 전송했습니다.");
+		mv.setViewName("user/login/findPwdResult");
+		
+		return mv;
+	}
+
 	
+	@GetMapping("/storeIdExist")
+	public ModelAndView storeIdCheckForFindPwd(String storeId, HttpSession session) {
+		String dbEmail=service.storeidCheckForFindId(storeId);
+		ModelAndView mv= new ModelAndView();
+		
+		boolean result;
+		if(dbEmail==null || dbEmail=="") {
+			
+			result=false;
+		}else {
+			
+			result=true;
+			session.setAttribute("storeId", storeId);
+			
+		}
+		
+		mv.addObject("result",result);
+		mv.setViewName("user/login/findPwdResult");
+		
+		return mv;
+		
+	}
 	
-	@PostMapping("/store_sendCode")
-	public ModelAndView sendCode(
-			@RequestParam(value="store_id", required=true)String store_id,
-			@RequestParam(value="store_email", required=true)String store_email,
+	@GetMapping("/storecheckCode")
+	public ModelAndView storevalidateCode(@RequestParam(value = "storeCode", required = true) String storeCode,
 			HttpSession session) {
+		String validCode=(String) session.getAttribute("validCode");
 		
+		LocalDateTime expiration = (LocalDateTime) session.getAttribute("codeTime");
 		
-		String validCode = emailService.makeCode();
+		String result = "0";
+		System.out.println(validCode);
+		System.out.println(storeCode);
+		ModelAndView mav = new ModelAndView();;
+		if (validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
+			// 시간 만료
+			result = "0";
+		} else {
+			if (storeCode.equals(validCode)) {
+				// 인증번호 일치
+				System.out.println(true);
+				session.removeAttribute("validCode");
+				session.removeAttribute("codeTime");
+				result = "1";
+				System.out.println(result);
+			} else {
+				// 인증번호 불일치
+				result = "2";
+			}
+		}
+		mav.addObject("result", result);
+		mav.setViewName("store/login/storeCheckCode_ok");
+
+		return mav;
+
+	}
+	
+	
+	
+	
+	//비밀번호 재설정
+	
+	@GetMapping("storeUpdatePwd")
+	public String storeUpdatePwd() {
 		
-		emailService.sendCode(store_email, validCode);
-		session.setAttribute("validCode", validCode);
-		session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
+		return "store/login/storeUpdatePwd";
+		
+	}
+	
+	
+	@PostMapping("storeUpdatePwd")
+	public ModelAndView storeUpdatePwd(String newPwd, HttpSession session){
+		
+		String storeId=(String)session.getAttribute("storeId");
+		int result=service.storeUpdatePwd(storeId, newPwd);
+		
+		String msg=(result>0)?"비밀번호가 변경되었습니다.":"다시 확인해주세요.";
 		
 		ModelAndView mav= new ModelAndView();
 		
-		mav.addObject("store_id",store_id);
-		mav.addObject("store_email",store_email);
-		mav.addObject("msg","이메일로 인증코드가 발송되었습니다.");
-		mav.setViewName("store/login/storeFindPwd");
+		mav.addObject("result",msg);
+		mav.setViewName("user/login/userPwdUpdate_ok");
 		
 		return mav;
 	}
 	
-	@PostMapping("/storecheckCode")
-	public ModelAndView st_validateCode(
-			@RequestParam(value="storeCode", required=true)String storeCode,
-			HttpSession session) {
-		String validCode=(String)session.getAttribute("validCode");
-		LocalDateTime expiration
-		
-		
-		
-	}
 	
+	
+	
+
+
+
 }
