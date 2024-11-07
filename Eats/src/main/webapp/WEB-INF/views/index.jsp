@@ -146,7 +146,7 @@ menu, ol, ul {
 				<form name="searchForm" id="form" action="searchStore" method="GET">
 					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
 					<input type="hidden" id="word" name="word">
-					<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
+					<input type="text" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
 				</form>
 			</div>
 			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
@@ -557,7 +557,7 @@ menu, ol, ul {
     	}
     }
     
-    function selectCity(cityIdx,t){
+    function selectCity(cityIdx, t){
     	areaWord.value=t.innerText;
     	var params = 'cityIdx='+cityIdx;
     	sendRequest('selectUnit', params, showUnit, 'GET');

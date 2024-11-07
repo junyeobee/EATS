@@ -5,6 +5,6 @@ import com.eats.store.model.StoreInfoUpdateDTO;
 
 public interface StoreInfoUpdateMapper {
 
-	public StoreDTO storeData();
+	public StoreDTO storeData(int store_idx);
 	public int StoreInfoUpdateInsert(StoreInfoUpdateDTO dto);
 }
