@@ -1,0 +1,55 @@
+@charset "UTF-8";
+.navigation_category {
+    width: 200px;
+    height:900px;
+    background-color: #FFEDD0;
+}
+
+.navi_cate_box {
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid rgba(100, 42, 2, 0.06);
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+}
+.navi_cate_box:hover {
+    cursor: pointer;
+    background-color: rgba(255, 220, 163, 0.71);
+}
+.navi_cate_box_text {
+    padding-left: 42px;
+    color: #461002;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.navi_small_cate_box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    height: 0;
+    overflow: hidden;
+
+    transition: 1;
+}
+.navi_small_cate_btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    margin: 1px 0;
+    
+    display: flex;
+    align-items: center;
+}
+.navi_small_cate_btn:hover {
+    cursor: pointer;
+    background-color: rgba(255, 220, 163, 0.71);
+}
+.navi_small_cate_text {
+    color: #461002;
+    font-size: 15px;
+    padding-left: 56px;
+    font-weight: 400;
+}
