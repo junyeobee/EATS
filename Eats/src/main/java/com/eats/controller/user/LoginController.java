@@ -49,7 +49,9 @@ public class LoginController {
 			//로그인성공
 			mv=new ModelAndView("redirect:/");
 			Map<String, Object> map=service.getUserInfo(userId);
-
+			System.out.println(map);
+			System.out.println(map.get("USER_IDX"));
+			System.out.println(map.get("USER_NICKNAME"));
 			session.setAttribute("user_idx", map.get("USER_IDX"));
 			session.setAttribute("user_nickname", map.get("USER_NICKNAME"));
 			
@@ -181,9 +183,8 @@ public class LoginController {
 	}
 	
 	@PostMapping("/sendCodeForFindPwd")
-	public ModelAndView sendCodeForFindPwd(String userEmail, HttpSession session) {
+	public ModelAndView sendCodeForFindPwd(String userId, String userEmail, HttpSession session) {
 		
-		String userId=(String)session.getAttribute("userId");
 		String dbEmail=service.idCheckForFindId(userId);
 		System.out.println("userID="+userId+"/userEmail="+userEmail);
 		if(dbEmail!=null && dbEmail!="") {
@@ -235,22 +236,31 @@ public class LoginController {
 		return mv;
 	}
 	
-	@GetMapping("userResetPwd")
-	public String resetPwdForm() {
+	@GetMapping("/userResetPwd")
+	public String resetPwdForm(String userId, HttpSession session) {
+		
+		session.setAttribute("userId", userId);
 		
 		return "user/login/resetPwd";
 	}
 	
-	@PostMapping("userResetPwd")
+	@PostMapping("/userResetPwd")
 	public ModelAndView resetPwd(String newPwd, HttpSession session) {
-		String userId=(String)session.getAttribute("userId");
-		int result=service.userResetPwd(userId, newPwd);
 		
-		String msg=(result>0)?"비밀번호 변경 완료":"비밀번호 변경 실패";
+		String userId=(String)session.getAttribute("userId");
 		ModelAndView mv=new ModelAndView();
 		
-		mv.addObject("result", msg);
-		mv.setViewName("user/login/userPwdUpdate_ok");
+		if(userId!=null && userId!="") {
+			int result=service.userResetPwd(userId, newPwd);
+			
+			session.removeAttribute("userId");
+			String msg=(result>0)?"비밀번호 변경 완료":"비밀번호 변경 실패";
+			
+			
+			mv.addObject("result", msg);
+			mv.setViewName("user/login/userPwdUpdate_ok");
+		}
+		
 		
 		return mv;
 	}
