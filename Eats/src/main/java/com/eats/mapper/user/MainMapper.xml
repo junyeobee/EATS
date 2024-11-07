@@ -20,14 +20,25 @@
 		select area_name from area where area_lev=2 and parent_idx=#{area_idx}
 	</select>
 	
-	<select id="getPopularReviews" resultType="Integer">
+	<select id="getPopularReviews" parameterType="String" resultType="Integer">
 		select rev_idx
 		from (select rownum rn, rev_idx
-			from (select rev_idx
-				from trev_like
-				group by rev_idx
-				order by count(*) desc)
-			)
+		    from (select trev_like.rev_idx
+		    <choose>
+		    	<when test="areaWord!=null">
+			        from (select a.*
+			            from (select treview.*, store_idx from treview, treservation
+			            where treview.reserve_idx=treservation.reserve_idx)a, tstore
+			        where tstore.store_idx=a.store_idx and store_addr like '%' ||  #{areaWord} || '%')b, trev_like
+				    where b.rev_idx=trev_like.rev_idx
+				</when>
+			    <otherwise>
+			    	from trev_like
+			    </otherwise>
+		    </choose>
+		    group by trev_like.rev_idx
+		    order by count(*) desc)
+		)
 		where rn between 1 and 3
 	</select>
 	
@@ -55,5 +66,9 @@
 	
 	<select id="getLikeCount" parameterType="Integer" resultType="Integer">
 		select count(*) from trev_like where rev_idx=#{rev_idx}
+	</select>
+	
+	<select id="getTag" parameterType="Integer" resultType="String">
+		select cate_value_name from cate_value where cate_value_idx=#{tag_idx}
 	</select>
 </mapper>
