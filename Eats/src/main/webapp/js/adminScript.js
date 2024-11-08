@@ -2,7 +2,6 @@ function selectThisMenu(t) {
         var small_cate_list = document.getElementsByClassName('navi_small_cate_box');
         var cate_box = document.getElementsByClassName('navi_cate_box');
         var small_cate = t.nextElementSibling;
-        var cate_text = t.firstElementChild;
 
         if (small_cate.style.height != 'auto') {
             for (var i = 0; i < small_cate_list.length; i++) {
