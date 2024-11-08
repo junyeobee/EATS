@@ -10,7 +10,7 @@
 
 	<select id="getValueList" parameterType="Integer" resultType="String">
 		select cate_value_name from cate_value where
-		cate_key_idx=#{cate_key_idx}
+		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
 	</select>
 
 	<select id="getCityList" resultType="com.eats.user.model.AreaDTO">
@@ -26,17 +26,17 @@
 		select rev_idx from (select rownum rn, rev_idx from (select rev_idx
 		<choose>
 			<when test="areaWord != null and areaWord != ''">
-				from (select trev_like.*
-				from trev_like, (select rev_idx
-				from treview, (select reserve_idx
-				from treservation, (select store_idx
-				from tstore where store_addr like '%'||#{areaWord}||'%')a
-				where treservation.store_idx=a.store_idx)b
-				where treview.reserve_idx=b.reserve_idx)c
-				where trev_like.rev_idx=c.rev_idx)
+				from (select rev_like.*
+				from rev_like, (select rev_idx
+				from review, (select reserve_idx
+				from reservation, (select store_idx
+				from store where store_addr like '%'||#{areaWord}||'%')a
+				where reservation.store_idx=a.store_idx)b
+				where review.reserve_idx=b.reserve_idx)c
+				where rev_like.rev_idx=c.rev_idx)
 			</when>
 			<otherwise>
-				from trev_like
+				from rev_like
 			</otherwise>
 		</choose>
 		group by rev_idx
@@ -50,33 +50,33 @@
 		store_addr
 		from (select a.*, user_idx, store_idx, reserve_date
 		from
-		(select * from treview where rev_idx=#{rev_idx})a, treservation
+		(select * from review where rev_idx=#{rev_idx})a, reservation
 		where
-		a.reserve_idx=treservation.reserve_idx)b, tstore
+		a.reserve_idx=reservation.reserve_idx)b, store
 		where
-		tstore.store_idx=b.store_idx)c, tuser_profile
+		store.store_idx=b.store_idx)c, user_profile
 		where
-		tuser_profile.user_idx=c.user_idx
+		user_profile.user_idx=c.user_idx
 	</select>
 
 	<select id="getStorePoint" parameterType="Integer" resultType="Double">
 		select round(avg, 2)
 		from (select avg(rev_score) avg
 		from
-		(select treview.*, store_idx
-		from treview, treservation
+		(select review.*, store_idx
+		from review, reservation
 		where
-		treview.reserve_idx=treservation.reserve_idx and
+		review.reserve_idx=reservation.reserve_idx and
 		store_idx=#{store_idx}))a
 	</select>
 
 	<select id="getFollowerCount" parameterType="Integer" resultType="Integer">
-		select count(*) from tfollow where
+		select count(*) from follow where
 		following_idx=#{user_idx}
 	</select>
 
 	<select id="getLikeCount" parameterType="Integer" resultType="Integer">
-		select count(*) from trev_like where rev_idx=#{rev_idx}
+		select count(*) from rev_like where rev_idx=#{rev_idx}
 	</select>
 	
 	<select id="getTag" parameterType="Integer" resultType="String">

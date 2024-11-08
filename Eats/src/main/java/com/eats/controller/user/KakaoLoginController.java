@@ -62,8 +62,8 @@ public class KakaoLoginController {
 			
 			if(userDTO==null) {
 				//DB 저장
-				int insertUserResult=kLoginService.insertKakaoUser(kakaoUserDTO);
-				int insertProfileResult=kLoginService.insertUserProfile(null);
+//				int insertUserResult=kLoginService.insertKakaoUser(kakaoUserDTO);
+//				int insertProfileResult=kLoginService.insertUserProfile(null);
 			}else {
 				//세션 저장
 				int userIdx=userDTO.getUser_idx();
