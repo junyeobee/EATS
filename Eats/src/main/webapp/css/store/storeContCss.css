@@ -38,10 +38,10 @@
 	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
 	.contents .mainCont .mainCon_0 {} 
 	.mainCon_0 .mc0_imgBox {}
-	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px;}
+	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px; vertical-align:top;}
 	
 	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
-	.mainCon_0 .mc0_imgBox > span > span {float:right; margin-right:20px; font-size:20px;}
+	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
 	
 	/* 정보수정신청 테이블박스 */
 	.contents .mainCont .mainCon_800 {width:800px;}
