@@ -27,6 +27,7 @@ function showIdMessage(){
 				idCheckState=true;
 				document.getElementById('id-message').textContent='';
 			}else{
+				idCheckState=false;
 				document.getElementById('id-message').textContent='아이디가 존재하지 않습니다.';
 			}
 		}
@@ -35,23 +36,26 @@ function showIdMessage(){
 //코드 전송
 function sendCode(){
 	if(idCheckState==true){
+		var inputId=document.getElementById('userId').value;
 		var inputEmail=document.getElementById('userEmail').value;
-		//alert(inputEmail);
-		if(inputEmail===null || inputEmail===''){
-			document.getElementById('email-message').textContent='이메일을 입력해주세요';
-			document.getElementById('email-message').style.color='red';
-		}else{
-			//이메일 형식 확인
-			var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-			if(!emailPattern.test(inputEmail)){
-				document.getElementById('email-message').textContent='이메일 형식을 확인해주세요';
+		
+		if(idCheckState){
+			if(inputEmail===null || inputEmail===''){
+				document.getElementById('email-message').textContent='이메일을 입력해주세요';
 				document.getElementById('email-message').style.color='red';
 			}else{
-				var params='userEmail='+inputEmail;
-				sendRequest('sendCodeForFindPwd', params, showSendResult, 'POST');
-				sendState=true;
+				//이메일 형식 확인
+				var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+				if(!emailPattern.test(inputEmail)){
+					document.getElementById('email-message').textContent='이메일 형식을 확인해주세요';
+					document.getElementById('email-message').style.color='red';
+				}else{
+					var params='userId='+inputId+'&userEmail='+inputEmail;
+					sendRequest('sendCodeForFindPwd', params, showSendResult, 'POST');
+					sendState=true;
+				}
 			}
-		}
+		}	
 	}
 }
 //전송 후 alert창 띄우기
@@ -90,7 +94,9 @@ function showResult(){
 				errorMsg.textContent='인증번호가 일치하지 않습니다.';
 				alert('불일치');
 			} else if(jsondata.value=='1'){
-				location.href='userResetPwd';
+				var userId=document.getElementById('userId').value;
+				var param='?userId='+userId;
+				location.href='userResetPwd'+param;
 			}
 		}
 	}
@@ -107,7 +113,7 @@ function showResult(){
 <body>
 	<div class="form-wrapper">
 		<div class="logo-wrapper">
-			<img src="/img/eats_logo.png">
+			<a href="/"><img src="/img/eats_logo.png"></a>
 		</div>
 		<div class="title-wrapper">
 			<h3>비밀번호 찾기</h3>

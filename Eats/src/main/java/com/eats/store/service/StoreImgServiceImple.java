@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.eats.controller.store.ImgContUpload;
 import com.eats.mapper.store.StoreImgMapper;
 import com.eats.store.model.StoreImgDTO;
 
@@ -27,9 +26,9 @@ public class StoreImgServiceImple implements StoreImgService {
 	}
 	
 	@Override
-	public StoreImgDTO storeImgData() {
+	public StoreImgDTO storeImgData(int store_idx) {
 
-		StoreImgDTO data = mapper.storeImgData();
+		StoreImgDTO data = mapper.storeImgData(store_idx);
 		return data;
 		
 		

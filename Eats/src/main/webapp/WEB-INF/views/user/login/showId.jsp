@@ -23,12 +23,18 @@
 </c:if>
 <div class="id-show-wrapper">
 	<div class="logo-wrapper">
-		<img src="img/eats_logo.png">
+		<a href="/"><img src="img/eats_logo.png"></a>
 	</div>
 	<div class="id-wrapper">
-		<h3>아이디는</h3>
-		<h1>${userId }</h1>
+		<p>아이디는</p>
+		<div class="id-content-wrapper">
+		<span>"</span><h1>${userId }</h1><span class="last-span">"</span>
+		</div>
 		<p>입니다</p>
+	</div>
+	<div class="link-wrapper">
+		<input type="button" value="로그인" onclick="location.href='userLogin'">
+		<a href="userFindPwd">비밀번호도 잊으셨나요?</a>
 	</div>
 </div>
 </body>

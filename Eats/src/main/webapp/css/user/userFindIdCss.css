@@ -8,7 +8,7 @@ body{
 	text-align:center;
 }
 .logo-wrapper img{
-	width:50%;
+	width:150px;
 }
 .title-wrapper{
 	text-align:center;
@@ -59,7 +59,7 @@ body{
 	margin:10px 0px;
 }
 input[type="text"]{
-	    width: 100%;
+	width: 100%;
     padding: 15px 0;
 	background-color: #FFF8EB;
     border: 1px solid gray;
@@ -71,7 +71,7 @@ input[type="text"]{
 }
 input[type="button"]{
 	font-size: 15px;
-        padding: 20px 20px;
+	padding: 20px 20px;
     margin: 0;
     border-radius: 5px;
     border: 0;

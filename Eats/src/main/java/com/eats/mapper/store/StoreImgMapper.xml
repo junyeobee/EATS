@@ -48,18 +48,12 @@
         #{store_img5})
    </insert>
 	
-	
-	
-	
 
    <select id="storeImgData" resultType="com.eats.store.model.StoreImgDTO">
-		SELECT *
-		FROM (
-		    SELECT * 
-		    FROM store_img
-		    ORDER BY si_idx DESC
-		)
-		WHERE ROWNUM = 1
+	    SELECT * 
+	    FROM store_img
+	    WHERE store_idx = #{store_idx}
+	    ORDER BY si_idx DESC
    </select>
 
 </mapper>
