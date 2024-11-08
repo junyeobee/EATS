@@ -48,12 +48,6 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
-	public ReviewDTO getReview(int rev_idx) {
-		ReviewDTO dto = mp.getReview(rev_idx);
-		return dto;
-	}
-	
-	@Override
 	public Double getStorePoint(int store_idx) {
 		double storePoint = mp.getStorePoint(store_idx);
 		return storePoint;

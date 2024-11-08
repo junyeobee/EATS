@@ -32,36 +32,4 @@ public class MypageController {
         modelAndView.addObject("userProfile", userProfile);
         return modelAndView;
     }
-
-    @GetMapping("/myJjim")
-    public ModelAndView myJjim(int userId) {
-        List<JjimDTO> jjimList = mypageService.getUserJjimList(userId);
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myJjim");
-        modelAndView.addObject("jjimList", jjimList);
-        return modelAndView;
-    }
-
-    @GetMapping("/myReviews")
-    public ModelAndView myReviews(int userId) {
-        List<ReviewDTO> reviewList = mypageService.getUserReviews(userId);
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myReviews");
-        modelAndView.addObject("reviewList", reviewList);
-        return modelAndView;
-    }
-
-    @GetMapping("/myPayments")
-    public ModelAndView myPayments(int userId) {
-        List<ReservePayDTO> paymentList = mypageService.getUserPayments(userId);
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myPayments");
-        modelAndView.addObject("paymentList", paymentList);
-        return modelAndView;
-    }
-
-    @GetMapping("/myQna")
-    public ModelAndView myQna(int userId) {
-        List<UserQnaDTO> qnaList = mypageService.getUserQnaList(userId);
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myQna");
-        modelAndView.addObject("qnaList", qnaList);
-        return modelAndView;
-    }
 }
