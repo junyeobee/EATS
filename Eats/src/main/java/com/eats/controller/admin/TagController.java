@@ -7,9 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.admin.service.TagService;
 import com.eats.user.model.CateKeyDTO;
+import com.eats.user.model.CateValueDTO;
 import com.eats.user.service.MainService;
 
 @Controller
@@ -17,6 +21,8 @@ public class TagController {
 	
 	@Autowired
 	private MainService ms;
+	@Autowired
+	private TagService ts;
 
 	@GetMapping("tagPage")
 	public ModelAndView tagPage() {
@@ -37,5 +43,14 @@ public class TagController {
 		mv.setViewName("admin/attr/manageTag");
 		
 		return mv;
+	}
+	
+	@ResponseBody
+	@GetMapping("addTag")
+	public Map addTag(CateValueDTO dto) {
+		int count = ts.addCateValue(dto);
+		Map map = new HashMap();
+		map.put("catevalue",dto.getCate_value_name());
+		return map;
 	}
 }
