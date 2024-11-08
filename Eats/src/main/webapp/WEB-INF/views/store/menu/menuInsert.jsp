@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -147,24 +148,26 @@
     <div class="container">
         <h1>메뉴 등록</h1>
         <form name="StoreMenuInsertForm" action="StoreMenuInsert">
+        
             <div class="form-group">
                 <label for="category">카테고리</label>
                 <select id="category" required>
-                    <option value="">카테고리 선택</option>
-                    <option value="main">메인 메뉴</option>
-                    <option value="side">사이드 메뉴</option>
-                    <option value="drink">음료</option>
+                <option value="">카테고리 선택</option>
+                	<c:forEach var="dto" items="${lists}">
+                    <option value="main">${dto.cate_key_name }</option>
+                    </c:forEach>
                 </select>
             </div>
+            
 
             <div class="form-group">
                 <label for="menu-name">메뉴명</label>
-                <input type="text" id="menu-name" required>
+                <input type="text" id="menu_name" required>
             </div>
 
             <div class="form-group">
                 <label for="description">상세설명</label>
-                <textarea id="description" required></textarea>
+                <textarea id="menu_info" required></textarea>
             </div>
 
             <div class="form-group">

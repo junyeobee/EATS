@@ -61,9 +61,14 @@ public class StoreMenuController {
 	}
 	
 	@GetMapping("/StoreMenuInsert")
-	public String StoreMenuInsert(){
+	public ModelAndView StoreMenuInsert(){
+		List<MenuDTO> lists = service.storeCateList();
 		
-		return "store/menu/menuInsert";
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("store/menu/menuInsert");
+		return mav;
 	}
 	
 	
@@ -77,6 +82,7 @@ public class StoreMenuController {
 		String goUrl="";
 		
 		ModelAndView mav= new ModelAndView();
+		
 		
 		mav.addObject("msg",msg);
 		mav.addObject("goUrl","storeMenuList");
