@@ -10,7 +10,7 @@
 
 	<select id="getValueList" parameterType="Integer" resultType="String">
 		select cate_value_name from cate_value where
-		cate_key_idx=#{cate_key_idx}
+		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
 	</select>
 
 	<select id="getCityList" resultType="com.eats.user.model.AreaDTO">
