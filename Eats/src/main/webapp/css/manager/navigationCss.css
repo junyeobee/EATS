@@ -31,8 +31,6 @@
     row-gap: 2px;
     height: 0;
     overflow: hidden;
-
-    transition: 1;
 }
 .navi_small_cate_btn {
     width: 100%;
