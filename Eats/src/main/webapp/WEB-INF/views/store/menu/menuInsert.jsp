@@ -162,18 +162,18 @@
 
             <div class="form-group">
                 <label for="menu-name">메뉴명</label>
-                <input type="text" id="menu_name" required>
+                <input type="text" name="menu_name" id="menu_name" required>
             </div>
 
             <div class="form-group">
                 <label for="description">상세설명</label>
-                <textarea id="menu_info" required></textarea>
+                <textarea name="menu_info" id="menu_info" required></textarea>
             </div>
 
             <div class="form-group">
                 <label>이미지 등록</label>
                 <div class="image-upload">
-                    <input type="file" class="upload-btn"/>
+                    <input type="file" class="upload-btn" id="MENU_IMG" name="MENU_IMG"/>
                     <p class="image-notice">• 권장크기 이미지 사용 (1440px X 1440px / 1080px X 1080px 권장)</p>
                     <p class="image-notice">• JPG, JPEG, PNG 확장자만 등록</p>
                 </div>
@@ -182,7 +182,7 @@
             <div class="form-group">
                 <label for="price">가격</label>
                 <div class="price-input">
-                    <input type="text" id="price" required>
+                    <input type="text" id="menu_price" name="menu_price" required>
                 </div>
             </div>
 
@@ -190,11 +190,11 @@
                 <label>선주문 여부</label>
                 <div class="radio-group">
                     <div class="radio-item">
-                        <input type="radio" id="featured-yes" name="featured" value="yes" >
+                        <input type="radio" id="featured-yes" name="menu_preorder" value="yes" >
                         <label for="featured-yes">YES</label>
                     </div>
                     <div class="radio-item">
-                        <input type="radio" id="featured-no" name="featured" value="no" checked>
+                        <input type="radio" id="featured-no" name="menu_preorder" value="no" checked>
                         <label for="featured-no">NO</label>
                     </div>
                 </div>
