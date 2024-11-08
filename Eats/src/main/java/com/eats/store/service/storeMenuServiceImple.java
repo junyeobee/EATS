@@ -23,8 +23,14 @@ public class storeMenuServiceImple implements storeMenuService {
 	
 	
 	@Override
-	public List<MenuDTO> storeMenuList() {
-		List<MenuDTO> lists = mapper.storeMenuList();
+	public List<MenuDTO> storeMenuList(Integer idx) {
+		List<MenuDTO> lists = mapper.storeMenuList(idx);
 		return lists;
+	}
+	
+	@Override
+	public int insertMenu(MenuDTO dto) {
+		int result = mapper.insertMenu(dto);
+		return result;
 	}
 }

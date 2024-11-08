@@ -6,6 +6,8 @@ import com.eats.store.model.MenuDTO;
 
 public interface storeMenuService {
 	public List<MenuDTO> storeCateList();
-	public List<MenuDTO> storeMenuList();
+	public List<MenuDTO> storeMenuList(Integer idx);
+	public int insertMenu(MenuDTO dto);
+	
 	
 }

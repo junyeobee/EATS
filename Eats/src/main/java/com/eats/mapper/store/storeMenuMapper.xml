@@ -4,15 +4,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.eats.mapper.store.storeMenuMapper">
+
 	<select id="storeCateList" resultType="com.eats.store.model.MenuDTO">
 		select * from CATE_KEY_TEST
 	</select>
 	
-	<select id="storeMenuList" resultType="com.eats.store.model.MenuDTO">
+	<select id="storeMenuList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
 		select * 
 		from 
 		MENU_TEST
+		<if test="idx!=0">
+			where m_cate_idx = #{idx}
+		</if>
 	</select>
 	
+	<insert id="insertMenu" parameterType="com.eats.store.model.MenuDTO">
+		insert into 
+		menu_test
+		values(
+		MENU_IDX.NEXTVAL, 
+		M_CATE_IDX.NEXTVAL,
+		#{MENU_NAME},
+		#{MENU_PRICE},
+		#{MENU_INFO},
+		#{MENU_IMG}
+		)
+	</insert>
 	
 </mapper>

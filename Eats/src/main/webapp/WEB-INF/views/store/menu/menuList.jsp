@@ -150,52 +150,93 @@ body {
 }
 </style>
 </head>
-<body>
-	<div class="menu-header">
-		<h1 class="menu-title">메뉴 관리</h1>
 
+<body>
+
+	<!-- 카테고리 출력 -->
+	<div class="menu-header category-tabs">
+		<h1 class="menu-title">메뉴 관리</h1>
 		<c:if test="${empty lists }">
 			<div class="tab-group">
 				<button class="tab active">전체</button>
 			</div>
 		</c:if>
-
-		<button class="tab avtive">전체</button>
+		<button class="tab avtive" onclick="loadMenu('0')">전체</button>
 		<c:forEach var="dto" items="${lists}">
-			<button class="tab" value="${dto.cate_key_name}">${dto.cate_key_name}</button>
+			<button class="tab" id="${dto.cate_key_idx}"  onclick="loadMenu('${dto.cate_key_idx}')" >${dto.cate_key_name}</button>
 		</c:forEach>
 	</div>
 
-	<div class="menu-grid">
+	<!-- 메뉴 출력 -->
+	<input type="button" value="등록하기" onclick="location.href='StoreMenuInsert'">
+	<input type="button" value="선택삭제" >
+	
+	<div class="menu-grid" id="menuList">
 		<!-- 메뉴 아이템 반복 -->
 		<c:if test="${empty menu }">
 			<h2>등록된 메뉴가 없습니다.</h2>
-
 		</c:if>
 
 		<c:forEach var="menu" items="${menu}">
 			<div class="menu-item">
 				<img src="${menu.menu_img }" alt="메뉴" class="menu-image">
-				<button class="edit-button">수정</button>
+				<button class="edit-button" onclick="href='menuUpdatePage'">수정</button>
+				
 				<div class="menu-info">
-					<div class="menu-name">${menu.menu_name }</div>
+					<div class="menu-name">${menu.menu_name}</div>
 					<div class="menu-description">${menu.menu_info }</div>
 					<div class="menu-price">${menu.menu_price }</div>
 				</div>
+				
 			</div>
 		</c:forEach>
 
 	</div>
 
 	<div class="pagination">
-		<div class="page-number">1</div>
-		<div class="page-number active">2</div>
-		<div class="page-number">3</div>
-		<div class="page-number">4</div>
-		<div class="page-number">5</div>
-		<div class="page-number">6</div>
-		<div class="page-number">7</div>
-		<div class="page-number">></div>
 	</div>
 </body>
+<script type="text/javascript" src="js/httpRequest.js"></script>
+<script>
+function loadMenu(idx){
+	var params='idx='+idx;
+	sendRequest('menuListAjax', params, showSendResult, 'GET');
+}
+function showSendResult(){
+	var menuList = document.getElementById('menuList')
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var jsondata = JSON.parse(data);
+			menuList.innerHTML='';
+			if(Array.isArray(jsondata) && jsondata.length > 0){
+			  jsondata.forEach( (menu) => {
+                    var menuItemDiv = document.createElement('div');
+                    menuItemDiv.className = 'menu-item';
+                    var img = document.createElement('img');
+                    img.src = menu.menu_img;
+                    img.alt = '메뉴';
+                    img.className = 'menu-image';
+            		
+                    var editButton = document.createElement('button');
+                    editButton.className = 'edit-button';
+                    editButton.textContent = '수정';
+                  	
+                    var menuInfoDiv = document.createElement('div');
+                    menuInfoDiv.className = 'menu-info';
+                    menuInfoDiv.innerHTML += "<div class='menu-name'>"+menu.menu_name+"</div><div class='menu-description'>"+menu.menu_info+"</div><div class='menu-price'>"+menu.menu_price+"</div>"
+                    menuItemDiv.appendChild(img);
+                    menuItemDiv.appendChild(editButton);
+                    menuItemDiv.appendChild(menuInfoDiv);
+                   	
+                    menuList.appendChild(menuItemDiv);
+                });
+            } else {
+                menuList.innerHTML = '<div>메뉴가 없습니다.</div>';
+            }	
+		}
+	}
+}
+
+</script>
 </html>
