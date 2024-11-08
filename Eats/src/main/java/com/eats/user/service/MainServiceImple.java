@@ -70,4 +70,10 @@ public class MainServiceImple implements MainService {
 		String tag = mp.getTag(tag_idx);
 		return tag;
 	}
+
+	@Override
+	public ReviewDTO getReview(int rev_idx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
