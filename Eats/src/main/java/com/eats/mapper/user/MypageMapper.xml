@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- MypageMapper.xml -->
+<mapper namespace="com.eats.mapper.user.MypageMapper">
+
+    <select id="getUserProfile" parameterType="int" resultType="com.eats.user.model.EatsUserDTO">
+        SELECT USER_IDX, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_BIRTH, USER_GENDER, JOIN_METHOD
+        FROM EATS_USER
+        WHERE USER_IDX = #{userId}
+    </select>
+
+    <select id="getUserJjimList" parameterType="int" resultType="com.eats.user.model.JjimDTO">
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        WHERE jjim.USER_IDX = #{userId}
+    </select>
+
+    <select id="getUserReviews" parameterType="int" resultType="com.eats.user.model.ReviewDTO">
+        SELECT REV_IDX, RESERVE_IDX, REV_SCORE, REV_CONTENT, REV_WRITEDATE, REV_STATE
+        FROM REVIEW
+        WHERE RESERVE_IDX IN (SELECT RESERVE_IDX FROM RESERVATION WHERE USER_IDX = #{userId})
+    </select>
+
+    <select id="getUserPayments" parameterType="int" resultType="com.eats.user.model.ReservePayDTO">
+        SELECT RESERVE_IDX, PAY_PRICE, PAY_METHOD
+        FROM RESERVE_PAY
+        WHERE RESERVE_IDX IN (SELECT RESERVE_IDX FROM RESERVATION WHERE USER_IDX = #{userId})
+    </select>
+
+    <select id="getUserQnaList" parameterType="int" resultType="com.eats.user.model.UserQnaDTO">
+        SELECT UQNA_IDX, UQNA_TITLE, UQNA_CONTENT, UQNA_WDATE, UQNA_STAT, UQNA_ANSWER
+        FROM USER_QNA
+        WHERE USER_IDX = #{userId}
+    </select>
+
+</mapper>
+
