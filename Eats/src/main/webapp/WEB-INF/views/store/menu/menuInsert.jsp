@@ -147,7 +147,7 @@
 <body>
     <div class="container">
         <h1>메뉴 등록</h1>
-        <form name="StoreMenuInsertForm" action="StoreMenuInsert">
+        <form name="StoreMenuInsertForm" action="StoreMenuInsertOk" method="post">
         
             <div class="form-group">
                 <label for="category">카테고리</label>
@@ -167,13 +167,13 @@
 
             <div class="form-group">
                 <label for="description">상세설명</label>
-                <textarea name="menu_info" id="menu_info" required></textarea>
+                <textarea name="menu_info" id="menu_info"></textarea>
             </div>
 
             <div class="form-group">
                 <label>이미지 등록</label>
                 <div class="image-upload">
-                    <input type="file" class="upload-btn" id="MENU_IMG" name="MENU_IMG"/>
+                    <input type="file" class="upload-btn" id="menu_img" name="menu_img"/>
                     <p class="image-notice">• 권장크기 이미지 사용 (1440px X 1440px / 1080px X 1080px 권장)</p>
                     <p class="image-notice">• JPG, JPEG, PNG 확장자만 등록</p>
                 </div>
@@ -190,11 +190,11 @@
                 <label>선주문 여부</label>
                 <div class="radio-group">
                     <div class="radio-item">
-                        <input type="radio" id="featured-yes" name="menu_preorder" value="yes" >
+                        <input type="radio" id="featured-yes" name="menu_preorder" value="2" >
                         <label for="featured-yes">YES</label>
                     </div>
                     <div class="radio-item">
-                        <input type="radio" id="featured-no" name="menu_preorder" value="no" checked>
+                        <input type="radio" id="featured-no" name="menu_preorder" value="1" checked>
                         <label for="featured-no">NO</label>
                     </div>
                 </div>

@@ -73,13 +73,13 @@ public class StoreMenuController {
 	
 	
 	//메뉴 등록
-	@PostMapping("/StoreMenuInsert")
-	public ModelAndView StoreMenuInsert(MenuDTO dto){
+	@PostMapping("/StoreMenuInsertOk")
+	public ModelAndView StoreMenuInsertOk(MenuDTO dto){
 		
 		int result = service.insertMenu(dto);
 		
 		String msg=result>0?"메뉴가 등록되었습니다.":"메뉴등록에 실패했습니다.";	
-		String goUrl="";
+		
 		
 		ModelAndView mav= new ModelAndView();
 		

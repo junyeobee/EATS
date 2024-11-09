@@ -30,6 +30,7 @@ public class MenuDTO {
 	private int menu_price;
 	private String menu_info;
 	private String menu_img;
+	private int menu_preorder;
 	
 	
 	public MenuDTO() {
@@ -41,8 +42,15 @@ public class MenuDTO {
 
 	
 
+
+
+
+
+
+
+
 	public MenuDTO(int cate_key_idx, String cate_key_name, int cate_key_level, int menu_idx, int m_cate_idx,
-			String menu_name, int menu_price, String menu_info, String menu_img) {
+			String menu_name, int menu_price, String menu_info, String menu_img, int menu_preorder) {
 		super();
 		this.cate_key_idx = cate_key_idx;
 		this.cate_key_name = cate_key_name;
@@ -53,7 +61,15 @@ public class MenuDTO {
 		this.menu_price = menu_price;
 		this.menu_info = menu_info;
 		this.menu_img = menu_img;
+		this.menu_preorder = menu_preorder;
 	}
+
+
+
+
+
+
+
 
 
 
@@ -218,6 +234,39 @@ public class MenuDTO {
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
+	public int getMenu_preorder() {
+		return menu_preorder;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setMenu_preorder(int menu_preorder) {
+		this.menu_preorder = menu_preorder;
+	}
+
+	
+	
 
 
 

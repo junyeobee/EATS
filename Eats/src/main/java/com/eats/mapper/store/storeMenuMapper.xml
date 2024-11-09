@@ -24,10 +24,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(
 		MENU_IDX.NEXTVAL, 
 		M_CATE_IDX.NEXTVAL,
-		#{MENU_NAME},
-		#{MENU_PRICE},
-		#{MENU_INFO},
-		#{MENU_IMG}
+		#{menu_name},
+		#{menu_price},
+		#{menu_info},
+		#{menu_img},
+		#{menu_preorder}
 		)
 	</insert>
 	
