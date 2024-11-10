@@ -1,5 +1,6 @@
 package com.eats.user.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,30 @@ public class KakaoLoginServiceImple implements KakaoLoginService {
 
 	@Override
 	@Transactional
-	public void insertUserAndProfile(EatsUserDTO userDTO) {
+	public int insertUserAndProfile(KakaoUserDTO dto) {
 		
-		//mapper.insertUser(userDTO);
+		int userResult = mapper.insertUser(dto);
+		
+		if(userResult>0) {
+			//insertUser가 잘 수행되면 insertUserProfile도 수행
+			int newIdx=mapper.getNewUserIdx(); //새로 삽입된 user_idx 가져오기
+			
+			//파라미터 map에 넣기
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("user_idx", newIdx);
+			param.put("user_nickname", dto.getNickname());
+			
+			//insertUserProfile 수행
+			int userProfileResult = mapper.insertUserProfile(param);
+			
+			//userProfile이 잘 수행?
+			if(userProfileResult>0) {
+				return newIdx;
+			}else {
+				return -1;
+			}
+		}else {
+			return -1;
+		}
 	}
 }

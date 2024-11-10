@@ -21,7 +21,7 @@ public class EmailService {
 	
 	//코드 전송 메소드
 	public void sendCode(String to, String code) {
-		System.out.println("sendCode 호출");
+		//System.out.println("sendCode 호출");
 		SimpleMailMessage msg=new SimpleMailMessage();
 		
 		msg.setTo(to);

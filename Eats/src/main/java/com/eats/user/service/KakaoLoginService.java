@@ -8,6 +8,6 @@ import com.eats.user.model.EatsUserDTO;
 public interface KakaoLoginService {
 
 	public EatsUserDTO checkUserIdx(String kakaoId);
-	public void insertUserAndProfile(EatsUserDTO userDTO);
+	public int insertUserAndProfile(KakaoUserDTO dto);
 	
 }

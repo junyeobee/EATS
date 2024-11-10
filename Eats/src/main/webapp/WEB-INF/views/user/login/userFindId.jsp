@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="js/httpRequest.js"></script>
+<script type="text/javascript" src="../js/httpRequest.js"></script>
 <script>
 var sendState=false;
 //코드 전송
@@ -19,7 +19,6 @@ function sendCode(){
 	var check=true;
 	if(inputName===null || inputName ===''){
 		document.getElementById('name-message').style.color='red';
-		//document.getElementById('name-message').textContent='ddd';
 		check=false;
 	}else{
 		document.getElementById('name-message').style.color='black';
@@ -39,7 +38,7 @@ function sendCode(){
 	
 	if(check){
 		var params='userName='+inputName+'&userEmail='+inputEmail;
-		sendRequest('sendCode', params, showAlert, 'POST');
+		sendRequest('/user/findId/sendCode', params, showAlert, 'POST');
 		sendState=true;
 	}
 }
@@ -59,7 +58,7 @@ function validateCode(){
 		var inputCode=document.getElementById('userCode').value;
 		
 		var params='userCode='+inputCode;
-		sendRequest('checkCode', params, showResult, 'POST');
+		sendRequest('/user/findId/checkCode', params, showResult, 'POST');
 	}else{
 		alert('인증번호를 발송하지 않았습니다.');
 	}
@@ -74,12 +73,10 @@ function showResult(){
 			var jsondata = JSON.parse(data);
 			if(jsondata.value=='0'){
 				errorMsg.textContent='시간이 만료되었습니다.';
-				//alert('시간만료');
 			} else if(jsondata.value=='2') {
 				errorMsg.textContent='인증번호가 일치하지 않습니다.';
-				alert('불일치');
 			} else if(jsondata.value=='1'){
-				location.href='showUserId';
+				location.href='/user/showId';
 			}
 		}
 	}
@@ -91,7 +88,7 @@ function showResult(){
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="css/user/userFindIdCss.css">
+<link rel="stylesheet" href="../css/user/userFindIdCss.css">
 </head>
 <body>
 	<div class="form-wrapper">
@@ -99,7 +96,6 @@ function showResult(){
 			<a href="/"><img src="/img/eats_logo.png"></a>
 		</div>
 		<div class="title-wrapper">
-			<!-- <h3>아이디 찾기</h3> -->
 			<p>가입된 회원정보로 아이디를 확인하세요</p>
 		</div>
 		<div class="table-wrapper">

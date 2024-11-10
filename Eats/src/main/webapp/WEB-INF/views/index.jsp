@@ -111,7 +111,7 @@ menu, ol, ul {
 			<img class="logo" id="logoicon" src="/svg/logo_icon.svg" />
 			<div class="profile_box">
 				<c:if test="${empty user_idx }">
-					<a href="userLogin">로그인</a>
+					<a href="user/login">로그인</a>
 					|
 					<a href="openUserJoin">회원가입</a>
 				</c:if>
@@ -120,7 +120,7 @@ menu, ol, ul {
 					<img class="proicons-person-circle" src="/svg/profile_icon.svg" />
 					<div class="profile_msg">
 						<div class="user_name">${user_nickname }</div>
-						<a href="userLogout">로그아웃</a>
+						<a href="user/logout">로그아웃</a>
 					</div>
 				</c:if>
 			</div>
