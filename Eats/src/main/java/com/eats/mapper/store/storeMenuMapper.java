@@ -15,6 +15,12 @@ public interface storeMenuMapper {
 	
 	public int insertMenu(MenuDTO dto);//메뉴등록
 	
+	public int deleteMenuCate(String cateName);
+	
+	public int insertCate(String cateName); //메뉴카테고리 등록
+	
+	public int deleteMenu(List<Integer> menuIdx);
+	
 	
 
 }

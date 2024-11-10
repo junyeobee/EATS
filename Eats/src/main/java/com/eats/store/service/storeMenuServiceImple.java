@@ -33,4 +33,24 @@ public class storeMenuServiceImple implements storeMenuService {
 		int result = mapper.insertMenu(dto);
 		return result;
 	}
+	
+	@Override
+	public int deleteMenuCate(String cateName) {
+		int result = mapper.deleteMenuCate(cateName);
+		return result;
+	}
+	
+	@Override
+	public int insertCate(String cateName) {
+		int result = mapper.insertCate(cateName);
+		return result;
+	}
+	
+	@Override
+	public int deleteMenu(List<Integer> menuIdx) {
+		int result = mapper.deleteMenu(menuIdx);
+		return result;
+	}
+	
+	
 }

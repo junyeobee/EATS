@@ -163,39 +163,43 @@ body {
 		</c:if>
 		<button class="tab avtive" onclick="loadMenu('0')">전체</button>
 		<c:forEach var="dto" items="${lists}">
-			<button class="tab" id="${dto.cate_key_idx}"  onclick="loadMenu('${dto.cate_key_idx}')" >${dto.cate_key_name}</button>
+			<button class="tab" id="${dto.m_cate_idx}"  onclick="loadMenu('${dto.m_cate_idx}')" >${dto.m_cate_name}</button>
 		</c:forEach>
 	</div>
 
 	<!-- 메뉴 출력 -->
-	<input type="button" value="등록하기" onclick="location.href='StoreMenuInsert'">
-	<input type="button" value="선택삭제" >
+	
 	
 	<div class="menu-grid" id="menuList">
 		<!-- 메뉴 아이템 반복 -->
 		<c:if test="${empty menu }">
 			<h2>등록된 메뉴가 없습니다.</h2>
 		</c:if>
-
+		
+	<form name="deleteMenu" action="deleteMenu" method="post">
 		<c:forEach var="menu" items="${menu}">
-			<div class="menu-item">
+			<div class="menu-item" data-menu-idx="${menu.menu_idx}" onclick="selectMenu(this.dataset.menuIdx);">
 				<img src="${menu.menu_img }" alt="메뉴" class="menu-image">
-				<button class="edit-button" onclick="href='menuUpdatePage'">수정</button>
+				<button class="edit-button" onclick="location.href='/menuUpdatePage'">수정</button>
 				
 				<div class="menu-info">
 					<div class="menu-name">${menu.menu_name}</div>
 					<div class="menu-description">${menu.menu_info }</div>
 					<div class="menu-price">${menu.menu_price }</div>
 				</div>
-				
 			</div>
+			<input type="hidden" name="menu_idx" value="${menu.menu_idx }">
 		</c:forEach>
-
+		
+		<input type="button" value="등록하기" onclick="location.href='StoreMenuInsert'">
+		<input type="submit" value="선택삭제"  class="delete-button">
+	</form>
 	</div>
 
 	<div class="pagination">
 	</div>
 </body>
+
 <script type="text/javascript" src="js/httpRequest.js"></script>
 <script>
 function loadMenu(idx){
@@ -238,5 +242,57 @@ function showSendResult(){
 	}
 }
 
+let selectedMenus = [];
+
+function selectMenu(menuIdx){
+	
+	 menuIdx = parseInt(menuIdx);
+	const menuDiv = event.currentTarget;
+	
+	const index = selectedMenus.indexOf(menuIdx);
+	
+	if(index === -1){
+		
+		selectedMenus.push(menuIdx);
+		menuDiv.style.border ='4px solid #007bff';
+	}else{
+		
+		selectedMenus.splice(index, 1);
+		menuDiv.style.border = '';
+	}
+	
+}
+
+
+/* function deleteSelectedMenus(){
+	
+	if(selectedMenus === 0){
+		alert('삭제할 메뉴를 선택해주세요.');
+		return;
+	}
+	
+	if(confirm('선택한 메뉴를 삭제하시겠습니까?')){
+		 var params = "menuIdxList=" + selectedMenus.join(',');
+	        sendRequest('menuListAjax', params, showDeleteResult, 'GET');
+		
+	}
+}
+
+function showDeleteResult() {
+    if (XHR.readyState == 4) {
+        if (XHR.status == 200) {
+            var data = XHR.responseText;
+            if (data == 'success') {
+                alert('선택한 메뉴가 삭제되었습니다.');
+                location.reload();
+            } else {
+                alert('메뉴 삭제에 실패했습니다.');
+            }
+        } else {
+            alert('서버 오류가 발생했습니다.');
+            console.error('Error Status:', XHR.status);
+        }
+    }
+} */
 </script>
 </html>

@@ -154,7 +154,7 @@
                 <select id="category" required>
                 <option value="">카테고리 선택</option>
                 	<c:forEach var="dto" items="${lists}">
-                    <option value="main">${dto.cate_key_name }</option>
+                    <option value="main">${dto.m_cate_name }</option>
                     </c:forEach>
                 </select>
             </div>

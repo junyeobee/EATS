@@ -6,8 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.eats.mapper.store.storeMenuMapper">
 
 	<select id="storeCateList" resultType="com.eats.store.model.MenuDTO">
-		select * from CATE_KEY_TEST
+		select * from MENU_CATE_TEST
 	</select>
+	
 	
 	<select id="storeMenuList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
 		select * 
@@ -17,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where m_cate_idx = #{idx}
 		</if>
 	</select>
+	
 	
 	<insert id="insertMenu" parameterType="com.eats.store.model.MenuDTO">
 		insert into 
@@ -31,5 +33,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{menu_preorder}
 		)
 	</insert>
+	
+	
+	<delete id="deleteMenuCate" parameterType="String">
+	delete 
+	from
+	MENU_CATE_TEST
+	where
+	m_cate_name=#{m_cate_name}	
+	</delete>
+	
+	<!-- 카테고리 등록 -->
+	<insert id="insertCate" parameterType="String">
+	
+	 insert into 
+	 MENU_CATE_TEST
+	 values(
+	 M_CATE_IDX_SEQ.NEXTVAL, 
+	 STORE_IDX_SEQ.NEXTVAL,
+	 #{m_cate_name}
+	 )
+	 
+	</insert>
+	
+	
+	<!-- 선택한 메뉴삭제 -->
+	<delete id="deleteMenu" parameterType="java.util.List">
+		
+		delete from
+		menu_test
+		where
+		menu_idx in 
+		<foreach item="menu_idx" collection="list" open="(" separator="," close=")">
+			#{menu_idx}
+		</foreach>
+		
+	</delete>
+	
 	
 </mapper>
