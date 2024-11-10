@@ -32,9 +32,7 @@ public class KakaoLoginController {
 	
 	@GetMapping("/user/kakao/callback")
 	public String kakaoCallback(String code, HttpSession session) {
-		System.out.println("callback");
 		String accessToken = "";
-		System.out.println(code);
 		try {
 			accessToken=kakaoService.getAccessToken(code);
 		} catch (JsonProcessingException e) {
@@ -50,10 +48,11 @@ public class KakaoLoginController {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
-		System.out.println("id="+kakaoUserDTO.getId()+"nickname="+kakaoUserDTO.getNickname());
 		
-		if(kakaoUserDTO!=null) {
-			//DB저장 or session 저장 로직
+		String redirect="";
+		if(kakaoUserDTO!=null) { //카카오 로그인 성공
+			//1. 이미 카카오로 로그인한 적이 있을 때 -> session 저장
+			//2. 로그인한 적이 없을 때 -> DB 저장 & session 저장
 			long kakaoId=kakaoUserDTO.getId();
 			String kakaoIdStr=String.valueOf(kakaoId);
 			String nickname=kakaoUserDTO.getNickname();
@@ -61,19 +60,28 @@ public class KakaoLoginController {
 			EatsUserDTO userDTO=kLoginService.checkUserIdx(kakaoIdStr);
 			
 			if(userDTO==null) {
-				//DB 저장
-//				int insertUserResult=kLoginService.insertKakaoUser(kakaoUserDTO);
-//				int insertProfileResult=kLoginService.insertUserProfile(null);
+				//DB 저장 & session 저장
+				int insertIdx=kLoginService.insertUserAndProfile(kakaoUserDTO);
+				if(insertIdx > 0) {
+					//session 저장
+					session.setAttribute("user_idx", insertIdx);
+					session.setAttribute("user_nickname", nickname);
+					redirect="/";
+				}else {
+					//삽입 실패
+					redirect="/user/login";
+				}
 			}else {
 				//세션 저장
 				int userIdx=userDTO.getUser_idx();
-				
+				session.setAttribute("user_idx", userIdx);
+				session.setAttribute("user_nickname", nickname);
+				redirect="/";
 			}
-			
-			//1. 이미 카카오로 로그인한 적이 있을 때 -> session저장
-			
-			//2. 로그인한 적이 없을 때 -> DB 저장
+		}else { //카카오로그인 실패
+			redirect="/user/login"; //다시 로그인 페이지로
 		}
-		return "redirect:/";
+		
+		return "redirect:"+redirect;
 	}
 }

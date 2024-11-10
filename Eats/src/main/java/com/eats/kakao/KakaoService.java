@@ -32,7 +32,6 @@ public class KakaoService {
 	public String getKakaoLoginUrl() {
 		
 		String kakaoLoginUrl="https://kauth.kakao.com/oauth/authorize?client_id="+clientId+"&redirect_uri="+redirectUri+"&response_type=code";
-		System.out.println(kakaoLoginUrl);
 		return kakaoLoginUrl;
 	}
 	
@@ -64,7 +63,6 @@ public class KakaoService {
 	
 	//토큰으로 카카오 유저 정보 가져오기
 	public KakaoUserDTO getKakaoInfo(String accessToken) throws JsonProcessingException {
-		System.out.println("getKakaoInfo 호출");
 		//HTTP 헤더 생성
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer "+accessToken);
