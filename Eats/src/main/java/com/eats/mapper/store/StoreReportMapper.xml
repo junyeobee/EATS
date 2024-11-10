@@ -5,6 +5,6 @@
   
 <mapper namespace="com.eats.mapper.store.StoreReportMapper">
 	<select id="selectReviewForReport" resultType="com.eats.store.model.StoreReportDTO">
-		select rev_content, rev_score, rev_menu from review
+		select rev_content, rev_score, rev_menu from review where rev_menu = '쇼유우동'
 	</select>
 </mapper>

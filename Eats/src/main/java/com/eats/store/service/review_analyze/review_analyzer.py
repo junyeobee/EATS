@@ -5,7 +5,6 @@ import openai
 from typing import List, Dict, Optional
 import os
 from dotenv import load_dotenv
-import asyncio
 import sys
 from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor
@@ -336,10 +335,10 @@ class ReviewAnalyzer:
             logging.error(f"리뷰 처리 중 오류 발생: {str(e)}")
             return {"data": []}
 
-    def process_reviews(self, df: pd.DataFrame, batch_size: int = 5) -> Dict:
+    async def process_reviews(self, df: pd.DataFrame, batch_size: int = 5) -> Dict:
         """동기식 인터페이스"""
         try:
-            return asyncio.run(self.process_reviews_async(df, batch_size))
+            return await self.process_reviews_async(df, batch_size)
         except Exception as e:
             logging.error(f"처리 중 오류 발생: {str(e)}")
             return {"data": []}

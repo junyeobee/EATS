@@ -202,10 +202,13 @@
                 </div>
             </div>
             <div style="text-align: right; margin-top: 32px;">
-                <a href="/storeReportCreate?store_idx=1" class="download-btn">
+                <a href="/storeReportCreate" class="download-btn">
                     <span>다운로드</span>
                     <span>(pdf)</span>
                 </a>
+                <form action="/storeReportCreate" method = "post">
+                	<button type ="submit" formmethod="post">분석</button>
+                </form>
             </div>
         </div>
     </div>
