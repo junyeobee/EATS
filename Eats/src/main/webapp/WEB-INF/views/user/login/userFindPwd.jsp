@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="js/httpRequest.js"></script>
+<script type="text/javascript" src="../js/httpRequest.js"></script>
 <script>
 var idCheckState=false;
 var sendState=false;
@@ -15,7 +15,7 @@ function idExist(){
 	var inputId=document.getElementById('userId').value;
 	if(inputId!=null && inputId!=''){
 		var params='userId='+inputId;
-		sendRequest('idExist', params, showIdMessage, 'POST');
+		sendRequest('/user/findPwd/idExist', params, showIdMessage, 'POST');
 	}
 }
 function showIdMessage(){
@@ -51,7 +51,7 @@ function sendCode(){
 					document.getElementById('email-message').style.color='red';
 				}else{
 					var params='userId='+inputId+'&userEmail='+inputEmail;
-					sendRequest('sendCodeForFindPwd', params, showSendResult, 'POST');
+					sendRequest('/user/findPwd/sendCode', params, showSendResult, 'POST');
 					sendState=true;
 				}
 			}
@@ -74,7 +74,7 @@ function validateCode(){
 		var inputCode=document.getElementById('userCode').value;
 		
 		var params='userCode='+inputCode;
-		sendRequest('checkPwdCode', params, showResult, 'POST');
+		sendRequest('/user/findPwd/checkCode', params, showResult, 'POST');
 	}else{
 		alert('인증번호를 발송하지 않았습니다.');
 	}
@@ -96,7 +96,7 @@ function showResult(){
 			} else if(jsondata.value=='1'){
 				var userId=document.getElementById('userId').value;
 				var param='?userId='+userId;
-				location.href='userResetPwd'+param;
+				location.href='/user/resetPwd'+param;
 			}
 		}
 	}
@@ -108,7 +108,7 @@ function showResult(){
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="css/user/userFindIdCss.css">
+<link rel="stylesheet" href="../css/user/userFindIdCss.css">
 </head>
 <body>
 	<div class="form-wrapper">
