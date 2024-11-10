@@ -30,7 +30,7 @@ function checkForm(){
 <link rel="stylesheet" href="/css/user/userLoginCss.css">
 </head>
 <body>
-<form name="user_login_form" id="user_login_form" onsubmit="return checkForm()" action="userLogin" method="post">
+<form name="user_login_form" id="user_login_form" onsubmit="return checkForm()" action="/user/login" method="post">
 	<div class="login-wrapper">
 		<div class="logo-wrapper">
 			<a href="/"><img src="/img/eats_logo.png"></a>
@@ -45,10 +45,10 @@ function checkForm(){
 		</div>
 		<div class="button-wrapper">
 			<input type="submit" value="로그인" id="button-login">
-			<input type="button" value="카카오로 로그인" id="button-kakao" onclick="location.href='user/kakaoLogin'">
+			<input type="button" value="카카오로 로그인" id="button-kakao" onclick="location.href='/user/kakaoLogin'">
 		</div>
 		<div class="findAcc-wrapper">
-			<a href="userFindId">아이디 찾기</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="userFindPwd">비밀번호 찾기</a>
+			<a href="/user/findId">아이디 찾기</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/user/findPwd">비밀번호 찾기</a>
 		</div>
 	</div>
 </form>
