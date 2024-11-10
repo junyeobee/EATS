@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,7 +85,7 @@
 		}
 	})
 	</script>
-	<title></title>
+<title></title>
 </head>
 <body>
 	<div class="wrapper">
@@ -105,13 +106,14 @@
 		<!-- header (e) -->
 
 		<section id="content">
+			<c:set var="stInfo" value="${storeTotalInfo }"></c:set>
 			<!-- 왼쪽 컨텐츠 영역 (s) -->
 			<div class="content-wrap">
 				<div class="store-wrap">
 					<div class="tit-area">
-						<strong class="tit">파브리키친</strong>
+						<strong class="tit">${stInfo.storeDTO.store_name }</strong>
 						<span class="cate">
-							<span>서울</span>
+							<span>${stInfo.storeDTO.parent_area_name }&nbsp;${stInfo.storeDTO.area_name }</span>
 							<span>이탈리안</span>
 						</span>
 					</div>
@@ -119,17 +121,15 @@
 						<span class="start">4.7</span>
 						<span class="review">리뷰 <em>192</em></span>
 					</div>
-					<div class="recommend">237</div>
+					<div class="recommend">${stInfo.jjimCnt }</div>
 				</div>
 
 				<!-- 상단 가게 이미지 영역 (s) -->
 				<div class="swiper swp-store">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진1"/></div>
-						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진2"/></div>
-						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진3"/></div>
-						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진4"/></div>
-						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진5"/></div>
+						<c:forEach var="img" items="${stInfo.storeImgList }">
+						<div class="swiper-slide"><img src="${img.store_img }" alt="가게사진${img.img_order }"/></div>
+						</c:forEach>
 					</div>
 					<div class="swiper-button-next"></div>
 					<div class="swiper-button-prev"></div>
@@ -143,11 +143,12 @@
 							<div class="acco-head">
 								<a href="#" class="btn-acco">
 									<i class="map"></i>
-									<span>서울 용산구 한강대로15길 23-6</span>
+									<span>${stInfo.storeDTO.store_addr }</span>
 								</a>
 							</div>
 							<div class="acco-body">
 								<ul class="addr-list">
+								<!-- 후에 수정 필요 (s) -->
 									<li>
 										<span class="item">도로명</span>
 										<span class="val">서울 용산구 이태원로55가길 45</span>
@@ -160,10 +161,13 @@
 										<span class="item">우편번호</span>
 										<span class="val">04348</span>
 									</li>
+									<!-- 후에 수정 필요 (e) -->
 								</ul>
 							</div>
 						</div>
+						<!-- 후에 수정 필요 (s) -->
 						<p class="desc">한강진역 1번 출구에서 500m 정도 걸어오시면 됩니다.</p>
+						<!-- 후에 수정 필요 (e) -->
 					</div>
 					
 					<div class="inner">
@@ -176,34 +180,33 @@
 							</div>
 							<div class="acco-body">
 								<ul class="time-list">
-									<li>
-										<span class="item">월</span>
-										<span class="val">휴무</span>
-									</li>
-									<li>
-										<span class="item">화</span>
-										<span class="val">12:00 - 22:00</span>
-									</li>
-									<li>
-										<span class="item">수</span>
-										<span class="val">12:00 - 22:00</span>
-									</li>
-									<li>
-										<span class="item">목</span>
-										<span class="val">12:00 - 22:00</span>
-									</li>
-									<li>
-										<span class="item">금</span>
-										<span class="val">12:00 - 22:00</span>
-									</li>
-									<li>
-										<span class="item">토</span>
-										<span class="val">12:00 - 22:00</span>
-									</li>
-									<li>
-										<span class="item">일</span>
-										<span class="val">휴무</span>
-									</li>
+									<c:forEach var="day" items="${['월', '화', '수', '목', '금', '토', '일']}">
+							        <li>
+							            <span class="item">${day}</span>
+							            <span class="val">
+							                <c:set var="isOpen" value="false" />
+							                <c:forEach var="time" items="${stInfo.storeTimeList}">
+							                    <c:if test="${time.stime_day == day}">
+							                        <c:set var="isOpen" value="true" />
+							                        <c:choose>
+							                            <c:when test="${empty time.stime_start || empty time.stime_end}">
+							                                휴무
+							                            </c:when>
+							                            <c:otherwise>
+							                                ${time.stime_start} - ${time.stime_end}
+							                                <c:if test="${!empty time.stime_break}">
+							                                    (Break: ${time.stime_break})
+							                                </c:if>
+							                            </c:otherwise>
+							                        </c:choose>
+							                    </c:if>
+							                </c:forEach>
+							                <c:if test="${!isOpen}">
+							                    휴무
+							                </c:if>
+							            </span>
+							        </li>
+							    	</c:forEach>
 								</ul>
 							</div>
 						</div>
@@ -212,7 +215,10 @@
 					<div class="inner txt">
 						<strong class="tit">편의시설</strong>
 						<ul class="convenience-list">
-							<li>와이파이</li>
+							<c:forEach var="conv" items="${stInfo.convList }">
+							<li>${conv.cate_value_name }</li>
+							</c:forEach>
+							<!-- <li>와이파이</li>
 							<li>주차장</li>
 							<li>유아의자</li>
 							<li>발렛 파킹</li>
@@ -220,7 +226,7 @@
 							<li>대관 가능</li>
 							<li>대기공간</li>
 							<li>1인석</li>
-							<li>단체 이용가능</li>
+							<li>단체 이용가능</li> -->
 						</ul>
 					</div>
 
@@ -231,33 +237,17 @@
 				<div class="bg-box">
 					<div class="swiper swp-noti">
 						<div class="swiper-wrapper">
+							<c:forEach var="news" items="${stInfo.storeNewsList }">
 							<div class="swiper-slide">
 								<div class="inner txt">
-									<strong class="tit">[알림1] 대기 접수 사전 안내드립니다.</strong>
-									<p class="desc">안녕하세요, 파브리키친입니다. 대기 접수 사전 안내드립니다. 정말 감사하게도 많은 고객님들께서 저희 매장을 사랑해주셔서 대기 접수 후 입장까지 다소 많은 시간이 소요되는 경우가 발생합니다.</p>
+									<strong class="tit">${news.s_news_title }</strong>
+									<p class="desc">${news.s_news_content }</p>
 									<div class="btn-area">
 										<button type="button" class="btn-more">더보기</button>
 									</div>
 								</div>
 							</div>
-							<div class="swiper-slide">
-								<div class="inner txt">
-									<strong class="tit">[알림1] 대기 접수 사전 안내드립니다.</strong>
-									<p class="desc">안녕하세요, 파브리키친입니다. 대기 접수 사전 안내드립니다. 정말 감사하게도 많은 고객님들께서 저희 매장을 사랑해주셔서 대기 접수 후 입장까지 다소 많은 시간이 소요되는 경우가 발생합니다.</p>
-									<div class="btn-area">
-										<button type="button" class="btn-more">더보기</button>
-									</div>
-								</div>
-							</div>
-							<div class="swiper-slide">
-								<div class="inner txt">
-									<strong class="tit">[알림1] 대기 접수 사전 안내드립니다.</strong>
-									<p class="desc">안녕하세요, 파브리키친입니다. 대기 접수 사전 안내드립니다. 정말 감사하게도 많은 고객님들께서 저희 매장을 사랑해주셔서 대기 접수 후 입장까지 다소 많은 시간이 소요되는 경우가 발생합니다.</p>
-									<div class="btn-area">
-										<button type="button" class="btn-more">더보기</button>
-									</div>
-								</div>
-							</div>
+							</c:forEach>
 						</div>
 						<div class="swiper-pagination"></div>
 					</div>
@@ -272,7 +262,14 @@
 				<div class=" bg-box">
 					<div class="tab-wrap">
 						<ul class="tab-list">
+							<c:forEach var="mcate" items="${stInfo.menuCateList }">
 							<li class="on">
+								<a href="#panel_${mcate.m_cate_idx }">
+									<span class="tit">${mcate.m_cate_name}</span>
+								</a>
+							</li>
+							</c:forEach>
+							<!-- <li class="on">
 								<a href="#panel_1">
 									<span class="tit">메인</span>
 								</a>
@@ -286,10 +283,32 @@
 								<a href="#panel_3">
 									<span class="tit">음료</span>
 								</a>
-							</li>
+							</li> -->
 						</ul>
 						<div class="tab-contents">
-							<div class="tab-panel" id="panel_1">
+							<c:forEach var="mcate" items="${stInfo.menuCateList }">
+							<div class="tab-panel" id="panel_${mcate.m_cate_idx }">
+								<c:forEach var="menu" items="${stInfo.menuList }">
+								<ul class="menu-list">
+									<c:if test="${mcate.m_cate_idx eq menu.m_cate_idx }">
+									<li>
+										<img src="${menu.menu_img }" alt="${mcate.m_cate_name }_${menu.menu_idx}"/>
+										<div class="txt-area">
+											<strong>${menu.menu_name }</strong>
+											<span class="price">${menu.menu_price }</span>
+											<c:if test="${!empty menu.menu_info }">
+											<p>${menu.menu_info }</p>
+											</c:if>
+										</div>
+									</li>
+									</c:if>
+								</ul>
+								</c:forEach>
+								<button type="button" class="btn-menu-more">메뉴 더보기</button>
+							</div>
+							</c:forEach>
+						
+			<!-- 				<div class="tab-panel" id="panel_1">
 								<ul class="menu-list">
 									<li>
 										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
@@ -383,7 +402,7 @@
 									</li>
 								</ul>
 								<button type="button" class="btn-menu-more">메뉴 더보기</button>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<!-- icoTab (e) -->

@@ -111,6 +111,9 @@ header .inner .user-area .noti {
 	margin-top: 20px; 
 	border: 1px solid #000;
 }
+.swp-store img{
+	width:100%;
+}
 .swp-store .swiper-button-next, .swiper-button-prev {
 	color: #000;
 }
@@ -338,7 +341,9 @@ header .inner .user-area .noti {
 	color: #fff; 
 	text-align: center;
 }
-
+.menu-list li img{
+	width:30%;
+}
 /* 오른쪽 예약 영역 */
 .reservation {
 	position: sticky; 
