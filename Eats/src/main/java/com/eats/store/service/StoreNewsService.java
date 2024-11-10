@@ -1,9 +1,6 @@
 package com.eats.store.service;
 
 import java.util.List;
-import java.util.Map;
-
-import com.eats.store.model.StoreImgDTO;
 import com.eats.store.model.StoreNewsDTO;
 
 public interface StoreNewsService {
@@ -15,5 +12,6 @@ public interface StoreNewsService {
 
 	public StoreNewsDTO storeNewsData(int news_idx);
 	
-	
+	public int storeNewsUpdate(StoreNewsDTO dto);
+	public int storeNewsUpDel(int s_news_idx);
 }
