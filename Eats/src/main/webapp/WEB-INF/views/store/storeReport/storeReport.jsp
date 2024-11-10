@@ -202,7 +202,7 @@
                 </div>
             </div>
             <div style="text-align: right; margin-top: 32px;">
-                <a href="#" class="download-btn">
+                <a href="/storeReportCreate?store_idx=1" class="download-btn">
                     <span>다운로드</span>
                     <span>(pdf)</span>
                 </a>
