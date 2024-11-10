@@ -27,7 +27,7 @@ header .inner .user-area {
 	justify-content: center; 
 	height: 74px; 
 	padding-left: 92px; 
-	background: url(../images/img_user.png) no-repeat left center;
+	background: url(/img/user/storeInfo/img_user.png) no-repeat left center;
 }
 header .inner .user-area .user {
 	display: inline-block; 
@@ -89,7 +89,7 @@ header .inner .user-area .noti {
 }
 .store-wrap .info .start {
 	padding-left: 30px; 
-	background: url(../images/icon_star.png) no-repeat left center;
+	background: url(/img/user/storeInfo/icon_star.png) no-repeat left center;
 }
 .store-wrap .info .review {
 	padding-left: 20px;
@@ -99,7 +99,7 @@ header .inner .user-area .noti {
 	top: 10px; 
 	right: 0; 
 	padding-left: 42px; 
-	background: url(../images/icon_fork.png) no-repeat left center; 
+	background: url(/img/user/storeInfo/icon_fork.png) no-repeat left center; 
 	color: #ff533e; 
 	font-size: 24px;
 	font-weight: 500;
@@ -170,7 +170,7 @@ header .inner .user-area .noti {
 	top: 50%; 
 	width: 20px; 
 	height: 20px; 
-	background: url(../images/icon_down.png) no-repeat center center; 
+	background: url(/img/user/storeInfo/icon_down.png) no-repeat center center; 
 	transform: translateY(-45%); 
 	transform-origin: center center;
 }
@@ -183,12 +183,12 @@ header .inner .user-area .noti {
 	height: 20px;
 }
 .acco-wrap .acco-head i.map {
-	background: url(../images/icon_map.png) no-repeat left center;
+	background: url(/img/user/storeInfo/icon_map.png) no-repeat left center;
 }
 .acco-wrap .acco-head i.clock {
 	position: relative; 
 	top: 2px; 
-	background: url(../images/icon_clock.png) no-repeat left center;
+	background: url(/img/user/storeInfo/icon_clock.png) no-repeat left center;
 }
 .acco-wrap .acco-body {
 	display: none; 

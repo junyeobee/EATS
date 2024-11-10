@@ -5,12 +5,85 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='css/reset.css' rel='stylesheet'>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-	<link href='css/style.css' rel='stylesheet'>
-	<script src="js/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="../css/user/storeDetail/storeDetailCss.css">
+	<script src="/js/storeInfo/jquery-3.4.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script src="js/ui.front.js"></script>
+	<script>
+	$(document).ready(function(){
+		/* 초기화 */ 
+		$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
+		tabInit();
+
+		// 이미지 스와이프
+	    var swiperStore = new Swiper(".swp-store", {
+	      navigation: {
+	        nextEl: ".swiper-button-next",
+	        prevEl: ".swiper-button-prev",
+	      },
+	    });
+
+		// 공지사항 스와이프
+		var swiperNoti = new Swiper(".swp-noti", {
+			spaceBetween: 20,
+	        pagination: {
+	          el: ".swiper-pagination",
+	        },
+	    });
+
+		// 아코디언
+		$('.acco-head .btn-acco').on('click', function(e){
+			e.preventDefault();
+
+			if ($(this).hasClass('on')) {
+				$(this).removeClass('on');
+				$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
+			} else {
+				$(this).addClass('on');
+				$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
+			}
+		});
+
+		// 메뉴 탭
+		$('.tab-list li').on('click', function(e){
+			e.preventDefault();
+			var idx;
+
+			if (!$(this).hasClass('on')){
+				$('.tab-list li').removeClass('on');
+				$(this).addClass('on');
+				idx = $(this).index();
+				$('.tab-contents .tab-panel').hide();
+				$('.tab-contents .tab-panel').eq(idx).show();
+
+				tabInit();	// 다른 탭 눌렀다가 돌아왔을 때 더보기가 이미 되어있는 상태를 원하면 삭제해도 됨.
+			}
+		})
+
+		// 메뉴 더보기 클릭
+		$('.btn-menu-more').on('click',function(){
+			$(this).siblings('.menu-list').find('li').css('display','flex');
+			$(this).hide();
+		})
+
+		// 탭 초기화 함수
+		function tabInit() {
+			$('.tab-contents .tab-panel .menu-list').each(function(){
+				if ($(this).find('li').length > 5){
+					$(this).siblings('.btn-menu-more').show();
+		
+					$(this).find('li:gt(4)').hide();
+				}
+			});
+		}
+	})
+	</script>
 	<title></title>
 </head>
 <body>
@@ -20,7 +93,7 @@
 			<div class="inner">
 				<h1 class="logo">
 					<a href="#" title="홈으로 가기">
-						<img src="images/logo.png" alt="eat's">
+						<img src="../img/user/storeInfo/logo.png" alt="eat's">
 					</a>
 				</h1>
 				<a href="#" class="user-area" title="마이페이지">
@@ -52,11 +125,11 @@
 				<!-- 상단 가게 이미지 영역 (s) -->
 				<div class="swiper swp-store">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide"><img src="images/img_01.png" alt="가게사진1"/></div>
-						<div class="swiper-slide"><img src="images/img_01.png" alt="가게사진2"/></div>
-						<div class="swiper-slide"><img src="images/img_01.png" alt="가게사진3"/></div>
-						<div class="swiper-slide"><img src="images/img_01.png" alt="가게사진4"/></div>
-						<div class="swiper-slide"><img src="images/img_01.png" alt="가게사진5"/></div>
+						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진1"/></div>
+						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진2"/></div>
+						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진3"/></div>
+						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진4"/></div>
+						<div class="swiper-slide"><img src="../img/user/storeInfo/img_01.png" alt="가게사진5"/></div>
 					</div>
 					<div class="swiper-button-next"></div>
 					<div class="swiper-button-prev"></div>
@@ -219,7 +292,7 @@
 							<div class="tab-panel" id="panel_1">
 								<ul class="menu-list">
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -227,7 +300,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -235,7 +308,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -243,7 +316,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -251,7 +324,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -259,7 +332,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>추가 PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -267,7 +340,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>추가 PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -280,7 +353,7 @@
 							<div class="tab-panel" id="panel_2">
 								<ul class="menu-list">
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -293,7 +366,7 @@
 							<div class="tab-panel" id="panel_3">
 								<ul class="menu-list">
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
@@ -301,7 +374,7 @@
 										</div>
 									</li>
 									<li>
-										<img src="images/img_pasta.png" alt="파스타1"/>
+										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
 										<div class="txt-area">
 											<strong>PPP 파스타</strong>
 											<span class="price">22,000</span>
