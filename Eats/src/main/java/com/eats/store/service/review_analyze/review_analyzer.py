@@ -207,12 +207,12 @@ class ReviewAnalyzer:
                     if not line or line == '---':
                         continue
                         
-                    # 섹션 식별
-                    if '메뉴' in line:
+                    # 섹션 식별 - 정확한 문자열 매칭
+                    if line == '메뉴 평가:':
                         current_section = 'menu'
-                    elif '서비스' in line:
+                    elif line == '서비스 평가:':
                         current_section = 'service'
-                    elif '분위기' in line:
+                    elif line == '분위기 평가:':
                         current_section = 'atmosphere'
                     elif line.startswith('- '):
                         if ':' not in line:
@@ -234,7 +234,7 @@ class ReviewAnalyzer:
                             current_result['서비스'][sentiment].extend(evaluations)
                         elif current_section == 'atmosphere':
                             current_result['분위기'][sentiment].extend(evaluations)
-                        
+                            
                 current_review_index += 1
 
             # 메뉴 평가 결과 추가
@@ -245,11 +245,6 @@ class ReviewAnalyzer:
                         "부정": list(evals["부정"])
                     }
                 })
-
-            # 중복 제거
-            for key in ["분위기", "서비스"]:
-                for sentiment in ["긍정", "부정"]:
-                    current_result[key][sentiment] = list(current_result[key][sentiment])
 
             return [current_result]  # 단일 결과를 리스트로 반환
 
@@ -271,11 +266,10 @@ class ReviewAnalyzer:
         menu_evaluations = {}
         
         for result in results:
-            # 분위기/서비스 병합
+            # 분위기/서비스 병합 - 항상 extend 수행
             for key in ["분위기", "서비스"]:
                 for sentiment in ["긍정", "부정"]:
-                    if result[key][sentiment]:
-                        merged[key][sentiment].extend(result[key][sentiment])
+                    merged[key][sentiment].extend(result[key][sentiment])
             
             # 메뉴 평가 병합
             for menu_item in result["메뉴"]:
@@ -285,17 +279,12 @@ class ReviewAnalyzer:
                     for sentiment in ["긍정", "부정"]:
                         menu_evaluations[menu_name][sentiment].extend(evaluations[sentiment])
         
-        # 중복 제거
-        for key in ["분위기", "서비스"]:
-            for sentiment in ["긍정", "부정"]:
-                merged[key][sentiment] = list(merged[key][sentiment])
-        
         # 메뉴 평가 추가
         for menu_name, evals in menu_evaluations.items():
             merged["메뉴"].append({
                 menu_name: {
-                    "긍정": list(evals["긍정"]),
-                    "부정": list(evals["부정"])
+                    "긍정": evals["긍정"],
+                    "부정": evals["부정"]
                 }
             })
         
