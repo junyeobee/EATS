@@ -74,7 +74,7 @@
 		})
 
 		// 탭 초기화 함수
-		function tabInit() {
+		/* function tabInit() {
 			$('.tab-contents .tab-panel .menu-list').each(function(){
 				if ($(this).find('li').length > 5){
 					$(this).siblings('.btn-menu-more').show();
@@ -82,8 +82,42 @@
 					$(this).find('li:gt(4)').hide();
 				}
 			});
+		} */
+		function tabInit() {
+		    $('.tab-contents .tab-panel .menu-list').each(function() {
+		        console.log('Checking menu-list:', $(this));
+		        if ($(this).find('li').length > 5) {
+		            $(this).siblings('.btn-menu-more').show();
+		            $(this).find('li:gt(4)').hide();
+		            console.log('More than 5 items found, hiding items.');
+		        } else {
+		            console.log('5 or fewer items, no action needed.');
+		        }
+		    });
 		}
 	})
+	</script>
+	<script>
+	//문구 복사 함수
+	function copyText(){
+		var textElement=document.getElementById('street_addr');
+		
+		var range=document.createRange();
+		range.selectNodeContents(textElement);
+		
+		var selection=window.getSelection();
+		selection.removeAllRanges();
+		selection.addRange(range);
+		
+		try{
+			document.execCommand('copy');
+			alert('복사되었습니다.');
+		}catch(err){
+			console.error('복사 실패', err);
+		}
+		
+		selection.removeAllRange();
+	}
 	</script>
 <title></title>
 </head>
@@ -151,7 +185,8 @@
 								<!-- 후에 수정 필요 (s) -->
 									<li>
 										<span class="item">도로명</span>
-										<span class="val">서울 용산구 이태원로55가길 45</span>
+										<span class="val" id="street_addr">서울 용산구 이태원로55가길 45</span>
+										<span class="val">&nbsp;&nbsp;<a href="javascript:copyText();" class="copy-link">복사</a></span>
 									</li>
 									<li>
 										<span class="item">지번</span>
@@ -175,12 +210,13 @@
 							<div class="acco-head">
 								<a href="#" class="btn-acco">
 									<i class="clock"></i>
-									<span>12:00 ~ 22:00</span>
+									<span id="today-day"></span>
+									<span>${stInfo.todayTime.stime_start }-${stInfo.todayTime.stime_end }</span>
 								</a>
 							</div>
 							<div class="acco-body">
 								<ul class="time-list">
-									<c:forEach var="day" items="${['월', '화', '수', '목', '금', '토', '일']}">
+									<c:forEach var="day" items="${dayList}">
 							        <li>
 							            <span class="item">${day}</span>
 							            <span class="val">
@@ -195,7 +231,7 @@
 							                            <c:otherwise>
 							                                ${time.stime_start} - ${time.stime_end}
 							                                <c:if test="${!empty time.stime_break}">
-							                                    (Break: ${time.stime_break})
+							                                    <p>Break Time ${time.stime_break}</p>
 							                                </c:if>
 							                            </c:otherwise>
 							                        </c:choose>
@@ -218,15 +254,6 @@
 							<c:forEach var="conv" items="${stInfo.convList }">
 							<li>${conv.cate_value_name }</li>
 							</c:forEach>
-							<!-- <li>와이파이</li>
-							<li>주차장</li>
-							<li>유아의자</li>
-							<li>발렛 파킹</li>
-							<li>장애인 편의시설</li>
-							<li>대관 가능</li>
-							<li>대기공간</li>
-							<li>1인석</li>
-							<li>단체 이용가능</li> -->
 						</ul>
 					</div>
 
@@ -262,28 +289,22 @@
 				<div class=" bg-box">
 					<div class="tab-wrap">
 						<ul class="tab-list">
-							<c:forEach var="mcate" items="${stInfo.menuCateList }">
-							<li class="on">
-								<a href="#panel_${mcate.m_cate_idx }">
-									<span class="tit">${mcate.m_cate_name}</span>
-								</a>
-							</li>
+							<c:forEach var="mcate" items="${stInfo.menuCateList }" varStatus="cnt">
+								<c:if test="${cnt.index==0 }">
+								<li class="on">
+									<a href="#panel_${mcate.m_cate_idx }">
+										<span class="tit">${mcate.m_cate_name}</span>
+									</a>
+								</li>
+								</c:if>
+								<c:if test="${cnt.index!=0 }">
+								<li>
+									<a href="#panel_${mcate.m_cate_idx }">
+										<span class="tit">${mcate.m_cate_name}</span>
+									</a>
+								</li>
+								</c:if>
 							</c:forEach>
-							<!-- <li class="on">
-								<a href="#panel_1">
-									<span class="tit">메인</span>
-								</a>
-							</li>
-							<li>
-								<a href="#panel_2">
-									<span class="tit">디저트</span>
-								</a>
-							</li>
-							<li>
-								<a href="#panel_3">
-									<span class="tit">음료</span>
-								</a>
-							</li> -->
 						</ul>
 						<div class="tab-contents">
 							<c:forEach var="mcate" items="${stInfo.menuCateList }">
@@ -292,10 +313,14 @@
 								<ul class="menu-list">
 									<c:if test="${mcate.m_cate_idx eq menu.m_cate_idx }">
 									<li>
-										<img src="${menu.menu_img }" alt="${mcate.m_cate_name }_${menu.menu_idx}"/>
+										<div class="menu-img-wrap">
+											<img src="${menu.menu_img }" alt="${mcate.m_cate_name }_${menu.menu_idx}"/>
+										</div>
 										<div class="txt-area">
-											<strong>${menu.menu_name }</strong>
-											<span class="price">${menu.menu_price }</span>
+											<div>
+												<strong>${menu.menu_name }</strong>
+												<span class="price">${menu.menu_price }</span>
+											</div>
 											<c:if test="${!empty menu.menu_info }">
 											<p>${menu.menu_info }</p>
 											</c:if>
@@ -303,106 +328,10 @@
 									</li>
 									</c:if>
 								</ul>
-								</c:forEach>
 								<button type="button" class="btn-menu-more">메뉴 더보기</button>
+								</c:forEach>
 							</div>
 							</c:forEach>
-						
-			<!-- 				<div class="tab-panel" id="panel_1">
-								<ul class="menu-list">
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>추가 PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>추가 PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-								</ul>
-								<button type="button" class="btn-menu-more">메뉴 더보기</button>
-							</div>
-							<div class="tab-panel" id="panel_2">
-								<ul class="menu-list">
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-								</ul>
-								<button type="button" class="btn-menu-more">메뉴 더보기</button>
-							</div>
-							<div class="tab-panel" id="panel_3">
-								<ul class="menu-list">
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-									<li>
-										<img src="../img/user/storeInfo/img_pasta.png" alt="파스타1"/>
-										<div class="txt-area">
-											<strong>PPP 파스타</strong>
-											<span class="price">22,000</span>
-											<p>Pasta panna piselli e prosciutto 콩과 햄이 들어간 크림 파스타</p>
-										</div>
-									</li>
-								</ul>
-								<button type="button" class="btn-menu-more">메뉴 더보기</button>
-							</div> -->
 						</div>
 					</div>
 					<!-- icoTab (e) -->
@@ -413,7 +342,35 @@
 
 			<!-- 오른쪽 예약 영역 (s) -->
 			<div class="reservation">
-				예약 영역
+				<!-- 캘린더 영역(s) -->
+				<div class="cal-wrapper">
+					달력
+				</div>
+				<!-- 캘린더 영역(e) -->
+				
+				<!-- 인원 선택 영역(s) -->
+				<div class="cnt-wrapper">
+					인원
+				</div>
+				<!-- 인원 선택 영역(e) -->
+				
+				<!-- 시간 선택 영역(s) -->
+				<div class="time-wrapper">
+					시간
+				</div>
+				<!-- 시간 선택 영역(e) -->
+				
+				<!-- 테이블 선택 영역(s) -->
+				<div class="table-wrapper">
+					테이블 타입
+				</div>
+				<!-- 테이블 선택 영역(e) -->
+				
+				<!-- 버튼 영역 (s) -->
+				<div class="btn-wrapper">
+					버튼
+				</div>
+				<!-- 버튼 영역 (e) -->
 			</div>
 			<!-- 오른쪽 예약 영역 (e) -->
 		</section>

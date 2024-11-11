@@ -9,6 +9,7 @@ public class HYStoreInfoDTO {
 	
 	//매장 이미지, 소식, 메뉴카테고리, 메뉴 DTO를 리스트로 담기
 	private List<HYStoreImgDTO> storeImgList;
+	private StoreTimeDTO todayTime; //오늘 요일의 영업시간 dto
 	private List<StoreTimeDTO> storeTimeList;
 	private List<HYStoreNewsDTO> storeNewsList;
 	private List<CategoryDTO> convList;
@@ -21,12 +22,13 @@ public class HYStoreInfoDTO {
 		
 	}
 
-	public HYStoreInfoDTO(HYStoreDTO storeDTO, List<HYStoreImgDTO> storeImgList, List<StoreTimeDTO> storeTimeList,
+	public HYStoreInfoDTO(HYStoreDTO storeDTO, List<HYStoreImgDTO> storeImgList, StoreTimeDTO todayTime, List<StoreTimeDTO> storeTimeList,
 			List<HYStoreNewsDTO> storeNewsList, List<CategoryDTO> convList, List<HYMenuCateDTO> menuCateList,
 			List<HYMenuDTO> menuList, int jjimCnt) {
 		super();
 		this.storeDTO = storeDTO;
 		this.storeImgList = storeImgList;
+		this.todayTime = todayTime;
 		this.storeTimeList = storeTimeList;
 		this.storeNewsList = storeNewsList;
 		this.convList = convList;
@@ -49,6 +51,14 @@ public class HYStoreInfoDTO {
 
 	public void setStoreImgList(List<HYStoreImgDTO> storeImgList) {
 		this.storeImgList = storeImgList;
+	}
+	
+	public StoreTimeDTO getTodayTime() {
+		return todayTime;
+	}
+
+	public void setTodayTime(StoreTimeDTO todayTime) {
+		this.todayTime = todayTime;
 	}
 
 	public List<StoreTimeDTO> getStoreTimeList() {

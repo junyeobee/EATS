@@ -92,4 +92,14 @@
 	<select id="getJjimCnt" resultType="int">
    		
 	</select>
+	<select id="getTodayTime" resultType="com.eats.store.model.StoreTimeDTO" parameterType="map">
+		SELECT
+			*
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+		AND
+			STIME_DAY=#{kor_today}
+	</select>
 </mapper>

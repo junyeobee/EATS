@@ -1,10 +1,14 @@
 @charset "utf-8";
-
+body{
+	background-color:#FFF8EB;
+}
 /* header */
 header {
 	width: 100%; 
 	height: 103px; 
-	box-shadow: 0px 5px 10px rgba(0,0,0,0.12);
+	/* box-shadow: 0px 5px 10px rgba(0,0,0,0.12); */
+	/* border-bottom:3px solid #FFB53C; */
+	/* background-color:#fefefe; */
 }
 header .inner {
 	position: relative; 
@@ -37,10 +41,10 @@ header .inner .user-area .user {
 	display: -webkit-box; 
 	-webkit-line-clamp: 1; 
 	-webkit-box-orient: vertical; 
-	font-size: 21px;
+	font-size: 15px;
 }
 header .inner .user-area .noti {
-	font-size: 16px;
+	font-size: 12px;
 }
 
 /* contents */
@@ -56,7 +60,7 @@ header .inner .user-area .noti {
 	padding-right: 90px;
 }
 .store-wrap .tit-area .tit {
-	font-size: 40px;
+	font-size: 30px;
 }
 .store-wrap .tit-area .cate {
 	display: inline-block; 
@@ -65,7 +69,7 @@ header .inner .user-area .noti {
 }
 .store-wrap .tit-area .cate span {
 	display: inline-block; 
-	font-size: 24px;
+	font-size: 15px;
 }
 .store-wrap .tit-area .cate span + span {
 	position: relative; 
@@ -76,13 +80,13 @@ header .inner .user-area .noti {
 	absolute; bottom: 0; 
 	left: 7px; 
 	width: 2px; 
-	height: 18px; 
+	height: 10px; 
 	background: #000; 
 	transform: translateY(-50%);
 }
 
 .store-wrap .info {
-	font-size: 24px;
+	font-size: 15px;
 }
 .store-wrap .info > span {
 	display: inline-block;
@@ -101,7 +105,7 @@ header .inner .user-area .noti {
 	padding-left: 42px; 
 	background: url(/img/user/storeInfo/icon_fork.png) no-repeat left center; 
 	color: #ff533e; 
-	font-size: 24px;
+	font-size: 12px;
 	font-weight: 500;
 }
 
@@ -110,6 +114,7 @@ header .inner .user-area .noti {
 	height: 470px; 
 	margin-top: 20px; 
 	border: 1px solid #000;
+	background-color:#fefefe;
 }
 .swp-store img{
 	width:100%;
@@ -134,12 +139,12 @@ header .inner .user-area .noti {
 	margin-top: 24px;
 }
 .bg-box .inner .tit {
-	font-size: 24px; 
+	font-size: 15px; 
 	font-weight: 700;
 }
 .bg-box .inner .desc {
 	margin-top: 10px; 
-	font-size: 20px; 
+	font-size: 13px; 
 	font-weight: 700;
 }
 .bg-box .inner .convenience-list li {
@@ -164,7 +169,7 @@ header .inner .user-area .noti {
 	position: relative; 
 	display: inline-block; 
 	padding-right: 36px; 
-	font-size: 24px;
+	font-size: 16px;
 }
 .acco-wrap .acco-head .btn-acco:after {
 	content:''; 
@@ -197,7 +202,7 @@ header .inner .user-area .noti {
 	display: none; 
 	margin-top: 5px; 
 	padding-left: 26px; 
-	font-size: 18px;
+	font-size: 15px;
 }
 
 .acco-wrap .acco-body .addr-list {
@@ -220,7 +225,7 @@ header .inner .user-area .noti {
 .acco-wrap + .desc {
 	padding-left: 26px; 
 	margin-top: 20px; 
-	font-size: 18px;
+	font-size: 10px;
 }
 
 .acco-wrap .acco-body .time-list {
@@ -228,12 +233,17 @@ header .inner .user-area .noti {
 }
 .acco-wrap .acco-body .time-list li {
 	display: flex; 
-	font-size: 20px;
+	font-size: 12px;
 }
 .acco-wrap .acco-body .time-list li .item {
 	flex-basis: 28px;
 }
-
+.copy-link{
+	color:blue;
+}
+.copy-link:hover{
+	text-decoration:underline;
+}
 /* 공지사항 스와이프 */
 .swp-noti {
 	position: relative; 
@@ -254,19 +264,21 @@ header .inner .user-area .noti {
 	border-radius: 10px; 
 	background: #FFF8EB; 
 	color:#5f420f; 
-	font-size: 14px; 
+	font-size: 10px; 
 	font-weight: 500;
 }
 
 /* 리뷰 버튼 */
 .btn-review {
-	display: block; 
-	padding: 25px; 
-	border-radius: 10px; 
-	font-size: 24px; 
-	font-weight: 700; 
-	background: #FFF8EB; 
-	text-align: center;
+    display: block;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #FFB53C;
+    text-align: center;
+    width: 98%;
+    margin: auto;
 }
 
 /* 메뉴 리스트 */
@@ -274,23 +286,28 @@ header .inner .user-area .noti {
 	padding: 10px 37px;
 }
 .tab-wrap .tab-list {
-	margin-bottom: 20px; 
-	font-size: 0;
+	margin-bottom: 20px;
+    font-size: 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* text-align: center; */
+    column-gap: 20px;
+    row-gap: 10px;
 }
 .tab-wrap .tab-list li {
 	display: inline-block; 
 	padding: 8px 28px; 
-	border:2px solid orange; 
+	border:2px solid #FFB53C;
 	border-radius: 20px; 
-	font-size: 14px; 
+	font-size: 15px; 
 	font-weight: 500;
 }
-.tab-wrap .tab-list li + li {
+/* .tab-wrap .tab-list li + li {
 	margin-left: 24px;
-}
+} */
 .tab-wrap .tab-list li.on {
-	background: orange; 
-	color: #fff; 
+	background: #FFB53C; 
+	color: #fefefe; 
 	font-weight: 700;
 }
 .tab-wrap .tab-contents .tab-panel {
@@ -300,30 +317,40 @@ header .inner .user-area .noti {
 .tab-wrap .tab-contents .menu-list li {
 	display: flex; 
 	padding: 24px 20px; 
-	background: #fff;
+	background: #fefefe;
+}
+.menu-img-wrap{
+	width:30%;
+	height:140px;
+	overflow: hidden;
+	text-align:center;
+	border:1px solid #FFB53C;
+	margin:0px 20px;
 }
 .tab-wrap .tab-contents .menu-list li img {
-	margin-right: 20px;
+	/* margin-right: 20px; */
+	height:100%;
 }
 .tab-wrap .tab-contents .menu-list li .txt-area {
 	position: relative;
+	width:60%;
 }
 .tab-wrap .tab-contents .menu-list li .txt-area strong {
 	display: block; 
 	padding-right: 62px; 
-	font-size: 20px; 
+	font-size: 12px; 
 	font-weight: 500;
 }
 .tab-wrap .tab-contents .menu-list li .txt-area .price {
 	position: absolute; 
 	top: 4px; 
 	right: 0; 
-	font-size: 15px; 
+	font-size: 10px; 
 	font-weight: 500;
 }
 .tab-wrap .tab-contents .menu-list li .txt-area p {
 	margin-top: 18px; 
-	font-size: 15px; 
+	font-size: 10px; 
 	font-weight: 500;
 }
 .tab-wrap .tab-contents .menu-list li + li {
@@ -335,24 +362,39 @@ header .inner .user-area .noti {
 	margin-top: 28px; 
 	padding: 18px 0; 
 	border-radius: 10px; 
-	background: orange; 
-	font-size: 24px; 
+	background: #FFB53C;
+	font-size: 15px; 
 	font-weight: 700; 
 	color: #fff; 
 	text-align: center;
 }
-.menu-list li img{
-	width:30%;
-}
 /* 오른쪽 예약 영역 */
 .reservation {
-	position: sticky; 
-	top: 0; 
-	right: 0; 
-	min-width: 328px; 
-	width: 328px;  
-	height: 742px; 
-	margin-top: 24px; 
-	background: #999;
+    position: sticky;
+    top: 0;
+    right: 0;
+    min-width: 328px;
+    width: 328px;
+    height: fit-content;
+    margin-top: 24px;
+    background: #FFB53C;
+    border-radius: 10px;
 }
-
+.reservation div{
+	width:300px;
+	margin:10px auto;
+	background-color:#fefefe;
+}
+.reservation .cal-wrapper{
+	height:300px;
+	text-align:center;
+}
+.reservation .cnt-wrapper, .reservation .time-wrapper{
+	height:70px;
+}
+.reservation .table-wrapper{
+	height:100px;
+}
+.reservation .btn-wrapper{
+	height:70px;
+}

@@ -1,6 +1,10 @@
 package com.eats.store.service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,17 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		
 		HYStoreDTO storeDto=mapper.getStoreInfo(store_idx);
 		List<HYStoreImgDTO> imgList=mapper.getStoreImg(store_idx);
+		
+		LocalDate now=LocalDate.now();
+		DayOfWeek dayOfWeek=now.getDayOfWeek();
+		String days[] = {"월", "화", "수", "목", "금", "토", "일"};
+		String korToday=days[dayOfWeek.getValue()-1];
+		
+		Map<String, Object> param=new HashMap<String, Object>();
+		param.put("store_idx", store_idx);
+		param.put("kor_today", korToday);
+		
+		StoreTimeDTO todayTime=mapper.getTodayTime(param);
 		List<StoreTimeDTO> timeList=mapper.getStoreTime(store_idx);
 		List<HYStoreNewsDTO> newsList=mapper.getStoreNews(store_idx);
 		List<CategoryDTO> conv_list=mapper.getStoreConvinient(store_idx);
@@ -33,7 +48,7 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		List<HYMenuDTO> menu_list=mapper.getStoreMenu(store_idx);
 		int jjimCnt=0;
 		
-		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt);
+		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt);
 		
 		return storeTotalInfo;
 	}
