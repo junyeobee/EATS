@@ -13,14 +13,14 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="css/user/showIdCSS.css">
+<link rel="stylesheet" href="../css/user/showIdCSS.css">
 <body>
-<c:if test="${empty session.userId }">
+<%-- <c:if test="${empty session.userId }">
 <script type="text/javascript">
 	alert("잘못된 접근입니다.");
 	window.location.href = "/";
 </script>
-</c:if>
+</c:if> --%>
 <div class="id-show-wrapper">
 	<div class="logo-wrapper">
 		<a href="/"><img src="img/eats_logo.png"></a>
@@ -33,8 +33,8 @@
 		<p>입니다</p>
 	</div>
 	<div class="link-wrapper">
-		<input type="button" value="로그인" onclick="location.href='userLogin'">
-		<a href="userFindPwd">비밀번호도 잊으셨나요?</a>
+		<input type="button" value="로그인" onclick="location.href='/user/login'">
+		<a href="/user/findPwd">비밀번호도 잊으셨나요?</a>
 	</div>
 </div>
 </body>

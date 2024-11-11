@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <script>
 alert('${msg}');
-location.href='userLogin';
+location.href='/user/login';
 </script>

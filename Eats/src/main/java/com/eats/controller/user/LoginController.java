@@ -27,20 +27,20 @@ public class LoginController {
 	@Autowired
 	private EmailService emailService;
 	
-	@GetMapping("/userLogin")
+	@GetMapping("/user/login")
 	public String goLogin() {
-		
-		return "user/login/userLogin";
+		//로그인 페이지로 이동
+		return "/user/login/userLogin";
 	}
 	
-	@PostMapping("/userLogin")
+	@PostMapping("/user/login")
 	public ModelAndView submitLogin(
 			@RequestParam(value="userId", required = true)String userId,
 			@RequestParam(value="userPwd", required = true)String userPwd,
 			@RequestParam(value="saveId", required = false)String saveId,
 			HttpSession session, 
 			HttpServletResponse resp) {
-		
+		//로그인 처리
 		boolean result=service.loginCheck(userId, userPwd);
 		
 		ModelAndView mv=null;
@@ -49,9 +49,6 @@ public class LoginController {
 			//로그인성공
 			mv=new ModelAndView("redirect:/");
 			Map<String, Object> map=service.getUserInfo(userId);
-			System.out.println(map);
-			System.out.println(map.get("USER_IDX"));
-			System.out.println(map.get("USER_NICKNAME"));
 			session.setAttribute("user_idx", map.get("USER_IDX"));
 			session.setAttribute("user_nickname", map.get("USER_NICKNAME"));
 			
@@ -69,26 +66,27 @@ public class LoginController {
 			mv=new ModelAndView();
 			
 			mv.addObject("msg", "아이디 또는 비밀번호를 확인해주세요");
-			mv.setViewName("user/login/loginMsg");
+			mv.setViewName("/user/login/loginMsg");
 		}
 		
 		return mv;
 	}
 	
-	@GetMapping("/userLogout")
+	@GetMapping("/user/logout")
 	public String goLogout(HttpSession session) {
+		//로그아웃 처리
 		session.invalidate();
 		
 		return "redirect:/";
 	}
 	
-	@GetMapping("/userFindId")
+	@GetMapping("/user/findId")
 	public String goFindId() {
 		
 		return "user/login/userFindId";
 	}
 	
-	@PostMapping("/sendCode")
+	@PostMapping("/user/findId/sendCode")
 	public ModelAndView sendCode(
 			@RequestParam(value="userName", required=true)String userName,
 			@RequestParam(value="userEmail", required=true)String userEmail,
@@ -112,7 +110,7 @@ public class LoginController {
 		return mv;
 	}
 	
-	@PostMapping("/checkCode")
+	@PostMapping("/user/findId/checkCode")
 	public ModelAndView validateCode(
 			@RequestParam(value="userCode", required=true)String userCode,
 			HttpSession session) {
@@ -144,7 +142,7 @@ public class LoginController {
 		return mv;
 	}
 	
-	@GetMapping("/showUserId")
+	@GetMapping("/user/showId")
 	public ModelAndView showUserId(HttpSession session) {
 		
 		ModelAndView mv=new ModelAndView();
@@ -156,13 +154,13 @@ public class LoginController {
 		return mv;
 	}
 	
-	@GetMapping("/userFindPwd")
+	@GetMapping("/user/findPwd")
 	public String userFindPwd() {
 		
 		return "user/login/userFindPwd";
 	}
 	
-	@PostMapping("/idExist")
+	@PostMapping("/user/findPwd/idExist")
 	public ModelAndView idCheckForFindPwd(String userId, HttpSession session) {
 		
 		String dbEmail=service.idCheckForFindId(userId);
@@ -182,11 +180,11 @@ public class LoginController {
 		return mv;
 	}
 	
-	@PostMapping("/sendCodeForFindPwd")
+	@PostMapping("/user/findPwd/sendCode")
 	public ModelAndView sendCodeForFindPwd(String userId, String userEmail, HttpSession session) {
 		
 		String dbEmail=service.idCheckForFindId(userId);
-		System.out.println("userID="+userId+"/userEmail="+userEmail);
+		//System.out.println("userID="+userId+"/userEmail="+userEmail);
 		if(dbEmail!=null && dbEmail!="") {
 			if(dbEmail.equals(userEmail)) {
 				String validCode=emailService.makeCode();
@@ -204,7 +202,7 @@ public class LoginController {
 		return mv;
 	}
 	
-	@PostMapping("/checkPwdCode")
+	@PostMapping("/user/findPwd/checkCode")
 	public ModelAndView validatePwdCode(
 			@RequestParam(value="userCode", required=true)String userCode,
 			HttpSession session) {
@@ -236,7 +234,7 @@ public class LoginController {
 		return mv;
 	}
 	
-	@GetMapping("/userResetPwd")
+	@GetMapping("/user/resetPwd")
 	public String resetPwdForm(String userId, HttpSession session) {
 		
 		session.setAttribute("userId", userId);
@@ -244,7 +242,7 @@ public class LoginController {
 		return "user/login/resetPwd";
 	}
 	
-	@PostMapping("/userResetPwd")
+	@PostMapping("/user/resetPwd")
 	public ModelAndView resetPwd(String newPwd, HttpSession session) {
 		
 		String userId=(String)session.getAttribute("userId");

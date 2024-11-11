@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,7 +30,7 @@ public class EtcController {
         
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data);
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         mav.setViewName("store/etc/storeInfoUpdateReq");
 
         return mav;
