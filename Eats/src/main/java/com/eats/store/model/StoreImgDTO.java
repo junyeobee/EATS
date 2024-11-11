@@ -27,8 +27,6 @@ public class StoreImgDTO {
 		this.store_img5 = store_img5;
 	}
 
-
-
 	public int getSi_idx() {
 		return si_idx;
 	}
@@ -84,8 +82,6 @@ public class StoreImgDTO {
 	public void setStore_img5(String store_img5) {
 		this.store_img5 = store_img5;
 	}
-    
-
 }
     
     /*

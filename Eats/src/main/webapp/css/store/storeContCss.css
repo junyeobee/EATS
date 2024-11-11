@@ -76,6 +76,11 @@
 	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
 	
+	/* 그리드 테이블 */
+	.gridBox .gridTable {width:100%; border:1px solid gray; border-collapse : collapse;}
+	.gridBox .gridTable tr td {padding:5px; border:1px solid gray; }
+	
+	
 	
 	/* <버튼> */
 	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
@@ -98,12 +103,18 @@
 	/* 소식등록 textarea */
 	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
 	
-	/* 이미지관리 - 상단컨텐츠 박스 */
+	
+	hr {width:100%; border:1px solid gray; margin:30px 0;}
+	
 	.mb60 {margin-bottom:60px;}
 	
-	/* 정보수정신청 주소input */
+	.ml20 {margin-left:20px;}
+	
+	
+	.ws50 {width:50px;}
 	.ws400 {width:400px;}
 	.ws800 {width:800px;}
+	
 	
 	.a_left {text-align:left; padding-left:10px;}
 	.a_center {text-align:center;}

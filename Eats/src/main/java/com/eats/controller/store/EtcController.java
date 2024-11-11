@@ -1,5 +1,7 @@
 package com.eats.controller.store;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,15 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.store.model.StoreCateDTO;
 import com.eats.store.model.StoreDTO;
 import com.eats.store.model.StoreInfoUpdateDTO;
+import com.eats.store.model.StoreNewsDTO;
+import com.eats.store.service.StoreEtcService;
 import com.eats.store.service.StoreInfoUpdateReqService;
 
 @Controller
 public class EtcController {
 
     @Autowired
-    private StoreInfoUpdateReqService service;
+    private StoreEtcService service;
+    //private StoreInfoUpdateReqService service;
     
     @GetMapping("/store/storeInfoUpdateReq")
     public ModelAndView storeInfoUpdateReq(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
@@ -38,20 +44,6 @@ public class EtcController {
     
     @PostMapping("/store/storeInfoUpdateReqSave")
     public ModelAndView storeInfoUpdateReqSave(StoreInfoUpdateDTO dto) {
-    	
-    	/*
-    	System.out.println("tttttttt");
-    	System.out.println("idx:"+dto.getStore_idx());
-    	System.out.println("addr:"+dto.getSu_addr());
-    	System.out.println("ceo:"+dto.getSu_ceo());
-    	System.out.println("daddr:"+dto.getSu_daddr());
-    	System.out.println("suidx:"+dto.getSu_idx());
-    	System.out.println("name:"+dto.getSu_name());
-    	System.out.println("reason:"+dto.getSu_reason());
-    	System.out.println("state:"+dto.getSu_state());
-    	System.out.println("tel:"+dto.getSu_tel());
-    	*/
-    	
         int result = service.StoreInfoUpdateInsert(dto);
     	System.out.println("fffffff");
     	
@@ -64,6 +56,27 @@ public class EtcController {
         mav.setViewName("store/common/basicMsg");
 
         return mav;
-    	
+    }
+    
+    @GetMapping("/store/storeGrid")
+    public ModelAndView storeGrid(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
+    	//정보수정신청 페이지 접속시 로그인한 매장의 매장데이터 불러옴
+        
+        // store_idx가 null이면 기본값을 1로 설정
+        if (store_idx == null) {
+            store_idx = 1;  // 기본값 설정
+        }
+
+        List<StoreNewsDTO> lists = service.storeCate(store_idx);
+        
+        
+        
+        ModelAndView mav = new ModelAndView();
+		mav.addObject("lists", lists);
+        //mav.addObject("data", data);
+        //System.out.println(data.toString());
+        mav.setViewName("store/etc/storeGrid");
+
+        return mav;
     }
 }
