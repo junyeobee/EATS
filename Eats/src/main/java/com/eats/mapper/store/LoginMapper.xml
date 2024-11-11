@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <mapper namespace="com.eats.mapper.store.LoginMapper">
   
   
-  	<select id="storeLogin" parameterType="String" resultType="String">
+  	<select id="storeLogin" parameterType="String" resultType="com.eats.store.model.EatsStoreDTO">
   		select 
   		store_pwd,store_idx
   		from 
@@ -15,7 +15,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
   	
   	
-  
   	<select id="findId"  parameterType="com.eats.store.model.EatsStoreDTO" resultType="String">
   		select store_id
   		from store_account_test
@@ -26,24 +25,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
   
   
-  <select id="storeidCheckForFindPwd">
+  	<select id="storeidCheckForFindPwd">
 		SELECT
 			STORE_EMAIL
 		FROM
 			store_account_test
 		WHERE
 			STORE_ID=#{storeId}
-</select>
+	</select>
 	
 	
-<update id="storeUpdatePwd" parameterType="map">
+	<update id="storeUpdatePwd" parameterType="map">
 	UPDATE
 		store_account_test
 	set
 		store_pwd=#{newPwd}
 	where
 		store_id=#{storeId}
-</update>
+	</update>
 	
 	
 	<select id="storeInfo" parameterType="String" resultType="String">
@@ -55,5 +54,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			store_id=#{storeId}
 	
 	</select>
+	
 	
   </mapper>

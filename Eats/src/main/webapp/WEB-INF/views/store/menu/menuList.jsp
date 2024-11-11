@@ -178,9 +178,9 @@ body {
 		
 	<form name="deleteMenu" action="deleteMenu" method="post">
 		<c:forEach var="menu" items="${menu}">
-			<div class="menu-item" data-menu-idx="${menu.menu_idx}" onclick="selectMenu(this.dataset.menuIdx);">
+			<div class="menu-item" data-menu-idx="${menu.menu_idx}" onclick="toggleMenuSelection(this.dataset.menuIdx);">
 				<img src="${menu.menu_img }" alt="메뉴" class="menu-image">
-				<button class="edit-button" onclick="location.href='/menuUpdatePage'">수정</button>
+				<input type="button" class="edit-button" value="수정" onclick="location.href='/menuUpdatePage/'+${menu.menu_idx}">
 				
 				<div class="menu-info">
 					<div class="menu-name">${menu.menu_name}</div>
@@ -192,7 +192,7 @@ body {
 		</c:forEach>
 		
 		<input type="button" value="등록하기" onclick="location.href='StoreMenuInsert'">
-		<input type="submit" value="선택삭제"  class="delete-button">
+		 <input type="button" value="선택삭제" class="delete-button" onclick="submitSelectedMenus();">
 	</form>
 	</div>
 
@@ -215,25 +215,33 @@ function showSendResult(){
 			menuList.innerHTML='';
 			if(Array.isArray(jsondata) && jsondata.length > 0){
 			  jsondata.forEach( (menu) => {
-                    var menuItemDiv = document.createElement('div');
-                    menuItemDiv.className = 'menu-item';
-                    var img = document.createElement('img');
-                    img.src = menu.menu_img;
-                    img.alt = '메뉴';
-                    img.className = 'menu-image';
-            		
-                    var editButton = document.createElement('button');
-                    editButton.className = 'edit-button';
-                    editButton.textContent = '수정';
-                  	
-                    var menuInfoDiv = document.createElement('div');
-                    menuInfoDiv.className = 'menu-info';
-                    menuInfoDiv.innerHTML += "<div class='menu-name'>"+menu.menu_name+"</div><div class='menu-description'>"+menu.menu_info+"</div><div class='menu-price'>"+menu.menu_price+"</div>"
-                    menuItemDiv.appendChild(img);
-                    menuItemDiv.appendChild(editButton);
-                    menuItemDiv.appendChild(menuInfoDiv);
-                   	
-                    menuList.appendChild(menuItemDiv);
+				  var menuItemDiv = document.createElement('div');
+		            menuItemDiv.className = 'menu-item';
+		            menuItemDiv.setAttribute('data-menu-idx', menu.menu_idx);
+		            menuItemDiv.onclick = function() {
+		                toggleMenuSelection(menu.menu_idx); // 선택 시 스타일 변경 및 인덱스 추가/제거
+		            };
+
+		            var img = document.createElement('img');
+		            img.src = menu.menu_img;
+		            img.alt = '메뉴';
+		            img.className = 'menu-image';
+
+		            var editButton = document.createElement('button');
+		            editButton.className = 'edit-button';
+		            editButton.textContent = '수정';
+		            editButton.onclick = function() {
+		                location.href = '/menuUpdatePage/' + menu.menu_idx; // 수정 페이지로 이동
+		            };
+
+		            var menuInfoDiv = document.createElement('div');
+		            menuInfoDiv.className = 'menu-info';
+		            menuInfoDiv.innerHTML += "<div class='menu-name'>" + menu.menu_name + "</div><div class='menu-description'>" + menu.menu_info + "</div><div class='menu-price'>" + menu.menu_price + "</div>";
+
+		            menuItemDiv.appendChild(img);
+		            menuItemDiv.appendChild(editButton);
+		            menuItemDiv.appendChild(menuInfoDiv);
+		            menuList.appendChild(menuItemDiv);
                 });
             } else {
                 menuList.innerHTML = '<div>메뉴가 없습니다.</div>';
@@ -242,57 +250,45 @@ function showSendResult(){
 	}
 }
 
-let selectedMenus = [];
 
-function selectMenu(menuIdx){
-	
-	 menuIdx = parseInt(menuIdx);
-	const menuDiv = event.currentTarget;
-	
-	const index = selectedMenus.indexOf(menuIdx);
-	
-	if(index === -1){
-		
-		selectedMenus.push(menuIdx);
-		menuDiv.style.border ='4px solid #007bff';
-	}else{
-		
-		selectedMenus.splice(index, 1);
-		menuDiv.style.border = '';
-	}
-	
-}
+let selectedMenuIdxs = []; 
 
+function toggleMenuSelection(menuIdx) {
+    const menuDiv = event.currentTarget; 
+    menuIdx = parseInt(menuIdx); 
 
-/* function deleteSelectedMenus(){
-	
-	if(selectedMenus === 0){
-		alert('삭제할 메뉴를 선택해주세요.');
-		return;
-	}
-	
-	if(confirm('선택한 메뉴를 삭제하시겠습니까?')){
-		 var params = "menuIdxList=" + selectedMenus.join(',');
-	        sendRequest('menuListAjax', params, showDeleteResult, 'GET');
-		
-	}
-}
-
-function showDeleteResult() {
-    if (XHR.readyState == 4) {
-        if (XHR.status == 200) {
-            var data = XHR.responseText;
-            if (data == 'success') {
-                alert('선택한 메뉴가 삭제되었습니다.');
-                location.reload();
-            } else {
-                alert('메뉴 삭제에 실패했습니다.');
-            }
-        } else {
-            alert('서버 오류가 발생했습니다.');
-            console.error('Error Status:', XHR.status);
-        }
+    const index = selectedMenuIdxs.indexOf(menuIdx);
+    
+    if (index === -1) {
+      
+        selectedMenuIdxs.push(menuIdx);
+        menuDiv.style.border = '4px solid #007bff'; 
+    } else {
+        // 메뉴가 선택된 경우
+        selectedMenuIdxs.splice(index, 1);
+        menuDiv.style.border = ''; 
     }
-} */
+    
+    console.log(selectedMenuIdxs); 
+}
+
+
+
+function submitSelectedMenus() {
+
+    const form = document.deleteMenu;
+    form.querySelectorAll('input[name="menu_idx"]').forEach(input => input.remove());
+    
+    selectedMenuIdxs.forEach(idx => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'menu_idx'; 
+        input.value = idx; 
+        form.appendChild(input);
+    });
+
+    
+    form.submit();
+}
 </script>
 </html>
