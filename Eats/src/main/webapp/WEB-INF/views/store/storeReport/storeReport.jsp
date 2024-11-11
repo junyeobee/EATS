@@ -121,20 +121,30 @@
             background-color: #f1f5f9;
         }
     </style>
+    <script type="text/javascript" src="js/httpRequest.js"></script>
     <script>
-    	<!-- 임시로 넣어둔거입니다~ -->
         document.addEventListener('DOMContentLoaded', function() {
-            let date = new Date().getMonth() + 1;
-            let newLabel = document.createElement('label');
-            newLabel.textContent = date;
-            let select = document.querySelector('.date-select');
-            document.getElementById('month').appendChild(newLabel);
-            for (let i = 1; i <= date; i++) {
-                let option = document.createElement('option');
-                option.value = `2024.${i}`;
-                option.textContent = `2024.${i} 월`;
-                select.appendChild(option);
-            }
+			let date = new Date().getMonth() + 1;
+			let curdate;
+			let newLabel = document.createElement('label');
+			newLabel.textContent = date;
+			let select = document.querySelector('.date-select');
+			document.getElementById('month').appendChild(newLabel);
+			for (let i = 1; i <= date; i++) {
+				let option = document.createElement('option');
+				option.value = '2024/' + i;
+				option.textContent = '2024년 ' + i + '월';
+				option.setAttribute('id', i+ 'month');
+				option.setAttribute('class','monthOption')
+				select.appendChild(option);
+			}
+            select.addEventListener('change',function(e){
+                let currentDate = e.target.value;
+                let params = 'store_idx=' + 1 + '&date=' + currentDate;
+                sendRequest('/reportIsCreated', params, null , 'GET');
+                let isCreated = XHR.responseText;
+                console.log(isCreated);
+            })
         });
     </script>
 </head>
@@ -206,9 +216,7 @@
                     <span>다운로드</span>
                     <span>(pdf)</span>
                 </a>
-                <form action="/storeReportCreate" method = "post">
-                	<button type ="submit" formmethod="post">분석</button>
-                </form>
+                <button id = "createReport">분석</button>
             </div>
         </div>
     </div>
