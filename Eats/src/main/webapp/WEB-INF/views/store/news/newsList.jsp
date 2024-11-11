@@ -5,14 +5,15 @@
 <%@include file="../common/header.jsp"%>
 
 <div class="mainCon_1400">
-	<input type="text" name="store_idx" id="" value="1">
+	
 	<h2>소식 관리</h2>
 	<div class="btnBox_top">
 		<input type="button" class="btn_black" value="글쓰기" onclick="location.href='/store/storeNewsWrite'">
 	</div>
 	
 	<form>
-	
+			
+		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<div class="tableList mb60">
 			<table>
 				<thead>
@@ -40,7 +41,14 @@
 								<td class="a_left ws800">${dto.s_news_title }</td>
 								<td class="a_center">${dto.s_news_date }</td>
 								<td class="a_center">
-									${dto.s_news_del }
+									<c:choose>
+									    <c:when test="${dto.s_news_del != 'N'}">
+									    	삭제완료
+									    </c:when>
+									    <c:otherwise>
+									    	
+									    </c:otherwise>
+									</c:choose>
 								</td>
 								<td class="a_center">
 									<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="location.href='/store/storeNewsRead?news_idx=${dto.s_news_idx }'">
@@ -57,6 +65,7 @@
 					</tr>
 				</tfoot>
 			</table>
+			<!-- 
 			<div class="listPaging">
 				<span> ◀ </span>
 				<span>1</span>
@@ -66,6 +75,7 @@
 				<span>5</span>
 				<span> ▶ </span>
 			</div>
+			 -->
 		</div>
 	</form>
 </div>
