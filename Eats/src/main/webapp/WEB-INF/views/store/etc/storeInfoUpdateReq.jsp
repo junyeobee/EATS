@@ -10,7 +10,7 @@
 		<c:if test="${not empty data}">	
 			<input type="text" name="store_idx" id="" value="1">
 			
-			<input type=text name="su_state" id="" class="ws400" value="" placeholder="">
+			<input type=text name="su_state" id="" class="ws400" value="대기" placeholder="">
 			<input type=text name="su_reason" id="" class="ws400" value="" placeholder="">
 			<h2>정보수정신청</h2>
 			<div class="btnBox_top">
