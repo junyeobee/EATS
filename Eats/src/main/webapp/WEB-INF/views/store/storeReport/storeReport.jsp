@@ -155,7 +155,7 @@
             filter: blur(5px);
         }
     </style>
-    <script type = "text/javascript" src = "../js/httpRequest.js"></script>
+    <script type = "text/javascript" src = "/src/main/webapp/js/httpRequest.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let date = new Date().getMonth() + 1;
