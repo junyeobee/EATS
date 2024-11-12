@@ -1,38 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- MypageMapper.xml -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.eats.mapper.user.MypageMapper">
 
+    <!-- 사용자 정보 가져오기 -->
     <select id="getUserProfile" parameterType="int" resultType="com.eats.user.model.EatsUserDTO">
-        SELECT USER_IDX, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_BIRTH, USER_GENDER, JOIN_METHOD
-        FROM EATS_USER
-        WHERE USER_IDX = #{userId}
+        SELECT 
+            E.USER_IDX AS user_idx,
+            E.USER_ID AS user_id,
+            E.USER_NAME AS user_name,
+            E.USER_EMAIL AS user_email,
+            E.USER_BIRTH AS user_birth,
+            E.USER_GENDER AS user_gender,
+            UP.USER_TEL AS user_tel,
+            UP.USER_NICKNAME AS user_nickname,
+            UP.USER_INTRO AS user_intro,
+            UP.USER_LOCATION AS user_location
+        FROM EATS_USER E
+        LEFT JOIN USER_PROFILE UP ON E.USER_IDX = UP.USER_IDX
+        WHERE E.USER_IDX = #{userId}
     </select>
 
-    <select id="getUserJjimList" parameterType="int" resultType="com.eats.user.model.JjimDTO">
-        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR
-        FROM JJIM jjim
-        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
-        WHERE jjim.USER_IDX = #{userId}
+    <!-- 사용자 정보 수정 -->
+    <update id="updateUserProfile" parameterType="com.eats.user.model.EatsUserDTO">
+        UPDATE USER_PROFILE
+        SET
+            USER_NICKNAME = #{user_nickname},
+            USER_TEL = #{user_tel},
+            USER_INTRO = #{user_intro},
+            USER_LOCATION = #{user_location}
+        WHERE USER_IDX = #{user_idx}
+    </update>
+
+    <!-- 사용자 찜 목록 가져오기 -->
+    <select id="getJjimList" parameterType="int" resultType="com.eats.user.model.JjimDTO">
+        SELECT 
+            J.USER_IDX AS user_idx,
+            S.STORE_IDX AS store_idx,
+            S.STORE_NAME AS store_name,
+            S.STORE_ADDR AS store_addr,
+            S.STORE_TEL AS store_tel
+        FROM JJIM J
+        JOIN STORE S ON J.STORE_IDX = S.STORE_IDX
+        WHERE J.USER_IDX = #{userId}
+        ORDER BY S.STORE_NAME
     </select>
 
-    <select id="getUserReviews" parameterType="int" resultType="com.eats.user.model.ReviewDTO">
-        SELECT REV_IDX, RESERVE_IDX, REV_SCORE, REV_CONTENT, REV_WRITEDATE, REV_STATE
-        FROM REVIEW
-        WHERE RESERVE_IDX IN (SELECT RESERVE_IDX FROM RESERVATION WHERE USER_IDX = #{userId})
+    <!-- 사용자 찜 삭제 -->
+    <delete id="deleteJjim" parameterType="map">
+        DELETE FROM JJIM
+        WHERE USER_IDX = #{userId} AND STORE_IDX = #{storeId}
+    </delete>
+
+    <!-- 사용자 찜 목록 페이징 -->
+    <select id="getJjimListWithPaging" parameterType="map" resultType="com.eats.user.model.JjimDTO">
+        SELECT 
+            J.USER_IDX AS user_idx,
+            S.STORE_IDX AS store_idx,
+            S.STORE_NAME AS store_name,
+            S.STORE_ADDR AS store_addr,
+            S.STORE_TEL AS store_tel
+        FROM JJIM J
+        JOIN STORE S ON J.STORE_IDX = S.STORE_IDX
+        WHERE J.USER_IDX = #{userId}
+        ORDER BY S.STORE_NAME
+        LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getUserPayments" parameterType="int" resultType="com.eats.user.model.ReservePayDTO">
-        SELECT RESERVE_IDX, PAY_PRICE, PAY_METHOD
-        FROM RESERVE_PAY
-        WHERE RESERVE_IDX IN (SELECT RESERVE_IDX FROM RESERVATION WHERE USER_IDX = #{userId})
-    </select>
-
-    <select id="getUserQnaList" parameterType="int" resultType="com.eats.user.model.UserQnaDTO">
-        SELECT UQNA_IDX, UQNA_TITLE, UQNA_CONTENT, UQNA_WDATE, UQNA_STAT, UQNA_ANSWER
-        FROM USER_QNA
+    <!-- 사용자 찜 개수 -->
+    <select id="getJjimCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM JJIM
         WHERE USER_IDX = #{userId}
     </select>
 
 </mapper>
-

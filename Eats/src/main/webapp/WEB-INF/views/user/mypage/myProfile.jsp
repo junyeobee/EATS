@@ -1,114 +1,83 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 정보</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f8f4ec;
-        }
-        .profile-container {
-            width: 90%;
-            max-width: 500px; /* 최대 크기 설정 */
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .profile-header img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .profile-header h2 {
-            margin-top: 15px;
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #333;
-        }
-        .profile-header p {
-            margin: 5px 0;
-            font-size: 1em;
-            color: #666;
-        }
-        .profile-item {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #f1f1f1;
-            padding-bottom: 10px;
-        }
-        .profile-item:last-child {
-            border-bottom: none;
-        }
-        .profile-item label {
-            font-weight: bold;
-            font-size: 1em;
-            color: #444;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .profile-item span {
-            font-size: 1em;
-            color: #555;
-        }
-    </style>
+    <!-- CSS 파일 연결 -->
+   <link rel="stylesheet" href="/css/user/myPage.css">
 </head>
 <body>
-    <div class="profile-container">
-        <!-- 프로필 헤더 -->
-        <div class="profile-header">
-            <img src="profile-icon.png" alt="프로필 이미지">
-            <h2>${userProfile.user_name}</h2>
-            <p>${userProfile.user_email}</p>
-            <p>포인트: <strong>${userProfile.user_point} p</strong></p>
+    <div class="container">
+        <!-- 프로필 섹션 -->
+        <div class="profile">
+            <img src="/img/profile-icon.png" alt="프로필 이미지">
+            <div class="profile-point">포인트: ${userProfile.userPoint} p</div>
         </div>
 
-        <!-- 프로필 상세 정보 -->
-        <div class="profile-item">
-            <label>아이디:</label>
-            <span>${userProfile.user_id}</span>
-        </div>
-        <div class="profile-item">
-            <label>생년월일:</label>
-            <span>${userProfile.user_birth}</span>
-        </div>
-        <div class="profile-item">
-            <label>성별:</label>
-            <span>${userProfile.user_gender == 1 ? '남성' : '여성'}</span>
-        </div>
-        <div class="profile-item">
-            <label>가입 방법:</label>
-            <span>${userProfile.join_method == 'R' ? '일반 가입' : '카카오 가입'}</span>
-        </div>
-        <div class="profile-item">
-            <label>전화번호:</label>
-            <span>${userProfile.user_tel}</span>
-        </div>
-        <div class="profile-item">
-            <label>닉네임:</label>
-            <span>${userProfile.user_nickname}</span>
-        </div>
-        <div class="profile-item">
-            <label>소개:</label>
-            <span>${userProfile.user_intro != null ? userProfile.user_intro : '소개 정보가 없습니다.'}</span>
-        </div>
-        <div class="profile-item">
-            <label>위치:</label>
-            <span>${userProfile.user_location != null ? userProfile.user_location : '위치 정보가 없습니다.'}</span>
+        <!-- 정보 테이블 -->
+        <h1>나의 정보</h1>
+        <table class="info-table">
+            <tr>
+                <th>아이디</th>
+                <td>${userProfile.userId}</td>
+            </tr>
+            <tr>
+                <th>생년월일</th>
+                <td>${userProfile.userBirth}</td>
+            </tr>
+            <tr>
+                <th>성별</th>
+                <td>
+                    <c:choose>
+                        <c:when test="${userProfile.userGender == 1}">남성</c:when>
+                        <c:when test="${userProfile.userGender == 2}">여성</c:when>
+                        <c:otherwise>기타</c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>
+            <tr>
+                <th>가입 방법</th>
+                <td>${userProfile.joinMethod}</td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td>${userProfile.userTel}</td>
+            </tr>
+            <tr>
+                <th>닉네임</th>
+                <td>${userProfile.userNickname}</td>
+            </tr>
+            <tr>
+                <th>소개</th>
+                <td>
+                    <c:if test="${empty userProfile.userIntro}">
+                        소개 정보가 없습니다.
+                    </c:if>
+                    <c:if test="${not empty userProfile.userIntro}">
+                        ${userProfile.userIntro}
+                    </c:if>
+                </td>
+            </tr>
+            <tr>
+                <th>위치</th>
+                <td>
+                    <c:if test="${empty userProfile.userLocation}">
+                        위치 정보가 없습니다.
+                    </c:if>
+                    <c:if test="${not empty userProfile.userLocation}">
+                        ${userProfile.userLocation}
+                    </c:if>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 버튼 섹션 -->
+        <div class="button-wrapper">
+            <a href="/user/mypage/myPage?userId=${userProfile.userIdx}">돌아가기</a>
+            <a href="/user/mypage/editProfile?userId=${userProfile.userIdx}">프로필 수정</a>
         </div>
     </div>
 </body>
