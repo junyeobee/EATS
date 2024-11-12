@@ -1,6 +1,7 @@
 package com.eats.store.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.eats.mapper.store.StoreReportMapper;
 import com.eats.store.model.StoreReportDTO;
@@ -17,5 +18,9 @@ public class StoreReportServiceImple implements StoreReportService {
 	public List<StoreReportDTO> selectReviewForReport(int store_idx){
 		List<StoreReportDTO> reivews = mapper.selectReviewForReport(store_idx);
 		return reivews;
+	}
+
+	public boolean reportIsThere(Map<String, String> map) {
+		return mapper.reportIsThere(map);
 	}
 }

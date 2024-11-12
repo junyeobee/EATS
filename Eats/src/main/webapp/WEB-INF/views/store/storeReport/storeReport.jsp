@@ -155,9 +155,10 @@
             filter: blur(5px);
         }
     </style>
-    <script type = "text/javascript" src = "/src/main/webapp/js/httpRequest.js"></script>
+    <script type = "text/javascript" src = "../js/httpRequest.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            let year = new Date().getFullYear();
             let date = new Date().getMonth() + 1;
             let newLabel = document.createElement('label');
             newLabel.textContent = date;
@@ -166,8 +167,8 @@
             
             for (let i = 1; i <= date; i++) {
                 let option = document.createElement('option');
-                option.value = '2024/' + i;
-                option.textContent = '2024년 ' + i + '월';
+                option.value = year+'/' + i;
+                option.textContent = year+'년 ' + i + '월';
                 option.setAttribute('id', i + 'month');
                 option.setAttribute('class', 'monthOption');
                 select.appendChild(option);
@@ -178,6 +179,7 @@
 
             select.addEventListener('change', function(e) {
                 let currentDate = e.target.value;
+                document.getElementById('month').innerText = currentDate.split('/')[1] + '월';
                 let params = 'store_idx=' + 1 + '&date=' + currentDate;
                 sendRequest('/reportIsCreated', params, function(response) {
                     let isNotCreated = response;
@@ -197,9 +199,7 @@
     <div class="container">
         <button id="createReport">보고서 받아보기</button>
         <div class="report-card">
-            <select class="date-select">
-                <!-- Options will be dynamically added here -->
-            </select>
+            <select class="date-select"></select>
             <div id="report-cardsection">
                 <h1 class="title">${storeName}의 <span id="month"></span>월 보고서</h1>
 
