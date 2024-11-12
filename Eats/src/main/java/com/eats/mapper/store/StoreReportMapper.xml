@@ -6,4 +6,13 @@
 	<select id = "selectReviewForReport" resultType = "com.eats.store.model.StoreReportDTO">
 		select rev_content, rev_score, rev_menu from review
 	</select>
+	<select id = "reportIsThere" resultType="boolean" parameterType="Map">
+		select count(*) from note where note_date like TO_CHAR(#{thismonth}) || '%' and store_idx = #{store_idx}
+	</select>
+	<select id = "reportReservation" parameterType = "Map">
+		select count(*) from reservation where res_date like TO_CHAR(#{thismonth}) || '%' and store_idx = #{store_idx}
+	</select>
+	<select id = "reportSell" parameterType = "Map">
+	
+	</select>
 </mapper>
