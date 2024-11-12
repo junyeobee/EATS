@@ -7,6 +7,7 @@ import com.eats.mapper.store.StoreReportMapper;
 import com.eats.store.model.StoreReportDTO;
 import com.eats.store.model.report.DayReservDTO;
 import com.eats.store.model.report.MonthReservDTO;
+import com.eats.store.model.report.TimeReservDTO;
 import com.eats.store.model.report.WeekReservDTO;
 import com.eats.store.model.report.YearCompareDTO;
 
@@ -47,6 +48,12 @@ public class StoreReportServiceImple implements StoreReportService {
 	@Override
 	public List<YearCompareDTO> reservYear(Map<String, String> map) {
 		List<YearCompareDTO> result = mapper.reservYear(map);
+		return result;
+	}
+	
+	@Override
+	public List<TimeReservDTO> reservTime(Map<String, String> map) {
+		List<TimeReservDTO> result = mapper.reservTime(map);
 		return result;
 	}
 	

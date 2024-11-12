@@ -4,19 +4,42 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eats.mapper.store.StoreReportMapper">
 	<select id = "selectReviewForReport" parameterType="Map" resultType = "com.eats.store.model.StoreReportDTO">
-		select rev_content, rev_score, rev_menu from review where rev_date like to_char(#{thismonth}) || '%' and store_idx = #{store_idx}
+		select 
+			rev_content, rev_score, rev_menu 
+		from 
+			review 
+		where 
+			rev_date 
+		like 
+			to_char(#{thismonth}) || '%' 
+		and 
+			store_idx = #{store_idx}
 	</select>
 	<select id = "reportIsThere" resultType="boolean" parameterType="Map">
-		select count(*) from note where note_date like to_char(#{thismonth}) || '%' and store_idx = #{store_idx}
+		select 
+			count(*) 
+		from 
+			note 
+		where 
+			to_char(note_date, 'yyyy-mm') = #{thismonth} 
+			and store_idx = #{store_idx}
+		and to_date(to_char(note_date, 'yyyy-mm'), 'yyyy-mm') = to_date(#{thismonth}, 'yyyy-mm')
 	</select>
-	<select id = "reportReservation" parameterType = "Map">
-		select count(*) from reservation where res_date like to_char(#{thismonth}) || '%' and store_idx = #{store_idx}
-	</select>
-	<select id = "reportSell" parameterType = "Map">
-		select to_char(reserve_date, 'yyyy-mm') as month, reserve_time, count(*) as reservation_count from reservation group by to_char(reserve_date, 'yyyy-mm'), reserve_time order by month, reserve_time;
-	</select>
-	<select id = "reservTimeToMonth" parameterType="Map">
-		select reserve_time, count(*) as reservation_count from reservation where reserve_date <![CDATA[>=]]> to_date(#{thismonth},'yyyy-mm') and store_idx = #{store_idx} group by reserve_time order by reserve_time;
+	<select id = "reservTime" parameterType="Map" resultType="com.eats.store.model.report.TimeReservDTO">
+		select 
+			reserve_time as res_time,
+			count(*) as reservecnt,
+			sum(reserve_count) as totalcnt
+		from 
+			reservation
+		where 
+			store_idx = #{store_idx}
+			and to_char(reserve_date, 'yyyy-mm') = #{thismonth}
+			and reserve_state = 3
+		group by 
+			reserve_time
+		order by 
+			reserve_time
 	</select>
 
 	<select id = "reservWeek" parameterType="Map" resultType = "com.eats.store.model.report.WeekReservDTO">
