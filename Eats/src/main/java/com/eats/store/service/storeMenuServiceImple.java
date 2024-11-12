@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.eats.mapper.store.storeMenuMapper;
 import com.eats.store.model.MenuDTO;
+import com.eats.store.model.MenuImgDTO;
 
 @Service
 public class storeMenuServiceImple implements storeMenuService {
@@ -14,43 +15,46 @@ public class storeMenuServiceImple implements storeMenuService {
 	@Autowired
 	private storeMenuMapper mapper;
 
-	
 	@Override
 	public List<MenuDTO> storeCateList() {
 		List<MenuDTO> lists = mapper.storeCateList();
 		return lists;
 	}
-	
-	
+
 	@Override
 	public List<MenuDTO> storeMenuList(Integer idx) {
 		List<MenuDTO> lists = mapper.storeMenuList(idx);
 		return lists;
 	}
-	
+
 	@Override
 	public int insertMenu(MenuDTO dto) {
 		int result = mapper.insertMenu(dto);
 		return result;
 	}
-	
+
 	@Override
 	public int deleteMenuCate(String cateName) {
 		int result = mapper.deleteMenuCate(cateName);
 		return result;
 	}
-	
+
 	@Override
 	public int insertCate(String cateName) {
 		int result = mapper.insertCate(cateName);
 		return result;
 	}
-	
+
 	@Override
 	public int deleteMenu(List<Integer> menuIdx) {
 		int result = mapper.deleteMenu(menuIdx);
 		return result;
 	}
-	
-	
+
+	@Override
+	public int insertMenuImg(MenuImgDTO idto) {
+		int result = mapper.insertMenuImg(idto);
+		return result;
+	}
+
 }

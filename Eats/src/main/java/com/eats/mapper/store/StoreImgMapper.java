@@ -8,4 +8,5 @@ public interface StoreImgMapper {
 	public StoreImgDTO storeImgData();
 	public int storeImgUpdate(StoreImgDTO dto);
 	public int storeImgUpDel(StoreImgDTO dto);
+	
 }
