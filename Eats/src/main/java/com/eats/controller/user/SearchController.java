@@ -19,15 +19,7 @@ public class SearchController {
 			@RequestParam(required = false) String word,
 			@RequestParam(required = false) String areaWord) {
 
-		if(word!=null && !word.equals("")) {
-			int isIt = ss.isInIt(word);
-			
-			if(isIt==0) {
-				ss.addSearchWord(word);
-			} else if(isIt>0) {
-				ss.addCount(word);
-			}
-		}
+		ss.addSearchWord(word);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("tagWord", tagWord);

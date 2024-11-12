@@ -16,8 +16,13 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding-top: 45px;
-	row-gap: 25px;
+	padding-top: 25px;
+	row-gap: 20px;
+}
+
+.month_graph_data {
+	width: 1000px;
+	margin : 0 auto;
 }
 
 .month_graph {
@@ -27,12 +32,15 @@
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
 
   padding: 20px 40px;
+  display: flex;
+    flex-direction: column;
+    row-gap: 30px;
 }
 
 .tag_graph {
   background: #ffffff;
   width: 1120px;
-  height: 350px;
+  height: 405px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
   padding: 20px 40px;
 }
@@ -74,6 +82,10 @@
   font-size: 13px;
   font-weight: 400;
   color: #767676;
+}
+
+.tag_graph_title_main {
+	width: 300px;
 }
 
 .tag_graph_title {
@@ -139,21 +151,29 @@
 .tag_graph_category {
   display: flex;
   flex-direction: row;
-  align-items: center;
   margin-bottom: 15px;
+  margin-top: 15px;
   column-gap: 15px;
+  
+  width: 780px;
 }
 
 .tag_graph_category_title {
   font-size: 15px;
   font-weight: 600;
   color: #FF955A;
+  width: 95px;
+  margin-top: 5px;
 }
 
 .tag_graph_tags {
   display: flex;
   flex-direction: row;
-  column-gap: 10px;
+  column-gap: 7px;
+  row-gap: 3px;
+  
+  flex-wrap: wrap;
+  width: 670px;
 }
 
 .tag_graph_tag { 
