@@ -28,15 +28,15 @@ public class MenuDTO {
 
 	
 	//메뉴
-    private int menu_idx; // 기본 키
-    private String menu_name; // 메뉴 이름
-    private int menu_price; // 가격
-    private String menu_info; // 상세 설명
-    private Integer menu_img_idx; // 이미지 인덱스 (Integer로 변경)
-    private int menu_preorder; // 선주문 여부
-    private int m_cate_idx; // 카테고리 인덱스
-    private int store_idx; // 상점 인덱스
-    private String m_cate_name; // 카테고리 이름
+    private int menu_idx;
+    private String menu_name; 
+    private int menu_price;
+    private String menu_info; 
+    private String menu_img; 
+    private int menu_preorder; 
+    private int m_cate_idx; 
+    private int store_idx; 
+    private String m_cate_name; 
 
 	
 	public MenuDTO() {
@@ -44,14 +44,14 @@ public class MenuDTO {
 	}
 
 
-	public MenuDTO(int menu_idx, String menu_name, int menu_price, String menu_info, Integer menu_img_idx,
-			int menu_preorder, int m_cate_idx, int store_idx, String m_cate_name) {
+	public MenuDTO(int menu_idx, String menu_name, int menu_price, String menu_info, String menu_img, int menu_preorder,
+			int m_cate_idx, int store_idx, String m_cate_name) {
 		super();
 		this.menu_idx = menu_idx;
 		this.menu_name = menu_name;
 		this.menu_price = menu_price;
 		this.menu_info = menu_info;
-		this.menu_img_idx = menu_img_idx;
+		this.menu_img = menu_img;
 		this.menu_preorder = menu_preorder;
 		this.m_cate_idx = m_cate_idx;
 		this.store_idx = store_idx;
@@ -59,6 +59,7 @@ public class MenuDTO {
 	}
 
 
+	
 	public int getMenu_idx() {
 		return menu_idx;
 	}
@@ -99,13 +100,13 @@ public class MenuDTO {
 	}
 
 
-	public Integer getMenu_img_idx() {
-		return menu_img_idx;
+	public String getMenu_img() {
+		return menu_img;
 	}
 
 
-	public void setMenu_img_idx(Integer menu_img_idx) {
-		this.menu_img_idx = menu_img_idx;
+	public void setMenu_img(String menu_img) {
+		this.menu_img = menu_img;
 	}
 
 
@@ -148,12 +149,7 @@ public class MenuDTO {
 		this.m_cate_name = m_cate_name;
 	}
 
-	
-	
-	
-	
 
-	
 
 	
 

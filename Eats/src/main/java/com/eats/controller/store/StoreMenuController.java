@@ -2,6 +2,7 @@ package com.eats.controller.store;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.eats.store.model.MenuImgDTO;
 import com.eats.store.service.storeMenuService;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class StoreMenuController {
@@ -49,7 +51,6 @@ public class StoreMenuController {
 		ModelAndView mav = new ModelAndView();
 
 		List<MenuDTO> menu = service.storeMenuList(idx);
-
 		mav.addObject("menu", menu);
 		mav.addObject("lists", lists);
 
@@ -85,9 +86,8 @@ public class StoreMenuController {
 		List<MenuDTO> lists = service.storeCateList();
 
 		ModelAndView mav = new ModelAndView();
-
 		mav.addObject("lists", lists);
-
+		
 		mav.setViewName("store/menu/menuInsert");
 
 		return mav;
@@ -97,49 +97,49 @@ public class StoreMenuController {
 	
 		// 메뉴 등록
 		@PostMapping("/StoreMenuInsertOk")
-		public ModelAndView StoreMenuInsertOk(MenuDTO menuDto, @RequestParam("menu_img") MultipartFile file) throws IllegalStateException, IOException {
-		ModelAndView mav = new ModelAndView();
-		String msg = "";
-
-		
-		// 파일 저장 경로 설정
-		
-		String fileName = file.getOriginalFilename();
-		String new_image_name = System.currentTimeMillis()+"_"+fileName;
-		String savePath = "C:/student_java/EATS/EATS/src/main/webapp/img/store/"+new_image_name;
-		file.transferTo(new File(savePath));
-		String filePath = savePath + fileName;
-
-
-		try {
-			file.transferTo(new File(filePath));
-
-			MenuImgDTO imgDto = new MenuImgDTO();
-			imgDto.setOrigin_image_name(fileName);
-			imgDto.setNew_image_name(fileName); 
-			imgDto.setImage_path(filePath);
-
-			// 이미지 등록
-			int resultImg = service.insertMenuImg(imgDto);
-			if (resultImg > 0) {
-				menuDto.setMenu_img_idx(imgDto.getMenu_image_idx()); 
+		public ModelAndView StoreMenuInsertOk(
+				 @RequestParam("m_cate_idx") int mCateIdx,
+		            @RequestParam("menu_name") String menuName,
+		            @RequestParam("menu_info") String menuInfo,
+		            @RequestParam("menu_price") int menuPrice,
+		            @RequestParam("menu_preorder") Integer menuPreorder,
+		            @RequestParam("menu_img") MultipartFile menuImg,
+		            HttpServletRequest req
 				
-				// 메뉴 등록
-				int resultMenu = service.insertMenu(menuDto);
-				msg = resultMenu > 0 ? "메뉴가 등록되었습니다." : "메뉴 등록에 실패했습니다.";
-			} else {
-				msg = "이미지 등록에 실패했습니다.";
-			}
-		} catch (IOException e) {
-			msg = "파일 저장 중 오류가 발생했습니다.";
-			e.printStackTrace();
-		}
+				) {
 
-		mav.addObject("msg", msg);
-		mav.addObject("goUrl","storeMenuList");
-		mav.setViewName("store/menu/menuMsg");
-		return mav;
-	}
+			String realpath = req.getServletContext().getRealPath("/");
+			
+	        ModelAndView mav = new ModelAndView();
+	        
+	        MenuDTO menuDTO = new MenuDTO();
+	        
+	        menuDTO.setM_cate_idx(mCateIdx);
+	        menuDTO.setMenu_name(menuName);
+	        menuDTO.setMenu_info(menuInfo);
+	        menuDTO.setMenu_price(menuPrice);
+	        menuDTO.setMenu_preorder(menuPreorder);
+	      
+
+	        try {
+	            int result = service.insertMenu(menuDTO, menuImg, realpath);
+	            if (result > 0) {
+	                mav.addObject("msg", "메뉴가 등록되었습니다.");
+	            } else {
+	                mav.addObject("msg", "메뉴 등록에 실패했습니다.");
+	            }
+	        } catch (IOException e) {
+	            mav.addObject("msg", "파일 저장 중 오류가 발생했습니다.");
+	            e.printStackTrace();
+	        }
+	        
+	        
+	        mav.addObject("goUrl","storeMenuList");
+	        mav.setViewName("store/menu/menuMsg");
+	        return mav;
+	    }
+	
+
 
 	
 	

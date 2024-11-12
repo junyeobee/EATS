@@ -151,7 +151,7 @@
         
             <div class="form-group">
                 <label for="category">카테고리</label>
-                <select id="category" name="m_cate_idx" required>
+                <select id="category" name="m_cate_idx">
                 <option value="">카테고리 선택</option>
                 	<c:forEach var="dto" items="${lists}">
                     <option  value="${dto.m_cate_idx}">${dto.m_cate_name }</option>

@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="storeMenuList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
 		select * 
 		from 
-		MENU_TEST
+		MENU
 		<if test="idx!=0">
 			where m_cate_idx = #{idx}
 		</if>
@@ -21,31 +21,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<insert id="insertMenu" parameterType="com.eats.store.model.MenuDTO">
-	      INSERT INTO 
-        menu_test (MENU_IDX, M_CATE_IDX, MENU_NAME, MENU_PRICE, MENU_INFO, MENU_PREORDER, MENU_IMAGE_IDX)
+	    
+        INSERT INTO 
+        MENU (MENU_IDX, M_CATE_IDX, MENU_NAME, MENU_PRICE, MENU_INFO, MENU_PREORDER, MENU_IMG)
         VALUES (
             MENU_IDX_SEQ.NEXTVAL, 
-            #{m_cate_idx},
-            #{menu_name},
-            #{menu_price},
-            #{menu_info},
-            #{menu_preorder},
-            #{menu_img_idx}
+            #{m_cate_idx},  
+            #{menu_name},  
+            #{menu_price}, 
+            #{menu_info},  
+            #{menu_preorder}, 
+            #{menu_img}   
         )
+ 
 	</insert>
 	
 	
-	<!-- 이미지 등록 -->
-	<insert id="insertMenuImg" parameterType="com.eats.store.model.MenuImgDTO">
-      INSERT INTO 
-        MENU_IMAGE (MENU_IMAGE_IDX, ORIGIN_IMAGE_NAME, NEW_IMAGE_NAME, IMAGE_PATH)
-        VALUES (
-            MENU_IMAGE_IDX.NEXTVAL,
-            #{origin_image_name},
-            #{new_image_name},
-            #{image_path}
-        )
-	</insert>
+
 	
 	
 	<delete id="deleteMenuCate" parameterType="String">
@@ -75,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteMenu" parameterType="java.util.List">
 		
 		delete from
-		menu_test
+		MENU
 		where
 		menu_idx in 
 		<foreach item="menu_idx" collection="list" open="(" separator="," close=")">
@@ -89,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 메뉴 수정 -->
 	<update id="updateMenu" parameterType="com.eats.store.model.MenuDTO">
 		update
-		menu_test
+		MENU
 		set
 		m_cate_idx=#{m_cate_idx},
 		menu_name=#{menu_name},

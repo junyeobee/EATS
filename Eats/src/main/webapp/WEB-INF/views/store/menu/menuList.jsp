@@ -201,7 +201,8 @@ body {
 	
 		<c:forEach var="menu" items="${menu}">
 			<div class="menu-item" data-menu-idx="${menu.menu_idx}" onclick="toggleMenuSelection(this.dataset.menuIdx);">
-				<img src="${menu.menu_img_idx }" alt="메뉴" class="menu-image">
+				<img src="../img/${menu.menu_img}" alt="메뉴" class="menu-image">
+				
 				<input type="button" class="edit-button" value="수정" onclick="location.href='/menuUpdatePage/'+${menu.menu_idx}">
 				<div class="menu-info">
 					<div class="menu-name">${menu.menu_name}</div>
