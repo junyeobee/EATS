@@ -76,4 +76,11 @@
         WHERE USER_IDX = #{userId}
     </select>
 
+    <!-- 프로필 이미지 업데이트 -->
+    <update id="updateProfileImage" parameterType="map">
+        UPDATE USER_PROFILE
+        SET PROFILE_IMAGE = #{imagePath}
+        WHERE USER_IDX = #{userId}
+    </update>
+
 </mapper>

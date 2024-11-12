@@ -1,12 +1,16 @@
 package com.eats.controller.user;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.EatsUserDTO;
@@ -20,6 +24,9 @@ public class MypageController {
 
     @Autowired
     private MypageService mypageService;
+
+    @Value("${profile.image.upload.path}")
+    private String uploadPath;
 
     // 마이페이지 메인 화면
     @GetMapping("/user/mypage/myPage")
@@ -99,6 +106,42 @@ public class MypageController {
             modelAndView.addObject("message", "정보 업데이트에 실패했습니다.");
         }
         return modelAndView;
+    }
+
+    // 프로필 이미지 업로드
+    @PostMapping("/user/mypage/uploadProfileImage")
+    public ModelAndView uploadProfileImage(@RequestParam("profileImage") MultipartFile file, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("user_idx");
+        if (userId == null) {
+            return new ModelAndView("redirect:/user/login");
+        }
+
+        if (file.isEmpty()) {
+            ModelAndView modelAndView = new ModelAndView("user/mypage/editProfile");
+            modelAndView.addObject("error", "파일이 선택되지 않았습니다.");
+            return modelAndView;
+        }
+
+        try {
+            // 저장할 파일 이름 설정
+            String originalFilename = file.getOriginalFilename();
+            String filename = "profile_" + userId + "_" + originalFilename;
+
+            // 파일 저장 경로
+            File destinationFile = new File(uploadPath + "/" + filename);
+            file.transferTo(destinationFile);
+
+            // DB에 이미지 경로 업데이트
+            String imagePath = "/uploaded-images/" + filename;
+            mypageService.updateProfileImage(userId, imagePath);
+
+            return new ModelAndView("redirect:/user/mypage/myProfile");
+        } catch (IOException e) {
+            e.printStackTrace();
+            ModelAndView errorView = new ModelAndView("error");
+            errorView.addObject("message", "이미지 업로드에 실패했습니다.");
+            return errorView;
+        }
     }
 
     // 나의 찜 보기

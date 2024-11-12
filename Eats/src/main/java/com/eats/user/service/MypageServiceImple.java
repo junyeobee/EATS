@@ -1,4 +1,5 @@
 package com.eats.user.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,12 @@ public class MypageServiceImple implements MypageService {
     @Override
     public int getJjimCount(int userId) {
         return mapper.getJjimCount(userId);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfileImage(int userId, String imagePath) {
+        // 프로필 이미지 업데이트를 위한 매퍼 호출
+        mapper.updateProfileImage(userId, imagePath);
     }
 }

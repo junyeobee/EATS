@@ -16,7 +16,12 @@
             <img src="/img/profile-icon.png" alt="프로필 이미지">
             <div class="profile-point">포인트: ${userProfile.userPoint} p</div>
         </div>
-
+		<form action="/user/mypage/uploadProfileImage" method="post" enctype="multipart/form-data">
+    <label for="profileImage">프로필 이미지 변경:</label>
+    <input type="file" id="profileImage" name="profileImage" accept="image/*">
+    <button type="submit">업로드</button>
+</form>
+		
         <!-- 정보 테이블 -->
         <h1>나의 정보</h1>
         <table class="info-table">
