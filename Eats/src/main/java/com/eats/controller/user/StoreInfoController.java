@@ -41,4 +41,9 @@ public class StoreInfoController {
 		
 		return mv;
 	}
+	
+	@GetMapping("/goHeader")
+	public String header() {
+		return "userHeader";
+	}
 }
