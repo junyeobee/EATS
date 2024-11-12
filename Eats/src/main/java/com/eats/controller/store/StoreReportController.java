@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class StoreReportController {
 	
+	
 	@GetMapping("/reportLoad")
 	public String report() {
 		return "store/storeReport/storeReport";
 	}
+	
+	
+	
 }
