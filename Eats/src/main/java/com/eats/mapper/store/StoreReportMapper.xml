@@ -16,6 +16,89 @@
 		select to_char(reserve_date, 'yyyy-mm') as month, reserve_time, count(*) as reservation_count from reservation group by to_char(reserve_date, 'yyyy-mm'), reserve_time order by month, reserve_time;
 	</select>
 	<select id = "reservTimeToMonth" parameterType="Map">
-		select reserve_time, count(*) as reservation_count from reservation where reserve_date <![CDATA[>=]]> to_date('2024-10','yyyy-mm') and store_idx = #{store_idx} group by reserve_time order by reserve_time;
+		select reserve_time, count(*) as reservation_count from reservation where reserve_date <![CDATA[>=]]> to_date(#{thismonth},'yyyy-mm') and store_idx = #{store_idx} group by reserve_time order by reserve_time;
+	</select>
+
+	<select id = "reservWeek" parameterType="Map" resultType = "com.eats.store.model.report.WeekReservDTO">
+		select 
+			to_char(reserve_date, 'yyyy-mm') as yearmonth,
+			ceil((to_number(to_char(reserve_date, 'dd')) + 
+				  to_number(to_char(trunc(reserve_date, 'mm'), 'd')) - 1) / 7) as weeknum,
+			count(*) as reservcount,
+			sum(reserve_count) as totalcount
+		from 
+			reservation
+		where 
+			store_idx = #{store_idx}
+			and to_char(reserve_date, 'yyyy-mm') = #{thismonth}
+			and reserve_state = 3
+		group by 
+			to_char(reserve_date, 'yyyy-mm'),
+			ceil((to_number(to_char(reserve_date, 'dd')) + 
+				  to_number(to_char(trunc(reserve_date, 'mm'), 'd')) - 1) / 7)
+		order by 
+			weeknum
+	</select>
+	
+	<select id="reservMonth" parameterType="Map" resultType="com.eats.store.model.report.MonthReservDTO">
+		select 
+			to_char(reserve_date, 'yyyy-mm') as yearmonth,
+			count(*) as currmonthcount,
+			sum(reserve_count) as currtotalcount,
+			(select count(*)
+			 from reservation
+			 where store_idx = #{store_idx}
+			 and to_char(reserve_date, 'yyyy-mm') = to_char(add_months(to_date(#{thismonth}, 'yyyy-mm'), -1), 'yyyy-mm')
+			 and reserve_state = 3) as prevmonthcount,
+			(select sum(reserve_count)
+			 from reservation
+			 where store_idx = #{store_idx}
+			 and to_char(reserve_date, 'yyyy-mm') = to_char(add_months(to_date(#{thismonth}, 'yyyy-mm'), -1), 'yyyy-mm')
+			 and reserve_state = 3) as prevtotalcount
+		from 
+			reservation
+		where 
+			store_idx = #{store_idx}
+			and to_char(reserve_date, 'yyyy-mm') = #{thismonth}
+			and reserve_state = 3
+		group by 
+			to_char(reserve_date, 'yyyy-mm')
+	</select>
+	
+	<select id="reservDay" parameterType="Map" resultType="com.eats.store.model.report.DayReservDTO">
+		select 
+			to_char(reserve_date, 'day') as dayname,
+			count(*) as reservcount,
+			sum(reserve_count) as totalcount
+		from 
+			reservation
+		where 
+			store_idx = #{store_idx}
+			and to_char(reserve_date, 'yyyy-mm') = #{thismonth}
+			and reserve_state = 3
+		group by 
+			to_char(reserve_date, 'yyyy-mm'),
+			to_char(reserve_date, 'day'),
+			to_char(reserve_date, 'd')
+		order by 
+			decode(to_char(reserve_date, 'd'), 1, 7, to_char(reserve_date, 'd') - 1)
+	</select>
+	
+	<select id="reservYear" parameterType="Map" resultType="com.eats.store.model.report.YearCompareDTO">
+		SELECT 
+		    TO_CHAR(reserve_date, 'MM') AS month,
+		    COUNT(*) AS reservCount,
+		    SUM(reserve_count) AS totalCount
+		FROM 
+		    reservation
+		WHERE 
+		    store_idx = #{store_idx}
+		    AND TO_CHAR(reserve_date, 'yyyy') = SUBSTR(#{thismonth}, 1, 4)
+		    AND TO_CHAR(reserve_date, 'MM') <![CDATA[<=]]> SUBSTR(#{thismonth}, 6, 2)
+		    AND reserve_state = 3
+		GROUP BY 
+		    TO_CHAR(reserve_date, 'MM')
+		ORDER BY 
+		    month
 	</select>
 </mapper>

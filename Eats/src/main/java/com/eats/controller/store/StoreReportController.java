@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eats.store.model.report.WeekReservDTO;
 import com.eats.store.service.StoreReportService;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +40,21 @@ public class StoreReportController {
 			return true;
 		}
 		return false;
+	}
+	
+	@GetMapping("/weekreport")
+	@ResponseBody()
+	public List<WeekReservDTO> weekChart(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("store_idx", 1+"");
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		String thismonth = year + "-" + month;
+		System.out.println(thismonth);
+		map.put("thismonth", thismonth);
+		List<WeekReservDTO> lists = storeReportService.reservWeek(map);
+		return lists;
 	}
 	
 }

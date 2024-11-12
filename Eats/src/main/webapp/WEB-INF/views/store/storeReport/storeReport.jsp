@@ -197,6 +197,7 @@
 </head>
 <body>
     <div class="container">
+        <a href = "/weekreport">매장명</a>
         <button id="createReport">보고서 받아보기</button>
         <div class="report-card">
             <select class="date-select"></select>
