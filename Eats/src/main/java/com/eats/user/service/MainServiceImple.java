@@ -48,12 +48,6 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
-	public ReviewDTO getReview(int rev_idx) {
-		ReviewDTO dto = mp.getReview(rev_idx);
-		return dto;
-	}
-	
-	@Override
 	public Double getStorePoint(int store_idx) {
 		double storePoint = mp.getStorePoint(store_idx);
 		return storePoint;
@@ -75,5 +69,11 @@ public class MainServiceImple implements MainService {
 	public String getTag(int tag_idx) {
 		String tag = mp.getTag(tag_idx);
 		return tag;
+	}
+
+	@Override
+	public ReviewDTO getReview(int rev_idx) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

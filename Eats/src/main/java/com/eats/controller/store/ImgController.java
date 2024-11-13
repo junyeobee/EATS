@@ -57,6 +57,7 @@ public class ImgController {
     //db에 저장되는 파일 경로
     private String db_filePath = "/storeUploadImg/";
     
+    
     @GetMapping("/store/storeImg")
     public ModelAndView storeImg() {
         StoreImgDTO data = service.storeImgData(); // 서비스에서 단일 객체를 반환

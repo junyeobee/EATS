@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+/* 전체 배경 및 글꼴 */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FFF8EB;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #FFFFFF;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 스타일 */
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333333;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* 입력 폼 스타일 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background-color: #FFFDF6;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* 버튼 스타일 */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* 저장하기 버튼 */
+.btn.save {
+    background-color: #FFB53C;
+    color: #FFF8EB;
+}
+
+.btn.save:hover {
+    background-color: #E68A00;
+    transform: scale(1.03);
+}
+
+/* 이전으로 버튼 */
+.btn.back {
+    background-color: #E0E0E0;
+    color: #333333;
+}
+
+.btn.back:hover {
+    background-color: #C0C0C0;
+    transform: scale(1.03);
+}

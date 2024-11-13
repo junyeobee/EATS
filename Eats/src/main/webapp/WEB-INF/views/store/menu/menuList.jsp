@@ -120,6 +120,26 @@ body {
 	transition: opacity 0.2s ease;
 }
 
+.delete-button {
+	background-color: #ccc;
+	color: black;
+	border: none;
+	padding: 0.3rem 0.8rem;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: opacity 0.2s ease;
+}
+
+.add-button{
+	background-color: #1e90ff;
+	color: white;
+	border: none;
+	padding: 0.3rem 0.8rem;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: opacity 0.2s ease;
+}
+
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -161,27 +181,29 @@ body {
 				<button class="tab active">전체</button>
 			</div>
 		</c:if>
+		
 		<button class="tab avtive" onclick="loadMenu('0')">전체</button>
-		<c:forEach var="dto" items="${lists}">
-			<button class="tab" id="${dto.m_cate_idx}"  onclick="loadMenu('${dto.m_cate_idx}')" >${dto.m_cate_name}</button>
-		</c:forEach>
+			<c:forEach var="dto" items="${lists}">
+				<button class="tab" id="${dto.m_cate_idx}"  onclick="loadMenu('${dto.m_cate_idx}')" >${dto.m_cate_name}</button>
+			</c:forEach>
 	</div>
 
+	
+	
 	<!-- 메뉴 출력 -->
 	
-	
+	<form name="deleteMenu" action="deleteMenu" method="post">
 	<div class="menu-grid" id="menuList">
 		<!-- 메뉴 아이템 반복 -->
 		<c:if test="${empty menu }">
 			<h2>등록된 메뉴가 없습니다.</h2>
 		</c:if>
-		
-	<form name="deleteMenu" action="deleteMenu" method="post">
+	
 		<c:forEach var="menu" items="${menu}">
 			<div class="menu-item" data-menu-idx="${menu.menu_idx}" onclick="toggleMenuSelection(this.dataset.menuIdx);">
-				<img src="${menu.menu_img }" alt="메뉴" class="menu-image">
-				<input type="button" class="edit-button" value="수정" onclick="location.href='/menuUpdatePage/'+${menu.menu_idx}">
+				<img src="../img/${menu.menu_img}" alt="메뉴" class="menu-image">
 				
+				<input type="button" class="edit-button" value="수정" onclick="location.href='/menuUpdatePage/'+${menu.menu_idx}">
 				<div class="menu-info">
 					<div class="menu-name">${menu.menu_name}</div>
 					<div class="menu-description">${menu.menu_info }</div>
@@ -190,11 +212,11 @@ body {
 			</div>
 			<input type="hidden" name="menu_idx" value="${menu.menu_idx }">
 		</c:forEach>
-		
-		<input type="button" value="등록하기" onclick="location.href='StoreMenuInsert'">
+			</div>
+		<input type="button" value="등록하기" class="add-button" onclick="location.href='StoreMenuInsert'">
 		 <input type="button" value="선택삭제" class="delete-button" onclick="submitSelectedMenus();">
 	</form>
-	</div>
+
 
 	<div class="pagination">
 	</div>
@@ -213,38 +235,46 @@ function showSendResult(){
 			var data=XHR.responseText;
 			var jsondata = JSON.parse(data);
 			menuList.innerHTML='';
+			
+			
+			
 			if(Array.isArray(jsondata) && jsondata.length > 0){
 			  jsondata.forEach( (menu) => {
-				  var menuItemDiv = document.createElement('div');
-		            menuItemDiv.className = 'menu-item';
-		            menuItemDiv.setAttribute('data-menu-idx', menu.menu_idx);
-		            menuItemDiv.onclick = function() {
-		                toggleMenuSelection(menu.menu_idx); // 선택 시 스타일 변경 및 인덱스 추가/제거
-		            };
+				     var menuItemDiv = document.createElement('div');
+			            menuItemDiv.className = 'menu-item';
+			            menuItemDiv.setAttribute('data-menu-idx', menu.menu_idx);
+			            menuItemDiv.onclick = function() {
+			                toggleMenuSelection(menu.menu_idx); 
+			            };
 
-		            var img = document.createElement('img');
-		            img.src = menu.menu_img;
-		            img.alt = '메뉴';
-		            img.className = 'menu-image';
+			            var img = document.createElement('img');
+			            img.src = menu.menu_img_idx;
+			            img.alt = '메뉴';
+			            img.className = 'menu-image';
 
-		            var editButton = document.createElement('button');
-		            editButton.className = 'edit-button';
-		            editButton.textContent = '수정';
-		            editButton.onclick = function() {
-		                location.href = '/menuUpdatePage/' + menu.menu_idx; // 수정 페이지로 이동
-		            };
+			            var editButton = document.createElement('input');
+			            editButton.type = 'button';
+			            editButton.className = 'edit-button';
+			            editButton.value = '수정';
+			            editButton.onclick = function() {
+			                location.href = '/menuUpdatePage/' + menu.menu_idx; 
+			            };
 
-		            var menuInfoDiv = document.createElement('div');
-		            menuInfoDiv.className = 'menu-info';
-		            menuInfoDiv.innerHTML += "<div class='menu-name'>" + menu.menu_name + "</div><div class='menu-description'>" + menu.menu_info + "</div><div class='menu-price'>" + menu.menu_price + "</div>";
+			            var menuInfoDiv = document.createElement('div');
+			            menuInfoDiv.className = 'menu-info';
+			            menuInfoDiv.innerHTML += "<div class='menu-name'>" + menu.menu_name + "</div><div class='menu-description'>" + menu.menu_info + "</div><div class='menu-price'>" + menu.menu_price + "</div>";
 
-		            menuItemDiv.appendChild(img);
-		            menuItemDiv.appendChild(editButton);
-		            menuItemDiv.appendChild(menuInfoDiv);
-		            menuList.appendChild(menuItemDiv);
-                });
-            } else {
-                menuList.innerHTML = '<div>메뉴가 없습니다.</div>';
+			            // 메뉴 아이템에 요소 추가
+			            menuItemDiv.appendChild(img);
+			            menuItemDiv.appendChild(editButton);
+			            menuItemDiv.appendChild(menuInfoDiv);
+			            menuList.appendChild(menuItemDiv); 
+			        });
+
+			       
+			     
+			    } else {
+			        menuList.innerHTML = '<h2>등록된 메뉴가 없습니다.</h2>'; 
             }	
 		}
 	}
@@ -290,5 +320,7 @@ function submitSelectedMenus() {
     
     form.submit();
 }
+
+
 </script>
 </html>

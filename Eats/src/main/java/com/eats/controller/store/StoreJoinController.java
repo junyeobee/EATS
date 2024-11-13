@@ -19,7 +19,7 @@ public class StoreJoinController {
     @GetMapping("/apply")
     public String showJoinForm(Model model) {
         model.addAttribute("storeJoinDto", new StoreJoinDTO());
-        return "store/common/storeJoin";
+        return "store/join/storeJoin";
     }
 
     @PostMapping("/apply")
@@ -30,7 +30,7 @@ public class StoreJoinController {
             return "redirect:/store/success"; // 성공 페이지로 리디렉션
         } else {
             model.addAttribute("error", "입점 신청에 실패했습니다. 다시 시도해 주세요.");
-            return "store/common/storeJoin"; // 신청 실패 시 원래 페이지로 이동
+            return "store/join/storeJoin"; // 신청 실패 시 원래 페이지로 이동
         }
     }
 }
