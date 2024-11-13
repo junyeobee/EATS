@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="./css/user/indexCss.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
-
+<link rel="stylesheet" href="./css/user/userHeader.css">
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,11 +70,11 @@ menu, ol, ul {
 	background-color: #f3553c;
 }
 </style>
-
 <title>Document</title>
 </head>
 
 <body>
+<%@include file="userHeader.jsp" %>
 	<!-- modal window-->
 	<div class="modal_background" id="modal">
 		<div class="area-searching">
@@ -106,29 +106,44 @@ menu, ol, ul {
 		</div>
 	</div>
 	<!---->
-	<header id="main_header">
-		<div class="header_box">
-			<img class="logo" id="logoicon" src="/svg/logo_icon.svg" />
-			<div class="profile_box">
-				<c:if test="${empty user_idx }">
-					<a href="user/login">로그인</a>
-					|
-					<a href="openUserJoin">회원가입</a>
-				</c:if>
-
-				<c:if test="${!empty user_idx }">
-					<img class="proicons-person-circle" src="/svg/profile_icon.svg" />
-					<div class="profile_msg">
-						<div class="user_name">${user_nickname }</div>
-						<a href="user/logout">로그아웃</a>
-					</div>
-				</c:if>
+	<section>
+	<!-- 상단 이미지, 검색박스 아티클 (s) -->
+	<article class="main-top">
+		<div class="mainimg-wrap">
+			<img src="/img/user/main_img2.png">
+		</div>
+		<div class="content-wrap">
+			<p>Your Dining Experience Starts Here</p>
+			<div class="search-wrap">
+				<div class="search_box">
+				<div class="location_box" id="location_box" data-target="modalArea"
+					data-toggle="modal">
+					<c:if test="${empty cookie.areaCk.value }">
+						<img class="ep-location" src="/svg/location_icon.svg" />
+					</c:if>
+					<c:if test="${!empty cookie.areaCk.value }">
+						<img class="ep-location" src="/svg/location_icon_tomato.svg" />
+						<div class="locaton_text">${cookie.areaCk.value }</div>
+					</c:if>
+				</div>
+	
+	
+				<div class="search_input_box">
+					<form name="searchForm" id="form" action="searchStore" method="GET">
+						<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
+						<input type="hidden" id="word" name="word">
+						<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
+					</form>
+				</div>
+				<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
+				</div>
 			</div>
 		</div>
-	</header>
 
+	</article>
+	<!-- 이미지, 검색박스 아티클(e) -->
 	<div class="main" id="main">
-		<div class="search_box">
+		<%-- <div class="search_box">
 			<div class="location_box" id="location_box" data-target="modalArea"
 				data-toggle="modal">
 				<c:if test="${empty cookie.areaCk.value }">
@@ -150,7 +165,7 @@ menu, ol, ul {
 				</form>
 			</div>
 			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
-		</div>
+		</div> --%>
 
 		<div class="categorys">
 
@@ -487,10 +502,9 @@ menu, ol, ul {
 					</div>
 				</div>
 			</div>
-
-			<div class="footer">footer</div>
-		</div>
-	</div>
+		</div><!-- category div (e) -->
+	</div> <!-- main div (e) -->
+	</section>
 </body>
 <script>
 	var locationBox = document.getElementById("location_box");
@@ -510,7 +524,7 @@ menu, ol, ul {
      locationBox.addEventListener('click', function () {
     	modal.style.display='flex';
         var main = document.getElementById('main');
-        var header = document.getElementById('main_header');
+        var header = document.getElementById('userHeader');
         var h = main.scrollHeight+header.scrollHeight;
         modal.style.height = h+'px';
 
@@ -526,9 +540,7 @@ menu, ol, ul {
 		}
     });
     
-    logo.addEventListener('click',function(){
-    	location.href='/';
-    });
+    
     
     function searchThisTag(t){
     	var url = "searchStore?tagWord="+t.id;
@@ -572,7 +584,8 @@ menu, ol, ul {
     			var data = XHR.responseText;
     			var jd = JSON.parse(data);
 
-				var unitbox = document.getElementById('unitbox');
+    			console.log('dd');
+				/* var unitbox = document.getElementById('unitbox');
 				unitbox.innerHTML='';
 				
 				var svalue = document.createElement('div');
@@ -587,7 +600,7 @@ menu, ol, ul {
 					svalue.appendChild(value_text);
 				});
 				
-				unitbox.appendChild(svalue);
+				unitbox.appendChild(svalue); */
     		}
     	}
     }

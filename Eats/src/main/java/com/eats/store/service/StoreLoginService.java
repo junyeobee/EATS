@@ -9,6 +9,7 @@ public interface StoreLoginService {
 	public String findId(EatsStoreDTO dto);
 	
 	public String storeidCheckForFindId(String storeId);
+	
 	public int storeUpdatePwd(String storeId, String newPwd);
 	
 	

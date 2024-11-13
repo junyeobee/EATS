@@ -147,14 +147,14 @@
 <body>
     <div class="container">
         <h1>메뉴 등록</h1>
-        <form name="StoreMenuInsertForm" action="StoreMenuInsertOk" method="post">
+        <form name="StoreMenuInsertForm" action="StoreMenuInsertOk" method="post" enctype="multipart/form-data">
         
             <div class="form-group">
                 <label for="category">카테고리</label>
-                <select id="category" required>
+                <select id="category" name="m_cate_idx">
                 <option value="">카테고리 선택</option>
                 	<c:forEach var="dto" items="${lists}">
-                    <option value="main">${dto.m_cate_name }</option>
+                    <option  value="${dto.m_cate_idx}">${dto.m_cate_name }</option>
                     </c:forEach>
                 </select>
             </div>

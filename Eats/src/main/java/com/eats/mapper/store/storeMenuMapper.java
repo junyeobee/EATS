@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.eats.store.model.MenuDTO;
+import com.eats.store.model.MenuImgDTO;
 
 @Mapper
 public interface storeMenuMapper {
@@ -20,6 +21,8 @@ public interface storeMenuMapper {
 	public int insertCate(String cateName); //메뉴카테고리 등록
 	
 	public int deleteMenu(List<Integer> menuIdx);
+	
+	public int insertMenuImg(MenuImgDTO idto);
 	
 	
 
