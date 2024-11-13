@@ -249,14 +249,14 @@
                 return found;
             });
 
-            // 주요 지표 계산
+            //reduce로 max값 찾기
             const totalReservations = dailyStats.reduce((sum, day) => sum + day.reservCount, 0);
             const peakDay = dailyStats.reduce((max, day) => 
                 day.reservCount > max.reservCount ? day : max, dailyStats[0]);
 
-            // 지표 표시 업데이트
+            //글써주기
             document.getElementById('totalReservations').textContent = totalReservations + '건';
-            document.getElementById('peakDay').textContent = peakDay.dayName
+            document.getElementById('peakDay').textContent = peakDay.dayName + '(' + peakDay.reservCount + '건)';
 
             const ctx = document.getElementById('dailyReservChart').getContext('2d');
             
@@ -299,7 +299,7 @@
                     y: {
                         beginAtZero: true,
                         grid: {
-                            drawBorder: false, // y축 선 제거
+                            drawBorder: false,
                         },
                         ticks: {
                             font: {
@@ -309,7 +309,7 @@
                     },
                     x: {
                         grid: {
-                            display: false // x축 그리드 제거
+                            display: false
                         },
                         ticks: {
                             font: {
@@ -321,14 +321,14 @@
                 maintainAspectRatio: false,
                 layout: {
                     padding: {
-                        top: 20 // 상단 여백 추가
+                        top: 20
                     }
                 }
             });
         }
         //2. 주간 예약
         function createWeeklyReservChart(weeklyReserveData) {
-            // 주차별 예약 1건당 평균 방문자 수 계산
+            //주차별 예약 1건당 평균 방문자 수 계산
             const weekLabels = weeklyReserveData.map(item => item.weekNum + "주차");
             const reservData = weeklyReserveData.map(item => item.reservCount);
             const totalData = weeklyReserveData.map(item => item.totalCount);
@@ -336,12 +336,11 @@
                 (item.totalCount / item.reservCount).toFixed(1)
             );
 
-            // 전체 평균 계산
+            //전체 평균 계산
             const totalAverage = weeklyReserveData.reduce((sum, week) => {
                 return sum + (week.totalCount / week.reservCount);
             }, 0) / weeklyReserveData.length;
 
-            // 지표 업데이트
             document.getElementById('conversionRate').textContent = 
                 "평균"+totalAverage.toFixed(1)+"명";
 
@@ -420,9 +419,9 @@
             const currTotal = monthlyStats.currTotalCount;
             const prevTotal = monthlyStats.prevTotalCount;
             
-            // 전월 대비 증감률 계산
+            //전월 대비 증감률 계산
             const reservGrowth = ((currMonth - prevMonth) / prevMonth * 100).toFixed(1);
-            // 총 증감률 계산
+            //총 증감률 계산
             const totalGrowth = ((currTotal - prevTotal) / prevTotal * 100).toFixed(1);
             
             let growth = document.getElementById('monthlyGrowth');
@@ -510,7 +509,6 @@
             const totalReservations = sortedData.reduce((sum, stat) => sum + stat.reservCount, 0);
             const averageReservations = (totalReservations / sortedData.length).toFixed(1);
             
-            //지표 업데이트
             document.getElementById('yearlyAverage').textContent = averageReservations+"건";
 
             const ctx = document.getElementById('yearlyReservChart').getContext('2d');
@@ -605,12 +603,16 @@
             
             //증감률 계산
             const growthRate = ((currMonthSales - prevMonthSales) / prevMonthSales * 100).toFixed(1);
-            
-            //넣기
-            document.getElementById('salesGrowth').textContent = growthRate > 0 ? 
-                '+' + growthRate + '%' : growthRate + '%';
+        
+            let growth = document.getElementById('salesGrowth');
+            if(growthRate > 0){
+                growth.textContent = '+' + growthRate + '%';
+                growth.style.color = 'var(--primary-blue)';
+            }else{
+                growth.textContent = growthRate + '%';
+                growth.style.color = 'var(--primary-red)';
+            }
 
-            // 월 표시를 'YYYY-MM'에서 'M월'로 변환
             const formatMonth = (monthName) => {
                 return new Date(monthName).getMonth() + 1 + '월';
             };
@@ -709,10 +711,7 @@
 
         //6. 일매출차트
         function createDailySellChart(sellDay) {
-            // 요일 순서 정의
             const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
-            
-            // 데이터 요일 순으로 정렬
             const sortedData = dayOrder.map(day => {
                 const found = sellDay.find(stat => stat.dayname.startsWith(day)) || 
                     { dayname: day + '요일', daytotalcnt: 0 };
@@ -722,7 +721,6 @@
             const bestSalesDay = sellDay.reduce((max, day) => 
                 day.daytotalcnt > max.daytotalcnt ? day : max, sellDay[0]);
 
-            //업뎃
             document.getElementById('bestSalesDay').textContent = bestSalesDay.dayname + ' (' + formatMoney(bestSalesDay.daytotalcnt) + ')';
 
             const ctx = document.getElementById('dailySalesChart').getContext('2d');
@@ -815,7 +813,6 @@
                 return sum + week.totalcnt;
             }, 0) / sellWeek.length);
 
-            //넣기
             document.getElementById('weeklyAvgSales').textContent = formatMoney(weeklyAverage);
 
             const ctx = document.getElementById('weeklySalesChart').getContext('2d');
@@ -907,10 +904,9 @@
         }
 
         function createTopMenuChart(sellMenu) {
-            // TOP 5 메뉴 추출
+            //TOP 5 메뉴 추출
             const topMenus = sellMenu.slice(0, 5);
-            
-            // 최다 판매 메뉴 정보 업데이트
+        
             const bestMenu = topMenus[0];
             document.getElementById('bestMenuItem').textContent = 
                 bestMenu.menuname + ' (' + bestMenu.totalcnt + '개)';
@@ -931,18 +927,18 @@
                             return menu.totalcnt;
                         }),
                         backgroundColor: [
-                            '#2570eb',  // 1위
+                            '#2570eb',
                             '#3b82f6',
                             '#609afa',
                             '#93bbfd',
-                            '#bfd7fe'   // 5위
+                            '#bfd7fe'
                         ],
                         borderRadius: 6,
                         barPercentage: 0.7
                     }]
                 },
                 options: {
-                    indexAxis: 'y',  // 이 옵션으로 가로 막대 구현
+                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -1159,8 +1155,6 @@
                 </div>
                 <section class="anal-section reservation">
                     <h2 class="section-title">${date}월 예약 분석</h2>
-    
-                    <!-- 1. 일별 예약 패턴 분석 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1184,8 +1178,6 @@
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 2. 주간 예약 추이 -->
                     <div class = "dualAnalContent">
                         <div class="anal-card">
                             <div class="anal-content">
@@ -1226,8 +1218,6 @@
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 4. 연간 예약 추이 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1248,12 +1238,8 @@
                         </div>
                     </div>
                 </section>
-    
-                <!-- 매출 분석 섹션 -->
                 <section class="anal-section sales">
                     <h2 class="section-title">${date}월 매출 분석</h2>
-    
-                    <!-- 5. 월별 매출 비교 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1273,8 +1259,6 @@
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 6. 일별 매출 패턴 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1294,8 +1278,6 @@
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 7. 주간 매출 추이 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1315,8 +1297,6 @@
                             </div>
                         </div>
                     </div>
-    
-                    <!-- 8. 인기 메뉴 분석 -->
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1337,8 +1317,6 @@
                         </div>
                     </div>
                 </section>
-                
-
                 <a href="/storeReportCreate" class="download-btn">
                     <span>다운로드</span>
                     <span>(pdf)</span>
