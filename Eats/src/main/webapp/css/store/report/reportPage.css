@@ -125,6 +125,11 @@ body {
     margin: 40px 0;
 }
 
+.keywordSpan{
+    color: var(--primary-blue); 
+    font-weight: 600;
+}
+
 .main-chart-container {
     background-color: white;
     padding: 24px;

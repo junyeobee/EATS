@@ -1116,7 +1116,7 @@
                 <div class="keyword-section">
                     <div class="keyword-content">
                         <div class="description">
-                            손님들이 <span style="color: var(--primary-blue); font-weight: 600;">${storeName}</span>의 이런 점을 좋아해요
+                            손님들이 <span class = "keywordSpan">${storeName}</span>의 이런 점을 좋아해요
                         </div>
                         <div class="tag-box">
                             <span class="emoji-tag">😊 분위기</span>
@@ -1133,7 +1133,7 @@
                         </div>
 
                         <div class="description">
-                            손님들이 <span style="color: var(--primary-blue); font-weight: 600;">${storeName}</span>의 이런 점을 아쉬워해요
+                            손님들이 <span class = "keywordSpan">${storeName}</span>의 이런 점을 아쉬워해요
                         </div>
                         <div class="tag-box">
                             <span class="emoji-tag">😢 분위기</span>
@@ -1239,7 +1239,7 @@
                     </div>
                 </section>
                 <section class="anal-section sales">
-                    <h2 class="section-title">${date}월 매출 분석</h2>
+                    <h2 class="section-title"><span>${date}<span>월 매출 분석</h2>
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
