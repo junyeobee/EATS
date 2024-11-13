@@ -584,8 +584,7 @@ menu, ol, ul {
     			var data = XHR.responseText;
     			var jd = JSON.parse(data);
 
-    			console.log('dd');
-				/* var unitbox = document.getElementById('unitbox');
+				var unitbox = document.getElementById('unitbox');
 				unitbox.innerHTML='';
 				
 				var svalue = document.createElement('div');
@@ -600,7 +599,7 @@ menu, ol, ul {
 					svalue.appendChild(value_text);
 				});
 				
-				unitbox.appendChild(svalue); */
+				unitbox.appendChild(svalue);
     		}
     	}
     }
