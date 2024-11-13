@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.eats.store.model.StoreCateDTO;
 import com.eats.store.model.StoreDTO;
+import com.eats.store.model.StoreGridAllDTO;
+import com.eats.store.model.StoreGridBaseDTO;
+import com.eats.store.model.StoreGridDetailDTO;
 import com.eats.store.model.StoreInfoUpdateDTO;
 import com.eats.store.model.StoreNewsDTO;
 
@@ -11,5 +14,13 @@ public interface StoreEtcService {
 
 	public StoreDTO storeData(int store_idx);
 	public int StoreInfoUpdateInsert(StoreInfoUpdateDTO dto);
-	public List<StoreNewsDTO> storeCate(int store_idx);
+	public List<StoreCateDTO> storeCate(int store_idx);
+	
+	public int StoreGridBaseInsert(int store_idx, int s_floor, int sg_col, int sg_row);
+	public int storeGridBaseKeySelect(int store_idx);
+	//public int StoreGridInsert(List<StoreGridArrayDTO> gridData);
+	public int StoreGridDetailInsert(StoreGridDetailDTO dto);
+
+	public StoreGridBaseDTO storeGridBaseSelect(int store_idx);
+	public List<StoreGridDetailDTO> storeGridDetailView(int sg_idx);
 }
