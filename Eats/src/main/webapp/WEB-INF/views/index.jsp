@@ -506,6 +506,7 @@ menu, ol, ul {
 	</div> <!-- main div (e) -->
 	</section>
 </body>
+<script type="text/javascript" src="../js/userHeader.js"></script>
 <script>
 	var locationBox = document.getElementById("location_box");
 	var modal = document.getElementById("modal");

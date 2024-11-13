@@ -120,25 +120,12 @@
 	}
 	</script>
 <title></title>
+<link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
+<%@include file="/WEB-INF/views/userHeader.jsp" %>
 	<div class="wrapper">
-		<!-- header (s) -->
-		<header>
-			<div class="inner">
-				<h1 class="logo">
-					<a href="#" title="홈으로 가기">
-						<img src="../img/user/storeInfo/logo.png" alt="eat's">
-					</a>
-				</h1>
-				<a href="#" class="user-area" title="마이페이지">
-					<span class="user">먹어츠</span>
-					<span class="noti">알림 <em>0</em>건</span>
-				</a>
-			</div>
-		</header>
-		<!-- header (e) -->
-
+		
 		<section id="content">
 			<c:set var="stInfo" value="${storeTotalInfo }"></c:set>
 			<!-- 왼쪽 컨텐츠 영역 (s) -->
