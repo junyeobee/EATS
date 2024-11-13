@@ -585,7 +585,6 @@ menu, ol, ul {
     			var data = XHR.responseText;
     			var jd = JSON.parse(data);
 
-
 				var unitbox = document.getElementById('unitbox');
 				unitbox.innerHTML='';
 				
