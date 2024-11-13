@@ -18,9 +18,62 @@
 	background-color:#fefefe;
 	height:fit-content;
 	display:flex;
+	flex-direction: column;
 	font-family: "Noto Sans KR", sans-serif;
 }
 
+/*헤더 최상단*/
+.header-top{
+	display:flex;
+	background-color:#F3553C;
+	height:50px;
+}
+/*빈 div*/
+.header-top .header-top-empty{
+	width:70%;
+}
+/*헤더 상단 콘텐츠 영역*/
+.header-top .header-top-content {
+	display: flex;
+    width: 30%;
+    justify-content: flex-end;
+    align-items: center;
+    padding:0;
+    overflow: hidden;
+}
+.header-top .header-top-content ul{
+	display:flex;
+	list-style:none;
+}
+.header-top .header-top-content li{
+	padding:0;
+	margin:0;
+}
+.header-top .header-top-content li span{
+	padding: 25px 13px;
+    font-family: 'Tenada';
+    margin: 0;
+}
+.header-top .header-top-content li .store-span{
+	color: #F3553C;
+    background-color: #fefefe;
+}
+.header-top .header-top-content li .join-span{
+	color:#fefefe;
+}
+.header-top .header-top-content li .admin-span{
+	color: #FEFEFE;
+    /* background-color: black; */
+}
+.header-top .header-top-content li .as-span:hover{
+	color:#fefefe;
+	background-color:black;
+}
+
+/*헤더 메인 영역*/
+.header-main{
+	display:flex;
+}
 /*빈 div*/
 .empty{
 	width:33.3%;
@@ -32,8 +85,8 @@
 	text-align:center;
 }
 .logo-wrap img{
-	width:35%;
-	margin:10px auto;
+	width:28%;
+	margin:30px auto;
 }
 
 /*헤더 우측 영역*/
@@ -58,20 +111,21 @@
 
 /*로그인 후 팩맨 아이콘 호버 시 드롭다운*/
 .dropdown-wrap{
-	position: absolute;
-	top: 13%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
+    position: absolute;
+    top: 26%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-	z-index: 1000;
-	background-color: #FFF8EB;
-	width: fit-content;
-	height:fit-content;
-	border: 1px solid #ffb53c;
-	visibility:hidden;
-	opacity:0;
-	padding: 0px 10px;
+    z-index: 1000;
+    background-color: #FFF8EB;
+    width: fit-content;
+    border: 1px solid #f3553c;
+    visibility: hidden;
+    opacity: 0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px lightgray;
 }
 .link-wrap:hover .dropdown-wrap{
 	animation: dropdownSlide 0.5s ease-out forwards;
@@ -90,13 +144,13 @@
 	flex-direction:column;
 	background-color: #fefefe;
 	border-radius:10px;
-	height:70px;
+	height:fit-content;
 	text-align: center;
 	border:1px solid #f3553c;
 	padding:10px;
 }
 .user-menu-panel .menu-list img{
-	width:50px;
+	width:80px;
 	margin: auto;
 }
 .menu-list span{

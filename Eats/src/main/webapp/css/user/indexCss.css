@@ -235,6 +235,7 @@ section .main-top .content-wrap p{
 	display: flex;
 	flex-direction: row;
 	flex-grow: 1;
+	align-items: center;
 }
 
 .location_box:hover {
