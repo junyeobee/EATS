@@ -117,15 +117,15 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    gap: 10px;
     z-index: 1000;
     background-color: #FFF8EB;
     width: fit-content;
     border: 1px solid #f3553c;
     visibility: hidden;
     opacity: 0;
-    padding: 30px;
+    padding: 30px 30px 10px 30px;
     border-radius: 10px;
-    box-shadow: 1px 1px 1px 1px lightgray;
 }
 .link-wrap:hover .dropdown-wrap{
 	animation: dropdownSlide 0.5s ease-out forwards;
@@ -170,5 +170,8 @@
 .user-info-wrap a{
 	font-family: "Noto Sans KR", sans-serif;
 	text-decoration:underline;
-	font-size: 10px;
+	font-size: 15px;
+}
+.user-info-wrap a:hover{
+	color:#F3553C;
 }
