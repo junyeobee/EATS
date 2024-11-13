@@ -16,12 +16,17 @@
 
 	<select id="getSearchData" parameterType="map" resultType="com.eats.admin.model.SearchDTO">
 		select search_word, count(*) search_count from search
-		where search_date between to_date(#{now_date},'YYYY-MM-DD') and to_date(#{next_date},'YYYY-MM-DD')
+		where search_date between to_date(#{first_date},'YYYY-MM-DD') and to_date(#{last_date},'YYYY-MM-DD')
 		group by search_word
 	</select>
 	
-	<select id="getAllCateKeyName" resultType="String">
-		select cate_key_name from cate_key order by cate_key_idx asc
+	<select id="getSearchCountByTag" parameterType="map" resultType="com.eats.admin.model.SearchDTO">
+		select search_word, count(*) search_count from search where 
+		<foreach collection="valueList" item="item" separator="or">	
+			search_word like '%'||#{item}||'%'
+		</foreach>
+		and search_date between to_date(#{before_date},'YYYY-MM-DD') and to_date(#{last_date},'YYYY-MM-DD')
+		group by search_word
 	</select>
 	
 </mapper>
