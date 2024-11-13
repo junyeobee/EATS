@@ -30,30 +30,26 @@
 			<div class="month_graph">
 				<div class="month_graph_box">
 					<div class="month_graph_title">
-						<div class="month_graph_title_text">이번 달 검색어 통계</div>
+						<div class="month_graph_title_text" id="month_graph_title_text">${thisMonth }월
+							검색어 통계</div>
 						<div class="month_graph_sub">
-							<div class="month_graph_sub_count" id="month_graph_sub_count"></div>
-							<div class="month_graph_sub_date" id="month_graph_sub_date"></div>
+							<div class="month_graph_sub_count" id="month_graph_sub_count">0회</div>
+							<div class="month_graph_sub_date" id="month_graph_sub_date">
+								${thisDate.first_date } ~ ${thisDate.last_date }</div>
 						</div>
 					</div>
 					<div class="month_graph_select">
-						<input type="button" class="month_select_box" onclick="dropForSelect()">
-						<div class="month_select_text">월</div>
-						<img class="month_select_img" src="/svg/dropbox_arrow.svg">
-						<ul class="month_list" id="month_list">
-							<li onclick="selectThisTag(this)">1월</li>
-							<li onclick="selectThisTag(this)">2월</li>
-							<li onclick="selectThisTag(this)">3월</li>
-							<li onclick="selectThisTag(this)">4월</li>
-							<li onclick="selectThisTag(this)">5월</li>
-							<li onclick="selectThisTag(this)">6월</li>
-							<li onclick="selectThisTag(this)">7월</li>
-							<li onclick="selectThisTag(this)">8월</li>
-							<li onclick="selectThisTag(this)">9월</li>
-							<li onclick="selectThisTag(this)">10월</li>
-							<li onclick="selectThisTag(this)">11월</li>
-							<li onclick="selectThisTag(this)">12월</li>
-						</ul>
+						<div class="month_select_box" onclick="dropForSelectWord(this)">
+							<div class="month_select_text" id="month_select_text">${thisMonth }월</div>
+							<img class="month_select_img" src="/svg/dropbox_arrow.svg">
+						</div>
+						<div class="month_list_box" id="month_list_box">
+							<ul class="month_list">
+								<c:forEach var="i" begin="1" end="12">
+									<li onclick="selectThisWordMonth(this)">${i }월</li>
+								</c:forEach>
+							</ul>
+						</div>
 					</div>
 				</div>
 
@@ -64,20 +60,21 @@
 			<div class="tag_graph">
 				<div class="tag_graph_title">
 					<div class="tag_graph_title_main">
-						<div class="tag_graph_title_date" id="tag_graph_title_date"></div>
+						<div class="tag_graph_title_date" id="tag_graph_title_date">
+							${lastDate.first_date } ~ ${thisDate.last_date }</div>
 						<div class="tag_graph_title_text">최근 3개월 간 태그 검색 통계</div>
 						<div class="tag_graph_labels">
 							<div class="tag_graph_label">
 								<div class="tag_graph_circle ppm_circle"></div>
-								<div class="tag_graph_text"></div>
+								<div class="tag_graph_text">${pastMonth }월</div>
 							</div>
 							<div class="tag_graph_label">
 								<div class="tag_graph_circle pm_circle"></div>
-								<div class="tag_graph_text"></div>
+								<div class="tag_graph_text">${beforeMonth }월</div>
 							</div>
 							<div class="tag_graph_label">
 								<div class="tag_graph_circle t_circle"></div>
-								<div class="tag_graph_text" id="month_selected"></div>
+								<div class="tag_graph_text" id="month_selected">${thisMonth }월</div>
 							</div>
 						</div>
 					</div>
@@ -91,7 +88,19 @@
 								</div>
 							</c:forEach>
 						</div>
-
+					</div>
+					<div class="month_graph_select">
+						<div class="month_select_box" onclick="dropForSelectTag(this)">
+							<div class="month_select_text" id="tag_month_select_text">${thisMonth }월</div>
+							<img class="month_select_img" src="/svg/dropbox_arrow.svg">
+						</div>
+						<div class="month_list_box" id="tag_month_list_box">
+							<ul class="month_list">
+								<c:forEach var="i" begin="1" end="12">
+									<li onclick="selectThisTagMonth(this)">${i }월</li>
+								</c:forEach>
+							</ul>
+						</div>
 					</div>
 				</div>
 				<div class="tag_graph_data" id="tag_graph_box">
@@ -103,20 +112,33 @@
 </body>
 
 <script>
+	function selectThisWordMonth(t) {
+		var selectMonth = getOnlyMonth(t.innerText);
 
-	function selectThisMonth(t) {
-		nowloading(t.innerText);
+		var month_list_box = document.getElementById('month_list_box');
+        month_list_box.style.height = '0';
+        month_list_box.style.overflow='hidden';
+        
+        var month_select_text = document.getElementById('month_select_text');
+        month_select_text.innerText = selectMonth+'월';
+        
+		nowloading();
+	}
+	
+	function getOnlyMonth(monthText) {
+		var onlyMonth = monthText.split('월')[0];
+		
+		return onlyMonth;
 	}
 	
 	window.addEventListener('load', nowloading());
 	
-	function nowloading(selectMonth) {
-		if (selectMonth == "" || selectMonth==null) {
-			var now_date = new Date();
-			var selectMonth = now_date.getMonth()+1;
-			}
+	function nowloading() {
+        var month_select_text = document.getElementById('month_select_text');
+		var selectMonth = getOnlyMonth(month_select_text.innerText);
+		
 			var param = 'selectMonth='+selectMonth;
-			sendRequest('searchData', param, showLoading, 'POST');
+			sendRequest('MonthData', param, showLoading, 'POST');
 	}
 
 	function showLoading() {
@@ -127,9 +149,8 @@
 				var dataList = JSON.parse(data).dataList;
 				var fd = JSON.parse(data).first_date;
 				var ld = JSON.parse(data).last_date;
-				var bd = JSON.parse(data).before_date;
 				var count = JSON.parse(data).src_count;
-				
+
 				var wordList=[];
 				var countList=[];
 				for(var i=0; i<dataList.length; i++){
@@ -145,13 +166,8 @@
 				var month_graph_sub_count = document.getElementById('month_graph_sub_count');
 				month_graph_sub_count.innerText = '총 검색 수 '+count+'회';
 				
-				var tag_graph_text = document.getElementsByClassName('tag_graph_text');
-				tag_graph_text[0].innerText = selectMonth-2+'월';
-				tag_graph_text[1].innerText = selectMonth-1+'월';
-				tag_graph_text[2].innerText = selectMonth+'월';
-				
-				var tag_graph_title_date = document.getElementById('tag_graph_title_date');
-				tag_graph_title_date.innerText= bd+' ~ '+ld;
+				var month_graph_title_text = document.getElementById('month_graph_title_text');
+				month_graph_title_text.innerText=selectMonth+'월 검색어 통계';
 				
 				if(dataList.length>0){
 					defaultMonthChart(wordList, countList, maxnum);
@@ -228,6 +244,10 @@
 						}
 			},
 			x: { // [x 축 관련 설정] 
+				grid: { // [y 축 데이터 시트 배경 선색 표시]
+					drawBorder: false,
+					color: '#ffffff',
+				},
 				ticks: {
 					color: '#000000', // [x 축 폰트 색상 설정]
 					font: { // [x축 폰트 스타일 변경]
@@ -243,10 +263,39 @@
 		}});
 	}
 	
+	function selectThisTagMonth(t) {
+		var tag_month_list_box = document.getElementById('tag_month_list_box');
+		tag_month_list_box.style.height = '0';
+		tag_month_list_box.style.overflow='hidden';
+
+        var tag_month_select_text = document.getElementById('tag_month_select_text');
+        tag_month_select_text.innerText = getOnlyMonth(t.innerText)+'월';
+        
+        
+        var tags = document.getElementsByClassName('tag_graph_tag');
+        var keyidx = tags[0].id;
+		for(var i=0; i<tags.length; i++) {
+			if(tags[i].firstElementChild.style.color=='white') {
+				keyidx = tags[i].id;
+			}
+		}
+		
+		selectThisTag(keyidx);
+	}
 	
 	function selectThisTag(idx) {
-		var month_selected = document.getElementById('month_selected');
-		var selectMonth = month_selected.innerText.split('월')[0];
+		var tag_month_select_text = document.getElementById('tag_month_select_text');
+		var selectMonth= getOnlyMonth(tag_month_select_text.innerText);
+
+		var tags = document.getElementsByClassName('tag_graph_tag');
+		for(var i=0; i<tags.length; i++) {
+			tags[i].style.backgroundColor='white';
+			tags[i].firstElementChild.style.color='#f3553c';
+		}
+
+		var tag_box = document.getElementById(idx);
+		tag_box.style.backgroundColor='#f3553c';
+		tag_box.firstElementChild.style.color='white'; 
 
 		var param = 'selectTag='+idx+'&selectMonth='+selectMonth;
 		sendRequest('tagData', param, showTagData,'GET');
@@ -257,25 +306,46 @@
 			if (XHR.status == 200) {
 				var data = XHR.responseText;
 				var values = JSON.parse(data).valueList;
-				var countmap = JSON.parse(data).countMap;
-				var bd = JSON.parse(data).before_date;
+				var countmap1 = JSON.parse(data).countMap1;
+				var countmap2 = JSON.parse(data).countMap2;
+				var countmap3 = JSON.parse(data).countMap3;
+				var selectMonth=JSON.parse(data).selectMonth;
+				var fd = JSON.parse(data).first_date;
 				var ld = JSON.parse(data).last_date;
 				
 				var valueList = [];
-				var countList = [];
+				var countList1 = [];
+				var countList2 = [];
+				var countList3 = [];
 				for(var i=0; i<values.length; i++) {
 					valueList.push(values[i]);
-					countList.push(countmap[values[i]]);
+					countList1.push(countmap1[values[i]]);
+					countList2.push(countmap2[values[i]]);
+					countList3.push(countmap3[values[i]]);
 				}
-				var maxnum = Math.ceil(Math.max.apply(null, countList)/10)*10;
-				maxnum= maxnum==0?10:maxnum;
 				
-				defaultTagChart(valueList, countList, maxnum);
+				var maxList = [];
+				maxList.push(Math.max.apply(null, countList1));
+				maxList.push(Math.max.apply(null, countList2));
+				maxList.push(Math.max.apply(null, countList3));
+
+				var maxnum = Math.ceil(Math.max.apply(null, maxList)/10)*10;
+				maxnum= maxnum==0?10:maxnum;
+
+				var tag_graph_text = document.getElementsByClassName('tag_graph_text');
+				tag_graph_text[0].innerText = (selectMonth<3?selectMonth+10:selectMonth-2)+'월';
+				tag_graph_text[1].innerText = (selectMonth<2?selectMonth+11:selectMonth-1)+'월';
+				tag_graph_text[2].innerText = selectMonth+'월';
+				
+				var tag_graph_title_date = document.getElementById('tag_graph_title_date');
+				tag_graph_title_date.innerText= fd+' ~ '+ld;
+				
+				defaultTagChart(valueList, countList1,countList2,countList3, maxnum);
 			}
 		}
-	}
+}
 	
-	function defaultTagChart(wordList, countList, maxnum) {
+	function defaultTagChart(wordList,countList1,countList2,countList3, maxnum) {
 		var tag_graph_box = document.getElementById('tag_graph_box');
 		tag_graph_box.className='tag_graph_data tag_graph_data_plus';
 		tag_graph_box.removeChild(tag_graph_box.firstElementChild);
@@ -291,14 +361,29 @@
 			data : {
 				labels : wordList,
 				datasets : [ {
-					data : countList,
-					backgroundColor : ['#FFC566'],
-					borderColor : [ '#FFC566'],
+					data : countList1,
+					backgroundColor : ['#FBD288'],
+					borderColor : [ '#FBD288'],
 					borderWidth : 1,
 					borderRadius: 6,
-				} ]
+				},
+				{
+					data : countList2,
+					backgroundColor : ['#FF9C73'],
+					borderColor : [ '#FF9C73'],
+					borderWidth : 1,
+					borderRadius: 6,
+				},
+				{
+					data : countList3,
+					backgroundColor : ['#FF4545'],
+					borderColor : [ '#FF4545'],
+					borderWidth : 1,
+					borderRadius: 6,
+				}]
 			},
 			options : {
+				reponsive: false,
 				maxBarThickness: 35,
 				plugins: {
 				legend: {
@@ -306,21 +391,11 @@
 				}},
 				scales : {
 					y: { // [y 축 관련 설정] 
+					stacked:true,
 						min: 0, // [y 축 데이터 설정 0 ~ 30 까지 제한]
 						max: maxnum,
 						grid: { // [y 축 데이터 시트 배경 선색 표시]
 							drawBorder: false,
-							color: function(context) {
-								if (context.tick.value >= 20) {
-									return 'rgba(0, 0, 255, 0.2)'; // 파랑
-								}
-								else if (context.tick.value < 20 && context.tick.value >= 10) {
-									return 'rgba(255, 0, 0, 0.2)'; // 빨강
-								}
-								else {
-									return 'rgba(0, 0, 0, 0.2)'; // 검정색
-								}    								
-							}
 						},
 						ticks: {
 							color: '#B1B1B1', // [y 축 폰트 색상 설정]
@@ -328,11 +403,16 @@
 								family: 'Noto Sans KR',
 								size: 14,
 								weight:500,
-								lineHeight: 3,   
+								lineHeight: 5,   
 							} 
 						}
 			},
 			x: { // [x 축 관련 설정] 
+				stacked:true,
+				grid: { // [y 축 데이터 시트 배경 선색 표시]
+					drawBorder: false,
+					color: '#ffffff',
+				},
 				ticks: {
 					color: '#000000', // [x 축 폰트 색상 설정]
 					font: { // [x축 폰트 스타일 변경]
@@ -348,16 +428,31 @@
 		}});
 	}
 	
-	function dropForSelect() {
-		var month_list = document.getElementById('month_list');
-		
-		if(month_list.clicked==true) {
-			month_list.style.height='0';
-			month_list.style.transition='all 1s';
-		} else {
-			month_list.style.height='100%';
-			month_list.style.transition='all 1s';
-		}
-	}
+	function dropForSelectWord(t) {
+        var month_list_box = document.getElementById('month_list_box');
+
+        if (month_list_box.style.height == '100%') {
+            month_list_box.style.height = '0';
+            month_list_box.style.overflow='hidden';
+            
+        } else {
+            month_list_box.style.height = '100%';
+            month_list_box.style.overflow='visible';
+        }
+    }
+	
+	function dropForSelectTag(t) {
+        var month_list_box = document.getElementById('tag_month_list_box');
+
+        if (month_list_box.style.height == '100%') {
+            month_list_box.style.height = '0';
+            month_list_box.style.overflow='hidden';
+            
+        } else {
+            month_list_box.style.height = '100%';
+            month_list_box.style.overflow='visible';
+        }
+    }
+
 </script>
 </html>

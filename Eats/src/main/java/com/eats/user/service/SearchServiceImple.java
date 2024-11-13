@@ -48,8 +48,9 @@ public class SearchServiceImple implements SearchService {
 	public Map<String, Integer> getSearchCountByTag(List<String> valueList, Map<String, String> dateMap) {
 		Map<String, Object> newmap = new HashMap<>();
 		newmap.put("valueList", valueList);
-		newmap.put("before_date", dateMap.get("before_date"));
+		newmap.put("first_date", dateMap.get("first_date"));
 		newmap.put("last_date", dateMap.get("last_date"));
+
 		List<SearchDTO> dtoList = mp.getSearchCountByTag(newmap);
 		
 		Map<String, Integer> countMap = new HashMap<>();
