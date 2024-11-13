@@ -1,0 +1,177 @@
+@charset "UTF-8";
+/*폰트*/
+@font-face {
+    font-family: 'SBAggroB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+/*헤더*/
+.user-header{
+	width:100%;
+	background-color:#fefefe;
+	height:fit-content;
+	display:flex;
+	flex-direction: column;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+/*헤더 최상단*/
+.header-top{
+	display:flex;
+	background-color:#F3553C;
+	height:50px;
+}
+/*빈 div*/
+.header-top .header-top-empty{
+	width:70%;
+}
+/*헤더 상단 콘텐츠 영역*/
+.header-top .header-top-content {
+	display: flex;
+    width: 30%;
+    justify-content: flex-end;
+    align-items: center;
+    padding:0;
+    overflow: hidden;
+}
+.header-top .header-top-content ul{
+	display:flex;
+	list-style:none;
+}
+.header-top .header-top-content li{
+	padding:0;
+	margin:0;
+}
+.header-top .header-top-content li span{
+	padding: 25px 13px;
+    font-family: 'Tenada';
+    margin: 0;
+}
+.header-top .header-top-content li .store-span{
+	color: #F3553C;
+    background-color: #fefefe;
+}
+.header-top .header-top-content li .join-span{
+	color:#fefefe;
+}
+.header-top .header-top-content li .admin-span{
+	color: #FEFEFE;
+    /* background-color: black; */
+}
+.header-top .header-top-content li .as-span:hover{
+	color:#fefefe;
+	background-color:black;
+}
+
+/*헤더 메인 영역*/
+.header-main{
+	display:flex;
+}
+/*빈 div*/
+.empty{
+	width:33.3%;
+}
+
+/*로고 영역*/
+.logo-wrap{
+	width:33.3%;
+	text-align:center;
+}
+.logo-wrap img{
+	width:28%;
+	margin:30px auto;
+}
+
+/*헤더 우측 영역*/
+.link-wrap, .login-wrap{
+	width:33.3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.link-wrap img, .login-wrap img{
+	width:50px;
+}
+.link-wrap a, .login-wrap a{
+	padding:10px;
+	color:black;
+	text-decoration:none;
+	font-size:20px;
+	font-family: 'SBAggroB';
+	margin:0px;
+}
+
+/*로그인 후 팩맨 아이콘 호버 시 드롭다운*/
+.dropdown-wrap{
+    position: absolute;
+    top: 26%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    background-color: #FFF8EB;
+    width: fit-content;
+    border: 1px solid #f3553c;
+    visibility: hidden;
+    opacity: 0;
+    padding: 30px 30px 10px 30px;
+    border-radius: 10px;
+}
+.link-wrap:hover .dropdown-wrap{
+	animation: dropdownSlide 0.5s ease-out forwards;
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.3s ease, visibility 0s;
+}
+.user-menu-panel{
+	display:flex;
+	gap:10px;
+	padding:0;
+}
+.user-menu-panel .menu-list{
+	list-style:none;
+	display:flex;
+	flex-direction:column;
+	background-color: #fefefe;
+	border-radius:10px;
+	height:fit-content;
+	text-align: center;
+	border:1px solid #f3553c;
+	padding:10px;
+}
+.user-menu-panel .menu-list img{
+	width:80px;
+	margin: auto;
+}
+.menu-list span{
+	font-family: "Noto Sans KR", sans-serif;
+	color: #f3553c;
+	font-size: 12px;
+}
+.user-info-wrap{
+	width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+.user-info-wrap div span{
+	font-size: 10px;
+}
+.user-info-wrap a{
+	font-family: "Noto Sans KR", sans-serif;
+	text-decoration:underline;
+	font-size: 15px;
+}
+.user-info-wrap a:hover{
+	color:#F3553C;
+}

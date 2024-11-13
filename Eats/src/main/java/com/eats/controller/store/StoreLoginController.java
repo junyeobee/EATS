@@ -54,7 +54,9 @@ public class StoreLoginController {
 			msg = "로그인 성공";
 			
 			session.setAttribute("storeId",storeId);
+			
 			session.setAttribute("storeIdx", storeIdx);
+			System.out.println(storeIdx);
 			
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl", "storeMenuList"); //매장 index생기면 추후 변경
