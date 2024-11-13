@@ -37,10 +37,10 @@
 						</div>
 					</div>
 					<div class="month_graph_select">
-						<input type="button" class="month_select_box">
+						<input type="button" class="month_select_box" onclick="dropForSelect()">
 						<div class="month_select_text">월</div>
 						<img class="month_select_img" src="/svg/dropbox_arrow.svg">
-						<ul class="month_list">
+						<ul class="month_list" id="month_list">
 							<li onclick="selectThisTag(this)">1월</li>
 							<li onclick="selectThisTag(this)">2월</li>
 							<li onclick="selectThisTag(this)">3월</li>
@@ -346,6 +346,18 @@
 			}
 		}
 		}});
+	}
+	
+	function dropForSelect() {
+		var month_list = document.getElementById('month_list');
+		
+		if(month_list.clicked==true) {
+			month_list.style.height='0';
+			month_list.style.transition='all 1s';
+		} else {
+			month_list.style.height='100%';
+			month_list.style.transition='all 1s';
+		}
 	}
 </script>
 </html>
