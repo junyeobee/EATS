@@ -65,7 +65,6 @@ public class ReviewAnalyzsisService {
         
         AnalyzerDTO.AnalysisResult result = new AnalyzerDTO.AnalysisResult();
         
-        // 분위기, 서비스 맵 생성
         Map<String, List<String>> sentimentMap = new HashMap<>();
         sentimentMap.put("긍정", new ArrayList<>());
         sentimentMap.put("부정", new ArrayList<>());
@@ -73,7 +72,6 @@ public class ReviewAnalyzsisService {
         result.setAtmosphere(new HashMap<>(sentimentMap));
         result.setService(new HashMap<>(sentimentMap));
         
-        // 빈 메뉴 리스트
         result.setMenu(new ArrayList<>());
         
         resultList.add(result);

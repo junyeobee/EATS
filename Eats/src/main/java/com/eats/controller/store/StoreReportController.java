@@ -11,12 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.eats.store.model.report.DayReservDTO;
-import com.eats.store.model.report.MonthReservDTO;
 import com.eats.store.model.report.ReservReportDTO;
-import com.eats.store.model.report.TimeReservDTO;
-import com.eats.store.model.report.WeekReservDTO;
-import com.eats.store.model.report.YearCompareDTO;
 import com.eats.store.service.StoreReportService;
 
 import jakarta.servlet.http.HttpSession;
@@ -48,6 +43,8 @@ public class StoreReportController {
 		return storeReportService.reportIsThere(map);
 	}
 	
+
+	// 일별 예약 통계 확인용 메소드
 	@GetMapping("/weekreport")
 	@ResponseBody
 	public ResponseEntity<ReservReportDTO> weekChart(
@@ -69,7 +66,10 @@ public class StoreReportController {
 		dto.setWeeklyStats(storeReportService.reservWeek(map));
 		dto.setMonthlyStats(storeReportService.reservMonth(map));
 		dto.setYearlyStats(storeReportService.reservYear(map));
-
+		dto.setSellDay(storeReportService.sellDay(map));
+		dto.setSellWeek(storeReportService.sellWeek(map));
+		dto.setSellMonth(storeReportService.sellMonth(map));
+		dto.setSellMenu(storeReportService.sellMenu(map));
 		return ResponseEntity.ok(dto);
 	}
 	

@@ -5,15 +5,24 @@
 <mapper namespace="com.eats.mapper.store.StoreReportMapper">
 	<select id = "selectReviewForReport" parameterType="Map" resultType = "com.eats.store.model.StoreReportDTO">
 		select 
-			rev_content, rev_score, rev_menu 
+			r.rev_content,
+			r.rev_score,
+			listagg(m.menu_name, ', ') within group (order by m.menu_idx) as rev_menu
 		from 
-			review 
+			review r
+		join 
+			reservation res on r.reserve_idx = res.reserve_idx
+		join 
+			menu m on regexp_like(r.rev_menu, '(^|,)'||m.menu_idx||'(,|$)')
 		where 
-			rev_date 
-		like 
-			to_char(#{thismonth}) || '%' 
-		and 
-			store_idx = #{store_idx}
+			res.store_idx = #{store_idx}
+			and to_char(r.rev_writedate, 'yyyy-mm') = #{thismonth}
+		group by 
+			r.rev_idx,
+			r.rev_content,
+			r.rev_score
+		order by 
+			r.rev_idx
 	</select>
 	<select id = "reportIsThere" resultType="boolean" parameterType="Map">
 		select 
@@ -123,5 +132,76 @@
 		    TO_CHAR(reserve_date, 'MM')
 		ORDER BY 
 		    month
+	</select>
+	<select id = "sellDay" parameterType="Map" resultType="com.eats.store.model.report.DaySellDTO">
+		select 
+			to_char(sell_date, 'day') as dayname,
+			sum(total_cnt) as daytotalcnt
+		from 
+			sell
+		where 
+			store_idx = #{store_idx}
+			and to_char(sell_date, 'yyyy-mm') = #{thismonth}
+			and sell_stat = 1
+		group by 
+			to_char(sell_date, 'day'),
+			to_char(sell_date, 'd')
+		order by 
+			to_char(sell_date, 'd')
+	</select>
+	<select id = "sellWeek" parameterType="Map" resultType="com.eats.store.model.report.WeekSellDTO">
+		select 
+			ceil((to_number(to_char(sell_date, 'dd')) + 
+				to_number(to_char(trunc(sell_date, 'mm'), 'd')) - 1) / 7) as weeknum,
+			sum(total_cnt) as totalcnt
+		from 
+			sell
+		where 
+			store_idx = #{store_idx}
+			and to_char(sell_date, 'yyyy-mm') = #{thismonth}
+			and sell_stat = 1
+		group by 
+			ceil((to_number(to_char(sell_date, 'dd')) + 
+				to_number(to_char(trunc(sell_date, 'mm'), 'd')) - 1) / 7)
+		order by 
+			weeknum
+	</select>
+	<select id = "sellMonth" parameterType="Map" resultType="com.eats.store.model.report.MonthSellDTO">
+		select 
+			to_char(sell_date, 'yyyy-mm') as monthName,
+			sum(total_cnt) as totalcnt
+		from 
+			sell
+		where 
+			store_idx = #{store_idx}
+			and to_char(sell_date, 'yyyy-mm') in (
+				#{thismonth}, 
+				to_char(add_months(to_date(#{thismonth}, 'yyyy-mm'), -1), 'yyyy-mm')
+			)
+			and sell_stat = 1
+		group by 
+			to_char(sell_date, 'yyyy-mm')
+		order by 
+			monthName
+	</select>
+	<select id = "sellMenu" parameterType="Map" resultType = "com.eats.store.model.report.MenuSellDTO">
+	SELECT 
+	    m.menu_name as menuname,
+	    SUM(sd.order_num) as totalcnt
+	FROM 
+	    SELL_DETAIL sd
+	JOIN 
+	    SELL s ON sd.sell_idx = s.sell_idx
+	JOIN 
+	    MENU m ON sd.menu_idx = m.menu_idx
+	WHERE 
+	    s.store_idx = #{store_idx}
+	    AND TO_CHAR(s.sell_date, 'yyyy-mm') = #{thismonth}
+	    AND s.sell_stat = 1
+	GROUP BY 
+	    m.menu_idx, m.menu_name
+	ORDER BY 
+	    totalcnt DESC
+	
 	</select>
 </mapper>

@@ -198,7 +198,9 @@
 <body>
     <div class="container">
         <a href = "/weekreport">매장명</a>
-        <button id="createReport">보고서 받아보기</button>
+        <form action = "/storeReportCreate" method = "Post">
+            <button id="createReport">보고서 받아보기</button>
+        </form>
         <div class="report-card">
             <select class="date-select"></select>
             <div id="report-cardsection">
