@@ -10,31 +10,24 @@ import com.eats.user.service.SearchService;
 
 @Controller
 public class SearchController {
-	
+
 	@Autowired
 	private SearchService ss;
-	
+
 	@GetMapping("/searchStore")
 	public ModelAndView searchStore(@RequestParam(required = false) String tagWord,
-			@RequestParam(required = false) String word,
-			@RequestParam(required = false) String areaWord) {
+			@RequestParam(required = false) String word, @RequestParam(required = false) String areaWord) {
 
-		if(word!=null && !word.equals("")) {
-			int isIt = ss.isInIt(word);
-			
-			if(isIt==0) {
-				ss.addSearchWord(word);
-			} else if(isIt>0) {
-				ss.addCount(word);
-			}
+		if (word != null && !word.equals("")) {
+			ss.addSearchWord(word);
 		}
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("tagWord", tagWord);
 		mv.addObject("word", word);
 		mv.addObject("areaWord", areaWord);
 		mv.setViewName("user/search/searchStore");
-		
+
 		return mv;
 	}
 }

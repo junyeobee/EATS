@@ -5,116 +5,67 @@
 <%@include file="../common/header.jsp"%>
 
 <div class="mainCon_1400">
-	<form name="imgSave" action="imgSave" method="post">
-		<input type="text" name="store_idx" id="" value="1">
-		<h2>소식 관리</h2>
-		<div class="btnBox_top">
-			<input type="button" class="btn_black" value="글쓰기" onclick="location.href='/store/storeNewsWrite'">
-		</div>
+	
+	<h2>소식 관리</h2>
+	<div class="btnBox_top">
+		<input type="button" class="btn_black" value="글쓰기" onclick="location.href='/store/storeNewsWrite'">
+	</div>
+	
+	<form>
+			
+		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<div class="tableList mb60">
 			<table>
 				<thead>
 					<tr>
 						<th>no.</th>
-						<th>소식내용</th>
+						<th>소식제목</th>
 						<th>등록일</th>
 						<th>삭제여부</th>
 						<th>상세보기</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="location.href='/store/storeNewsRead'">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
-					<tr>
-						<td class="a_center">1</td>
-						<td class="a_left ws800">매장명</td>
-						<td class="a_center">2000-01-01</td>
-						<td class="a_center">삭제</td>
-						<td class="a_center">
-							<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="">
-						</td>
-					</tr>
+				
+					<c:if test="${empty lists }">
+						<tr>
+							<td colspan="5" align="center">
+								등록된 게시글이 없습니다.
+							</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty lists }">
+						<c:forEach var="dto" items="${lists }">
+							<tr>
+								<td class="a_center">${dto.s_news_idx }</td>
+								<td class="a_left ws800">${dto.s_news_title }</td>
+								<td class="a_center">${dto.s_news_date }</td>
+								<td class="a_center">
+									<c:choose>
+									    <c:when test="${dto.s_news_del != 'N'}">
+									    	삭제완료
+									    </c:when>
+									    <c:otherwise>
+									    	
+									    </c:otherwise>
+									</c:choose>
+								</td>
+								<td class="a_center">
+									<input type="button" name="" id="" class="btn_skyblue" value="상세보기" onclick="location.href='/store/storeNewsRead?news_idx=${dto.s_news_idx }'">
+								</td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5" align="center">
+							${pageStr }
+						</td>
+					</tr>
+				</tfoot>
 			</table>
+			<!-- 
 			<div class="listPaging">
 				<span> ◀ </span>
 				<span>1</span>
@@ -124,6 +75,7 @@
 				<span>5</span>
 				<span> ▶ </span>
 			</div>
+			 -->
 		</div>
 	</form>
 </div>

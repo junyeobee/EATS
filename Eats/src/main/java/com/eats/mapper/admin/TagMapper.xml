@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.eats.mapper.admin.TagMapper">
+  	<insert id="addCateValue" parameterType="com.eats.user.model.CateValueDTO">
+  		insert into cate_value
+  		values(cate_value_idx_seq.nextval, #{cate_key_idx},#{cate_value_name})
+  	</insert>
+  	
+  	<delete id="deleteCateValue" parameterType="com.eats.user.model.CateValueDTO">
+  		delete cate_value where cate_key_idx=#{cate_key_idx} and cate_value_name=#{cate_value_name}
+  	</delete>
+  	
+  	<select id="getCateKeyName" parameterType="Integer" resultType="String">
+  		select cate_key_name from cate_key where cate_key_idx=#{cate_key_idx}
+  	</select>
+  	
+  	<delete id="deleteCategoryFromValue" parameterType="Integer">
+  		delete from cate_value where cate_key_idx=#{cate_key_idx}
+  	</delete>
+  	
+  	<delete id="deleteCategory" parameterType="Integer">
+  		delete from cate_key where cate_key_idx=#{cate_key_idx}
+  	</delete>
+  	
+  	<update id="updateTag" parameterType="Map">
+  		update cate_value set cate_value_name=#{new_tag_name} where cate_key_idx=#{cate_key_idx} and cate_value_name=#{cate_value_name}
+  	</update>
+  	
+  	<insert id="addNewCategory" parameterType="com.eats.user.model.CateKeyDTO">
+  		insert into cate_key
+  		values(cate_key_idx_seq.nextval, #{cate_key_name}, #{cate_key_level})
+  	</insert>
+  	
+  	<select id="getCateIdxByName" parameterType="String" resultType="Integer">
+  		select cate_key_idx from cate_key where cate_key_name=#{cate_key_name}
+  	</select>
+  </mapper>

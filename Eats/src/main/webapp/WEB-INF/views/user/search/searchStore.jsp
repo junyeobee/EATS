@@ -15,8 +15,6 @@
 	<input type="button" value="지도 확대" onclick="zoomIn()">
 	<input type="button" value="지도 축소" onclick="zoomOut()">
 	<span id="maplevel">${word }</span>
-	<span id="maplevel">${tagWord }</span>
-	<span id="maplevel">${areaWord }</span>
 </body>
 
 <script type="text/javascript"

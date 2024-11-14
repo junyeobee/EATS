@@ -1,59 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	<mapper namespace="com.eats.mapper.store.StoreImgMapper">
-	<!-- 
+<mapper namespace="com.eats.mapper.store.StoreImgMapper">
 	<insert id="storeImgInsert" parameterType="com.eats.store.model.StoreImgDTO">
-	   insert into STORE_IMG
-	   (SI_IDX, STORE_IDX, STORE_IMG1, STORE_IMG2, STORE_IMG3, STORE_IMG4, STORE_IMG5)
-	   values
-	   (SI_IDX_SEQ.nextval, 
-	    #{store_idx},
-	    <if test="img1 != null and img1.size() > 0">
-	        <foreach collection="img1" item="path" separator="," open="" close="">
-	            #{path}
-	        </foreach>
-	    </if>,
-	    <if test="img2 != null and img2.size() > 0">
-	        <foreach collection="img2" item="path" separator="," open="" close="">
-	            #{path}
-	        </foreach>
-	    </if>,
-	    <if test="img3 != null and img3.size() > 0">
-	        <foreach collection="img3" item="path" separator="," open="" close="">
-	            #{path}
-	        </foreach>
-	    </if>,
-	    <if test="img4 != null and img4.size() > 0">
-	        <foreach collection="img4" item="path" separator="," open="" close="">
-	            #{path}
-	        </foreach>
-	    </if>,
-	    <if test="img5 != null and img5.size() > 0">
-	        <foreach collection="img5" item="path" separator="," open="" close="">
-	            #{path}
-	        </foreach>
-	    </if>
-	   )
-	</insert>
-	 -->
-   <insert id="storeImgInsert" parameterType="com.eats.store.model.StoreImgDTO">
-        insert into STORE_IMG
-        values(SI_IDX_SEQ.nextval,
-        #{store_idx},
-        #{store_img1},
-        #{store_img2},
-        #{store_img3},
-        #{store_img4},
-        #{store_img5})
-   </insert>
+    	insert into STORE_IMG
+       		values(SI_IDX_SEQ.nextval,
+        	#{store_idx},
+        	#{store_img1},
+        	#{store_img2},
+        	#{store_img3},
+        	#{store_img4},
+        	#{store_img5})
+   	</insert>
+   	
+   	<select id="storeImgData" resultType="com.eats.store.model.StoreImgDTO">
+		SELECT *
+		FROM (
+		    SELECT * 
+		    FROM store_img
+		    ORDER BY si_idx DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
 	
-
-   <select id="storeImgData" resultType="com.eats.store.model.StoreImgDTO">
-	    SELECT * 
-	    FROM store_img
-	    WHERE store_idx = #{store_idx}
-	    ORDER BY si_idx DESC
-   </select>
+	<update id="storeImgUpdate" parameterType="com.eats.store.model.StoreImgDTO">
+		update store_img set
+			store_img1=#{store_img1},
+			store_img2=#{store_img2},
+			store_img3=#{store_img3},
+			store_img4=#{store_img4},
+			store_img5=#{store_img5}
+		where 
+			si_idx=#{si_idx}
+	</update>
+	
+	<delete id="storeImgUpDel" parameterType="com.eats.store.model.StoreImgDTO">
+		update store_img set
+			store_img1=#{store_img1},
+			store_img2=#{store_img2},
+			store_img3=#{store_img3},
+			store_img4=#{store_img4},
+			store_img5=#{store_img5}
+		where 
+			si_idx=#{si_idx}
+	</delete>
 
 </mapper>

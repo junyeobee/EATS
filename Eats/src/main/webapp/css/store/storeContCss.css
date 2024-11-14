@@ -24,24 +24,46 @@
 	.mainCon_400 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
 	.mainCon_400 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
-	/* 소식관리-소식등록, 소식상세보기 테이블박스 */
-	.contents .mainCont .mainCon_600 {width:600px;}
-	.mainCon_600 .tableWrite_2 {}
-	.mainCon_600 .tableWrite_2 table {width:100%;}
-	.mainCon_600 .tableWrite_2 table tr {height:40px; }
-	.mainCon_600 .tableWrite_2 table tr th {width:20%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
-	.mainCon_600 .tableWrite_2 table tr td {width:80%; border-bottom:1px solid #ddd;}
-	.mainCon_600 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
-	.mainCon_600 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	/* 소식관리-소식등록, 수정, 상세보기 테이블박스 */
+	.contents .mainCont .mainCon_800 {width:800px;}
+	.mainCon_800 .tableWrite_2 {}
+	.mainCon_800 .tableWrite_2 table {width:100%;}
+	.mainCon_800 .tableWrite_2 table tr {height:40px; }
+	.mainCon_800 .tableWrite_2 table tr th {width:15%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
+	.mainCon_800 .tableWrite_2 table tr td {width:85%; border-bottom:1px solid #ddd;}
+	.mainCon_800 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_800 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	.mainCon_800 .tableWrite_2 table tr td pre {
+		width:600px; 
+		/* word-wrap: break-word; 단어가 길어지면 줄바꿈 */
+		/* word-break: break-all; 글자 단위로 강제로 줄바꿈 */
+	}
+	
+	.mainCon_800 .tableWrite_2 table tr td img {width:600px;}
+	
+	
+	/* 소식관리 - 리스트 박스 */
+	.contents .mainCont .mainCon_1400 {width:1400px;}
+	.mainCon_1400 .tableList {}
+	.mainCon_1400 .tableList table {width:100%;}
+	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
+	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
+	
+	/*
+	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
+	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
+	*/
 	
 	
 	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
 	.contents .mainCont .mainCon_0 {} 
 	.mainCon_0 .mc0_imgBox {}
-	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px;}
+	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px; vertical-align:top;}
 	
 	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
-	.mainCon_0 .mc0_imgBox > span > span {float:right; margin-right:20px; font-size:20px;}
+	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
 	
 	/* 정보수정신청 테이블박스 */
 	.contents .mainCont .mainCon_800 {width:800px;}
@@ -52,16 +74,6 @@
 	.mainCon_800 .tableWrite_4 table tr td {width:30%; border-bottom:1px solid #eee;}
 	.mainCon_800 .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
 	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
-	
-	/* 소식관리 - 리스트 박스 */
-	.contents .mainCont .mainCon_1400 {width:1400px;}
-	.mainCon_1400 .tableList {}
-	.mainCon_1400 .tableList table {width:100%;}
-	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
-	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
-	
-	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
-	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
 	
 	
 	

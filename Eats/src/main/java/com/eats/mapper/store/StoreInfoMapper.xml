@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eats.mapper.store.StoreInfoMapper">
+	<select id="getStoreInfo" resultType="com.eats.store.model.HYStoreDTO">
+		SELECT
+			S.*, P.AREA_NAME AS parent_area_name, A.AREA_NAME
+		FROM
+			STORE S, AREA A, AREA P
+		WHERE
+			S.STORE_IDX=#{store_idx}
+		AND
+			S.STORE_AREA=A.AREA_IDX
+		AND 
+			P.AREA_IDX=A.PARENT_IDX
+	</select>
+	<select id="getStoreImg" resultType="com.eats.store.model.HYStoreImgDTO">
+   		SELECT
+   			*
+   		FROM
+   			STORE_IMG
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY
+   			IMG_ORDER ASC
+	</select>
+	<select id="getStoreTime" resultType="com.eats.store.model.StoreTimeDTO">
+		SELECT
+			*
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+	</select>
+	<select id="getStoreNews" resultType="com.eats.store.model.HYStoreNewsDTO">
+   		SELECT
+   			*
+   		FROM
+   			STORE_NEWS
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY
+   			S_NEWS_IDX DESC
+	</select>
+	<select id="getStoreMenuCate" resultType="com.eats.store.model.HYMenuCateDTO">
+   		SELECT
+   			*
+   		FROM
+   			MENU_CATE
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY 
+   			M_CATE_IDX ASC
+	</select>
+	<select id="getStoreMenu" resultType="com.eats.store.model.HYMenuDTO">
+   		SELECT
+   			*
+   		FROM
+   			MENU
+   		WHERE
+   			M_CATE_IDX IN (
+   				SELECT
+   					M_CATE_IDX
+   				FROM
+   					MENU_CATE
+   				WHERE
+   					STORE_IDX=#{store_idx}
+   			)
+	</select>
+	<select id="getStoreConvinient" resultType="com.eats.store.model.CategoryDTO">
+   		SELECT
+   			C.*, K.CATE_KEY_NAME, V.CATE_VALUE_NAME
+   		FROM
+   			CATEGORY C, CATE_KEY K, CATE_VALUE V
+   		WHERE 
+   			C.STORE_IDX=#{store_idx}
+   		AND
+   			C.CATE_KEY_IDX=(
+   				SELECT
+   					CATE_KEY_IDX
+   				FROM
+   					CATE_KEY
+   				WHERE
+   					CATE_KEY_NAME = '편의시설'
+   			)
+   		AND
+   			C.CATE_KEY_IDX=K.CATE_KEY_IDX
+   		AND
+   			C.CATE_VALUE_IDX=V.CATE_VALUE_IDX
+	</select>
+	<select id="getJjimCnt" resultType="int">
+   		
+	</select>
+	<select id="getTodayTime" resultType="com.eats.store.model.StoreTimeDTO" parameterType="map">
+		SELECT
+			*
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+		AND
+			STIME_DAY=#{kor_today}
+	</select>
+</mapper>

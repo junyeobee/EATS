@@ -23,20 +23,22 @@ public class StoreLoginServiceImple implements StoreLoginService {
 	@Override
 	public int storeLogin(String storeId, String storePwd) {
 
-		String dbPwd = mapper.storeLogin(storeId);
+		EatsStoreDTO dbPwd = mapper.storeLogin(storeId);
 		
 		int result=0;
 
-		if (dbPwd == null || dbPwd == "") {
+		if (dbPwd == null) {
 
 			result= NOT_ID;
 		
-		}else if(dbPwd.equals(storePwd)) {
+		}else if(!dbPwd.getStore_pwd().equals(storePwd)) {
 			
-			result = LOGIN_OK;
+			result = NOT_PWD; 	
+			
+
 		}else {
 			
-			result=NOT_PWD;
+			result= dbPwd.getStore_idx(); //로그인성공. 매장idx 반환
 		}
 
 		return result;

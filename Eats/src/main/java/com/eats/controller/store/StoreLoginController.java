@@ -36,27 +36,34 @@ public class StoreLoginController {
 	}
 
 	@PostMapping("/storeLogin")
-	public ModelAndView storeLoginSubmit(@RequestParam(value = "storeId", required = true) String storeId,
+	public ModelAndView storeLoginSubmit(
+			@RequestParam(value = "storeId", required = true) String storeId,
 			@RequestParam(value = "storePwd", required = true) String storePwd,
-			@RequestParam(value = "check", required = false) String ch, HttpSession session, HttpServletResponse resp) {
+			@RequestParam(value = "check", required = false) String ch, 
+			HttpSession session, HttpServletResponse resp) {
 
 		ModelAndView mav = new ModelAndView();
-
-		int result = service.storeLogin(storeId, storePwd);
+		 
+		int storeIdx = service.storeLogin(storeId, storePwd);
 
 		String msg = "";
+		
+		
 
-		if (result == 3) {
+		if (storeIdx == 3) {
 			msg = "로그인 성공";
 			
 			session.setAttribute("storeId",storeId);
 			
+			session.setAttribute("storeIdx", storeIdx);
+			System.out.println(storeIdx);
+			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeLogin");
+			mav.addObject("goUrl", "storeMenuList"); //매장 index생기면 추후 변경
 
 			Cookie ck = new Cookie("saveid", storeId);
 
-			if (ck == null || ch.equals("")) {
+			if (ch == null || ch.equals("")) {
 				ck.setMaxAge(0);
 
 			} else {
@@ -79,6 +86,8 @@ public class StoreLoginController {
 
 	}
 
+	
+	
 	// 아이디 찾기
 
 	@GetMapping("/storeFindIdPage")
@@ -234,6 +243,15 @@ public class StoreLoginController {
 	}
 	
 	
+	@GetMapping("/storeLogout")
+	public String storeLogout(HttpSession session) {
+		
+		session.invalidate();
+		
+		return "index";
+	}
+	
+
 	
 	
 
