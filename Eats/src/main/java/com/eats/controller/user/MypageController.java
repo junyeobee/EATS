@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.EatsUserDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MypageService;
 
 import jakarta.servlet.http.HttpSession;
@@ -177,4 +178,35 @@ public class MypageController {
         mypageService.deleteJjim(userId, storeId);
         return "redirect:/user/mypage/myJjim";
     }
+    // 나의 리뷰 보기
+    @GetMapping("/user/mypage/myReviews")
+    public ModelAndView myReviews(HttpSession session, 
+                                  @RequestParam(value = "page", defaultValue = "1") int page) {
+        Integer userId = (Integer) session.getAttribute("user_idx");
+        if (userId == null) {
+            return new ModelAndView("redirect:/user/login");
+        }
+
+        int itemsPerPage = 5; // 페이지 당 항목 수
+        try {
+            int totalItems = mypageService.getReviewCount(userId); // 총 리뷰 수
+            int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+
+            // 리뷰 리스트를 페이징 처리하여 가져옴
+            List<ReviewDTO> reviewList = mypageService.getReviewListWithPaging(userId, page, itemsPerPage);
+
+            ModelAndView modelAndView = new ModelAndView("user/mypage/myReview");
+            modelAndView.addObject("reviewList", reviewList);
+            modelAndView.addObject("currentPage", page);
+            modelAndView.addObject("totalPages", totalPages);
+            return modelAndView;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ModelAndView errorView = new ModelAndView("error");
+            errorView.addObject("message", "리뷰 데이터를 가져오는 중 문제가 발생했습니다.");
+            return errorView;
+        }
+    }
 }
+    
+

@@ -83,4 +83,39 @@
         WHERE USER_IDX = #{userId}
     </update>
 
+    <!-- 리뷰 개수 가져오기 -->
+    <select id="getReviewCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEW r
+        JOIN RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+        WHERE res.USER_IDX = #{userId}
+    </select>
+
+    <!-- 페이징된 리뷰 목록 가져오기 -->
+    <select id="getReviewListWithPaging" parameterType="map" resultType="com.eats.user.model.ReviewDTO">
+        SELECT 
+            r.REV_IDX AS rev_idx,
+            r.RESERVE_IDX AS reserve_idx,
+            r.REV_SCORE AS rev_score,
+            r.REV_CONTENT AS rev_content,
+            r.REV_WRITEDATE AS rev_writedate,
+            r.REV_STATE AS rev_state,
+            r.REV_IMG AS rev_img,
+            r.REV_MENU AS rev_menu,
+            r.REV_TAG AS rev_tag,
+            res.RESERVE_DATE AS reserve_date,
+            u.USER_IDX AS user_idx,
+            u.USER_NICKNAME AS user_nickname,
+            s.STORE_IDX AS store_idx,
+            s.STORE_NAME AS store_name,
+            s.STORE_ADDR AS store_addr
+        FROM REVIEW r
+        JOIN RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+        JOIN EATS_USER u ON res.USER_IDX = u.USER_IDX
+        JOIN STORE s ON res.STORE_IDX = s.STORE_IDX
+        WHERE res.USER_IDX = #{userId}
+        ORDER BY r.REV_WRITEDATE DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
 </mapper>
