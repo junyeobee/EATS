@@ -6,9 +6,12 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eats.mapper.user.UserMapper;
+import com.eats.user.model.EatsProfileDTO;
 import com.eats.user.model.EatsUserDTO;
+import com.eats.user.model.EatsUserWrapperDTO;
 
 @Service
 public class UserLoginServiceImple implements UserLoginService {
@@ -74,4 +77,53 @@ public class UserLoginServiceImple implements UserLoginService {
 		
 		return result;
 	}
+	
+	@Transactional
+	@Override
+	public int insertuser(EatsUserDTO userDTO, EatsProfileDTO profileDTO) {
+		int userresult = 0;
+		int profileresult = 0;
+		
+		try {
+			userresult = mapper.insertuser(userDTO);
+			
+			if (userresult > 0) {
+		        profileDTO.setUser_idx(userDTO.getUser_idx());
+		        profileresult = mapper.insertprofile(profileDTO);
+			}
+			
+			if (userresult > 0 && profileresult > 0) {
+	            return 1; 
+	        } else {
+	            return 0; 
+	        }
+		}catch (Exception e) {
+			return 0; 
+		}
+	}
+
+	@Override
+	public int idcheck(String userId) {
+		int result = 0;
+		result = mapper.idcheck(userId);
+		
+		return result;
+	}
+
+	@Override
+	public int nickcheck(String userNick) {
+		int result = 0;
+		result = mapper.nickcheck(userNick);
+		
+		return result;
+	}
+
+	@Override
+	public int telcheck(String userTel) {
+		int result = 0;
+		result = mapper.telcheck(userTel);
+		
+		return result;
+	}
+	
 }

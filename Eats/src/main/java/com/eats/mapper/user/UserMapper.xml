@@ -55,4 +55,42 @@
 		WHERE
 			USER_ID=#{userId}
 	</update>
+	<insert id="insertuser" parameterType="com.eats.user.model.EatsUserDTO">
+		<selectKey keyProperty="user_idx" resultType="int" order="BEFORE">
+			SELECT user_idx_seq.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO eats_user (
+			user_idx, user_id, user_pwd, user_name, user_email, user_birth, user_gender, join_method
+		)
+		VALUES(
+			#{user_idx, jdbcType=INTEGER}, #{user_id, jdbcType=VARCHAR}, #{user_pwd, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}
+			, #{user_email, jdbcType=VARCHAR}, #{user_birth, jdbcType=DATE}, #{user_gender, jdbcType=INTEGER}, #{join_method, jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertprofile" parameterType="com.eats.user.model.EatsProfileDTO">
+		<selectKey keyProperty="user_idx" resultType="int" order="BEFORE">
+			SELECT user_idx_seq.CURRVAL FROM dual
+		</selectKey>
+		INSERT INTO user_profile (
+			user_idx, user_nickname, user_tel
+		)
+		VALUES(
+			#{user_idx, jdbcType=INTEGER}, #{user_nickname, jdbcType=VARCHAR}, #{user_tel, jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="idcheck" parameterType="String" resultType="Int">
+		SELECT COUNT(*)
+		FROM EATS_USER
+		WHERE user_id = #{userId, jdbcType=VARCHAR}
+	</select>
+	<select id="nickcheck" parameterType="String" resultType="Int">
+		SELECT COUNT(*)
+		FROM USER_PROFILE
+		WHERE user_nickname = #{userNick, jdbcType=VARCHAR}
+	</select>
+	<select id="telcheck" parameterType="String" resultType="Int">
+		SELECT COUNT(*)
+		FROM USER_PROFILE
+		WHERE user_tel = #{userTel, jdbcType=VARCHAR}
+	</select>
 </mapper>
