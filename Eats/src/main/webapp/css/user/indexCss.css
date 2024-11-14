@@ -155,6 +155,7 @@ section .main-top{
 	height:fit-content;
 	width:100%;
 	display:flex;
+	margin-bottom: 50px;
 }
 /*메인화면 상단 좌측 이미지 영역*/
 section .main-top .mainimg-wrap{
@@ -201,7 +202,17 @@ section .main-top .content-wrap p{
 
 	
 }
-
+.search_input_box:before{
+	content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 2px;
+    top: 15px;
+    height: 40px;
+    background: black;
+    transform: translateY(-50%);
+}
 .search_input {
 	font-family: "Noto Sans KR", sans-serif;
 	font-size: 21px;
@@ -235,6 +246,7 @@ section .main-top .content-wrap p{
 	display: flex;
 	flex-direction: row;
 	flex-grow: 1;
+	align-items: center;
 }
 
 .location_box:hover {
@@ -757,6 +769,7 @@ section .main-top .content-wrap p{
 	font-size: 12px;
 	font-weight: 300;
 	color: #262626;
+	font-family: "Noto Sans KR", sans-serif; 
 }
 
 .store_reserve_tag_box {
