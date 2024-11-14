@@ -506,6 +506,7 @@ menu, ol, ul {
 	</div> <!-- main div (e) -->
 	</section>
 </body>
+<script type="text/javascript" src="../js/userHeader.js"></script>
 <script>
 	var locationBox = document.getElementById("location_box");
 	var modal = document.getElementById("modal");
@@ -584,8 +585,7 @@ menu, ol, ul {
     			var data = XHR.responseText;
     			var jd = JSON.parse(data);
 
-    			console.log('dd');
-				/* var unitbox = document.getElementById('unitbox');
+				var unitbox = document.getElementById('unitbox');
 				unitbox.innerHTML='';
 				
 				var svalue = document.createElement('div');
@@ -600,7 +600,7 @@ menu, ol, ul {
 					svalue.appendChild(value_text);
 				});
 				
-				unitbox.appendChild(svalue); */
+				unitbox.appendChild(svalue);
     		}
     	}
     }
