@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.eats.mapper.user.ReservationMapper">
+
+	<select id="getMaxPeopleCnt" resultType="int" parameterType="int">
+			SELECT
+				MAX(STS_NUM) AS max_people
+			FROM
+				STORE_TABLE_SET
+			WHERE
+				SG_IDX=(
+					SELECT
+						SG_IDX
+					FROM
+						STORE_GRID
+					WHERE
+						STORE_IDX = #{store_idx}
+				)
+	</select>
+	
+	<select id="getRunningDays" resultType="String" parameterType="int">
+		SELECT
+			STIME_DAY
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+	</select>
+	
+	<select id="getTimeListWithYN" resultType="map" parameterType="map">
+		WITH DAY_MAPPING AS(
+			SELECT
+				TO_CHAR(TO_DATE(#{reserve_date}, 'YYYY-MM-DD'), 'D') as day_num,
+				CASE TO_CHAR(TO_DATE(#{reserve_date}, 'YYYY-MM-DD'), 'D')
+					WHEN '1' THEN '일'
+					WHEN '2' THEN '월'
+					WHEN '3' THEN '화'
+					WHEN '4' THEN '수'
+					WHEN '5' THEN '목'
+					WHEN '6' THEN '금'
+					WHEN '7' THEN '토'
+				END as kor_day
+			FROM DUAL
+		),
+		STORE_HOURS AS (
+		    SELECT 
+		        STIME_START,
+		        STIME_END,
+		        SUBSTR(STIME_BREAK, 1, INSTR(STIME_BREAK, '-')-1) as break_start,
+		        SUBSTR(STIME_BREAK, INSTR(STIME_BREAK, '-')+1) as break_end,
+		        TO_CHAR(TO_DATE(STIME_END, 'HH24:MI') - 1/24, 'HH24:MI') as last_available_hour
+		    FROM STORE_TIME st
+		    INNER JOIN DAY_MAPPING dm ON st.STIME_DAY = dm.kor_day
+		    WHERE st.STORE_IDX = #{store_idx}
+		),
+		ALL_HOURS AS (
+		    SELECT 
+		        LPAD(TRUNC((LEVEL-1)/2), 2, '0') || ':' || 
+		        CASE MOD((LEVEL-1), 2) WHEN 0 THEN '00' ELSE '30' END as res_hour
+		    FROM DUAL
+		    CONNECT BY LEVEL <![CDATA[ <= ]]> 48
+		),
+		AVAILABLE_SLOTS AS (
+		    SELECT ah.res_hour
+		    FROM ALL_HOURS ah, STORE_HOURS sh
+		    WHERE ah.res_hour >= sh.STIME_START
+		    AND ah.res_hour <![CDATA[ <= ]]> sh.last_available_hour
+		    AND (
+		        sh.break_start IS NULL 
+		        OR ah.res_hour <![CDATA[ < ]]> sh.break_start 
+		        OR ah.res_hour <![CDATA[ >= ]]> sh.break_end
+		    )
+		),
+		AVAILABLE_CHECK AS (
+		    SELECT 
+		        a.res_hour as reserve_hour,
+		        CASE 
+		            WHEN EXISTS (
+		                SELECT 1
+		                FROM STORE_TABLE_SET sts
+		                JOIN STORE_GRID sg ON sts.SG_IDX = sg.SG_IDX
+		                WHERE sg.STORE_IDX = #{store_idx}
+		                AND sts.STS_NUM <![CDATA[ >= ]]> #{reserve_cnt}
+		                AND NOT EXISTS (
+		                    SELECT 1 
+		                    FROM RESERVATION r
+		                    WHERE r.RESERVE_TABLE_IDX = sts.STS_IDX
+		                    AND r.RESERVE_TIME = a.res_hour
+		                    AND r.RESERVE_DATE = #{reserve_date}
+		                   
+		                )
+		            ) THEN 'Y'
+		            ELSE 'N'
+		        END as AVAILABLE
+		    FROM AVAILABLE_SLOTS a
+		)
+		SELECT * FROM AVAILABLE_CHECK
+		ORDER BY TO_DATE(reserve_hour, 'HH24:MI')
+	</select>
+	
+</mapper>

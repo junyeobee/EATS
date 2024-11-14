@@ -356,8 +356,12 @@
     height: fit-content;
     text-align: center;
 }
-.reservation .cnt-wrapper, .reservation .time-wrapper{
-	height:70px;
+.reservation .cnt-wrapper{
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
 }
 .reservation .cnt-wrapper{
 	display: flex;
@@ -390,6 +394,26 @@
 	text-align:center;
 	font-family: 'SBAggroB';
 }
+.reservation .time-wrapper{
+	height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 10px;
+}
+.reservation .time-wrapper span{
+	padding: 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    text-align: center;
+}
+.reservation .time-wrapper .time-list-y{
+	border: 3px solid red;
+}
+.reservation .time-wrapper .time-list-n{
+	border: 3px solid gray;
+}
+
 .reservation .table-wrapper{
 	height:100px;
 }

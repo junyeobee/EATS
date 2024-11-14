@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="../css/user/storeDetail/storeDetailCss.css">
 	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script type="text/javascript" src="../js/httpRequest.js"></script>
 <title></title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
@@ -228,6 +229,8 @@
 				<!-- 캘린더 영역(s) -->
 				<div class="cal-wrapper">
 					<div id="calendar"></div>
+					<input type="hidden" id="runningDayList" value="${runningDayList}">
+					<input type="hidden" id="reserve_date">
 				</div>
 				<!-- 캘린더 영역(e) -->
 				
@@ -265,10 +268,18 @@
 	</div>
 </body>
 <script>
+const store_idx=${storeTotalInfo.storeDTO.store_idx};
+var maxCnt=parseInt(${max_people_cntstoreDTO.store_name});
+
 function changeCnt(change){
 	var crCnt=document.getElementById('reserve_cnt');
-	var newCnt=parseInt(crCnt.value);	
-
+	var newCnt=parseInt(crCnt.value);
+	var minusBtn=document.getElementById('cntMinusBtn');
+	var plusBtn=document.getElementById('cntPlusBtn');
+	
+	minusBtn.style.cursor='pointer';
+	plusBtn.style.cursor='pointer';
+	
 	if(crCnt && change){
 		if(change==='minus'){
 			newCnt--;
@@ -276,18 +287,93 @@ function changeCnt(change){
 			newCnt++;
 		}
 	}
+	
 	crCnt.value=newCnt;
 	
 	if(crCnt.value==1){
-		document.getElementById('cntMinusBtn').disabled=true;
+		minusBtn.disabled=true;
 	}else{
-		document.getElementById('cntMinusBtn').disabled=false;
+		minusBtn.disabled=false;
 	}	
 	
-	if(crCnt.value==10){
-		document.getElementById('cntPlusBtn').disabled=true;
+	if(crCnt.value==maxCnt){
+		plusBtn.disabled=true;
 	}else{
-		document.getElementById('cntPlusBtn').disabled=false;
+		plusBtn.disabled=false;
+	}
+	
+	
+}
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	   let lastReserveDate = '';
+	   let lastReserveCnt = '2';
+
+	   // 변화를 감지하는 함수
+	   function checkChanges() {
+	       const currentReserveDate = document.getElementById('reserve_date').value;
+	       const currentReserveCnt = document.getElementById('reserve_cnt').value;
+
+	       if (currentReserveDate && currentReserveCnt && 
+	           (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+	           
+	           // 여기에 실행하고 싶은 함수 작성
+	           //alert('예약날짜:' + currentReserveDate + '\n예약인원:' + currentReserveCnt);
+	           var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
+	           alert(params);
+	           sendRequest('/user/getTimeList', params, showTimeList, 'GET');
+	           
+	           lastReserveDate = currentReserveDate;
+	           lastReserveCnt = currentReserveCnt;
+	       }
+	   }
+
+	   // MutationObserver로 value 변화 감지
+	   const observer = new MutationObserver(function(mutations) {
+	       mutations.forEach(function(mutation) {
+	           if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+	               checkChanges();
+	           }
+	       });
+	   });
+
+	   // 관찰 대상 설정
+	   const reserveDateInput = document.getElementById('reserve_date');
+	   const reserveCntInput = document.getElementById('reserve_cnt');
+	   
+	   observer.observe(reserveDateInput, { attributes: true });
+	   observer.observe(reserveCntInput, { attributes: true });
+
+	   // input 이벤트도 추가
+	   reserveDateInput.addEventListener('input', checkChanges);
+	   reserveCntInput.addEventListener('input', checkChanges);
+	   
+	   const originalChangeCnt = changeCnt;  // 기존 함수
+	    changeCnt = function(change) {        // 함수 새로 정의
+	        originalChangeCnt(change);        // 기존 기능 
+	        checkChanges();                   // 추가 기능 = sendRequest 호출
+	    };
+});
+function showTimeList(){
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data);
+			document.getElementById('time_wrapper').style.height='fit-content';
+			document.getElementById('time_wrapper').style.padding='10px';
+			var html=''
+			for(var i=0; i<jsondata.length; i++){
+				//alert(jsondata[i].RESERVE_HOUR+jsondata[i].AVAILABLE);
+				if(jsondata[i].AVAILABLE==='N'){
+					html+='<span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span>';
+				}else{
+					html+='<span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span>';
+				}				
+			}
+			document.getElementById('time_wrapper').innerHTML=html;
+		}
 	}
 }
 </script>

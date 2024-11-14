@@ -91,9 +91,7 @@ $(document).ready(function(){
 	        if ($(this).find('li').length > 5) {
 	            $(this).siblings('.btn-menu-more').show();
 	            $(this).find('li:gt(4)').hide();
-	            console.log('More than 5 items found, hiding items.');
 	        } else {
-	            console.log('5 or fewer items, no action needed.');
 	        }
 	    });
 	}
