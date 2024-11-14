@@ -1184,7 +1184,7 @@
                                 <div class="anal-info">
                                     <h3 class="anal-title">주간 예약 추이</h3>
                                     <p class="anal-description">
-                                        ${date}월의 주차별 예약 현황과 실제 방문자 수입니다.
+                                        ${date}월의 주차별 예약 현황과<br>실제 방문자 수입니다.
                                     </p>
                                     <div class="key-metrics">
                                         <div class="metric">
@@ -1232,7 +1232,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="chart-wrapper scrollable">
+                            <div class="chart-wrapper">
                                 <canvas id="yearlyReservChart"></canvas>
                             </div>
                         </div>

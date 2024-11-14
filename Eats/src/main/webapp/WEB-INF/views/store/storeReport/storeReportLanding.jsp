@@ -26,8 +26,16 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+        .imgcontianer{
+        	width: 50%;
+        	max-width: 720px;
+        	margin: 0 auto;
+        	padding: 0 20px;
+            object-fit: cover;
+            border-radius:10px;
+        }
 
-        /* Header Section */
+        /*랜딩헤더*/
         .header {
             background-color: #fff;
             padding: 20px 0;
@@ -58,7 +66,7 @@
             font-weight: 500;
         }
 
-        /* Hero Section */
+        /*랜딩*/
         .hero {
             padding: 160px 0 80px;
             text-align: center;
@@ -78,7 +86,7 @@
             margin-bottom: 48px;
         }
 
-        /* Features Section */
+        /*영역전개*/
         .features {
             padding: 80px 0;
         }
@@ -121,7 +129,7 @@
             line-height: 1.6;
         }
 
-        /* Integration Section */
+        /*ㅇㅇ*/
         .integrations {
             padding: 80px 0;
             text-align: center;
@@ -145,7 +153,7 @@
             margin-bottom: 16px;
         }
 
-        /* CTA Section */
+        /*저 요소들CTA라고하더라구요*/
         .cta {
             padding: 80px 0;
             text-align: center;
@@ -157,7 +165,7 @@
             margin-bottom: 32px;
         }
 
-        /* Footer */
+        /*푸터*/
         .footer {
             background-color: #191919;
             color: white;
@@ -209,7 +217,9 @@
         <div class="container">
             <h1>내 매장 맞춤 보고서</h1>
             <p>사용자들의 실제 후기를 통해 내 매장의 서비스를 더욱 정확하게 분석해드려요</p>
-            <img src="/api/placeholder/1200/600" alt="대시보드 미리보기">
+            <div class = "imgcontianer">
+            	<img src="../img/store/storeLanding/Landing2.png" alt="대시보드 미리보기">
+        	</div>
         </div>
     </section>
 
@@ -221,7 +231,7 @@
                     <p>많은 리뷰 보기 힘드셨죠?<br>리뷰에서 유의미한 정보를 빠르게 파악하여 분석해줍니다</p>
                 </div>
                 <div class="feature-image">
-                    <img src="/api/placeholder/600/400" alt="AI 분석">
+                    <img src="../img/store/storeLanding/dd4.jpg" alt="AI 분석">
                 </div>
             </div>
 
@@ -231,7 +241,7 @@
                     <p>실제 매장을 방문한 고객들의 리뷰를 통해<br>더욱 정확한 우리 매장의 방향성을 잡아줘요!</p>
                 </div>
                 <div class="feature-image">
-                    <img src="/api/placeholder/600/400" alt="통계 기반">
+                    <img src="../img/store/storeLanding/dd2.jpg" alt="통계 기반">
                 </div>
             </div>
 
@@ -241,7 +251,7 @@
                     <p>손님들이 남긴 악플을 요약받아서<br>고소장을 작성하기 더욱 편리해졌어요!</p>
                 </div>
                 <div class="feature-image">
-                    <img src="/api/placeholder/600/400" alt="사용자 후기">
+                    <img src="../img/store/storeLanding/dd.jpg" alt="사용자 후기">
                 </div>
             </div>
         </div>
