@@ -12,162 +12,306 @@
 	overflow: auto;
 	font-family: "Noto Sans KR", sans-serif;
 	width: 1240px;
-	height:900px;
+	height: 900px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding-top: 45px;
-	row-gap: 25px;
+	padding-top: 25px;
+	row-gap: 20px;
+}
+
+.month_graph_data {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.tag_graph_data {
+	width: 1000px;
+	height: 300px;
+	margin: 0 auto;
+}
+
+.tag_graph_data_plus {
+	display: flex;
+	align-items: flex-end;
+}
+
+.tag_graph_msg {
+	font-size: 20px;
+	font-weight: 600;
+	color: #767676;
+	text-align: center;
 }
 
 .month_graph {
-  background: #ffffff;
-  width: 1120px;
-  height: 350px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
-
-  padding: 20px 40px;
+	background: #ffffff;
+	width: 1120px;
+	height: 350px;
+	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
+	padding: 20px 40px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 30px;
 }
 
 .tag_graph {
-  background: #ffffff;
-  width: 1120px;
-  height: 350px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
-  padding: 20px 40px;
+	background: #ffffff;
+	width: 1120px;
+	height: 405px;
+	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
+	padding: 25px 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.month_graph_box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	column-gap: 20px;
 }
 
 .month_graph_title {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  column-gap: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	column-gap: 20px;
 }
 
 .month_graph_title_text {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 8px;
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 8px;
 }
 
 .month_graph_sub {
-  background: #ffffff;
-  border-radius: 6px;
-  width: 220px;
-  height: 50px;
-  box-shadow: 0px 0px 2.22px 0px rgba(0, 0, 0, 0.25);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  padding-left: 15px;
+	background: #ffffff;
+	border-radius: 6px;
+	width: 220px;
+	height: 50px;
+	box-shadow: 0px 0px 2.22px 0px rgba(0, 0, 0, 0.25);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	padding-left: 15px;
 }
+
 .month_graph_sub_count {
-  font-size: 15px;
-  font-weight: 600;
-  color: #767676;
+	font-size: 15px;
+	font-weight: 600;
+	color: #767676;
 }
+
 .month_graph_sub_date {
-  font-size: 13px;
-  font-weight: 400;
-  color: #767676;
+	font-size: 13px;
+	font-weight: 400;
+	color: #767676;
+}
+
+.month_graph_select {
+	margin-right: 50px;
+}
+
+.tag_graph_title_main {
+	width: 300px;
 }
 
 .tag_graph_title {
-  display: flex;
-  flex-direction: row;
-
-  column-gap: 40px;
+	display: flex;
+	flex-direction: row;
+	column-gap: 40px;
 }
 
 .tag_graph_title_date {
- font-size: 12px;
- font-weight: 400;
- margin-left: 3px;
+	font-size: 12px;
+	font-weight: 400;
+	margin-left: 3px;
 }
 
 .tag_graph_title_text {
-  font-size: 24px;
-  font-weight: 600;
+	font-size: 24px;
+	font-weight: 600;
 }
 
 .tag_graph_labels {
-  display: flex;
-  flex-direction: row;
-
-  column-gap: 15px;
-  margin-left: 40px;
-  margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	column-gap: 15px;
+	margin-left: 40px;
+	margin-top: 10px;
 }
 
 .tag_graph_label {
-  display: flex;
-  flex-direction: row;
-  column-gap: 5px;
-
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	column-gap: 5px;
+	justify-content: center;
+	align-items: center;
 }
 
 .tag_graph_circle {
-  border-radius: 50px;
-  width: 10px;
-  height: 10px;
+	border-radius: 50px;
+	width: 10px;
+	height: 10px;
 }
 
 .ppm_circle {
-  background-color: #FBD288;
+	background-color: #FBD288;
 }
 
 .pm_circle {
-  background-color: #FF9C73;
+	background-color: #FF9C73;
 }
 
 .t_circle {
-  background-color: #FF4545;
+	background-color: #FF4545;
 }
 
 .tag_graph_text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #767676;
+	font-size: 14px;
+	font-weight: 600;
+	color: #767676;
 }
 
 .tag_graph_category {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 15px;
-  column-gap: 15px;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	column-gap: 15px;
+	width: 600px;
 }
 
 .tag_graph_category_title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #FF955A;
+	font-size: 15px;
+	font-weight: 600;
+	color: #FF955A;
+	width: 95px;
+	margin-top: 5px;
 }
 
 .tag_graph_tags {
-  display: flex;
-  flex-direction: row;
-  column-gap: 10px;
+	display: flex;
+	flex-direction: row;
+	column-gap: 7px;
+	row-gap: 3px;
+	flex-wrap: wrap;
+	width: 670px;
 }
 
-.tag_graph_tag { 
-  border: 2px solid #f3553c;
-  border-radius: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
+.tag_graph_tag {
+	border: 2px solid #f3553c;
+	border-radius: 50px;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 12px;
+	height: 20px;
+}
+
+.tag_graph_tag:hover {
+	cursor: pointer;
 }
 
 .tag_graph_tag_text {
-  color: #f3553c;
-  font-size: 13px;
-  font-weight: 500;
+	color: #f3553c;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.month_graph_select {
+	width: 100px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	row-gap: 3px;
+}
+
+.month_select_box {
+	padding: 6px 0;
+	background-color: white;
+	border: 1px solid #bebebe;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.month_select_box:hover {
+	cursor: default;
+}
+
+.month_select_text {
+	font-size: 18px;
+	font-weight: 600;
+	margin-left: 10px;
+	color: #656565;
+}
+
+.month_select_img {
+	width: 18px;
+}
+
+.month_list_box {
+	overflow: hidden;
+	height: 0;
+	transition: all 0;
+	position: absolute;
+	top: 45px;
+	width: 100px;
+	z-index: 1000;
+}
+
+.month_list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background-color: white;
+	border: 1px solid #bebebe;
+	border-radius: 6px;
+	    height: 200px;
+    overflow: auto;
+}
+
+.month_list li {
+	padding: 8px 0;
+	padding-left: 23px;
+	color: #323232;
+}
+
+.month_list li:hover {
+	cursor: default;
+	background-color: #f1f1f1;
+	font-weight: 600;
+}
+
+.month_list li:first-child {
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+.month_list li:last-child {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
+.month_list::-webkit-scrollbar {
+	width: 15px;
+}
+
+.month_list::-webkit-scrollbar-thumb {
+	background-color: rgba(255,181,60,0.5);
+	border-radius: 10px;
+	background-clip: padding-box;
+	border: 4px solid white;
+}
+
+.month_list::-webkit-scrollbar-track {
+	background-color: white;
 }

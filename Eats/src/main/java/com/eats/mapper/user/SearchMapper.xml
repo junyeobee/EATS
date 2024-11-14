@@ -2,19 +2,31 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.eats.mapper.user.SearchMapper">	
+
+<mapper namespace="com.eats.mapper.user.SearchMapper">
 	<insert id="addSearchWord" parameterType="String">
-		insert into
-		search(search_idx, search_word)
-		values(search_idx_seq.nextval, #{searchWord})
+		insert into search
+		values(search_idx_seq.nextval,#{searchWord},sysdate)
 	</insert>
-	
-	<select id="isInIt" parameterType="String" resultType="Integer">
-		select count(*) from search where search_word = #{searchWord}
+
+	<select id="getSearchCount" parameterType="String" resultType="Integer">
+		select
+		count(*) from search where search_word = #{searchWord}
+	</select>
+
+	<select id="getSearchData" parameterType="map" resultType="com.eats.admin.model.SearchDTO">
+		select search_word, count(*) search_count from search
+		where (search_date between to_date(#{first_date},'YYYY-MM-DD') and to_date(#{last_date},'YYYY-MM-DD'))
+		group by search_word
 	</select>
 	
-	<update id="addCount" parameterType="String">
-		update search set search_cnt=search_cnt+1 where search_word=#{searchWord}
-	</update>
-  </mapper>
+	<select id="getSearchCountByTag" parameterType="map" resultType="com.eats.admin.model.SearchDTO">
+		select search_word, count(*) search_count from search where 
+		<foreach collection="valueList" item="item" open="(" close=")" separator="or">	
+			search_word like '%'||#{item}||'%'
+		</foreach>
+		and search_date between to_date(#{first_date},'YYYY-MM-DD') and to_date(#{last_date},'YYYY-MM-DD')
+		group by search_word
+	</select>
+	
+</mapper>
