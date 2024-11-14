@@ -2,6 +2,7 @@ package com.eats.controller.user;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,13 @@ public class MypageController {
     // 마이페이지 메인 화면
     @GetMapping("/user/mypage/myPage")
     public ModelAndView myPage(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
+        Object userIdObj = session.getAttribute("user_idx");
+        int userId;
+        if (userIdObj instanceof BigDecimal) {
+            userId = ((BigDecimal) userIdObj).intValue();
+        } else if (userIdObj instanceof String) {
+            userId = Integer.parseInt((String) userIdObj);
+        } else {
             return new ModelAndView("redirect:/user/login");
         }
 
@@ -148,7 +154,7 @@ public class MypageController {
     // 나의 찜 보기
     @GetMapping("/user/mypage/myJjim")
     public ModelAndView myJjim(HttpSession session, 
-                               @RequestParam(value = "page", defaultValue = "1") int page) {
+                            @RequestParam(value = "page", defaultValue = "1") int page) {
         Integer userId = (Integer) session.getAttribute("user_idx");
         if (userId == null) {
             return new ModelAndView("redirect:/user/login");
