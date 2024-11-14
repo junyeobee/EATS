@@ -22,6 +22,7 @@
 	let authNick = false;
 	let authEmail = false;
 	let authTel = false;
+	let ckValid = false;
 	
 	function checkDuplicate(type) {
 		let userId = $("input[name='user_id']").val();
@@ -68,7 +69,7 @@
 					}
 				} else if(type === "userTel"){
 					if(result.tresult == "1"){
-						authTel = false;
+						alert('이미 존재하는 휴대폰입니다.');
 					} else {
 						authTel = true;
 					}
@@ -93,14 +94,15 @@
 	    checkDuplicate("userTel");
 	    
 	    let joinId = $("input[name='user_id']").val();
-	    let joinPwd = $("input[name='checkPwd']").val();
+	    let joinPwd = $("input[name='user_pwd']").val();
+	    let ckPwd = $("input[name='checkPwd']").val();
 	    let joinTel = $("input[name='user_tel']").val();
 	    let joinNick = $("input[name='user_nickname']").val();
 	    let joinName = $("input[name='user_name']").val();
 	    let joinEmail = $("input[name='user_email']").val();
 	    let joinBirth = $("input[name='user_birth']").val();
 	    
-	    if(!joinId || !joinPwd || !joinTel || !joinNick || !joinName || !joinEmail || !joinBirth){
+	    if(!joinId || !joinPwd || !ckPwd || !joinTel || !joinNick || !joinName || !joinEmail || !joinBirth){
 	    	 alert("모든 회원 정보를 채워주세요.");
 	    	 return;
 	    } else if(!authId){
@@ -109,11 +111,13 @@
 	    } else if(!isPwd(joinPwd)){
 	    	alert("비밀번호를 올바르게 입력해주세요.");
 	    	return;
+	    } else if(ckPwd != joinPwd){
+	    	alert("비밀번호를 확인해주세요.");
+	    	return;
 	    } else if(!isPhoneNumber(joinTel)){
 	    	alert("휴대폰 번호를 올바르게 입력해주세요.");
 	    	return;
 	    } else if(!authTel){
-	    	alert('이미 존재하는 휴대폰입니다.');
 	    	return;
 	    } else if(!authNick){
 	    	alert("닉네임 중복 여부를 확인해주세요.");
@@ -121,8 +125,12 @@
 	    } else if(!authEmail){
 	    	alert("이메일 인증 완료 여부를 확인해주세요.");
 	    	return;
+	    } else if(!ckValid){
+	    	alert("이용약관에 동의해주세요.");
+	    	return;
 	    } else {
-	    	 $("input[name='user_pwd']").attr("disabled",true); 
+	    	 $("input[name='checkPwd']").attr("disabled",true); 
+	    	 $("input:checkbox").attr("disabled",true); 
 	    	 $("#user_join_form").submit();
 	    }
 	    
@@ -215,6 +223,34 @@
 	        validCode = null;
 		}
 	}
+	
+	function noti_check() {
+		var allck = document.getElementById("check_all");
+		var ck1 = document.getElementById("check_1");
+		var ck2 = document.getElementById("check_2");
+		var ck3 = document.getElementById("check_3");
+		var ck4 = document.getElementById("check_4");
+		var ck5 = document.getElementById("check_5");
+		
+		ck1.checked = allck.checked;
+        ck2.checked = allck.checked;
+        ck3.checked = allck.checked;
+        ck4.checked = allck.checked;
+        ck5.checked = allck.checked;
+	}
+	
+	function noti_indicheck() {
+        var allck = document.getElementById("check_all");
+        var ck1 = document.getElementById("check_1");
+        var ck2 = document.getElementById("check_2");
+        var ck3 = document.getElementById("check_3");
+        var ck4 = document.getElementById("check_4");
+		var ck5 = document.getElementById("check_5");
+
+        allck.checked = ck1.checked && ck2.checked && ck3.checked && ck4.checked && ck5.checked;
+        
+        if(ck1.checked && ck2.checked && ck3.checked && ck4.checked) ckValid = true;
+    }
 </script>
 </head>
 <body>
@@ -279,13 +315,13 @@
 		</div>
 	</div>
 	<div>
-		<input type="checkbox"><span>전체동의</span>
+		<input type="checkbox" id="check_all" onclick="noti_check();"><span>전체동의</span>
 		<div>
-			<p><input type="checkbox">[필수] 만 14세 이상입니다.</p>
-			<p><input type="checkbox">[필수] Eat's 이용 약관 동의</p>
-			<p><input type="checkbox">[필수] 개인정보 수집 및 이용 약관 동의</p>
-			<p><input type="checkbox">[필수] 개인정보 제 3자 제공 동의</p>
-			<p><input type="checkbox">[선택] 마케팅 이용 동의</p>
+			<p><input type="checkbox" id="check_1" onclick="noti_indicheck();">[필수] 만 14세 이상입니다.</p>
+			<p><input type="checkbox" id="check_2" onclick="noti_indicheck();">[필수] Eat's 이용 약관 동의</p>
+			<p><input type="checkbox" id="check_3" onclick="noti_indicheck();">[필수] 개인정보 수집 및 이용 약관 동의</p>
+			<p><input type="checkbox" id="check_4" onclick="noti_indicheck();">[필수] 개인정보 제 3자 제공 동의</p>
+			<p><input type="checkbox" id="check_5" onclick="noti_indicheck();">[선택] 마케팅 이용 동의</p>
 		</div>
 	</div>
 	<div>
@@ -296,7 +332,6 @@
 </body>
 </html>
 <script>
-	// 휴대폰 존재여부 확인후 있으면 가입 x
 	// 아이디 정규식
 	function isId(ivalue) {
 		let regExp = /^[a-z][a-z0-9]{3,13}$/;
