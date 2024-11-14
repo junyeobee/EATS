@@ -25,7 +25,7 @@ public class MypageController {
     @Autowired
     private MypageService mypageService;
 
-    @Value("${profile.image.upload.path}")
+   // @Value("${profile.image.upload.path}")
     private String uploadPath;
 
     // 마이페이지 메인 화면

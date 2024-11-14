@@ -229,7 +229,7 @@ function loadMenu(idx){
 	sendRequest('menuListAjax', params, showSendResult, 'GET');
 }
 function showSendResult(){
-	var menuList = document.getElementById('menuList')
+	var menuList = document.getElementById('menuList');
 	if(XHR.readyState==4){
 		if(XHR.status==200){
 			var data=XHR.responseText;

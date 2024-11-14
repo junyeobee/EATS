@@ -60,7 +60,6 @@ public class StoreMenuController {
 	}
 
 	
-	
 	@ResponseBody
 	@GetMapping("/menuListAjax")
 	public List<MenuDTO> storeMenuAjax(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx) {
@@ -68,6 +67,7 @@ public class StoreMenuController {
 		return menu;
 	}
 
+	
 	@GetMapping("/storeMenuInsert")
 	public String storeMenuInsert() {
 		return "store/menu/menuInsert";

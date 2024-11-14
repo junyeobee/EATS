@@ -23,5 +23,21 @@ public class TimelineServiceImple implements TimelineService {
 		
 		return lists;
 	}
+	
+	
+	//리뷰 리스트 출력
+	@Override
+	public List<TimelineDTO> selectReviewList() {
+		
+		List<TimelineDTO> review= mapper.selectReviewList();
+		
+		return review;
+	}
+	
+	@Override
+	public List<TimelineDTO> selectFollowerReview(Integer idx) {
+		List<TimelineDTO> lists_fw = mapper.selectFollowerReview(idx);
+		return lists_fw;
+	}
 
 }

@@ -9,5 +9,10 @@ public interface TimelineService {
 	
 	public List<TimelineDTO> randomuser();
 	
+	public List<TimelineDTO> selectReviewList();
+	
+	public List<TimelineDTO> selectFollowerReview(Integer idx);
+	
+	
 
 }

@@ -175,6 +175,10 @@
             color: #666;
         }
     </style>
+    
+    
+
+    
 </head>
 <body>
     <div class="container">
@@ -189,7 +193,7 @@
             <div class="user-card">
                 <div class="user-profile">👤</div>
                 <span>${dto.user_nickname }</span>
-                <button class="follow-btn">팔로우</button>
+                <button class="follow-btn"  id="${dto.user_idx}"  onclick="follow('${dto.user_idx}')">팔로우</button>
             </div>
             
             </c:forEach>
@@ -198,12 +202,17 @@
 
         <!-- 리뷰 컨테이너 -->
         <div class="review-container">
+        <c:if test="${empty review }">
+         <p>리뷰가 없습니다.</p>
+        </c:if>
+        
+        <c:forEach var="dto" items="${review }">
             <!-- 리뷰 카드 1 -->
             <div class="review-card">
                 <div class="reviewer-info">
                     <div class="reviewer-profile"></div>
                     <div>
-                        <div class="reviewer-name">맛있는사람</div>
+                        <div class="reviewer-name">${dto.user_nickname}</div>
                         <div class="reviewer-location">서울 강남구</div>
                     </div>
                 </div>
@@ -226,63 +235,23 @@
 
                 <div class="rating">★★★★★</div>
                 <div class="review-content">
-                    정말 맛있는 레스토랑이에요! 특히 스테이크가 일품이었습니다. 
-                    다음에도 꼭 방문하고 싶어요.
+                    ${dto.rev_content}
                 </div>
 
                 <div class="restaurant-info">
                     <div>
                         <div class="restaurant-name">뉴욕스테이크</div>
-                        <div class="restaurant-address">서울시 강남구 123-45</div>
+                        <div class="restaurant-address">${dto.store_addr}</div>
                     </div>
-                    <div>→</div>
+                    <a href="/user/storeInfo">→</a>
                 </div>
             </div>
-
-            <!-- 리뷰 카드 2 -->
-            <div class="review-card">
-                <div class="reviewer-info">
-                    <div class="reviewer-profile"></div>
-                    <div>
-                        <div class="reviewer-name">푸드리뷰어</div>
-                        <div class="reviewer-location">서울 서초구</div>
-                    </div>
-                </div>
-
-                <div class="image-slider">
-                    <button class="slider-button prev">←</button>
-                    <button class="slider-button next">→</button>
-                    <div class="slider-container">
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 1">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 2">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 3">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rating">★★★★☆</div>
-                <div class="review-content">
-                    분위기도 좋고 음식도 맛있어요. 직원분들도 친절하시고 좋은 경험이었습니다.
-                </div>
-
-                <div class="restaurant-info">
-                    <div>
-                        <div class="restaurant-name">이탈리안키친</div>
-                        <div class="restaurant-address">서울시 서초구 456-78</div>
-                    </div>
-                    <div>→</div>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 
     <script>
-        // 이미지 슬라이더 기능
+       
         document.querySelectorAll('.image-slider').forEach(slider => {
             const container = slider.querySelector('.slider-container');
             const slides = slider.querySelectorAll('.slide');
@@ -318,6 +287,26 @@
             });
         });
     </script>
+    
+<script>
+function follow(idx) {
+	var params='idx='+idx;
+	sendRequest('followerReviewAjax', params, showSendResult, 'GET');
+}
+
+function showSendResult(){
+	var review = document.getElementById('review-container');
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var jsondata = JSON.parse(data);
+			alert(jsondata);
+			
+		}
+		
+	}
+}
+</script>
 
 </body>
 </html>
