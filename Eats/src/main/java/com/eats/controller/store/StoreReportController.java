@@ -44,6 +44,11 @@ public class StoreReportController {
 
 		return storeReportService.reportIsThere(map);
 	}
+
+	@GetMapping("/reportLanding")
+	public String reportLanding() {
+		return "store/storeReport/storeReportLanding";
+	}
 	
 
 	@GetMapping("/weekreportTest")
