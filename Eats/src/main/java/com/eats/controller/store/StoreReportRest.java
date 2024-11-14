@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eats.store.model.AnalyzerDTO;
 import com.eats.store.model.StoreReportDTO;
 import com.eats.store.model.report.ReservReportDTO;
 import com.eats.store.model.report.StoreAnalysisResultDTO;
