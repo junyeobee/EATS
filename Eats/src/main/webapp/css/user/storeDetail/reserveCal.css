@@ -1,0 +1,83 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'SBAggroB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+.cal-wrapper {
+    width: 300px;
+    margin: 20px auto;
+    font-family: 'SBAggroB';
+}
+.ca-wrapper h2{
+	font-family: 'SBAggroB';
+}
+.cal-wrapper .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: 'SBAggroB';
+}
+
+.cal-wrapper .calendar-header button {
+	padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ff533e;
+    border-radius: 5px;
+    border: 0;
+    color: white;
+}
+
+.cal-wrapper .calendar-header button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cal-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'SBAggroB';
+}
+
+.cal-wrapper th, td {
+    padding: 8px 4px;
+    text-align: center;
+    border: 0;
+    font-family: 'SBAggroB';
+}
+
+.cal-wrapper th {
+    /* background-color: #f5f5f5; */
+}
+
+.cal-wrapper td{
+	border-radius:50%;
+}
+
+.cal-wrapper .disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.cal-wrapper .selectable {
+    cursor: pointer;
+}
+
+.cal-wrapper .selectable:hover {
+    background-color: #ff533e;
+    color:#fefefe;
+    opacity:0.8;
+}
+
+.cal-wrapper .selected {
+    background-color: #ff533e; 
+    color: white;
+}

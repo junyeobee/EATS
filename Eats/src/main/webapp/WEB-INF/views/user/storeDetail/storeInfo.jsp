@@ -11,121 +11,17 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 		rel="stylesheet">
-	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="../css/user/storeDetail/storeDetailCss.css">
-	<script src="/js/storeInfo/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script>
-	$(document).ready(function(){
-		/* 초기화 */ 
-		$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
-		tabInit();
-
-		// 이미지 스와이프
-	    var swiperStore = new Swiper(".swp-store", {
-	      navigation: {
-	        nextEl: ".swiper-button-next",
-	        prevEl: ".swiper-button-prev",
-	      },
-	    });
-
-		// 공지사항 스와이프
-		var swiperNoti = new Swiper(".swp-noti", {
-			spaceBetween: 20,
-	        pagination: {
-	          el: ".swiper-pagination",
-	        },
-	    });
-
-		// 아코디언
-		$('.acco-head .btn-acco').on('click', function(e){
-			e.preventDefault();
-
-			if ($(this).hasClass('on')) {
-				$(this).removeClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
-			} else {
-				$(this).addClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
-			}
-		});
-
-		// 메뉴 탭
-		$('.tab-list li').on('click', function(e){
-			e.preventDefault();
-			var idx;
-
-			if (!$(this).hasClass('on')){
-				$('.tab-list li').removeClass('on');
-				$(this).addClass('on');
-				idx = $(this).index();
-				$('.tab-contents .tab-panel').hide();
-				$('.tab-contents .tab-panel').eq(idx).show();
-
-				tabInit();	// 다른 탭 눌렀다가 돌아왔을 때 더보기가 이미 되어있는 상태를 원하면 삭제해도 됨.
-			}
-		})
-
-		// 메뉴 더보기 클릭
-		$('.btn-menu-more').on('click',function(){
-			$(this).siblings('.menu-list').find('li').css('display','flex');
-			$(this).hide();
-		})
-
-		// 탭 초기화 함수
-		/* function tabInit() {
-			$('.tab-contents .tab-panel .menu-list').each(function(){
-				if ($(this).find('li').length > 5){
-					$(this).siblings('.btn-menu-more').show();
-		
-					$(this).find('li:gt(4)').hide();
-				}
-			});
-		} */
-		function tabInit() {
-		    $('.tab-contents .tab-panel .menu-list').each(function() {
-		        console.log('Checking menu-list:', $(this));
-		        if ($(this).find('li').length > 5) {
-		            $(this).siblings('.btn-menu-more').show();
-		            $(this).find('li:gt(4)').hide();
-		            console.log('More than 5 items found, hiding items.');
-		        } else {
-		            console.log('5 or fewer items, no action needed.');
-		        }
-		    });
-		}
-	})
-	</script>
-	<script>
-	//문구 복사 함수
-	function copyText(){
-		var textElement=document.getElementById('street_addr');
-		
-		var range=document.createRange();
-		range.selectNodeContents(textElement);
-		
-		var selection=window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		
-		try{
-			document.execCommand('copy');
-			alert('복사되었습니다.');
-		}catch(err){
-			console.error('복사 실패', err);
-		}
-		
-		selection.removeAllRange();
-	}
-	</script>
 <title></title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
 <%@include file="/WEB-INF/views/userHeader.jsp" %>
-	<div class="wrapper">
-		
+	<div class="wrapper">		
 		<section id="content">
 			<c:set var="stInfo" value="${storeTotalInfo }"></c:set>
 			<!-- 왼쪽 컨텐츠 영역 (s) -->
@@ -331,19 +227,24 @@
 			<div class="reservation">
 				<!-- 캘린더 영역(s) -->
 				<div class="cal-wrapper">
-					달력
+					<div id="calendar"></div>
 				</div>
 				<!-- 캘린더 영역(e) -->
 				
 				<!-- 인원 선택 영역(s) -->
 				<div class="cnt-wrapper">
-					인원
+					<span>인원</span>
+					<div>
+						<input type="button" value="-" id="cntMinusBtn" onclick="changeCnt('minus')">
+						<input type="text" value="2" id="reserve_cnt" readonly="readonly">
+						<input type="button" value="+" id="cntPlusBtn" onclick="changeCnt('plus')">
+					</div>	
 				</div>
 				<!-- 인원 선택 영역(e) -->
 				
 				<!-- 시간 선택 영역(s) -->
-				<div class="time-wrapper">
-					시간
+				<div class="time-wrapper" id="time_wrapper">
+					
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				
@@ -363,4 +264,34 @@
 		</section>
 	</div>
 </body>
+<script>
+function changeCnt(change){
+	var crCnt=document.getElementById('reserve_cnt');
+	var newCnt=parseInt(crCnt.value);	
+
+	if(crCnt && change){
+		if(change==='minus'){
+			newCnt--;
+		}else{
+			newCnt++;
+		}
+	}
+	crCnt.value=newCnt;
+	
+	if(crCnt.value==1){
+		document.getElementById('cntMinusBtn').disabled=true;
+	}else{
+		document.getElementById('cntMinusBtn').disabled=false;
+	}	
+	
+	if(crCnt.value==10){
+		document.getElementById('cntPlusBtn').disabled=true;
+	}else{
+		document.getElementById('cntPlusBtn').disabled=false;
+	}
+}
+</script>
+<script src="../js/storeInfo/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../js/storeInfo/storeInfo.js"></script>
+<script type="text/javascript" src="../js/storeInfo/reserveCal.js"></script>
 </html>
