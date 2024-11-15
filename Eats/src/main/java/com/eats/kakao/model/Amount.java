@@ -1,25 +1,23 @@
 package com.eats.kakao.model;
 
 public class Amount {
-    private int total;
-    private int tax_free;
-    private int tax;
-    private int point;
-    private int discount;
-    private int green_deposit;
+	private int total;
+	private int tax_free;
+	private int vat;
+	private int point;
+	private int discount;
     
-    public Amount() {
+	public Amount() {
 		// TODO Auto-generated constructor stub
 	}
-    
-    public Amount(int total, int tax_free, int tax, int point, int discount, int green_deposit) {
+
+	public Amount(int total, int tax_free, int vat, int point, int discount) {
 		super();
 		this.total = total;
 		this.tax_free = tax_free;
-		this.tax = tax;
+		this.vat = vat;
 		this.point = point;
 		this.discount = discount;
-		this.green_deposit = green_deposit;
 	}
 
 	public int getTotal() {
@@ -38,12 +36,12 @@ public class Amount {
 		this.tax_free = tax_free;
 	}
 
-	public int getTax() {
-		return tax;
+	public int getVat() {
+		return vat;
 	}
 
-	public void setTax(int tax) {
-		this.tax = tax;
+	public void setVat(int vat) {
+		this.vat = vat;
 	}
 
 	public int getPoint() {
@@ -61,12 +59,6 @@ public class Amount {
 	public void setDiscount(int discount) {
 		this.discount = discount;
 	}
-
-	public int getGreen_deposit() {
-		return green_deposit;
-	}
-
-	public void setGreen_deposit(int green_deposit) {
-		this.green_deposit = green_deposit;
-	}
+	
+	
 }
