@@ -94,7 +94,6 @@ public class StoreMenuController {
 	}
 
 	
-	
 		// 메뉴 등록
 		@PostMapping("/StoreMenuInsertOk")
 		public ModelAndView StoreMenuInsertOk(

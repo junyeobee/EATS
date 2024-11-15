@@ -14,7 +14,7 @@ function idExist(){
 	var inputId=document.getElementById('store_id').value;
 	if(inputId!=null && inputId!=''){
 		var params='store_id='+inputId;
-		sendRequest('storeIdExist', params, showIdMessage, 'GET');
+		sendRequest('storeIdExist', params, showIdMessage, 'POST');
 	}
 }
 
@@ -24,7 +24,7 @@ function showIdMessage(){
 		if(XHR.status==200){
 			var data=XHR.responseText;
 			var jsondata=JSON.parse(data).value;
-			if(jsondata[0]==='true'){
+			if(jsondata==='true'){
 				idCheckState=true;
 				document.getElementById('id-message').textContent='';
 			}else{
@@ -40,7 +40,7 @@ function showIdMessage(){
 function sendCode(){
 	if(idCheckState==true){
 		var inputEmail=document.getElementById('store_email').value;
-		//alert(inputEmail);
+		alert(inputEmail);
 		if(inputEmail===null || inputEmail===''){
 			document.getElementById('email-message').textContent='이메일을 입력해주세요';
 			document.getElementById('email-message').style.color='red';
@@ -77,7 +77,7 @@ function showSendResult(){
 			var inputCode = document.getElementById('storeCode').value;
 
 			var params = 'storeCode=' + inputCode;
-			sendRequest('storecheckCode', params, showResult, 'GET');
+			sendRequest('storecheckCode', params, showResult, 'POST');
 		} else {
 			alert('인증번호를 발송하지 않았습니다.')
 		}

@@ -50,7 +50,7 @@ public class StoreLoginController {
 		
 		
 
-		if (storeIdx == 3) {
+		if (storeIdx > 0) {
 			msg = "로그인 성공";
 			
 			session.setAttribute("storeId",storeId);
@@ -118,9 +118,7 @@ public class StoreLoginController {
 		} else {
 			mav.setViewName("store/login/findIdResult");
 			mav.addObject("findId", id);
-
 		}
-
 		return mav;
 	}
 
@@ -130,17 +128,19 @@ public class StoreLoginController {
 		return "store/login/storeFindPwd";
 	}
 
-
+	//비밀번호찾기 인증번호 메일발송
 	@PostMapping("/storesendCodeForFindPwd")
-	public ModelAndView storesendCodeForFindPwd(String storeEmail, HttpSession session) {
+	public ModelAndView storesendCodeForFindPwd(String userId,String store_email, HttpSession session) {
 
-		String storeId=(String)session.getAttribute("storeId");
-		String dbEmail=service.storeidCheckForFindId(storeId);
-		System.out.println("storeId="+storeId+"/storeEmail="+storeEmail);
+		
+		String dbEmail=service.storeidCheckForFindPwd(userId);
+		
+
+		
 		if(dbEmail!=null && dbEmail!="") {
-			if(dbEmail.equals(storeEmail)) {
+			if(dbEmail.equals(store_email)) {
 				String validCode=emailService.makeCode();
-				emailService.sendCode(storeEmail, validCode);
+				emailService.sendCode(store_email, validCode);
 				
 				session.setAttribute("validCode", validCode);
 				session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
@@ -157,12 +157,18 @@ public class StoreLoginController {
 	}
 
 	
-	@GetMapping("/storeIdExist")
+	
+	@PostMapping("/storeIdExist")
 	public ModelAndView storeIdCheckForFindPwd(String store_id, HttpSession session) {
-		String dbEmail=service.storeidCheckForFindId(store_id);
+		String dbEmail=service.storeidCheckForFindPwd(store_id);
+		
+		System.out.println(store_id);
+		System.out.println(dbEmail);
+		
 		ModelAndView mv= new ModelAndView();
 		
 		boolean result;
+		
 		if(dbEmail==null || dbEmail=="") {
 			
 			result=false;
@@ -173,6 +179,8 @@ public class StoreLoginController {
 			
 		}
 		
+		System.out.println(result);
+		
 		mv.addObject("result",result);
 		mv.setViewName("user/login/findPwdResult");
 		
@@ -180,8 +188,11 @@ public class StoreLoginController {
 		
 	}
 	
-	@GetMapping("/storecheckCode")
-	public ModelAndView storevalidateCode(@RequestParam(value = "storeCode", required = true) String storeCode,
+	
+
+	@PostMapping("/storecheckCode")
+	public ModelAndView storevalidateCode(
+			@RequestParam(value = "storeCode", required = true) String storeCode,
 			HttpSession session) {
 		String validCode=(String) session.getAttribute("validCode");
 		
@@ -190,7 +201,9 @@ public class StoreLoginController {
 		String result = "0";
 		System.out.println(validCode);
 		System.out.println(storeCode);
-		ModelAndView mav = new ModelAndView();;
+		
+		ModelAndView mav = new ModelAndView();
+		
 		if (validCode == null || expiration == null || LocalDateTime.now().isAfter(expiration)) {
 			// 시간 만료
 			result = "0";

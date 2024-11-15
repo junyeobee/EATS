@@ -44,12 +44,13 @@ public class storeMenuServiceImple implements storeMenuService {
 	public int insertMenu(MenuDTO menuDTO, MultipartFile menuImg,String realpath) {
        try {
         if (menuImg != null && !menuImg.isEmpty()) {
+        	
             String fileName = System.currentTimeMillis() + "_" + menuImg.getOriginalFilename();
             File directory = new File(realpath);
             if (!directory.exists()) {
                 directory.mkdirs(); // 디렉토리가 존재하지 않으면 생성
             }
-            String filePath = realpath + fileName;
+            String filePath = realpath + "/img/" +fileName;
             System.out.println(filePath);
             menuImg.transferTo(new File(filePath)); 
 

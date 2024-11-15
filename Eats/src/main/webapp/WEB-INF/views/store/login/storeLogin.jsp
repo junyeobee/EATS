@@ -144,7 +144,16 @@
   left: 677.45px;
   top: 250.84px;
 }
-
+.div5 input{
+	width: 100%;
+	height: 100%;
+	border: none;
+	border-radius: 10px;
+	padding: 10px;
+	font-size: 16px;
+	background: transparent;
+	outline: none;
+}
 </style>
 <body>
 <form name="store_login_form" id="store_login_form" action="storeLogin" method="post">

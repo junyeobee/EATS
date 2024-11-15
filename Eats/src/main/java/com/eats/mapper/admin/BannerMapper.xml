@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <mapper namespace="com.eats.mapper.admin.BannerMapper">
+  
+  
+	<select id="bannerList" resultType="com.eats.admin.model.BannerDTO">
+		select * from
+		banner
+	
+	</select>
+  
+  
+  
+  </mapper>
+
