@@ -37,8 +37,8 @@ public class StoreLoginController {
 
 	@PostMapping("/storeLogin")
 	public ModelAndView storeLoginSubmit(
-			@RequestParam(value = "storeId", required = true) String storeId,
-			@RequestParam(value = "storePwd", required = true) String storePwd,
+			@RequestParam(value = "store_id", required = true) String storeId,
+			@RequestParam(value = "store_pwd", required = true) String storePwd,
 			@RequestParam(value = "check", required = false) String ch, 
 			HttpSession session, HttpServletResponse resp) {
 
@@ -56,6 +56,7 @@ public class StoreLoginController {
 			session.setAttribute("storeId",storeId);
 			
 			session.setAttribute("storeIdx", storeIdx);
+			
 			System.out.println(storeIdx);
 			
 			mav.setViewName("store/login/storeLoginMsg");
@@ -157,8 +158,8 @@ public class StoreLoginController {
 
 	
 	@GetMapping("/storeIdExist")
-	public ModelAndView storeIdCheckForFindPwd(String storeId, HttpSession session) {
-		String dbEmail=service.storeidCheckForFindId(storeId);
+	public ModelAndView storeIdCheckForFindPwd(String store_id, HttpSession session) {
+		String dbEmail=service.storeidCheckForFindId(store_id);
 		ModelAndView mv= new ModelAndView();
 		
 		boolean result;
@@ -168,7 +169,7 @@ public class StoreLoginController {
 		}else {
 			
 			result=true;
-			session.setAttribute("storeId", storeId);
+			session.setAttribute("storeId", store_id);
 			
 		}
 		

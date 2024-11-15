@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.StoreEtcMapper">
+   <select id="storeData" resultType="com.eats.store.model.StoreDTO">
+		SELECT 
+		    st.*, 
+		    ac.store_ceo 
+		FROM STORE st 
+		LEFT JOIN STORE_ACCOUNT ac ON st.store_idx = ac.store_idx 
+		WHERE st.store_idx = #{store_idx}
+   </select>
+   
+   <insert id="StoreInfoUpdateInsert" parameterType="com.eats.store.model.StoreInfoUpdateDTO">
+        insert into STORE_INFO_UPDATE (
+		    su_idx,
+		    store_idx,
+		    su_name,
+		    su_tel,
+		    su_addr,
+		    su_daddr,
+		    su_ceo,
+		    su_state
+		) 
+		VALUES (SU_IDX_SEQ.nextval,
+		        #{store_idx},
+		        #{su_name},
+		        #{su_tel},
+		        #{su_addr},
+		        #{su_daddr},
+		        #{su_ceo},
+		        #{su_state}
+		)
+   </insert>
+   
+   <select id="storeCate" resultType="com.eats.store.model.StoreCateDTO">
+		SELECT cate.*, cvalue.CATE_VALUE_NAME   
+		FROM CATEGORY cate 
+		LEFT JOIN CATE_VALUE cvalue ON cate.cate_value_idx = cvalue.cate_value_idx 
+		WHERE store_idx = #{store_idx}
+   </select>
+   
+   <insert id="StoreGridBaseInsert" parameterType="com.eats.store.model.StoreInfoUpdateDTO">
+        insert into STORE_GRID (
+		    sg_idx,
+		    store_idx,
+		    store_floor,
+		    sg_row, 
+		    sg_col
+		) 
+		VALUES (SG_IDX_SEQ.nextval,
+		        #{store_idx},
+		        #{s_floor},
+		        #{sg_row},
+		        #{sg_col}
+		)
+   </insert>
+   
+   
+    <select id="storeGridBaseKeySelect" resultType="int">
+		SELECT SG_IDX 
+		FROM ( 
+		    SELECT SG_IDX 
+		    FROM STORE_GRID 
+		    WHERE store_idx = #{store_idx} 
+		    ORDER BY SG_IDX DESC 
+		) 
+		WHERE ROWNUM = 1
+   </select>
+   
+   
+   <insert id="StoreGridDetailInsert" parameterType="com.eats.store.model.StoreGridDetailDTO">
+        insert into STORE_TABLE_SET (
+		    sts_IDX,
+		    sg_idx,
+		    sts_location,
+		    sts_type_idx,
+		    sts_num, 
+		    table_num 
+		) 
+		VALUES (STS_IDX_SEQ.nextval,
+		        #{sg_idx},
+		        #{sts_location}, 
+		        #{sts_type_idx}, 
+		        #{sts_num}, 		        
+		        #{table_num}
+		)
+   </insert>
+   
+   
+   <select id="storeGridBaseSelect" resultType="com.eats.store.model.StoreGridBaseDTO">
+		SELECT 
+		    * 
+		FROM STORE_GRID 
+		WHERE store_idx = #{store_idx}
+   </select>
+   
+   <select id="storeGridDetailView" resultType="com.eats.store.model.StoreGridAllDTO">
+		SELECT * 
+		FROM store_table_set 
+		WHERE sg_idx = #{sg_idx} 
+		order by sts_idx  
+   </select>
+   
+   
+   <delete id="StoreGridDetailDelete" parameterType="int">
+      delete from store_table_set  
+      where sg_idx=#{sg_idx}
+   </delete>
+   <delete id="StoreGridBaseDelete" parameterType="int">
+      delete from store_grid  
+      where sg_idx=#{sg_idx}
+   </delete>
+
+</mapper>
