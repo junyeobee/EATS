@@ -83,6 +83,12 @@
 	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
 	
 	
+	/*태그관리, 특징관리 페이지*/
+	.cateBox {margin-bottom:50px; border:0px solid red;}
+	.cateBox .cb_top {border:0px solid blue;}
+	.cateBox .cb_top span {font-weight:600; font-size:14px;}
+	.cateBox .cb_bottom {}
+	.cateBox .cb_bottom > span {display:inline-block; padding:5px; background-color:#5dd5ff; border-radius:5px;}
 	
 	
 	/* <버튼> */
@@ -115,13 +121,13 @@
 		*/
 	}
 	
-	
 	hr {width:100%; border:1px solid gray; margin:30px 0;}
 	
 	.mt10 {margin-top:10px;}
 	.mb10 {margin-bottom:10px;}
 	.mb60 {margin-bottom:60px;}
 	
+	.ml10 {margin-left:10px;}
 	.ml20 {margin-left:20px;}
 	
 	
@@ -135,6 +141,7 @@
 	
 	.ws95p {width:95%;}
 	
+	.cspi {cursor:pointer;}
 	
 	.a_left {text-align:left; padding-left:10px;}
 	.a_center {text-align:center;}

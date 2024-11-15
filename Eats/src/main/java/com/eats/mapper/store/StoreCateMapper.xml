@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.StoreCateMapper">
+
+   <select id="storeCateOneBigList" resultType="com.eats.user.model.CateKeyDTO">
+		SELECT 
+		    * 
+		FROM CATE_KEY  
+		WHERE CATE_KEY_LEVEL = 1
+   </select>
+   
+   <select id="storeCateOneSmallList" resultType="com.eats.user.model.CateValueDTO">
+		SELECT 
+		    * 
+		FROM CATE_VALUE  
+		WHERE CATE_KEY_IDX = #{cate_key_idx}
+   </select>
+   
+</mapper>

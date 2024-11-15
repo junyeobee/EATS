@@ -47,10 +47,9 @@ public class StoreLoginController {
 		int storeIdx = service.storeLogin(storeId, storePwd);
 
 		String msg = "";
-		
-		
 
-		if (storeIdx == 3) {
+		if (storeIdx > 0) {
+		//if (storeIdx == 3) {
 			msg = "로그인 성공";
 			
 			session.setAttribute("storeId",storeId);
