@@ -11,9 +11,9 @@ var idCheckState=false;
 var sendState=false;
 
 function idExist(){
-	var inputId=document.getElementById('storeId').value;
+	var inputId=document.getElementById('store_id').value;
 	if(inputId!=null && inputId!=''){
-		var params='storeId='+inputId;
+		var params='store_id='+inputId;
 		sendRequest('storeIdExist', params, showIdMessage, 'GET');
 	}
 }
@@ -39,7 +39,7 @@ function showIdMessage(){
 //코드 전송
 function sendCode(){
 	if(idCheckState==true){
-		var inputEmail=document.getElementById('storeEmail').value;
+		var inputEmail=document.getElementById('store_email').value;
 		//alert(inputEmail);
 		if(inputEmail===null || inputEmail===''){
 			document.getElementById('email-message').textContent='이메일을 입력해주세요';
@@ -51,7 +51,7 @@ function sendCode(){
 				document.getElementById('email-message').textContent='이메일 형식을 확인해주세요';
 				document.getElementById('email-message').style.color='red';
 			}else{
-				var params='storeEmail='+inputEmail;
+				var params='store_email='+inputEmail;
 				sendRequest('storesendCodeForFindPwd', params, showSendResult, 'POST');
 				sendState=true;
 			}
@@ -304,12 +304,12 @@ function showSendResult(){
 
 		
 			<div class="div3">
-				<input type="text" name="storeId" id="storeId" placeholder="아이디를 입력하세요." onblur="idExist()">
+				<input type="text" name="store_id" id="store_id" placeholder="아이디를 입력하세요." onblur="idExist()">
 						<div id="id-message" style="margin-top:5px; font-size:10px; text-algin:start; color:red;"></div>
 			</div>
 			
 			<div class="eats-email-com">
-				<input type="text" name="storeEmail" id="storeEmail" placeholder="이메일 예) eats@email.com" >
+				<input type="text" name="store_email" id="store_email" placeholder="이메일 예) eats@email.com" >
 					<div id="email-message" style="margin-top:5px; font-size:10px; text-algin:start;">이메일을 입력해주세요.</div>
 			</div>
 			

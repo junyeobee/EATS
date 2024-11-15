@@ -6,10 +6,96 @@
   <mapper namespace="com.eats.mapper.user.TimelineMapper">
   
   <select id="randomuser" resultType="com.eats.user.model.TimelineDTO">
-  SELECT USER_NICKNAME FROM 
-  (SELECT * FROM USER_PROFILE ORDER BY DBMS_RANDOM.VALUE) 
-  WHERE ROWNUM &lt;= 4
+ 	SELECT USER_NICKNAME, USER_IDX 
+	FROM (
+    SELECT USER_NICKNAME, USER_IDX 
+    FROM USER_PROFILE 
+    ORDER BY DBMS_RANDOM.VALUE
+	) 
+	WHERE ROWNUM &lt;= 4
   </select>
+  
+  
+  <select id="selectReviewList" resultType="com.eats.user.model.TimelineDTO">
+SELECT 
+    r.RESERVE_IDX,
+    r.USER_IDX,
+    r.STORE_IDX,
+    r.RESERVE_DATE,
+    r.RESERVE_TIME,
+    r.RESERVE_COUNT,
+    r.RESERVE_STATE,
+    rev.REV_IDX,
+    rev.REV_SCORE,
+    rev.REV_CONTENT,
+    rev.REV_WRITEDATE,
+    rev.REV_STATE,
+    rev.REV_IMG,
+    rev.REV_MENU,
+    rev.REV_TAG,
+	up.USER_NICKNAME,
+	st.STORE_NAME,
+	st.STORE_ADDR
+FROM 
+    RESERVATION r
+JOIN 
+    REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
+JOIN 
+USER_PROFILE up ON r.USER_IDX = up.USER_IDX
+JOIN
+STORE st ON r.STORE_IDX = st.STORE_IDX
+
+WHERE 
+    r.RESERVE_STATE = 3
+  </select>
+  
+  
+  
+  <select id="selectFollowerReview" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
+  	SELECT 
+    r.RESERVE_IDX,
+    r.USER_IDX,
+    r.STORE_IDX,
+    r.RESERVE_DATE,
+    r.RESERVE_TIME,
+    r.RESERVE_COUNT,
+    r.RESERVE_STATE,
+    rev.REV_IDX,
+    rev.REV_SCORE,
+    rev.REV_CONTENT,
+    rev.REV_WRITEDATE,
+    rev.REV_STATE,
+    rev.REV_IMG,
+    rev.REV_MENU,
+    rev.REV_TAG,
+	up.USER_NICKNAME,
+	st.STORE_NAME,
+	st.STORE_ADDR
+FROM 
+    RESERVATION r
+JOIN 
+    REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
+JOIN 
+USER_PROFILE up ON r.USER_IDX = up.USER_IDX
+JOIN
+STORE st ON r.STORE_IDX = st.STORE_IDX
+WHERE 
+    r.RESERVE_STATE = 3
+AND
+	r.USER_IDX=#{user_idx}
+  </select>
+  
+  
+  
+  <insert id="userFollow" parameterType="Map">
+  	 insert into follow
+  	 values(
+  	 follow_idx_seq.nextval,
+  	 #{user_idx},
+  	 #{following_idx}
+  	 )  	 
+  </insert>
+  
   
   
   
