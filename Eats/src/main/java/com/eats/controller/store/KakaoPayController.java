@@ -1,6 +1,7 @@
 package com.eats.controller.store;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -18,7 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eats.kakao.KakaoPayService;
+import com.eats.kakao.model.KakaoPayApproveDTO;
+import com.eats.kakao.model.KakaoPayCancelDTO;
 import com.eats.kakao.model.KakaoPayReadyDTO;
+import com.eats.mapper.store.GudokMapper;
+import com.eats.store.model.GudokDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/store/storeReport")
@@ -26,6 +34,9 @@ public class KakaoPayController {
 	private static final Logger log = LoggerFactory.getLogger(KakaoPayController.class);
 	@Autowired
 	private KakaoPayService kakaoPayService;
+	
+	@Autowired
+	private GudokMapper mapper;
 	
 	@GetMapping("/subscribe")
 	public String showPaymentPage(Model model) {
@@ -35,7 +46,7 @@ public class KakaoPayController {
 	   
 	@PostMapping("/ready")
 	@ResponseBody
-	public ResponseEntity<?> readyToPayment(@RequestBody Map<String, String> request) {
+	public ResponseEntity<?> readyToPayment(@RequestBody Map<String, String> request, HttpServletRequest req) {
 		log.info("Payment ready requested with data: {}", request);
 		
 		try {
@@ -46,7 +57,10 @@ public class KakaoPayController {
 		
 			String orderId = "ORDER_" + System.currentTimeMillis() + "_" + userId;
 			KakaoPayReadyDTO response = kakaoPayService.readyForPayment(orderId, userId);
-		
+			HttpSession session = req.getSession();
+			session.setAttribute("tid", response.getTid());
+		    session.setAttribute("orderId", orderId);
+		    session.setAttribute("userId", userId);
 			return ResponseEntity.ok(response);
 		    
 		} catch (Exception e) {
@@ -56,17 +70,46 @@ public class KakaoPayController {
 	}
 	   
 	@GetMapping("/success")
-	public String paymentSuccess(@RequestParam("pg_token") String pgToken) {
+	public String paymentSuccess(@RequestParam("pg_token") String pgToken,HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Integer storeIdx = (Integer)session.getAttribute("store_idx");
+		int store_idx;
+		if(storeIdx == null) {
+			store_idx = 1;
+		}else {
+			store_idx = storeIdx;
+		}
+		String tid = (String)session.getAttribute("tid");
+		String orderId = (String)session.getAttribute("orderId");
+		String userId = (String)session.getAttribute("userId");
+		System.out.println(userId);
+		KakaoPayApproveDTO approveResult = kakaoPayService.approvePayment(pgToken, tid, orderId, userId);
+		String sid = approveResult.getSid();
+		kakaoPayService.saveSubscription(sid, store_idx, tid);
 		return "store/storeReport/success";
 	}
 	
-	@GetMapping("/cancel")
-	public String paymentCancel() {
-		return "store/storeReport/cancel";  // 경로 수정
+	@PostMapping("/cancel")
+	@ResponseBody
+	public ResponseEntity<?> cancelPayment(HttpSession session) {
+		String storeidx = (String)session.getAttribute("store_idx");
+		int store_idx = storeidx == null? 1 : Integer.parseInt(storeidx);
+		GudokDTO subscription = mapper.getGudokInfo(store_idx);
+	   
+		if (subscription == null) {
+			return ResponseEntity.badRequest().body("결제 정보가 없습니다");
+		}
+		String tid = subscription.getGudok_tid();
+		KakaoPayCancelDTO cancelResult = kakaoPayService.cancelPayment(tid);
+		Map<String, Integer> params = new HashMap<>();
+		params.put("gudokIdx", subscription.getGudok_Idx());
+		params.put("status", 2);
+		mapper.updateInfo(params);
+		return ResponseEntity.ok(cancelResult);
 	}
 	
 	@GetMapping("/fail")
 	public String paymentFail() {
-		return "store/storeReport/fail";  // 경로 수정
+		return "store/storeReport/fail";
 	}
 }

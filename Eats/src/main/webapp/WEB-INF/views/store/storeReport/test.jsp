@@ -12,7 +12,7 @@
         <input type="hidden" name="userId" value="test_user">
         <button type="button" id="payButton">구독하기</button>
     </form>
-
+    <button id = "cancel"></button>
     <script>
 $(document).ready(function() {
     $("#payButton").click(function(e) {
@@ -67,6 +67,14 @@ $(document).ready(function() {
         
         // 폼 제출 방지
         return false;
+    });
+    $("#cancel").click(function(e){
+		$.ajax({
+			url: '/store/storeReport/cancel',
+            method: 'POST',
+		});
+
+	
     });
 });
 </script>
