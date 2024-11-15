@@ -19,6 +19,21 @@ public class StoreDTO {
 	}
 
 	public StoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
+			String store_tel, String store_biznum, String store_state, int store_lat, int store_lng) {
+		super();
+		this.store_idx = store_idx;
+		this.store_name = store_name;
+		this.store_area = store_area;
+		this.store_addr = store_addr;
+		this.store_daddr = store_daddr;
+		this.store_tel = store_tel;
+		this.store_biznum = store_biznum;
+		this.store_state = store_state;
+		this.store_lat = store_lat;
+		this.store_lng = store_lng;
+	}
+
+	public StoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
 			String store_tel, String store_biznum, String store_state, int store_lat, int store_lng, String store_ceo) {
 		super();
 		this.store_idx = store_idx;

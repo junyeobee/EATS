@@ -27,7 +27,7 @@ public class StoreNewsController {
     @Autowired
     private StoreNewsService service;
     
-    private final String filePathValue = "C:/ssangyoung_java/eats/EATS/Eats/src/main/webapp/storeNewsImg/";
+    private final String filePathValue = "C:/ssangyoung_java/eats/EATS/Eats/src/main/webapp/img/storeNewsImg/";
     
     //db에 저장되는 파일 경로
     private String db_filePath = "/storeNewsImg/";
@@ -118,6 +118,15 @@ public class StoreNewsController {
             System.out.println("이미지가 업로드되지 않았습니다.");
         }
     	
+        
+        System.out.println(dto.getS_news_content());
+        System.out.println(dto.getS_news_date());
+        System.out.println(dto.getS_news_del());
+        System.out.println(dto.getS_news_idx());
+        System.out.println(dto.getS_news_img());
+        System.out.println(dto.getS_news_title());
+        System.out.println(dto.getStore_idx());
+        
         int result = service.storeNewsInsert(dto);
     	System.out.println("fffffff");
     	
