@@ -37,7 +37,7 @@
 </script>
 
 <div class="mainCon_400">
-	<form name="imgSave" id="imgSave" action="imgUpdate" method="post" enctype="multipart/form-data" onsubmit="return imgSaveCheck();">
+	<form name="imgSave" id="imgSave" action="imgUpdate2" method="post" enctype="multipart/form-data" onsubmit="return imgSaveCheck();">
 		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<input type="hidden" name="img_num" id="img_num">
 		

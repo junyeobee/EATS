@@ -25,6 +25,7 @@ public class MypageController {
     @Autowired
     private MypageService mypageService;
 
+
     @Value("${profile.image.upload.path:/default/path}")
     private String uploadPath;
 

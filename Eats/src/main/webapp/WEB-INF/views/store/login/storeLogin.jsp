@@ -160,8 +160,8 @@
   <input type="checkbox" name="check" <c:if test="${!empty cookie.saveid}">checked</c:if>>
   아이디 저장</div>
   <div class="div4">매장회원 로그인</div>
-  <input type="text" name="storeId" id="storeId" class="div5" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
-  <input type="password" name="storePwd" id="storePwd" class="div6" placeholder="비밀번호를 입력해주세요.">
+  <input type="text" name="store_id" id="store_id" class="div5" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
+  <input type="password" name="store_pwd" id="store_pwd" class="div6" placeholder="비밀번호를 입력해주세요.">
   <img class="clip-path-group" src="img/store_logo.png"/>
 </div>
 

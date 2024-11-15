@@ -83,6 +83,12 @@ public class storeMenuServiceImple implements storeMenuService {
 		int result = mapper.deleteMenu(menuIdx);
 		return result;
 	}
+	
+	@Override
+	public int updateMenu(MenuDTO dto) {
+		int result = mapper.updateMenu(dto);
+		return result;
+	}
 
 
 }
