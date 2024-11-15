@@ -247,13 +247,24 @@
 				
 				<!-- 시간 선택 영역(s) -->
 				<div class="time-wrapper" id="time_wrapper">
-					
+					<div class="label-area">
+						<div>
+							<span class="yellow-label"> </span>
+							<span>알림신청</span>
+						</div>
+						<div>
+							<span class="red-label"> </span>
+							<span>예약 가능</span>
+						</div>
+					</div>
+					<div class="time-area" id="time_area"></div>
+					<input type="hidden" name="reserve_time" id="reserve_time">
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				
 				<!-- 테이블 선택 영역(s) -->
 				<div class="table-wrapper">
-					테이블 타입
+					
 				</div>
 				<!-- 테이블 선택 영역(e) -->
 				
@@ -269,7 +280,7 @@
 </body>
 <script>
 const store_idx=${storeTotalInfo.storeDTO.store_idx};
-var maxCnt=parseInt(${max_people_cntstoreDTO.store_name});
+var maxCnt=parseInt(${max_people_cnt});
 
 function changeCnt(change){
 	var crCnt=document.getElementById('reserve_cnt');
@@ -301,8 +312,6 @@ function changeCnt(change){
 	}else{
 		plusBtn.disabled=false;
 	}
-	
-	
 }
 
 </script>
@@ -311,27 +320,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	   let lastReserveDate = '';
 	   let lastReserveCnt = '2';
 
-	   // 변화를 감지하는 함수
+	   // 날짜 또는 인원에 변화가 생기면 새로운 시간 목록 불러옴
 	   function checkChanges() {
 	       const currentReserveDate = document.getElementById('reserve_date').value;
 	       const currentReserveCnt = document.getElementById('reserve_cnt').value;
 
-	       if (currentReserveDate && currentReserveCnt && 
-	           (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
-	           
-	           // 여기에 실행하고 싶은 함수 작성
-	           //alert('예약날짜:' + currentReserveDate + '\n예약인원:' + currentReserveCnt);
+	       if (currentReserveDate && currentReserveCnt && (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+	           //시간 목록 불러오는 거 비동기 처리하기
 	           var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
-	           alert(params);
 	           sendRequest('/user/getTimeList', params, showTimeList, 'GET');
 	           
 	           lastReserveDate = currentReserveDate;
 	           lastReserveCnt = currentReserveCnt;
 	       }
 	   }
-
-	   // MutationObserver로 value 변화 감지
-	   const observer = new MutationObserver(function(mutations) {
+	   
+	   //MutationObserver로 DOM변화 감시하기!
+	   const changeFinder = new MutationObserver(function(mutations) {
 	       mutations.forEach(function(mutation) {
 	           if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
 	               checkChanges();
@@ -339,40 +344,51 @@ document.addEventListener('DOMContentLoaded', function() {
 	       });
 	   });
 
-	   // 관찰 대상 설정
+	   // 관찰 대상 = reserve_date & reserve_cnt
 	   const reserveDateInput = document.getElementById('reserve_date');
 	   const reserveCntInput = document.getElementById('reserve_cnt');
 	   
-	   observer.observe(reserveDateInput, { attributes: true });
-	   observer.observe(reserveCntInput, { attributes: true });
+	   changeFinder.observe(reserveDateInput, { attributes: true });
+	   changeFinder.observe(reserveCntInput, { attributes: true });
 
 	   // input 이벤트도 추가
 	   reserveDateInput.addEventListener('input', checkChanges);
 	   reserveCntInput.addEventListener('input', checkChanges);
 	   
-	   const originalChangeCnt = changeCnt;  // 기존 함수
-	    changeCnt = function(change) {        // 함수 새로 정의
-	        originalChangeCnt(change);        // 기존 기능 
-	        checkChanges();                   // 추가 기능 = sendRequest 호출
+	   const originalChangeCnt = changeCnt;	// 기존 인원 수 변경하는 함수
+	    changeCnt = function(change) {		// 함수 새로 정의
+	        originalChangeCnt(change);		// 기존 기능은 그대로
+	        checkChanges();	
 	    };
+	    
+	    document.querySelectorAll('.time-list-y').forEach(cell => {
+	    	cell.addEventListener('click', function(){
+	    		do
+	    	});
+	    });
 });
 function showTimeList(){
 	if(XHR.readyState===4){
 		if(XHR.status===200){
 			var data=XHR.responseText;
 			var jsondata=JSON.parse(data);
-			document.getElementById('time_wrapper').style.height='fit-content';
+			document.getElementById('time_wrapper').style.height='150px';
+			document.getElementById('time_wrapper').style.overflowY='auto';
 			document.getElementById('time_wrapper').style.padding='10px';
-			var html=''
+			var html='<table class="time-list-table"><tr>';
 			for(var i=0; i<jsondata.length; i++){
-				//alert(jsondata[i].RESERVE_HOUR+jsondata[i].AVAILABLE);
 				if(jsondata[i].AVAILABLE==='N'){
-					html+='<span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span>';
+					html+='<td><span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span></td>';
 				}else{
-					html+='<span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span>';
-				}				
+					html+='<td><span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+				}
+				
+				if(i%4===3){
+					html+='</tr><tr>'
+				}
 			}
-			document.getElementById('time_wrapper').innerHTML=html;
+			html+='</tr></table>'
+			document.getElementById('time_area').innerHTML=html;
 		}
 	}
 }

@@ -32,7 +32,7 @@ public class ReservationServiceImple implements ReservationService {
 	
 	@Override
 	public List<Map> getTimeListWithYN(int store_idx, java.sql.Date reserve_date, int reserve_cnt) {
-		System.out.println("service");
+		
 		Map param=new HashMap<>();
 		param.put("store_idx", store_idx);
 		param.put("reserve_date",  reserve_date);
@@ -41,5 +41,19 @@ public class ReservationServiceImple implements ReservationService {
 		List<Map> timeList = mapper.getTimeListWithYN(param);
 		
 		return timeList;
+	}
+	
+	@Override
+	public List<Map> getAvailableTable(int store_idx, Date reserve_date, int reserve_cnt, String reserve_time) {
+		
+		Map param=new HashMap<>();
+		param.put("store_idx", store_idx);
+		param.put("reserve_date", reserve_date);
+		param.put("reserve_cnt", reserve_cnt);
+		param.put("reserve_time", reserve_time);
+		
+		List<Map> tableList=mapper.getAvailableTable(param);
+		
+		return tableList;
 	}
 }

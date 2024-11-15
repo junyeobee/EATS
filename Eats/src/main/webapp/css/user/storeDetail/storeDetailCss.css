@@ -396,24 +396,76 @@
 }
 .reservation .time-wrapper{
 	height: 0;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 10px;
-    gap: 10px;
+	overflow-y: auto;
+}
+.reservation .time-wrapper::-webkit-scrollbar{
+	background-color: #fefefe;
+	/* opacity: 0.5; */
+}
+.reservation .time-wrapper::-webkit-scrollbar-thumb{
+	background-color: #f3553c;
+	border-radius: 30px;
+}
+.reservation .time-wrapper::-webkit-scrollbar-track{
+	/* background-color: #FECBC3; */
+}
+.reservation .time-wrapper .label-area{
+	display:flex;
+	margin:0px;
+	padding-left: 18px;
+}
+.reservation .time-wrapper .label-area div{
+	margin:0px;
+	padding: 0px;
+	display:flex;
+	align-items: center;
+}
+.reservation .time-wrapper .label-area .yellow-label{
+	width:5px;
+	height: 5px;
+	background-color: #ffb53c;
+}
+.reservation .time-wrapper .label-area .red-label{
+	width:5px;
+	height: 5px;
+	background-color: #f3553c;
+}
+.reservation .time-wrapper .time-list-table{
+	width:90%;
+	margin:10px auto;
+	border:0;
+	height: fit-content;
+}
+.reservation .time-wrapper .time-list-table td{
+	width:23%;
+	padding:0;	
+	text-align: center;
 }
 .reservation .time-wrapper span{
+	display:flex;
+	width:95%;
 	padding: 10px;
     border-radius: 30px;
     font-size: 12px;
     text-align: center;
+    margin:5px auto;
 }
 .reservation .time-wrapper .time-list-y{
-	border: 3px solid red;
+	border: 3px solid #f3553c;
+	color: #f3553c;
+	cursor: pointer;
+}
+.reservation .time-wrapper .time-list-y:hover{
+	background-color:#FECBC3;
 }
 .reservation .time-wrapper .time-list-n{
-	border: 3px solid gray;
+	border: 3px solid #ffb53c;
+	color:#ffb53c;
+	cursor: pointer;
 }
-
+.reservation .time-wrapper .time-list-n:hover{
+	background-color: #FFE9C5;
+}
 .reservation .table-wrapper{
 	height:100px;
 }

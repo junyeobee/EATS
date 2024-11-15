@@ -57,17 +57,19 @@ public class StoreInfoController {
 	@GetMapping("/user/getTimeList")
 	@ResponseBody
 	public List getTimeListWithYN(int store_idx, java.sql.Date reserve_date, int reserve_cnt) {
-		System.out.println("controller");
-		System.out.println("store_idx="+store_idx+"/reserve_date="+reserve_date+"/reserve_cnt="+reserve_cnt);
-		ModelAndView mv=new ModelAndView();
 		
 		List<Map> timeList=reserveService.getTimeListWithYN(store_idx, reserve_date, reserve_cnt);
-		/*
-		 * for(int i=0; i<timeList.size(); i++) {
-		 * System.out.println(""+timeList.get(i).get("RESERVE_HOUR")+timeList.get(i).get
-		 * ("AVAILABLE")); }
-		 */
+
 		return timeList;
+	}
+	
+	@GetMapping("/user/getTableList")
+	@ResponseBody
+	public List getTableList(int store_idx, java.sql.Date reserve_date, int reserve_cnt, String reserve_time) {
+		
+		List<Map> tableList=reserveService.getAvailableTable(store_idx, reserve_date, reserve_cnt, reserve_time);
+		
+		return tableList;
 	}
 	
 	@GetMapping("/goHeader")
