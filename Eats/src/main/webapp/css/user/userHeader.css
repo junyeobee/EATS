@@ -12,14 +12,20 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
 /*헤더*/
 .user-header{
-	width:100%;
-	background-color:#fefefe;
-	height:fit-content;
-	display:flex;
-	flex-direction: column;
-	font-family: "Noto Sans KR", sans-serif;
+	width: 100%;
+    background-color: #fefefe;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /*헤더 최상단*/
@@ -51,7 +57,7 @@
 }
 .header-top .header-top-content li span{
 	padding: 25px 13px;
-    font-family: 'Tenada';
+    font-family: 'SBAggroB';
     margin: 0;
 }
 .header-top .header-top-content li .store-span{
@@ -90,6 +96,9 @@
 }
 
 /*헤더 우측 영역*/
+.link-wrap{
+	position: relative;
+}
 .link-wrap, .login-wrap{
 	width:33.3%;
     display: flex;
@@ -112,7 +121,7 @@
 /*로그인 후 팩맨 아이콘 호버 시 드롭다운*/
 .dropdown-wrap{
     position: absolute;
-    top: 26%;
+    top: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -153,8 +162,8 @@
 	width:80px;
 	margin: auto;
 }
-.menu-list span{
-	font-family: "Noto Sans KR", sans-serif;
+.user-menu-panel .menu-list span{
+	font-family: 'SBAggroB';
 	color: #f3553c;
 	font-size: 12px;
 }
