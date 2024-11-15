@@ -5,7 +5,7 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <link rel="stylesheet" href="/css/store/storeContCss.css">
 
 <meta charset="UTF-8">
@@ -25,12 +25,3 @@
 <%
 	}
 %>
-
-</head>
-<body>
-	<div class="header">
-	</div>
-	<div class="contents">
-		<div class="leftMenu">
-		</div>
-		<div class="mainCont">
