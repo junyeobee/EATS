@@ -56,6 +56,7 @@ public class StoreLoginController {
 			session.setAttribute("storeId",storeId);
 			
 			session.setAttribute("storeIdx", storeIdx);
+			
 			System.out.println(storeIdx);
 			
 			mav.setViewName("store/login/storeLoginMsg");

@@ -6,9 +6,13 @@
   <mapper namespace="com.eats.mapper.user.TimelineMapper">
   
   <select id="randomuser" resultType="com.eats.user.model.TimelineDTO">
-  SELECT USER_NICKNAME FROM 
-  (SELECT * FROM USER_PROFILE ORDER BY DBMS_RANDOM.VALUE) 
-  WHERE ROWNUM &lt;= 4
+ 	SELECT USER_NICKNAME, USER_IDX 
+	FROM (
+    SELECT USER_NICKNAME, USER_IDX 
+    FROM USER_PROFILE 
+    ORDER BY DBMS_RANDOM.VALUE
+	) 
+	WHERE ROWNUM &lt;= 4
   </select>
   
   
@@ -80,6 +84,17 @@ WHERE
 AND
 	r.USER_IDX=#{user_idx}
   </select>
+  
+  
+  
+  <insert id="userFollow" parameterType="Map">
+  	 insert into follow
+  	 values(
+  	 follow_idx_seq.nextval,
+  	 #{user_idx},
+  	 #{following_idx}
+  	 )  	 
+  </insert>
   
   
   

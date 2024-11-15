@@ -10,6 +10,7 @@ import com.eats.store.model.MenuImgDTO;
 
 public interface storeMenuService {
 	public List<MenuDTO> storeCateList();
+	
 	public List<MenuDTO> storeMenuList(Integer idx);
 	
 	public int insertMenu(MenuDTO dto,MultipartFile menuImg,String realpath) throws IOException;

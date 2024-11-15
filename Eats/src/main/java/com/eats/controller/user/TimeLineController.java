@@ -1,6 +1,8 @@
 package com.eats.controller.user;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,12 +38,27 @@ public class TimeLineController {
 	
 	@ResponseBody
 	@GetMapping("/followerReviewAjax")
-	public List<TimelineDTO> followerReviewAjax(@RequestParam(value="idx", required=false, defaultValue="0")Integer idx){
+	public List<TimelineDTO> followerReviewAjax(@RequestParam(value="idx", defaultValue="0")Integer userIdx,
+			@RequestParam(value="following_idx")int followingIdx){
 		
-		List<TimelineDTO> lists_fw= service.selectFollowerReview(idx);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("user_idx", userIdx);
+		map.put("following_idx", followingIdx);
+		
+		service.userFollow(map);
+		
+		List<TimelineDTO> lists_fw= service.selectFollowerReview(userIdx);
 		
 		return lists_fw;
 	}
+	
+	
+	
+	
+
+	
+
 	
 	
 	

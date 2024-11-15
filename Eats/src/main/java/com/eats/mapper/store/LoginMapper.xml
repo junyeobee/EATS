@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		select 
   		store_pwd,store_idx
   		from 
-  		store_account_test
+  		store_account
   		where
   		store_id=#{storeId}  		
   	</select>
@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	
   	<select id="findId"  parameterType="com.eats.store.model.EatsStoreDTO" resultType="String">
   		select store_id
-  		from store_account_test
+  		from store_account
   		where
   		store_email=#{store_email} 
   		and
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			STORE_EMAIL
 		FROM
-			store_account_test
+			store_account
 		WHERE
 			STORE_ID=#{storeId}
 	</select>
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="storeUpdatePwd" parameterType="map">
 	UPDATE
-		store_account_test
+		store_account
 	set
 		store_pwd=#{newPwd}
 	where
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select 
 			store_ceo
 		from
-			store_acount_test
+			store_acount
 		where 
 			store_id=#{storeId}
 	

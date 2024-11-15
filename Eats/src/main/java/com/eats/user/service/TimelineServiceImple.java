@@ -1,12 +1,14 @@
 package com.eats.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.TimelineMapper;
 import com.eats.user.model.EatsUserDTO;
+import com.eats.user.model.FollowDTO;
 import com.eats.user.model.TimelineDTO;
 
 @Service
@@ -38,6 +40,12 @@ public class TimelineServiceImple implements TimelineService {
 	public List<TimelineDTO> selectFollowerReview(Integer idx) {
 		List<TimelineDTO> lists_fw = mapper.selectFollowerReview(idx);
 		return lists_fw;
+	}
+	
+	@Override
+	public int userFollow(Map<String,Integer> map) {
+		int result = mapper.userFollow(map);
+		return result;
 	}
 
 }
