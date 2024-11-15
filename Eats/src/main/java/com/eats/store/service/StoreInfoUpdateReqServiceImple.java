@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.eats.mapper.store.StoreInfoUpdateMapper;
 import com.eats.store.model.StoreDTO;
-import com.eats.store.model.StoreImgDTO;
+import com.eats.store.model.StoreImgBeforeDTO;
 import com.eats.store.model.StoreInfoUpdateDTO;
 
 @Service

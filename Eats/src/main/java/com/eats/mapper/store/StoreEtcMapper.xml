@@ -33,7 +33,6 @@
 		)
    </insert>
    
-   
    <select id="storeCate" resultType="com.eats.store.model.StoreCateDTO">
 		SELECT cate.*, cvalue.CATE_VALUE_NAME   
 		FROM CATEGORY cate 
@@ -41,75 +40,24 @@
 		WHERE store_idx = #{store_idx}
    </select>
    
-   <!--
-   <insert id="StoreGridInsert" parameterType="com.eats.store.model.StoreGridDTO">
-        insert into STORE_TABLE_SET (
-		    sts_idx,
-		    sg_idx,
-		    sts_location,
-		    sts_name,
-		    sts_type_idx,
-		    sts_num
-		) 
-		VALUES (STS_IDX_SEQ.nextval,
-		        #{store_idx},
-		        #{sg_idx},
-		        #{sts_location},
-		        #{sts_name},
-		        #{sts_type_idx},
-		        #{sts_num}
-		)
-   </insert>
-    -->
-    
-    <!-- 
-	<insert id="StoreGridInsert" parameterType="java.util.List">
-		INSERT INTO STORE_TABLE_SET (
-		    sts_idx,
-		    sg_idx,
-		    sts_location,
-		    sts_name,
-		    sts_type_idx,
-		    sts_num
-		) 
-		VALUES 
-		<foreach collection="list" item="grid" index="index" separator=",">
-		    (STS_IDX_SEQ.nextval, 
-		    #{store_idx}, 
-		    #{grid.location}, 
-		    #{grid.tname}, 
-		    #{grid.type}, 
-		    #{grid.seat}
-		    )
-		</foreach>
-	</insert>
-	 -->
-   
    <insert id="StoreGridBaseInsert" parameterType="com.eats.store.model.StoreInfoUpdateDTO">
         insert into STORE_GRID (
 		    sg_idx,
 		    store_idx,
 		    store_floor,
-		    sg_col,
-		    sg_row
+		    sg_row, 
+		    sg_col
 		) 
 		VALUES (SG_IDX_SEQ.nextval,
 		        #{store_idx},
 		        #{s_floor},
-		        #{sg_col},
-		        #{sg_row}
+		        #{sg_row},
+		        #{sg_col}
 		)
    </insert>
    
    
     <select id="storeGridBaseKeySelect" resultType="int">
-		<!-- 
-		SELECT SG_IDX 
-		FROM STORE_GRID 
-		WHERE store_idx = #{store_idx} 
-		ORDER BY SG_IDX DESC 
-		FETCH FIRST 1 ROWS ONLY
-		 -->
 		SELECT SG_IDX 
 		FROM ( 
 		    SELECT SG_IDX 
@@ -120,38 +68,22 @@
 		WHERE ROWNUM = 1
    </select>
    
-   <!-- 
-	<insert id="StoreGridDetailInsert" parameterType="map" useGeneratedKeys="true" keyProperty="sg_idx">
-		<foreach collection="gridData" item="grid">
-	        INSERT INTO STORE_TABLE_SET (
-	            sts_idx, sg_idx, sts_location, sts_name, sts_type_idx, sts_num
-	        ) 
-	        VALUES 
-	        (STS_IDX_SEQ.nextval, 
-	        #{base_idx}, 
-	        #{grid.sts_location}, 
-	        #{grid.sts_name}, 
-	        #{grid.sts_type_idx}, 
-	        #{grid.sts_cnt})
-		</foreach>
-	</insert>
-	 -->
    
    <insert id="StoreGridDetailInsert" parameterType="com.eats.store.model.StoreGridDetailDTO">
         insert into STORE_TABLE_SET (
 		    sts_IDX,
 		    sg_idx,
 		    sts_location,
-		    sts_name,
 		    sts_type_idx,
-		    sts_num
+		    sts_num, 
+		    table_num 
 		) 
 		VALUES (STS_IDX_SEQ.nextval,
 		        #{sg_idx},
-		        #{sts_location},
-		        #{sts_name},
-		        #{sts_type_idx},
-		        #{sts_num}	
+		        #{sts_location}, 
+		        #{sts_type_idx}, 
+		        #{sts_num}, 		        
+		        #{table_num}
 		)
    </insert>
    
@@ -170,5 +102,14 @@
 		order by sts_idx  
    </select>
    
+   
+   <delete id="StoreGridDetailDelete" parameterType="int">
+      delete from store_table_set  
+      where sg_idx=#{sg_idx}
+   </delete>
+   <delete id="StoreGridBaseDelete" parameterType="int">
+      delete from store_grid  
+      where sg_idx=#{sg_idx}
+   </delete>
 
 </mapper>

@@ -6,22 +6,22 @@ public class StoreGridDetailDTO {
 	
 	private int sts_idx;
 	private int sg_idx;
-	private String sts_location, sts_name;
-	private int sts_type_idx, sts_num;
+	private String sts_location;
+	private int sts_type_idx, sts_num, table_num;
 	private List<StoreGridDetailDTO> gridData;
 	
 	public StoreGridDetailDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public StoreGridDetailDTO(int sts_idx, int sg_idx, String sts_location, String sts_name, int sts_type_idx, int sts_num) {
+	public StoreGridDetailDTO(int sts_idx, int sg_idx, String sts_location, int sts_type_idx, int sts_num, int table_num) {
 		super();
 		this.sts_idx = sts_idx;
 		this.sg_idx = sg_idx;
 		this.sts_location = sts_location;
-		this.sts_name = sts_name;
 		this.sts_type_idx = sts_type_idx;
 		this.sts_num = sts_num;
+		this.table_num = table_num;
 	}
 
 	public int getSts_idx() {
@@ -46,15 +46,7 @@ public class StoreGridDetailDTO {
 
 	public void setSts_location(String sts_location) {
 		this.sts_location = sts_location;
-	}
-
-	public String getSts_name() {
-		return sts_name;
-	}
-
-	public void setSts_name(String sts_name) {
-		this.sts_name = sts_name;
-	}
+	}	
 
 	public int getSts_type_idx() {
 		return sts_type_idx;
@@ -70,6 +62,14 @@ public class StoreGridDetailDTO {
 
 	public void setSts_num(int sts_num) {
 		this.sts_num = sts_num;
+	}
+	
+	public int getTable_num() {
+		return table_num;
+	}
+	
+	public void setTable_num(int table_num) {
+		this.table_num = table_num;
 	}
 	
 	public List<StoreGridDetailDTO> getGridData() {

@@ -16,7 +16,6 @@ import com.eats.store.model.StoreInfoUpdateDTO;
 @Service
 public class StoreEtcServiceImple implements StoreEtcService {
 
-
 	@Autowired
 	private StoreEtcMapper mapper;
 	
@@ -39,19 +38,10 @@ public class StoreEtcServiceImple implements StoreEtcService {
 		List<StoreCateDTO> data = mapper.storeCate(store_idx);
 		return data;
 	}
-
-	/*
-	@Override
-	public int StoreGridInsert(List<StoreGridArrayDTO> gridData) {
-		
-		int data = mapper.StoreGridInsert(gridData);
-		return data;
-	}
-	*/
 	
 	@Override
-	public int StoreGridBaseInsert(int store_idx, int s_floor, int sg_col, int sg_row) {
-		int data = mapper.StoreGridBaseInsert(store_idx, s_floor, sg_col, sg_row);
+	public int StoreGridBaseInsert(int store_idx, int s_floor, int sg_row, int sg_col) {
+		int data = mapper.StoreGridBaseInsert(store_idx, s_floor, sg_row, sg_col);
 		return data;
 	}
 	
@@ -62,12 +52,8 @@ public class StoreEtcServiceImple implements StoreEtcService {
 		return data;
 	}
 	
-	
-	
 	@Override
 	public int StoreGridDetailInsert(StoreGridDetailDTO dto) {
-    //public int StoreGridDetailInsert(int sg_idx, String location, String name, int type_idx, int cnt) {
-        // store_idx와 gridData를 Mapper에 전달
 		int data = mapper.StoreGridDetailInsert(dto);
 		return data;
     }
@@ -84,5 +70,17 @@ public class StoreEtcServiceImple implements StoreEtcService {
 
 		List<StoreGridDetailDTO> data = mapper.storeGridDetailView(sg_idx);
 		return data;
+	}
+
+	@Override
+	public int StoreGridDetailDelete(int sg_idx) {
+		int count = mapper.StoreGridDetailDelete(sg_idx);
+		return count;
+	}
+	
+	@Override
+	public int StoreGridBaseDelete(int sg_idx) {
+		int count = mapper.StoreGridBaseDelete(sg_idx);
+		return count;
 	}
 }

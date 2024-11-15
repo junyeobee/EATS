@@ -70,7 +70,7 @@
 	
 	/* 그리드 테이블 */
 	.mainCon_1400 .gridBox .gridTable {border:1px solid gray; border-collapse : collapse;}
-	.mainCon_1400 .gridBox .gridTable tr td {width:100px; padding:5px; border:1px solid gray; }
+	.mainCon_1400 .gridBox .gridTable tr td {width:200px; padding:5px; border:1px solid gray; }
 	
 	
 	
@@ -97,6 +97,7 @@
 	
 	/* 정보수정신청 input */
 	input[type='text'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
+	input[type='number'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
 	input[type='text']:focus {
 	    outline: none;  /* 포커스 시 outline 제거 */
 	    border: none;   /* 포커스 시 border 제거 (선택 사항) */
@@ -131,6 +132,8 @@
 	.ws100 {width:100px;}
 	.ws400 {width:400px;}
 	.ws800 {width:800px;}
+	
+	.ws95p {width:95%;}
 	
 	
 	.a_left {text-align:left; padding-left:10px;}
