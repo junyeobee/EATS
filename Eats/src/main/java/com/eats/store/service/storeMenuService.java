@@ -21,6 +21,9 @@ public interface storeMenuService {
 	
 	public int deleteMenu(List<Integer> menuIdx);
 	
+	public int updateMenu(MenuDTO dto);
+	
+	
 	
 	
 	

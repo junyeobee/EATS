@@ -57,7 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 values(
 	 M_CATE_IDX_SEQ.NEXTVAL, 
 	 STORE_IDX_SEQ.NEXTVAL,
-	 #{m_cate_name}
+	 #{m_cate_name},
+	 #{m_cate_info}
 	 )
 	</insert>
 	

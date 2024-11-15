@@ -74,8 +74,8 @@ public class StoreMenuController {
 	}
 
 	
-	@GetMapping("/menuUpdatePage")
-	public String menuUpdatePage() {
+	@GetMapping("/menuUpdatePage/{menu_idx}")
+	public String menuUpdatePage(@RequestParam(value="menu_idx", required = false)Integer menuIdx) {
 
 		return "store/menu/menuUpdate";
 	}

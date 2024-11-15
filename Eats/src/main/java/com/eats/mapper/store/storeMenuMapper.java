@@ -24,6 +24,9 @@ public interface storeMenuMapper {
 	
 	public int insertMenuImg(MenuImgDTO idto);
 	
+	public int updateMenu(MenuDTO dto);
+	
+	
 	
 
 }
