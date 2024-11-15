@@ -66,7 +66,6 @@ public class StoreInfoController {
 	@GetMapping("/user/getTableList")
 	@ResponseBody
 	public List getTableList(int store_idx, java.sql.Date reserve_date, int reserve_cnt, String reserve_time) {
-		
 		List<Map> tableList=reserveService.getAvailableTable(store_idx, reserve_date, reserve_cnt, reserve_time);
 		
 		return tableList;

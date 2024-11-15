@@ -53,7 +53,7 @@ public class ReservationServiceImple implements ReservationService {
 		param.put("reserve_time", reserve_time);
 		
 		List<Map> tableList=mapper.getAvailableTable(param);
-		
+
 		return tableList;
 	}
 }

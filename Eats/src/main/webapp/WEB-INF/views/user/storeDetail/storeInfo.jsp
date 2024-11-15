@@ -263,7 +263,7 @@
 				<!-- 시간 선택 영역(e) -->
 				
 				<!-- 테이블 선택 영역(s) -->
-				<div class="table-wrapper">
+				<div class="table-wrapper" id="table_wrapper">
 					
 				</div>
 				<!-- 테이블 선택 영역(e) -->
@@ -317,62 +317,69 @@ function changeCnt(change){
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-	   let lastReserveDate = '';
-	   let lastReserveCnt = '2';
+	let lastReserveDate = '';
+	let lastReserveCnt = '2';
 
-	   // 날짜 또는 인원에 변화가 생기면 새로운 시간 목록 불러옴
-	   function checkChanges() {
-	       const currentReserveDate = document.getElementById('reserve_date').value;
-	       const currentReserveCnt = document.getElementById('reserve_cnt').value;
+	// 날짜 또는 인원에 변화가 생기면 새로운 시간 목록 불러옴
+	function checkChanges() {
+		const currentReserveDate = document.getElementById('reserve_date').value;
+		const currentReserveCnt = document.getElementById('reserve_cnt').value;
 
-	       if (currentReserveDate && currentReserveCnt && (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
-	           //시간 목록 불러오는 거 비동기 처리하기
-	           var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
-	           sendRequest('/user/getTimeList', params, showTimeList, 'GET');
+			if (currentReserveDate && currentReserveCnt && (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+				//시간 목록 불러오는 거 비동기 처리하기
+				var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
+				sendRequest('/user/getTimeList', params, showTimeList, 'GET');
 	           
-	           lastReserveDate = currentReserveDate;
-	           lastReserveCnt = currentReserveCnt;
-	       }
-	   }
+				lastReserveDate = currentReserveDate;
+				lastReserveCnt = currentReserveCnt;
+			}
+	}
 	   
-	   //MutationObserver로 DOM변화 감시하기!
-	   const changeFinder = new MutationObserver(function(mutations) {
-	       mutations.forEach(function(mutation) {
-	           if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-	               checkChanges();
-	           }
-	       });
-	   });
+	//MutationObserver로 DOM변화 감시하기!
+	const changeFinder = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+			checkChanges();
+			}
+		});
+	});
 
-	   // 관찰 대상 = reserve_date & reserve_cnt
-	   const reserveDateInput = document.getElementById('reserve_date');
-	   const reserveCntInput = document.getElementById('reserve_cnt');
+	// 관찰 대상 = reserve_date & reserve_cnt
+	const reserveDateInput = document.getElementById('reserve_date');
+	const reserveCntInput = document.getElementById('reserve_cnt');
 	   
-	   changeFinder.observe(reserveDateInput, { attributes: true });
-	   changeFinder.observe(reserveCntInput, { attributes: true });
+	changeFinder.observe(reserveDateInput, { attributes: true });
+	changeFinder.observe(reserveCntInput, { attributes: true });
 
-	   // input 이벤트도 추가
-	   reserveDateInput.addEventListener('input', checkChanges);
-	   reserveCntInput.addEventListener('input', checkChanges);
+	// input 이벤트도 추가
+	reserveDateInput.addEventListener('input', checkChanges);
+	reserveCntInput.addEventListener('input', checkChanges);
 	   
-	   const originalChangeCnt = changeCnt;	// 기존 인원 수 변경하는 함수
-	    changeCnt = function(change) {		// 함수 새로 정의
-	        originalChangeCnt(change);		// 기존 기능은 그대로
+	const originalChangeCnt = changeCnt;	// 기존 인원 수 변경하는 함수
+	changeCnt = function(change) {		// 함수 새로 정의
+		originalChangeCnt(change);		// 기존 기능은 그대로
 	        checkChanges();	
-	    };
-	    
-	    document.querySelectorAll('.time-list-y').forEach(cell => {
-	    	cell.addEventListener('click', function(){
-	    		do
-	    	});
-	    });
+	};
+	
+	document.addEventListener('click', function(e){
+		//예약 가능한 시간 클릭 시
+		if(e.target.classList.contains('time-list-y')){
+			const reserveTime=e.target.textContent;
+			document.getElementById('reserve_time').value=reserveTime;
+			const currentReserveDate = document.getElementById('reserve_date').value;
+			const currentReserveCnt = document.getElementById('reserve_cnt').value;
+			
+			var tableParam='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt+'&reserve_time='+reserveTime;
+			sendRequest('/user/getTableList', tableParam, showTableList, 'GET');
+		}
+	});
 });
 function showTimeList(){
 	if(XHR.readyState===4){
 		if(XHR.status===200){
 			var data=XHR.responseText;
 			var jsondata=JSON.parse(data);
-			document.getElementById('time_wrapper').style.height='150px';
+			document.getElementById('time_wrapper').style.height='120px';
 			document.getElementById('time_wrapper').style.overflowY='auto';
 			document.getElementById('time_wrapper').style.padding='10px';
 			var html='<table class="time-list-table"><tr>';
@@ -392,7 +399,31 @@ function showTimeList(){
 		}
 	}
 }
+function showTableList(){
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data);
+			
+			var tableWrapper=document.getElementById('table_wrapper');
+			tableWrapper.style.height='100px';
+			tableWrapper.style.padding='10px';
+			tableWrapper.style.overflowY='auto';
+			
+			
+			var html='';
+			for(var i=0; i<jsondata.length; i++){
+				if(jsondata[i].COUNT != 0){
+					html+='<span class="table-list">'+jsondata[i].TABLE_TYPE+'</span>';
+				}
+				//alert(''+jsondata[i].TABLE_TYPE+':'+jsondata[i].COUNT);
+			}
+			document.getElementById('table_wrapper').innerHTML=html;
+		}
+	}
+}
 </script>
+<script type="text/javascript" src="../js/userHeader.js"></script>
 <script src="../js/storeInfo/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="../js/storeInfo/storeInfo.js"></script>
 <script type="text/javascript" src="../js/storeInfo/reserveCal.js"></script>
