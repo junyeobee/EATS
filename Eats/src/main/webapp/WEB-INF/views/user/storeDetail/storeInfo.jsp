@@ -11,121 +11,18 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 		rel="stylesheet">
-	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="../css/user/storeDetail/storeDetailCss.css">
-	<script src="/js/storeInfo/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script>
-	$(document).ready(function(){
-		/* 초기화 */ 
-		$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
-		tabInit();
-
-		// 이미지 스와이프
-	    var swiperStore = new Swiper(".swp-store", {
-	      navigation: {
-	        nextEl: ".swiper-button-next",
-	        prevEl: ".swiper-button-prev",
-	      },
-	    });
-
-		// 공지사항 스와이프
-		var swiperNoti = new Swiper(".swp-noti", {
-			spaceBetween: 20,
-	        pagination: {
-	          el: ".swiper-pagination",
-	        },
-	    });
-
-		// 아코디언
-		$('.acco-head .btn-acco').on('click', function(e){
-			e.preventDefault();
-
-			if ($(this).hasClass('on')) {
-				$(this).removeClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
-			} else {
-				$(this).addClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
-			}
-		});
-
-		// 메뉴 탭
-		$('.tab-list li').on('click', function(e){
-			e.preventDefault();
-			var idx;
-
-			if (!$(this).hasClass('on')){
-				$('.tab-list li').removeClass('on');
-				$(this).addClass('on');
-				idx = $(this).index();
-				$('.tab-contents .tab-panel').hide();
-				$('.tab-contents .tab-panel').eq(idx).show();
-
-				tabInit();	// 다른 탭 눌렀다가 돌아왔을 때 더보기가 이미 되어있는 상태를 원하면 삭제해도 됨.
-			}
-		})
-
-		// 메뉴 더보기 클릭
-		$('.btn-menu-more').on('click',function(){
-			$(this).siblings('.menu-list').find('li').css('display','flex');
-			$(this).hide();
-		})
-
-		// 탭 초기화 함수
-		/* function tabInit() {
-			$('.tab-contents .tab-panel .menu-list').each(function(){
-				if ($(this).find('li').length > 5){
-					$(this).siblings('.btn-menu-more').show();
-		
-					$(this).find('li:gt(4)').hide();
-				}
-			});
-		} */
-		function tabInit() {
-		    $('.tab-contents .tab-panel .menu-list').each(function() {
-		        console.log('Checking menu-list:', $(this));
-		        if ($(this).find('li').length > 5) {
-		            $(this).siblings('.btn-menu-more').show();
-		            $(this).find('li:gt(4)').hide();
-		            console.log('More than 5 items found, hiding items.');
-		        } else {
-		            console.log('5 or fewer items, no action needed.');
-		        }
-		    });
-		}
-	})
-	</script>
-	<script>
-	//문구 복사 함수
-	function copyText(){
-		var textElement=document.getElementById('street_addr');
-		
-		var range=document.createRange();
-		range.selectNodeContents(textElement);
-		
-		var selection=window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		
-		try{
-			document.execCommand('copy');
-			alert('복사되었습니다.');
-		}catch(err){
-			console.error('복사 실패', err);
-		}
-		
-		selection.removeAllRange();
-	}
-	</script>
+	<script type="text/javascript" src="../js/httpRequest.js"></script>
 <title></title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
 <%@include file="/WEB-INF/views/userHeader.jsp" %>
-	<div class="wrapper">
-		
+	<div class="wrapper">		
 		<section id="content">
 			<c:set var="stInfo" value="${storeTotalInfo }"></c:set>
 			<!-- 왼쪽 컨텐츠 영역 (s) -->
@@ -331,25 +228,43 @@
 			<div class="reservation">
 				<!-- 캘린더 영역(s) -->
 				<div class="cal-wrapper">
-					달력
+					<div id="calendar"></div>
+					<input type="hidden" id="runningDayList" value="${runningDayList}">
+					<input type="hidden" id="reserve_date">
 				</div>
 				<!-- 캘린더 영역(e) -->
 				
 				<!-- 인원 선택 영역(s) -->
 				<div class="cnt-wrapper">
-					인원
+					<span>인원</span>
+					<div>
+						<input type="button" value="-" id="cntMinusBtn" onclick="changeCnt('minus')">
+						<input type="text" value="2" id="reserve_cnt" readonly="readonly">
+						<input type="button" value="+" id="cntPlusBtn" onclick="changeCnt('plus')">
+					</div>	
 				</div>
 				<!-- 인원 선택 영역(e) -->
 				
 				<!-- 시간 선택 영역(s) -->
-				<div class="time-wrapper">
-					시간
+				<div class="time-wrapper" id="time_wrapper">
+					<div class="label-area">
+						<div>
+							<span class="yellow-label"> </span>
+							<span>알림신청</span>
+						</div>
+						<div>
+							<span class="red-label"> </span>
+							<span>예약 가능</span>
+						</div>
+					</div>
+					<div class="time-area" id="time_area"></div>
+					<input type="hidden" name="reserve_time" id="reserve_time">
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				
 				<!-- 테이블 선택 영역(s) -->
-				<div class="table-wrapper">
-					테이블 타입
+				<div class="table-wrapper" id="table_wrapper">
+					
 				</div>
 				<!-- 테이블 선택 영역(e) -->
 				
@@ -363,4 +278,153 @@
 		</section>
 	</div>
 </body>
+<script>
+const store_idx=${storeTotalInfo.storeDTO.store_idx};
+var maxCnt=parseInt(${max_people_cnt});
+
+function changeCnt(change){
+	var crCnt=document.getElementById('reserve_cnt');
+	var newCnt=parseInt(crCnt.value);
+	var minusBtn=document.getElementById('cntMinusBtn');
+	var plusBtn=document.getElementById('cntPlusBtn');
+	
+	minusBtn.style.cursor='pointer';
+	plusBtn.style.cursor='pointer';
+	
+	if(crCnt && change){
+		if(change==='minus'){
+			newCnt--;
+		}else{
+			newCnt++;
+		}
+	}
+	
+	crCnt.value=newCnt;
+	
+	if(crCnt.value==1){
+		minusBtn.disabled=true;
+	}else{
+		minusBtn.disabled=false;
+	}	
+	
+	if(crCnt.value==maxCnt){
+		plusBtn.disabled=true;
+	}else{
+		plusBtn.disabled=false;
+	}
+}
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	let lastReserveDate = '';
+	let lastReserveCnt = '2';
+
+	// 날짜 또는 인원에 변화가 생기면 새로운 시간 목록 불러옴
+	function checkChanges() {
+		const currentReserveDate = document.getElementById('reserve_date').value;
+		const currentReserveCnt = document.getElementById('reserve_cnt').value;
+
+			if (currentReserveDate && currentReserveCnt && (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+				//시간 목록 불러오는 거 비동기 처리하기
+				var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
+				sendRequest('/user/getTimeList', params, showTimeList, 'GET');
+	           
+				lastReserveDate = currentReserveDate;
+				lastReserveCnt = currentReserveCnt;
+			}
+	}
+	   
+	//MutationObserver로 DOM변화 감시하기!
+	const changeFinder = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+			checkChanges();
+			}
+		});
+	});
+
+	// 관찰 대상 = reserve_date & reserve_cnt
+	const reserveDateInput = document.getElementById('reserve_date');
+	const reserveCntInput = document.getElementById('reserve_cnt');
+	   
+	changeFinder.observe(reserveDateInput, { attributes: true });
+	changeFinder.observe(reserveCntInput, { attributes: true });
+
+	// input 이벤트도 추가
+	reserveDateInput.addEventListener('input', checkChanges);
+	reserveCntInput.addEventListener('input', checkChanges);
+	   
+	const originalChangeCnt = changeCnt;	// 기존 인원 수 변경하는 함수
+	changeCnt = function(change) {		// 함수 새로 정의
+		originalChangeCnt(change);		// 기존 기능은 그대로
+	        checkChanges();	
+	};
+	
+	document.addEventListener('click', function(e){
+		//예약 가능한 시간 클릭 시
+		if(e.target.classList.contains('time-list-y')){
+			const reserveTime=e.target.textContent;
+			document.getElementById('reserve_time').value=reserveTime;
+			const currentReserveDate = document.getElementById('reserve_date').value;
+			const currentReserveCnt = document.getElementById('reserve_cnt').value;
+			
+			var tableParam='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt+'&reserve_time='+reserveTime;
+			sendRequest('/user/getTableList', tableParam, showTableList, 'GET');
+		}
+	});
+});
+function showTimeList(){
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data);
+			document.getElementById('time_wrapper').style.height='120px';
+			document.getElementById('time_wrapper').style.overflowY='auto';
+			document.getElementById('time_wrapper').style.padding='10px';
+			var html='<table class="time-list-table"><tr>';
+			for(var i=0; i<jsondata.length; i++){
+				if(jsondata[i].AVAILABLE==='N'){
+					html+='<td><span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+				}else{
+					html+='<td><span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+				}
+				
+				if(i%4===3){
+					html+='</tr><tr>'
+				}
+			}
+			html+='</tr></table>'
+			document.getElementById('time_area').innerHTML=html;
+		}
+	}
+}
+function showTableList(){
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data);
+			
+			var tableWrapper=document.getElementById('table_wrapper');
+			tableWrapper.style.height='100px';
+			tableWrapper.style.padding='10px';
+			tableWrapper.style.overflowY='auto';
+			
+			
+			var html='';
+			for(var i=0; i<jsondata.length; i++){
+				if(jsondata[i].COUNT != 0){
+					html+='<span class="table-list">'+jsondata[i].TABLE_TYPE+'</span>';
+				}
+				//alert(''+jsondata[i].TABLE_TYPE+':'+jsondata[i].COUNT);
+			}
+			document.getElementById('table_wrapper').innerHTML=html;
+		}
+	}
+}
+</script>
+<script type="text/javascript" src="../js/userHeader.js"></script>
+<script src="../js/storeInfo/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../js/storeInfo/storeInfo.js"></script>
+<script type="text/javascript" src="../js/storeInfo/reserveCal.js"></script>
 </html>
