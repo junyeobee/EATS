@@ -87,10 +87,12 @@ menu, ol, ul {
 			catebtn.className = 'cate_radio';
 			catebtn.id = 'cate_radio1';
 			catebtn.value='main';
+			/* catebtn.setAttribute('onclick', 'addCateLabelText(this)'); */
 			
 			var cate_label = document.createElement('label');
 			cate_label.setAttribute('for','cate_radio1');
 			cate_label.innerText='필수';
+			
 			
 			var catebtn2 = document.createElement('input');
 			catebtn2.type = 'radio';
@@ -98,6 +100,7 @@ menu, ol, ul {
 			catebtn2.className = 'cate_radio';
 			catebtn2.id = 'cate_radio2';
 			catebtn2.value='sub';
+			/* catebtn2.setAttribute('onclick', 'addCateLabelText(this)'); */
 			
 			var cate_label2 = document.createElement('label');
 			cate_label2.setAttribute('for','cate_radio2');
@@ -508,6 +511,18 @@ menu, ol, ul {
 		var tag_box = document.getElementById('tagbox0');
 		tag_box.removeChild(t.parentElement);
 	}
+	
+	/* function addCateLabelText(t) {
+		var cate_label_text = document.createElement('div');
+		cate_label_text.className='cate_label_text';
+		if(t.value=='main' && t.parentElement.lastElementChild.className!='cate_label_text') {
+			cate_label_text.innerText = '필수 태그는 삭제할 수 없습니다.'
+			t.parentElement.appendChild(cate_label_text);
+		} else if(t.value=='sub'&&t.parentElement.lastElementChild.className=='cate_label_text') {
+			t.parentElement.removeChild(t.parentElement.lastElementChild);
+		}
+		
+	} */
 </script>
 
 <title>Document</title>
@@ -537,28 +552,32 @@ menu, ol, ul {
 		<div class="my_contents" id="my_contents">
 
 			<c:forEach var="keys" items="${valueList }">
-				<div class="category_box">
-					<div class="category_title_box">
-						<div class="category_title_text">${keys.key }</div>
-						<div class="category_delete_text"
-							onclick="modalForCheck('catedelete','${keys.key }',${idxList[keys.key]})">카테고리
-							삭제</div>
-					</div>
-					<div class="tag_group" id="tagbox${idxList[keys.key] }">
-						<c:forEach var="values" items="${keys.value }">
-							<div class="tag_box" onmouseover="hoverThisTag(this)"
-								onmouseout="outThisTag(this)">
-								<div class="tag_text" onclick="modalForCheck('tagupdate','${values }',${idxList[keys.key] })">${values}</div>
-								<img class="tag_delete_icon" src="/svg/minus_icon.svg"
-									onclick="modalForCheck('tagdelete','${values }',${idxList[keys.key] })" />
+				<c:if test="${keys.key!='좌석 유형' }">
+					<div class="category_box">
+						<div class="category_title_box">
+							<div class="category_title_text">${keys.key }</div>
+							<div class="category_delete_text"
+								onclick="modalForCheck('catedelete','${keys.key }',${idxList[keys.key]})">카테고리
+								삭제</div>
+						</div>
+						<div class="tag_group" id="tagbox${idxList[keys.key] }">
+							<c:forEach var="values" items="${keys.value }">
+								<div class="tag_box" onmouseover="hoverThisTag(this)"
+									onmouseout="outThisTag(this)">
+									<div class="tag_text"
+										onclick="modalForCheck('tagupdate','${values }',${idxList[keys.key] })">${values}</div>
+									<c:if test=""></c:if>
+									<img class="tag_delete_icon" src="/svg/minus_icon.svg"
+										onclick="modalForCheck('tagdelete','${values }',${idxList[keys.key] })" />
+								</div>
+							</c:forEach>
+							<div class="tag_add_box">
+								<img class="tag_add_icon" src="svg/add_icon_tomato.svg"
+									onclick="addMoreTag(this,${idxList[keys.key] })" />
 							</div>
-						</c:forEach>
-						<div class="tag_add_box">
-							<img class="tag_add_icon" src="svg/add_icon_tomato.svg"
-								onclick="addMoreTag(this,${idxList[keys.key] })" />
 						</div>
 					</div>
-				</div>
+				</c:if>
 			</c:forEach>
 
 			<div class="category_add_box">

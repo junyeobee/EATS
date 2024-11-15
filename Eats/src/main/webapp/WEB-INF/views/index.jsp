@@ -524,7 +524,8 @@ menu, ol, ul {
 
      locationBox.addEventListener('click', function () {
     	modal.style.display='flex';
-        var main = document.getElementById('main');
+       // var main = document.getElementById('main');
+		var main = document.getElementsByTagName('section')[0];
         var header = document.getElementById('userHeader');
         var h = main.scrollHeight+header.scrollHeight;
         modal.style.height = h+'px';
@@ -633,5 +634,11 @@ menu, ol, ul {
    searchInput.addEventListener('input', function(e){
 	   word.value=e.target.value;
    })
+   
+   window.addEventListener('scroll', function(event){
+	   var sy = this.scrollY;
+
+	   modal.firstElementChild.style.top=sy+250+'px';
+   });
 </script>
 </html>

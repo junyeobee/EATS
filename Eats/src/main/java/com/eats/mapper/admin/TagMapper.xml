@@ -36,4 +36,17 @@
   	<select id="getCateIdxByName" parameterType="String" resultType="Integer">
   		select cate_key_idx from cate_key where cate_key_name=#{cate_key_name}
   	</select>
+
+	<delete id="deleteFromStoreTagByCateKey" parameterType="Integer">
+		delete from category where cate_key_idx=#{cate_key_idx}
+	</delete>
+	
+	<delete id="deleteFromStoreTagByCateValue" parameterType="com.eats.user.model.CateValueDTO">
+		delete from category
+		where cate_value_idx = (select category.cate_value_idx
+		from category, (select *
+		from cate_value
+		where cate_value_name=#{cate_value_name} and cate_key_idx=#{cate_key_idx})a
+		where category.cate_value_idx=a.cate_value_idx)
+	</delete>
   </mapper>
