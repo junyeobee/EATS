@@ -37,14 +37,17 @@ menu, ol, ul {
 
 <script>
 	function hoverThisTag(t) {
-		var addIcon = t.lastElementChild;
-
-		addIcon.style.display = 'inline';
+		if(t.lastElementChild!=t.firstElementChild){
+			var addIcon = t.lastElementChild;
+			addIcon.style.display = 'inline';
+		}
 	}
 	
 	function outThisTag(t) {
-		var addIcon=t.lastElementChild;
-		addIcon.style.display='none';
+		if(t.lastElementChild!=t.firstElementChild){
+			var addIcon=t.lastElementChild;
+			addIcon.style.display='none';
+		}
 	}
 
 	function addNewCategory(t) {
@@ -91,7 +94,7 @@ menu, ol, ul {
 			
 			var cate_label = document.createElement('label');
 			cate_label.setAttribute('for','cate_radio1');
-			cate_label.innerText='필수';
+			cate_label.innerText='태그';
 			
 			
 			var catebtn2 = document.createElement('input');
@@ -104,7 +107,7 @@ menu, ol, ul {
 			
 			var cate_label2 = document.createElement('label');
 			cate_label2.setAttribute('for','cate_radio2');
-			cate_label2.innerText='부수';
+			cate_label2.innerText='특징';
 			
 			var cate_radio_box = document.createElement('div');
 			cate_radio_box.className='cate_radio_box';
@@ -177,16 +180,23 @@ menu, ol, ul {
 		tag_text.innerText = tag;
 		tag_text.setAttribute('onclick','updateNewTag(this)');
 		
-		var tag_icon = document.createElement('img');
-		tag_icon.className = 'tag_delete_icon';
-		tag_icon.src = '/svg/minus_icon.svg';
-		if(keyidx!=0){
-			tag_icon.setAttribute('onclick','modalForCheck("tagdelete","'+tag+'",'+keyidx+')');
-		} else {
-			tag_icon.setAttribute('onclick','deleteNewTag(this)');
-		}
-		tag_box.append(tag_text, tag_icon);
-		
+			var tag_icon = document.createElement('img');
+			tag_icon.className = 'tag_delete_icon';
+			tag_icon.src = '/svg/minus_icon.svg';
+			
+			if(keyidx!=0){
+				var keyname = document.getElementById('tagbox'+keyidx);
+				if(keyname==true && keyname.previousElementSibling.firstElementChild.innerText=='좌석 유형') {
+					tag_box.appendChild(tag_text);
+					console.log(d);
+				} else {
+					tag_icon.setAttribute('onclick','modalForCheck("tagdelete","'+tag+'",'+keyidx+')');
+					tag_box.append(tag_text, tag_icon);
+				}
+			} else {
+				tag_icon.setAttribute('onclick','deleteNewTag(this)');
+				tag_box.append(tag_text, tag_icon);
+			}
 		return tag_box;
 	}
 	
@@ -220,19 +230,20 @@ menu, ol, ul {
 				var tag_box = t.parentElement;
 				tag_box.className='tag_box';
 				tag_box.removeChild(tag_box.firstElementChild);
+				tag_box.setAttribute('onmouseover','hoverThisTag(this)');
+				tag_box.setAttribute('onmouseout','outThisTag(this)');
 				
 				var tag_text=document.createElement('div');
 				tag_text.className='tag_text';
 				tag_text.innerText=newtag;
 				tag_text.setAttribute('onclick','updateNewTag(this)');
 
-				var delete_icon = document.createElement('img');
-				delete_icon.setAttribute('src','/svg/minus_icon.svg');
-				delete_icon.className='tag_delete_icon';
-				delete_icon.setAttribute('onclick','deleteNewTag(this)');
-				
-				tag_box.append(tag_text,delete_icon);
-				
+					var delete_icon = document.createElement('img');
+					delete_icon.setAttribute('src','/svg/minus_icon.svg');
+					delete_icon.className='tag_delete_icon';
+					delete_icon.setAttribute('onclick','deleteNewTag(this)');
+					tag_box.append(tag_text,delete_icon);
+				console.log('ad')
 			} else if(keyidx!=0) {
 				var params = 'cate_key_idx='+t.id+'&cate_value_name='+t.value;
 				sendRequest('addTag', params, showAddTag, 'GET');
@@ -552,32 +563,39 @@ menu, ol, ul {
 		<div class="my_contents" id="my_contents">
 
 			<c:forEach var="keys" items="${valueList }">
-				<c:if test="${keys.key!='좌석 유형' }">
-					<div class="category_box">
-						<div class="category_title_box">
-							<div class="category_title_text">${keys.key }</div>
+				<div class="category_box">
+					<div class="category_title_box">
+						<div class="category_title_text">${keys.key }</div>
+						<c:if test="${keys.key!='좌석 유형' }">
 							<div class="category_delete_text"
 								onclick="modalForCheck('catedelete','${keys.key }',${idxList[keys.key]})">카테고리
 								삭제</div>
-						</div>
-						<div class="tag_group" id="tagbox${idxList[keys.key] }">
-							<c:forEach var="values" items="${keys.value }">
-								<div class="tag_box" onmouseover="hoverThisTag(this)"
-									onmouseout="outThisTag(this)">
+						</c:if>
+					</div>
+					<div class="tag_group" id="tagbox${idxList[keys.key] }">
+						<c:forEach var="values" items="${keys.value }">
+							<div class="tag_box" onmouseover="hoverThisTag(this)"
+								onmouseout="outThisTag(this)">
+								<c:if test="${keys.key!='좌석 유형' }">
 									<div class="tag_text"
 										onclick="modalForCheck('tagupdate','${values }',${idxList[keys.key] })">${values}</div>
-									<c:if test=""></c:if>
+								</c:if>
+								<c:if test="${keys.key=='좌석 유형' }">
+									<div class="tag_text">${values}</div>
+								</c:if>
+								<c:if test=""></c:if>
+								<c:if test="${keys.key!='좌석 유형' }">
 									<img class="tag_delete_icon" src="/svg/minus_icon.svg"
 										onclick="modalForCheck('tagdelete','${values }',${idxList[keys.key] })" />
-								</div>
-							</c:forEach>
-							<div class="tag_add_box">
-								<img class="tag_add_icon" src="svg/add_icon_tomato.svg"
-									onclick="addMoreTag(this,${idxList[keys.key] })" />
+								</c:if>
 							</div>
+						</c:forEach>
+						<div class="tag_add_box">
+							<img class="tag_add_icon" src="svg/add_icon_tomato.svg"
+								onclick="addMoreTag(this,${idxList[keys.key] })" />
 						</div>
 					</div>
-				</c:if>
+				</div>
 			</c:forEach>
 
 			<div class="category_add_box">

@@ -1,3 +1,77 @@
+
+var modal = document.getElementById("modal");
+var exitbtn = document.getElementById("exitbtn");
+var pickArea = document.getElementById('pick_area');
+var areaText = document.getElementById('areaText');
+
+function openAreaSelectBox() {
+	modal.style.display = 'flex';
+	var main = document.getElementById("main");
+	var header = document.getElementById('userHeader');
+	var h = main.scrollHeight + header.scrollHeight;
+	modal.style.height = h + 'px';
+
+	var area = modal.firstElementChild;
+
+	var middle = ((window.innerWidth - area.scrollWidth) / 2) / window.innerWidth * 100;
+	area.style.left = middle + '%';
+}
+
+exitbtn.addEventListener('click', function() {
+	modal.style.display = 'none';
+});
+
+
+function selectCity(cityIdx, t) {
+	areaText.innerText = t.innerText;
+	var params = 'cityIdx=' + cityIdx;
+	sendRequest('selectUnit', params, showUnit, 'GET');
+}
+
+function showUnit() {
+	if (XHR.readyState == 4) {
+		if (XHR.status == 200) {
+			var data = XHR.responseText;
+			var jd = JSON.parse(data);
+
+			var unitbox = document.getElementById('unitbox');
+			unitbox.innerHTML = '';
+
+			var svalue = document.createElement('div');
+			svalue.setAttribute('class', 'area_small_value');
+
+			jd.list.forEach(function(unit) {
+				var value_text = document.createElement('div');
+				value_text.setAttribute('class', 'area_small_value_text');
+				value_text.setAttribute('onclick', 'selectThisArea(this)');
+				value_text.innerHTML = unit;
+
+				svalue.appendChild(value_text);
+			});
+
+			unitbox.appendChild(svalue);
+		}
+	}
+}
+
+function selectThisArea(t){
+    	var city = areaText.innerText.substring(0,2);
+		var newparam = city+' '+t.innerText;
+		//pickArea.innerText=city+' '+t.innerText;
+		areaText.value=newparam;
+		
+    	var param = 'selectCity='+city+'&selectUnit='+t.innerText;
+    	sendRequest('setArea', param , showSelectArea, 'GET');
+    }
+    
+    function showSelectArea(){
+    	if(XHR.readyState==4){
+    		if(XHR.status==200){
+    			location.href='searchStore?areaWord='+areaText.value;
+    		}
+    	}
+    }
+
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
 	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
@@ -6,6 +80,8 @@ var options = { //지도를 생성할 때 필요한 기본 옵션
 };
 
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+
 
 
 function panTo() {
@@ -90,3 +166,4 @@ function addThisTagToFilter(t, idx, valueName) {
 		document.getElementById(idx).value = param;
 	}
 }
+

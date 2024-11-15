@@ -15,7 +15,7 @@ public interface MainService {
 	public List<AreaDTO> getCityList();
 	public List<String> getUnitList(int area_idx);
 	
-	public List<Integer> getPopularReviews(String areaWord);
+	public List<Integer> getPopularReviews(String cityWord, String unitWord);
 	public ReviewDTO getReview(int rev_idx);
 	public Double getStorePoint(int store_idx);
 	public Integer getLikeCount(int rev_idx);

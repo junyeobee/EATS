@@ -42,8 +42,8 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
-	public List<Integer> getPopularReviews(String areaWord) {
-		List<Integer> list = mp.getPopularReviews(areaWord);
+	public List<Integer> getPopularReviews(String cityWord, String unitWord) {
+		List<Integer> list = mp.getPopularReviews(cityWord, unitWord);
 		return list;
 	}
 	

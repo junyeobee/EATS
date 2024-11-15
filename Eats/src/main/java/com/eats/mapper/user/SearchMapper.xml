@@ -29,4 +29,7 @@
 		group by search_word
 	</select>
 
+	<select id="getStoreInfo" resultType="com.eats.store.model.StoreDTO">
+		select * from store
+	</select>
 </mapper>

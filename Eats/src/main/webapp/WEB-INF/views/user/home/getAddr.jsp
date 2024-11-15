@@ -15,11 +15,65 @@
 	<br>
 	<input type="text" id="sample6_detailAddress" placeholder="상세주소">
 	<input type="text" id="sample6_extraAddress" placeholder="참고항목">
+	
+	    <input type="text" id="getAddr">
+    <input type="button" onclick="getLatLng()" value="위도경도 얻기">
+    <div id="latlng"></div>
+    	<div id="map" style="width: 500px; height: 400px;"></div>
+	<input type="button" value="부드러운 이동" onclick="panTo()">
+	<input type="button" value="지도 확대" onclick="zoomIn()">
+	<input type="button" value="지도 축소" onclick="zoomOut()">
+	<span id="maplevel">${word }</span>
 </body>
+<!-- <script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1"></script>
+ --><!-- services 라이브러리 불러오기 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
 
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+
+var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+var options = { //지도를 생성할 때 필요한 기본 옵션
+	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+	level: 3
+	//지도의 레벨(확대, 축소 정도)
+};
+
+var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+
+function panTo(lat, lng) {
+	// 이동할 위도 경도 위치를 생성합니다 
+	var moveLatLon = new kakao.maps.LatLng(lat,lng);
+
+	// 지도 중심을 부드럽게 이동시킵니다
+	// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+	map.panTo(moveLatLon);
+}
+function getLatLng(){
+	var searchAddr = document.getElementById('sample6_address').value;
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch(searchAddr, function(result, status) {
+
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+			var lat = result[0].y;
+			var lng = result[0].x;
+			
+			var latlngbox = document.getElementById('latlng');
+			latlngbox.innerText = '위도: '+lat+' 경도:'+lng;
+			
+			panTo(lat,lng);
+	    } else {
+			alert('실패');
+		}  
+	});    
+}
 	function getPostCode() {
 		new daum.Postcode(
 				{
