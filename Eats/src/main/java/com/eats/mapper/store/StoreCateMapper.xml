@@ -10,11 +10,77 @@
 		WHERE CATE_KEY_LEVEL = 1
    </select>
    
-   <select id="storeCateOneSmallList" resultType="com.eats.user.model.CateValueDTO">
+   <select id="storeCateTwoBigList" resultType="com.eats.user.model.CateKeyDTO">
+		SELECT 
+		    * 
+		FROM CATE_KEY  
+		WHERE CATE_KEY_LEVEL = 2
+   </select>
+   
+   <select id="storeCateSmallList" resultType="com.eats.user.model.CateValueDTO">
 		SELECT 
 		    * 
 		FROM CATE_VALUE  
 		WHERE CATE_KEY_IDX = #{cate_key_idx}
    </select>
+   
+   
+   <insert id="storeTagInsert" parameterType="com.eats.store.model.CategoryDTO">
+        insert into category (
+		    cate_idx,
+		    store_idx,
+		    cate_key_idx,
+		    cate_value_idx
+		) 
+		VALUES (CATE_IDX_SEQ.nextval,
+		        #{store_idx},
+		        #{cate_key_idx},
+		        #{cate_value_idx}
+		)
+   </insert>
+   
+
+	<!-- 
+   <select id="storeTagCheck" resultType="int">
+		select 
+			count(*) 
+		from 
+			category 
+		where 
+			store_idx = #{store_idx}
+   </select>
+    -->
+   
+   <select id="storeCateOneData" resultType="com.eats.store.model.CategoryDTO">
+		select 
+		    cate.*, cv.cate_value_name 
+		from 
+		    category cate
+		left join cate_value cv on cate.cate_value_idx = cv.cate_value_idx 
+		left join cate_key ck on cv.cate_key_idx = ck.cate_key_idx 
+		where 
+		    store_idx = #{store_idx} and ck.cate_key_level = 1 
+		order by 
+		    cate.cate_value_idx 
+   </select>
+   
+   
+   <select id="storeCateTwoData" resultType="com.eats.store.model.CategoryDTO">
+		select 
+		    cate.*, cv.cate_value_name 
+		from 
+		    category cate
+		left join cate_value cv on cate.cate_value_idx = cv.cate_value_idx 
+		left join cate_key ck on cv.cate_key_idx = ck.cate_key_idx 
+		where 
+		    store_idx = #{store_idx} and ck.cate_key_level = 2
+		order by 
+		    cate.cate_value_idx 
+   </select>
+   
+   <delete id="storeCateDel" parameterType="int">
+      delete from category  
+      where cate_idx=#{cate_idx}
+   </delete>
    
 </mapper>

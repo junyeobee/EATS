@@ -2,6 +2,10 @@ package com.eats.controller.store;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,11 +19,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.StoreNewsDTO;
 import com.eats.store.service.StoreNewsService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class StoreNewsController {
@@ -31,6 +39,13 @@ public class StoreNewsController {
     
     //db에 저장되는 파일 경로
     private String db_filePath = "/storeNewsImg/";
+    
+    
+
+    //파일명 저장시 현재날짜, 시간 담음
+    private DateTimeFormatter timestamp = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+    String timestampDate = LocalDateTime.now().format(timestamp);
+    
 
 	@GetMapping("/store/storeNewsWrite")
     public String storeNewsWrite() {
@@ -44,7 +59,7 @@ public class StoreNewsController {
 	    StoreNewsDTO data = service.storeNewsData(news_idx); 
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data); // JSP로 객체 전달
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         mav.setViewName("store/news/newsWrite"); // JSP 이름
 
         return mav;
@@ -57,7 +72,7 @@ public class StoreNewsController {
 	    StoreNewsDTO data = service.storeNewsData(news_idx); 
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data); // JSP로 객체 전달
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         mav.setViewName("store/news/newsRead"); // JSP 이름
 
         return mav;
@@ -99,16 +114,48 @@ public class StoreNewsController {
                 String formattedDate = LocalDateTime.now().format(formatter);
 
                 // 파일명에 날짜와 시간 추가
-                String fileName = img.getOriginalFilename().substring(0, img.getOriginalFilename().lastIndexOf(".")) + "_" + formattedDate + img.getOriginalFilename().substring(img.getOriginalFilename().lastIndexOf("."));
+                //String fileName = img.getOriginalFilename().substring(0, img.getOriginalFilename().lastIndexOf(".")) + "_" + formattedDate + img.getOriginalFilename().substring(img.getOriginalFilename().lastIndexOf("."));
                 
-                String filePath = filePathValue + fileName;
+                String fileName = img.getOriginalFilename();
                 
-                File file = new File(filePath);
-                img.transferTo(file); // 파일을 실제로 저장하는 코드
-                //dto.setS_news_img(fileName);
-                dto.setS_news_img(db_filePath+fileName);
+                String fileRealNames = "";
+                String extensions = "";
+                String fileWithTimes = "";
+                
+                if (!fileName.isEmpty()) {
+                    int extensionIndex = fileName.lastIndexOf(".");
+                    if (extensionIndex > 0) {
+                        fileRealNames = fileName.substring(0, extensionIndex);  // 파일명
+                        extensions = fileName.substring(extensionIndex); // 확장자 
+                        fileWithTimes = fileRealNames + "_" + timestampDate + extensions; 
+                    }
+                }
+                
+                
+            	HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();                
+                String filePathPrefix = req.getServletContext().getRealPath("\\img\\storeNewsImg\\");
+                
+                //String filePath = filePathValue + fileName;
+                String filePath = filePathPrefix + fileName;
+            	
+                Path path = Paths.get(filePathPrefix, fileWithTimes);
+            	System.out.println("path"+path);
+
+                if (!Files.exists(Paths.get(filePathPrefix))) {
+                    Files.createDirectories(Paths.get(filePathPrefix));
+                	System.out.println("filePathPrefix"+filePathPrefix);
+                }
+
+                Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            	System.out.println("file.getInputStream()"+img.getInputStream());
+            	System.out.println("path.toString()"+path.toString());
+
+                //File file = new File(filePath);
+                //img.transferTo(file); // 파일을 실제로 저장하는 코드
+                dto.setS_news_img(fileWithTimes);
 
                 System.out.println("파일 저장 경로: " + filePath);
+                
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -160,14 +207,45 @@ public class StoreNewsController {
                 String formattedDate = LocalDateTime.now().format(formatter);
 
                 // 파일명에 날짜와 시간 추가
-                String fileName = img.getOriginalFilename().substring(0, img.getOriginalFilename().lastIndexOf(".")) + "_" + formattedDate + img.getOriginalFilename().substring(img.getOriginalFilename().lastIndexOf("."));
+                //String fileName = img.getOriginalFilename().substring(0, img.getOriginalFilename().lastIndexOf(".")) + "_" + formattedDate + img.getOriginalFilename().substring(img.getOriginalFilename().lastIndexOf("."));
                 
+                String fileName = img.getOriginalFilename();
+                
+                String fileRealNames = "";
+                String extensions = "";
+                String fileWithTimes = "";
+                
+                if (!fileName.isEmpty()) {
+                    int extensionIndex = fileName.lastIndexOf(".");
+                    if (extensionIndex > 0) {
+                        fileRealNames = fileName.substring(0, extensionIndex);  // 파일명
+                        extensions = fileName.substring(extensionIndex); // 확장자 
+                        fileWithTimes = fileRealNames + "_" + timestampDate + extensions; 
+                    }
+                }
+                
+                
+            	HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();                
+                String filePathPrefix = req.getServletContext().getRealPath("\\img\\storeNewsImg\\");
+                
+                //String filePath = filePathValue + fileName;
+                String filePath = filePathPrefix + fileName;
+            	
+                Path path = Paths.get(filePathPrefix, fileWithTimes);
+            	System.out.println("path"+path);
 
-                String filePath = filePathValue + fileName;
-                
-                File file = new File(filePath);
-                img.transferTo(file); // 파일을 실제로 저장하는 코드
-                dto.setS_news_img(db_filePath+fileName);
+                if (!Files.exists(Paths.get(filePathPrefix))) {
+                    Files.createDirectories(Paths.get(filePathPrefix));
+                	System.out.println("filePathPrefix"+filePathPrefix);
+                }
+
+                Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            	System.out.println("file.getInputStream()"+img.getInputStream());
+            	System.out.println("path.toString()"+path.toString());
+
+                //File file = new File(filePath);
+                //img.transferTo(file); // 파일을 실제로 저장하는 코드
+                dto.setS_news_img(fileWithTimes);
 
                 System.out.println("파일 저장 경로: " + filePath);
 
