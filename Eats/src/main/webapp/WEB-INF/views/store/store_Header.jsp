@@ -25,6 +25,11 @@
         gap: 16px;
         padding: 0 24px;
     }
+    .nav-logo img{
+		width: 56px;
+		height: 48px;
+		cursor: pointer;
+    }
 
     .header-user {
         display: flex;
@@ -41,13 +46,21 @@
         background-color: #f8fafc;
     }
 </style>
+<script>
+	document.addEventListener('DOMContentLoaded', function{
+		let homebtn = document.getElementById('homeLogo');
+		homebtn.addEventListener('click') => {
+			location.href = '/storeMain';
+		}
+	})
+</script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
     <header class="header">
         <div class="nav-logo">
-            <img src="" alt="Logo" height="32">
+            <img src="../img/store/storeLogo.png" alt="Logo" height="32" id = "homeLogo">
         </div>
         <div class="header-user">
             <div class="notifications">
