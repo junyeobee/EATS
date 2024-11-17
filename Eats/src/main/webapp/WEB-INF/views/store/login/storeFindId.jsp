@@ -125,7 +125,7 @@
   <div class="div2">아이디 찾기</div>
   <input type="text" name="store_ceo" placeholder="이름을 입력하세요." class="div3">
  <input type="email" name="store_email" placeholder="이메일 예) eats@email.com" class="eats-email-com">
-  <div class="div4">가입된 회원정보로 아이디를 확인하세요.</div>
+  <div class="div4">가입된 회원정보로 아이디를 확인하세요.</div> 
 </div>
 </form>
 </body>

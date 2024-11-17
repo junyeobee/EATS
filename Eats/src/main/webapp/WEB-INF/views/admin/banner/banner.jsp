@@ -36,8 +36,12 @@
 			<td>${dto.banner_idx }</td>
 			<td>${dto.banner_name }</td>
 			<td>${dto.banner_url }</td>
+			
 			<c:if test="${dto.banner_stat ==1}">
 			<td>사용</td>
+			</c:if>
+			<c:if test="${dto.banner_stat ==2}">
+			<td>사용안함</td>
 			</c:if>
 			
 			<td><input type="button" value="수정"></td>

@@ -34,11 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{menu_img}   
         )
  
-	</insert>
-	
-	
+	</insert>	
 
-	
 	
 	<delete id="deleteMenuCate" parameterType="String">
 	delete 
@@ -89,10 +86,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		menu_price=#{menu_price},
 		menu_info=#{menu_info},
 		menu_preorder=#{menu_preorder},
-		menu_image_idx=#{menu_image_idx}
+		menu_img=#{menu_img}
 		where
 		menu_idx=#{menu_idx}		
 	</update>
+	
+	<!-- 수정할 메뉴 정보 불러오기 -->
+	
+	<select id="updateMenuInfo" parameterType="Integer" resultType="com.eats.store.model.MenuDTO" >
+	
+		select * from menu 
+		where
+		menu_idx=#{menu_idx}
+		
+	</select>
 	
 	
 </mapper>

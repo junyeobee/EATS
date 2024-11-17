@@ -13,7 +13,14 @@
 	
 	</select>
   
-  
+  	<insert id="bannerInsert" parameterType="com.eats.admin.model.BannerDTO">
+  		insert into
+  		banner
+  		values(
+  		banner_idx_seq.nextval
+  		)
+  		
+  	</insert>
   
   </mapper>
 

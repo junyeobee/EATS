@@ -28,5 +28,12 @@ public class BannerController {
 
 		return mav ;
 	}
-
+	
+	@GetMapping("/admin/bannerInsert")
+	public String bannerInsert() {
+		
+		return "admin/banner/bannerInsert";
+	}
+	
+	
 }

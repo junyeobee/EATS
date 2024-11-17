@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +58,8 @@ public class StoreMenuController {
 
 		mav.setViewName("store/menu/menuList");
 
+
+
 		return mav;
 	}
 
@@ -64,9 +68,12 @@ public class StoreMenuController {
 	@GetMapping("/menuListAjax")
 	public List<MenuDTO> storeMenuAjax(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx) {
 		List<MenuDTO> menu = service.storeMenuList(idx);
-		return menu;
+		
+		return menu;	
 	}
 
+	
+	
 	
 	@GetMapping("/storeMenuInsert")
 	public String storeMenuInsert() {
@@ -74,13 +81,66 @@ public class StoreMenuController {
 	}
 
 	
+	
+	
 	@GetMapping("/menuUpdatePage/{menu_idx}")
-	public String menuUpdatePage(@RequestParam(value="menu_idx", required = false)Integer menuIdx) {
+	public ModelAndView menuUpdatePage(@PathVariable("menu_idx")Integer menuIdx) {
+		
+		List<MenuDTO> lists = service.storeCateList();
+		MenuDTO info = service.updateMenuInfo(menuIdx);
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("lists", lists);
+		mav.addObject("info", info);
 
-		return "store/menu/menuUpdate";
+		mav.setViewName("store/menu/menuUpdate");
+		
+		return mav;
 	}
+	
+	
+	
+	
+	//메뉴 수정완료
+	@PostMapping("/menuUpdateOk")
+	public ModelAndView menuUpdateOk(MenuDTO dto, 
+			@RequestParam("menu_img") MultipartFile menuImg,
+			 HttpServletRequest req) {
+		
+	
+	    String realpath = req.getServletContext().getRealPath("/"); // 실제 경로 가져오기
+        ModelAndView mav = new ModelAndView();
+        
+        // 실제 경로 가져오기
+   
+
+        // 기존 이미지 파일명 가져오기
+        String oldFileName = dto.getMenu_img();
+
+        try {
+            // 서비스 호출하여 메뉴 업데이트
+            int result = service.updateMenu(dto, menuImg, realpath, oldFileName);
+            if (result > 0) {
+                mav.addObject("msg", "메뉴가 수정되었습니다.");
+            } else {
+                mav.addObject("msg", "메뉴 수정에 실패했습니다.");
+            }
+        } catch (IOException e) {
+            mav.addObject("msg", "메뉴 수정 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+
+        mav.addObject("goUrl", "storeMenuList"); // 리다이렉트할 URL
+        mav.setViewName("store/menu/menuMsg"); // 결과 페이지
+        return mav;
+    }
+    
+	
 
 	
+	
+	
+	//메뉴 등록 페이지
 	@GetMapping("/StoreMenuInsert")
 	public ModelAndView StoreMenuInsert() {
 		List<MenuDTO> lists = service.storeCateList();
@@ -93,6 +153,8 @@ public class StoreMenuController {
 		return mav;
 	}
 
+	
+	
 	
 		// 메뉴 등록
 		@PostMapping("/StoreMenuInsertOk")
@@ -161,6 +223,7 @@ public class StoreMenuController {
 	@PostMapping("/deleteMenuCate")
 	public ModelAndView deleteMenuCate(
 			@RequestParam(value = "m_cate_name", required = false, defaultValue = "") String cateName) {
+		
 		int result = service.deleteMenuCate(cateName);
 
 		String msg = result > 0 ? "카테고리가 삭제되었습니다." : "삭제 실패";
@@ -175,6 +238,7 @@ public class StoreMenuController {
 
 	}
 
+	
 	
 	@PostMapping("/insertMenuCate")
 	public ModelAndView insertMenuCate(
@@ -193,6 +257,7 @@ public class StoreMenuController {
 
 	}
 
+	
 	
 	@PostMapping("/deleteMenu")
 	public ModelAndView deleteMenu(@RequestParam(value = "menu_idx", required = true) List<Integer> menuList) {
