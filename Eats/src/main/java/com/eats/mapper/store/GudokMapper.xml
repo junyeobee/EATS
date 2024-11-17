@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.GudokMapper">
+	<insert id="insertSubscription" parameterType="map">
+	    INSERT INTO GUDOK (
+	        GUDOK_IDX, STORE_IDX, GUDOK_START, 
+	        GUDOK_NEXTPAY, GUDOK_END, GUDOK_TYPE,
+	        GUDOK_METHOD, GUDOK_INFO, GUDOK_STAT, GUDOK_TID
+	    ) VALUES (
+	        GUDOK_IDX_SEQ.NEXTVAL, #{storeIdx}, SYSDATE,
+	        #{nextPayDate}, #{endDate}, #{gudokType},
+	        'KAKAOPAY', #{billingKey}, 1 ,#{tid}
+	    )
+	</insert>
+	<select id = "getGudokInfo" parameterType="Integer" resultType="com.eats.store.model.GudokDTO">
+		select * from gudok where store_idx = #{store_idx}
+	</select>
+	<update id = "updateInfo" parameterType="Map">
+		update gudok set gudok_stat = #{status} where gudok_idx = #{gudokIdx}
+	</update>
+</mapper>
