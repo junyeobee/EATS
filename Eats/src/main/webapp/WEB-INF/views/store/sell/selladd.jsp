@@ -202,8 +202,8 @@
 	
 	        // CSV 파싱 함수
 	        function parseCSV(content) {
-	            const rows = content.split(/\r?\n/).map(row => row.trim()).filter(row => row.length > 0);
-	            console.log(row.length);
+	        	const rows = content.split(/\r?\n/).map(row => row.trim()).filter(row => row.length > 0);
+
 	            if (rows.length < 2) {
 	                throw new Error('데이터가 없는 파일입니다.');
 	            }

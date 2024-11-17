@@ -39,4 +39,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        #{orderNum}
 	    )
 	</insert>
+	
+	
+	<select id="sellList" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
+		SELECT 
+		    TO_CHAR(SELL_DATE, 
+		        <choose>
+		            <when test="dateType == 'hour'">
+		                'HH24'
+		            </when>
+		            <when test="dateType == 'day'">
+		                'YYYY-MM-DD'
+		            </when>
+		            <when test="dateType == 'week'">
+		                'YYYY-"W"WW'
+		            </when>
+		            <when test="dateType == 'month'">
+		                'YYYY-MM'
+		            </when>
+		        </choose>
+		    ) AS sellDate,
+		    TO_CHAR(SUM(TOTAL_CNT), 'FM999,999,999') AS salesAmount,
+		    TO_CHAR(COUNT(*), 'FM999,999') AS salesCount,
+		    #{dateType} AS dateType
+		FROM SELL 
+		WHERE STORE_IDX = #{storeIdx}
+		    AND SELL_STAT = 1
+		    AND SELL_DATE BETWEEN TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI') 
+		                      AND TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+		GROUP BY TO_CHAR(SELL_DATE, 
+		    <choose>
+		        <when test="dateType == 'hour'">
+		            'HH24'
+		        </when>
+		        <when test="dateType == 'day'">
+		            'YYYY-MM-DD'
+		        </when>
+		        <when test="dateType == 'week'">
+		            'YYYY-"W"WW'
+		        </when>
+		        <when test="dateType == 'month'">
+		            'YYYY-MM'
+		        </when>
+		    </choose>
+		)
+		ORDER BY sellDate ASC
+	</select>
 </mapper>

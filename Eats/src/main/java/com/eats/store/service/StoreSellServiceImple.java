@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.eats.mapper.store.SalesMapper;
+import com.eats.store.model.SalesResponseDTO;
 import com.eats.store.model.SalesSaveDTO;
+import com.eats.store.model.SalesSearchDTO;
 import com.eats.store.model.SellsDetailDTO;
 
 @Service
@@ -96,15 +98,13 @@ public class StoreSellServiceImple implements StoreSellService {
 	}
 	
 	private List<String[]> parseCsvFile(MultipartFile file) throws IOException {
-	    // 파일 내용을 바이트 배열로 읽기
 	    byte[] bytes = file.getBytes();
 	    
-	    // BOM 체크 및 제거
+	    //인코딩 uft-8-sig 때문에 이럼 ㅋㅋ
 	    if (bytes.length >= 3 && 
 	        (bytes[0] & 0xFF) == 0xEF && 
 	        (bytes[1] & 0xFF) == 0xBB && 
 	        (bytes[2] & 0xFF) == 0xBF) {
-	        // BOM이 있다면 제거
 	        bytes = Arrays.copyOfRange(bytes, 3, bytes.length);
 	    }
 	    
@@ -118,10 +118,9 @@ public class StoreSellServiceImple implements StoreSellService {
 	        while ((line = reader.readLine()) != null) {
 	            if (firstLine) {
 	                firstLine = false;
-	                continue; // 헤더 스킵
+	                continue;
 	            }
 	            if (!line.trim().isEmpty()) {
-	                // 파싱 과정 로깅
 	                System.out.println("Parsing line: " + line);
 	                String[] fields = line.split(",");
 	                System.out.println("Fields length: " + fields.length);
@@ -143,5 +142,11 @@ public class StoreSellServiceImple implements StoreSellService {
 	    	throw new IllegalArgumentException("올바르지 않은 결제 방식: " + method);
 	    }
 	    return method.toUpperCase();
+	}
+	
+	@Override
+	public List<SalesResponseDTO> sellList(SalesSearchDTO searchDTO) {
+		List<SalesResponseDTO> result = mapper.sellList(searchDTO);
+		return result;
 	}
 }
