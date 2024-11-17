@@ -114,6 +114,14 @@ const ChartManager = {
                         borderWidth: dataset.borderWidth
                     }))
                 };
+            case 'pie':
+                return {
+                    labels: rawData.labels,
+                    datasets: [{
+                        data: rawData.datasets[0].data,
+                        backgroundColor: rawData.datasets[0].backgroundColor
+                    }]
+                };
             default:
                 return rawData;
         }

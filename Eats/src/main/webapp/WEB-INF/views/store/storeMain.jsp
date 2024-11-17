@@ -9,62 +9,82 @@
     <c:set var="timeSlotLabels" value="${timeSlotLabels}'${slot.timeslot}'${!status.last ? ',' : ''}" />
     <c:set var="timeSlotData" value="${timeSlotData}${slot.reservationcount}${!status.last ? ',' : ''}" />
 </c:forEach>
+
+<c:set var="monthlyLabels" value="" />
+<c:set var="monthlyReserveCnt" value="" />
+<c:set var="monthlyTotalCnt" value="" />
+
+<c:forEach items="${dash.monthResereve}" var="month" varStatus="status">
+    <c:set var="monthlyLabels" value="${monthlyLabels}'${month.month}월'${!status.last ? ',' : ''}" />
+    <c:set var="monthlyReserveCnt" value="${monthlyReserveCnt}${month.reservecnt}${!status.last ? ',' : ''}" />
+    <c:set var="monthlyTotalCnt" value="${monthlyTotalCnt}${month.totalcnt}${!status.last ? ',' : ''}" />
+</c:forEach>
+
+<c:set var="weeklyLabels" value="" />
+<c:set var="weeklyAmount" value="" />
+
+<c:forEach items="${dash.reserveWeek}" var="day" varStatus="status">
+    <c:set var="weeklyLabels" value="${weeklyLabels}'${day.saledate}'${!status.last ? ',' : ''}" />
+    <c:set var="weeklyAmount" value="${weeklyAmount}${day.totalamount}${!status.last ? ',' : ''}" />
+</c:forEach>
+
+<c:set var="compareLabels" value="'전주','이번주'" />
+<c:set var="compareAmount" value="${dash.sellCompare.lastweekamount},${dash.sellCompare.thisweekamount}" />
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
+	<style>
         :root {
-            --primary-blue: #3b82f6;
-            --primary-red: #ef4444;
-            --light-blue: #f0f7ff;
-            --dark-blue: #1e40af;
-            --gray: #64748b;
-        }
+			--primary-blue: #3b82f6;
+			--light-blue: #f0f7ff;
+			--dark-blue: #1e40af;
+			--gray-50: #f8fafc;
+			--gray-100: #f1f5f9;
+			--gray-200: #e2e8f0;
+			--gray-300: #cbd5e1;
+			--gray-600: #475569;
+			--white: #ffffff;
+		}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Pretendard', sans-serif;
-        }
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: var(--gray-50);
+			font-family: 'Noto-Sans KR', sans-serif;
+		}
 
-        body {
-            background-color: var(--light-blue);
-            padding: 16px;
-        }
+		.dashboard-container {
+			margin-left: 240px;
+			margin-top: 64px;
+			padding: 32px;
+			background-color: #eff9ff;
+		}
 
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+		.stats-container {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 24px;
+			margin-bottom: 24px;
+		}
 
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 16px;
-        }
+		.stat-card {
+			background: var(--white);
+			padding: 24px;
+			border-radius: 12px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		}
 
-        .stat-card {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-        }
+		.chart-card {
+			background: var(--white);
+			padding: 24px;
+			border-radius: 12px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		}
 
         .stat-label {
             font-size: 13px;
             color: var(--gray);
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
         .stat-value {
@@ -73,24 +93,23 @@
             color: var(--dark-blue);
         }
 
-        .trend-up {
-            color: var(--primary-red);
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .chart-row {
+        .chart-row-2-1 {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 16px;
-            margin-bottom: 16px;
+			margin-bottom:30px;
         }
 
-        .chart-card {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        .chart-row-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+			margin-bottom:30px;
+        }
+
+        .chart-row-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
 
         .chart-header {
@@ -106,113 +125,60 @@
             color: var(--dark-blue);
         }
 
-        .chart-period {
-            font-size: 13px;
-            color: var(--gray);
-            padding: 4px 8px;
+        .chart-container {
+            width: 100%;
+            height: 240px;
+            position: relative;
+        }
+
+        .chart-row-1 .chart-container {
+            height: 300px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
             background: var(--light-blue);
             border-radius: 4px;
         }
 
-        .chart-container {
-            width: 100%;
-            height: 240px;
-            background: var(--light-blue);
-            border-radius: 8px;
-            padding: 16px;
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 4px;
         }
-
-        .metric-row {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .metric-card {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-        }
-
-        .metric-date {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 4px;
-        }
-
-        .metric-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark-blue);
-            margin-bottom: 4px;
-        }
-
-        .metric-change {
-            font-size: 11px;
-            color: var(--primary-red);
-        }
-        .chart-container, .pie-chart {
-		    width: 100%;
-		    height: 240px;
-		    background: var(--light-blue);
-		    border-radius: 8px;
-		    padding: 16px;
-		}
-	
-		.pie-chart {
-		    width: 100%;
-		    height: 240px;
-		    display: flex;
-		    flex-direction: column;
-		    align-items: center;
-		    justify-content: center;
-		}
-		
-		.pie-chart canvas {
-		    max-width: 100%;
-		    max-height: 100%;
-		}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src = "../js/Chart.js"></script>
     <script>
 		function createGenderChart(genderData) {
-		   const ctx = document.getElementById('genderCanvas').getContext('2d');
-		   
-		   return ChartManager.createChart(ctx, 'doughnut', {
-		       labels: ['남성', '여성'],
-		       data: [genderData.male, genderData.female]
-		   }, {
-		       plugins: {
-		           legend: {
-		               display: false,
-		               position: 'right',
-		               align: 'center',
-		               labels: {
-		                   padding: 20,
-		                   boxWidth: 12,
-		                   font: {
-		                       size: 12
-		                   }
-		               }
-		           },
-		           htmlLegend: {
-		               containerID: 'gender-legend-container'
-		           }
-		       },
-		       maintainAspectRatio: false,
-		       layout: {
-		           padding: {
-		               top: 20,
-		               right: 20,
-		               bottom: 20,
-		               left: 20
-		           }
-		       }
-		   });
+			const ctx = document.getElementById('genderCanvas').getContext('2d');
+			
+			return ChartManager.createChart(ctx, 'pie', {
+				labels: ['남성', '여성'],
+				datasets: [{
+					data: [genderData.male, genderData.female],
+					backgroundColor: [ChartManager.colors.primary[0], ChartManager.colors.primary[2]],
+					borderWidth: 0
+				}]
+			}, {
+				plugins: {
+					legend: {
+						display: false
+					},
+					tooltip: {
+						callbacks: {
+							label: function(context) {
+								const total = genderData.male + genderData.female;
+								const percentage = Math.round((context.raw / total) * 100);
+								return ${context.label}+':' ${percentage}+'%';
+							}
+						}
+					}
+				},
+				maintainAspectRatio: false
+			});
 		}
 
 		function createTimeSlotChart(timeSlotData) {
@@ -243,7 +209,7 @@
 		           tooltip: {
 		               callbacks: {
 		                   label: function(context) {
-		                       return `${context.raw}건`;
+		                       return ${context.raw}+'건';
 		                   }
 		               }
 		           }
@@ -283,95 +249,293 @@
 		       }
 		   });
 		}
-		document.addEventListener('DOMContentLoaded', () => {
-		    const genderData = {
-			    male: ${dash.gendercnt[0].visitorcnt},
-			    female: ${dash.gendercnt[1].visitorcnt}
-			};
 		
-			const timeSlotData = {
-			    labels: [${timeSlotLabels}],
-			    data: [${timeSlotData}]
-			};
+		function createMonthlyChart(monthlyData) {
+		    const ctx = document.getElementById('monthlyReserveCanvas').getContext('2d');
 		    
-		    createGenderChart(genderData);
-		    createTimeSlotChart(timeSlotData);
-		});
+		    return ChartManager.createChart(ctx, 'line', {
+		        labels: monthlyData.labels,
+		        datasets: [{
+		            label: '예약 건수',
+		            data: monthlyData.reserveCnt,
+		            borderColor: ChartManager.colors.primary[0],
+		            backgroundColor: 'transparent',
+		            tension: 0.4,
+		            pointStyle: 'circle',
+		            pointRadius: 2,
+		            pointHoverRadius: 1,
+		            borderWidth: 1
+		        },
+		        {
+		            label: '전체 건수',
+		            data: monthlyData.totalCnt,
+		            borderColor: ChartManager.colors.primary[2],
+		            backgroundColor: 'transparent',
+		            tension: 0.4,
+		            pointStyle: 'circle',
+		            pointRadius: 2,
+		            pointHoverRadius: 1,
+		            borderWidth: 1
+		        }]
+		    }, {
+		        plugins: {
+		            legend: {
+		                display: true,
+		                position: 'top',
+		                align: 'end',
+		                labels: {
+		                    padding: 20,
+		                    boxWidth: 12,
+		                    font: {
+		                        size: 12
+		                    }
+		                }
+		            },
+		            tooltip: {
+		                callbacks: {
+		                    label: function(context) {
+		                        return context.raw+'건';
+		                    }
+		                }
+		            }
+		        },
+		        scales: {
+		            y: {
+		                beginAtZero: true,
+		                grid: {
+		                    drawBorder: false,
+		                    color: 'rgba(0, 0, 0, 0.1)'
+		                }
+		            },
+		            x: {
+		                grid: {
+		                    display: false
+		                }
+		            }
+		        },
+		        maintainAspectRatio: false
+		    });
+		}
+		
+		function createWeeklyChart(weeklyData) {
+		    const ctx = document.getElementById('weeklyCanvas').getContext('2d');
+		    
+		    return ChartManager.createChart(ctx, 'bar', {
+		        labels: weeklyData.labels,
+		        datasets: [{
+		            label: '일별 매출',
+		            data: weeklyData.amount,
+		            backgroundColor: ChartManager.colors.primary[1],
+		            borderRadius: 4
+		        }]
+		    }, {
+		        plugins: {
+		            legend: {
+		                display: true,
+		                position: 'top',
+		                align: 'end'
+		            },
+		            tooltip: {
+		                callbacks: {
+		                    label: function(context) {
+		                        return ${context.raw.toLocaleString()}+'원';
+		                    }
+		                }
+		            }
+		        },
+		        scales: {
+		            y: {
+		                beginAtZero: true,
+		                grid: {
+		                    drawBorder: false
+		                }
+		            },
+		            x: {
+		                grid: {
+		                    display: false
+		                }
+		            }
+		        },
+		        maintainAspectRatio: false
+		    });
+		}
+		
+		function createCompareChart(compareData) {
+		    const ctx = document.getElementById('compareCanvas').getContext('2d');
+		    
+		    return ChartManager.createChart(ctx, 'bar', {
+		        labels: compareData.labels,
+		        datasets: [{
+		            label: '주간 매출',
+		            data: compareData.amount,
+		            backgroundColor: [
+		                ChartManager.colors.primary[2],  // 전주
+		                ChartManager.colors.primary[0]   // 이번주
+		            ],
+		            borderRadius: 4
+		        }]
+		    }, {
+		        plugins: {
+		            legend: {
+		                display: true,
+		                position: 'top',
+		                align: 'end'
+		            },
+		            tooltip: {
+		                callbacks: {
+		                    label: function(context) {
+		                        return context.raw.toLocaleString()+'원';
+		                    }
+		                }
+		            }
+		        },
+		        scales: {
+		            y: {
+		                beginAtZero: true,
+		                grid: {
+		                    drawBorder: false
+		                }
+		            },
+		            x: {
+		                grid: {
+		                    display: false
+		                }
+		            }
+		        },
+		        maintainAspectRatio: false
+		    });
+		}
         </script>
 	</head>
-<body>
-	<div class="dashboard-container">
-		<div class="stats-container">
-			<div class="stat-card">
-				<div class="stat-label">일일매출</div>
-				<div class="stat-value">
-					<fmt:formatNumber value="${dash.dailySell}" pattern="#,###"/>원
+	<body>
+		<%@ include file="store_Header.jsp"%>
+		<%@ include file="nav.jsp"%>
+		<div class="dashboard-container">
+			<div class="stats-container">
+				<div class="stat-card">
+					<div class="stat-label">일일매출</div>
+					<div class="stat-value">
+						<fmt:formatNumber value="${dash.dailySell}" pattern="#,###"/>원
+					</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">일일예약</div>
+					<div class="stat-value">${dash.dailyReserve}건</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">예약대기</div>
+					<div class="stat-value">${dash.reserveWaitingCnt}건</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">방문율</div>
+					<div class="stat-value">${dash.reserveNoshowOrCancel.visitRate}%</div>
 				</div>
 			</div>
-			<div class="stat-card">
-				<div class="stat-label">일일예약</div>
-				<div class="stat-value">${dash.dailyReserve}건</div>
+
+			<div class="chart-row-2-1">
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">월별 예약 현황</div>
+					</div>
+					<div class="chart-container">
+						<canvas id="monthlyReserveCanvas"></canvas>
+					</div>
+				</div>
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">방문객 성비</div>
+					</div>
+					<div class="chart-container">
+						<canvas id="genderCanvas"></canvas>
+					</div>
+				</div>
 			</div>
-			<div class="stat-card">
-				<div class="stat-label">예약대기</div>
-				<div class="stat-value">${dash.reserveWaitingCnt}건</div>
+
+			<div class="chart-row-1">
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">주간 매출 현황</div>
+					</div>
+					<div class="chart-container">
+						<canvas id="weeklyCanvas"></canvas>
+					</div>
+				</div>
 			</div>
-			<div class="stat-card">
-				<div class="stat-label">방문율</div>
-				<div class="stat-value">
-					${dash.reserveNoshowOrCancel.visitRate}%
+
+			<div class="chart-row-3">
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">시간대별 예약 현황</div>
+					</div>
+					<div class="chart-container">
+						<canvas id="timeSlotCanvas"></canvas>
+					</div>
+				</div>
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">주간 매출 비교</div>
+					</div>
+					<div class="chart-container">
+						<canvas id="compareCanvas"></canvas>
+					</div>
+				</div>
+				<div class="chart-card">
+					<div class="chart-header">
+						<div class="chart-title">예약 요청사항</div>
+					</div>
+					<div class="requests-container">
+						<c:if test ="${empty dash.reserveReq}">
+							<div class="request-time">
+								예약 요청사항이 없습니다.
+							</div>
+						</c:if>
+						<c:forEach items="${dash.reserveReq}" var="req">
+							<div class="request-item">
+								<div class="request-time">${req.reserveTime}</div>
+								<div class="request-count">${req.reserveCount}명</div>
+								<div class="request-text">${req.request}</div>
+							</div>
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 		</div>
+		<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const monthlyData = {
+                labels: [${monthlyLabels}],
+                data: [${monthlyData}]
+            };
+
+            const genderData = {
+                male: ${dash.gendercnt[0].visitorcnt},
+                female: ${dash.gendercnt[1].visitorcnt}
+            };
+
+            const weeklyData = {
+                labels: [${weeklyLabels}],
+                data: [${weeklyAmount}]
+            };
+
+            const timeSlotData = {
+                labels: [${timeSlotLabels}],
+                data: [${timeSlotData}]
+            };
+
+            const compareData = {
+                labels: ['전주', '이번주'],
+                amount: [${dash.sellCompare.lastweekamount}, ${dash.sellCompare.thisweekamount}]
+            };
+
+            // 차트 생성
+            createMonthlyChart(monthlyData);
+            createGenderChart(genderData);
+            createWeeklyChart(weeklyData);
+            createTimeSlotChart(timeSlotData);
+            createCompareChart(compareData);
+
 			
-			<!-- 차트 영역 -->
-		<div class="chart-row">
-			<!-- 시간대별 예약 현황 -->
-			<div class="chart-card">
-				<div class="chart-header">
-					<div class="chart-title">시간대별 예약 현황</div>
-				</div>
-				<div class="chart-container">
-					<canvas id="timeSlotCanvas"></canvas>
-					<div id="timeslot-legend-container"></div>  <!-- 레전드 컨테이너 추가 -->
-				</div>
-			</div>
-			
-			<!-- 성별 통계 -->
-			<div class="chart-card">
-				<div class="chart-header">
-					<div class="chart-title">방문객 성비</div>
-				</div>
-				<div class="pie-chart">
-					<canvas id="genderCanvas"></canvas>
-					<div id="gender-legend-container"></div>  <!-- 레전드 컨테이너 추가 -->
-				</div>
-			</div>
-			</div>
-			
-			    <!-- 예약 요청사항 목록 -->
-			<div class="requests-container">
-				<div class="table-responsive">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>예약시간</th>
-								<th>인원</th>
-								<th>요청사항</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${dash.reserveReq}" var="req">
-								<tr>
-									<td>${req.reserveTime}</td>
-									<td>${req.reserveCount}명</td>
-									<td>${req.request}</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</body>
+        });
+    </script>
+	</body>
 </html>
