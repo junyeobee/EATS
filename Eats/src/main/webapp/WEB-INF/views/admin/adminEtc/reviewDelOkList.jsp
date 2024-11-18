@@ -6,8 +6,7 @@
 
 <div class="mainCon_1400">
 	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
-	<h2>가입매장조회</h2>
-</div>
+	<h2>리뷰삭제신청승인</h2>
 </div>
    
 <%@include file="/WEB-INF/views/admin/common/footer.jsp"%>

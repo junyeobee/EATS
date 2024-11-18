@@ -5,7 +5,7 @@
 <%@include file="../common/header_cate.jsp"%>
 
 <div class="mainCon_400">
-	<form name="tagForm" id="tagForm" action="storeTagSave" method="post">
+	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return tag_count()">
 	
 		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<input type="hidden" name="cate_level" value=2>

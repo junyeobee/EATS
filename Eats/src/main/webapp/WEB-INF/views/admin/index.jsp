@@ -6,7 +6,7 @@
 
 <div class="mainCon_1400">
 	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
-	<h2>가입매장조회</h2>
+	<h2>관리자메인</h2>
 </div>
 </div>
    
