@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+	var user_id='${sessionScope.userId}';
+	if(!user_id || user_id===null || user_id ===''){
+		alert('잘못된 접근입니다.');
+		location.href='/';
+	}
+});
+</script>
 </head>
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,12 +24,6 @@
 	rel="stylesheet">
 <link rel="stylesheet" href="../css/user/showIdCSS.css">
 <body>
-<%-- <c:if test="${empty session.userId }">
-<script type="text/javascript">
-	alert("잘못된 접근입니다.");
-	window.location.href = "/";
-</script>
-</c:if> --%>
 <div class="id-show-wrapper">
 	<div class="logo-wrapper">
 		<a href="/"><img src="img/eats_logo.png"></a>

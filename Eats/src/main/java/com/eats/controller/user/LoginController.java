@@ -1,5 +1,6 @@
 package com.eats.controller.user;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.eats.email.service.EmailService;
 import com.eats.user.service.UserLoginService;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +30,11 @@ public class LoginController {
 	private EmailService emailService;
 	
 	@GetMapping("/user/login")
-	public String goLogin() {
+	public String goLogin(@RequestParam(value="callback", required = false)String callback, org.springframework.ui.Model model) {
+		
+		if(callback != null && callback != "") {
+			model.addAttribute("callback", callback);
+		}
 		//로그인 페이지로 이동
 		return "/user/login/userLogin";
 	}
@@ -38,18 +44,24 @@ public class LoginController {
 			@RequestParam(value="userId", required = true)String userId,
 			@RequestParam(value="userPwd", required = true)String userPwd,
 			@RequestParam(value="saveId", required = false)String saveId,
+			@RequestParam(value="callback", required = false) String callback, 
 			HttpSession session, 
 			HttpServletResponse resp) {
 		//로그인 처리
 		boolean result=service.loginCheck(userId, userPwd);
 		
 		ModelAndView mv=null;
-		
 		if(result) {
 			//로그인성공
-			mv=new ModelAndView("redirect:/");
+			if(callback!=null && callback!="") {
+				mv=new ModelAndView("redirect:"+callback);
+			}else {
+				mv=new ModelAndView("redirect:/");
+			}
 			Map<String, Object> map=service.getUserInfo(userId);
-			session.setAttribute("user_idx", map.get("USER_IDX"));
+			BigDecimal user_idx_bd = (BigDecimal)map.get("USER_IDX");
+			int user_idx=user_idx_bd.intValue();
+			session.setAttribute("user_idx", user_idx);  // int로 변환해서 저장
 			session.setAttribute("user_nickname", map.get("USER_NICKNAME"));
 			
 			Cookie ck=new Cookie("saveId", userId);

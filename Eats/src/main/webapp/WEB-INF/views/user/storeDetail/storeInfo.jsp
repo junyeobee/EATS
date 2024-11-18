@@ -226,11 +226,18 @@
 
 			<!-- 오른쪽 예약 영역 (s) -->
 			<div class="reservation">
+				<input type="hidden" id="runningDayList" value="${runningDayList}">
+				<c:if test="${empty reserve_date }">
+				<input type="hidden" id="reserve_date" value="${empty reserve_date?'':reserve_date }">
+				</c:if>
+				<c:if test="${!empty reserve_date }">
+				<input type="hidden" id="reserve_date" value="${reserve_date }">
+				</c:if>
+				<input type="hidden" name="reserve_time" id="reserve_time">
+				<input type="hidden" name="reserve_table" id="reserve_table">
 				<!-- 캘린더 영역(s) -->
 				<div class="cal-wrapper">
 					<div id="calendar"></div>
-					<input type="hidden" id="runningDayList" value="${runningDayList}">
-					<input type="hidden" id="reserve_date">
 				</div>
 				<!-- 캘린더 영역(e) -->
 				
@@ -239,7 +246,12 @@
 					<span>인원</span>
 					<div>
 						<input type="button" value="-" id="cntMinusBtn" onclick="changeCnt('minus')">
+						<c:if test="${!empty reserve_count }">
+						<input type="text" value="${reserve_count}" id="reserve_cnt" readonly="readonly">
+						</c:if>
+						<c:if test="${empty reserve_count }">
 						<input type="text" value="2" id="reserve_cnt" readonly="readonly">
+						</c:if>
 						<input type="button" value="+" id="cntPlusBtn" onclick="changeCnt('plus')">
 					</div>	
 				</div>
@@ -258,7 +270,7 @@
 						</div>
 					</div>
 					<div class="time-area" id="time_area"></div>
-					<input type="hidden" name="reserve_time" id="reserve_time">
+					
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				
@@ -269,8 +281,8 @@
 				<!-- 테이블 선택 영역(e) -->
 				
 				<!-- 버튼 영역 (s) -->
-				<div class="btn-wrapper">
-					버튼
+				<div class="btn-wrapper" id="btn_wrapper" style="padding:0px;">
+					
 				</div>
 				<!-- 버튼 영역 (e) -->
 			</div>
@@ -314,114 +326,192 @@ function changeCnt(change){
 	}
 }
 
-</script>
-<script>
 document.addEventListener('DOMContentLoaded', function() {
-	let lastReserveDate = '';
-	let lastReserveCnt = '2';
+    let lastReserveDate = '';
+    let lastReserveCnt = '';
 
-	// 날짜 또는 인원에 변화가 생기면 새로운 시간 목록 불러옴
-	function checkChanges() {
-		const currentReserveDate = document.getElementById('reserve_date').value;
-		const currentReserveCnt = document.getElementById('reserve_cnt').value;
+    // 날짜나 인원 변경 시 체크
+    function checkChanges() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        alert(currentReserveDate);
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        
+        // 날짜와 인원이 모두 선택되어 있고, 둘 중 하나라도 변경된 경우
+        if (currentReserveDate && currentReserveCnt && 
+            (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+            
+            // 1. 새로운 시간 목록 불러오기
+            getTimeList();
+            
+            // 2. 시간 선택 초기화
+            document.getElementById('reserve_time').value = '';
+            
+            // 3. 테이블 목록 초기화
+            resetTableList();
+            
+            // 4. 마지막 선택 값 업데이트
+            lastReserveDate = currentReserveDate;
+            lastReserveCnt = currentReserveCnt;
+        }
+    }
 
-			if (currentReserveDate && currentReserveCnt && (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
-				//시간 목록 불러오는 거 비동기 처리하기
-				var params='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt;
-				sendRequest('/user/getTimeList', params, showTimeList, 'GET');
-	           
-				lastReserveDate = currentReserveDate;
-				lastReserveCnt = currentReserveCnt;
-			}
-	}
-	   
-	//MutationObserver로 DOM변화 감시하기!
-	const changeFinder = new MutationObserver(function(mutations) {
-		mutations.forEach(function(mutation) {
-			if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-			checkChanges();
-			}
-		});
-	});
+    // 시간 목록 가져오기
+    function getTimeList() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        
+        var params = 'store_idx=' + store_idx + 
+                    '&reserve_date=' + currentReserveDate + 
+                    '&reserve_cnt=' + currentReserveCnt;
+        sendRequest('/user/getTimeList', params, showTimeList, 'GET');
+    }
 
-	// 관찰 대상 = reserve_date & reserve_cnt
-	const reserveDateInput = document.getElementById('reserve_date');
-	const reserveCntInput = document.getElementById('reserve_cnt');
-	   
-	changeFinder.observe(reserveDateInput, { attributes: true });
-	changeFinder.observe(reserveCntInput, { attributes: true });
+    // 테이블 목록 가져오기
+    function getTableList() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        const currentReserveTime = document.getElementById('reserve_time').value;
+        
+        // 세 값이 모두 있는 경우에만 테이블 목록 요청
+        if (currentReserveDate && currentReserveCnt && currentReserveTime) {
+            var tableParam = 'store_idx=' + store_idx + 
+                           '&reserve_date=' + currentReserveDate + 
+                           '&reserve_cnt=' + currentReserveCnt + 
+                           '&reserve_time=' + currentReserveTime;
+            sendRequest('/user/getTableList', tableParam, showTableList, 'GET');
+        }
+    }
 
-	// input 이벤트도 추가
-	reserveDateInput.addEventListener('input', checkChanges);
-	reserveCntInput.addEventListener('input', checkChanges);
-	   
-	const originalChangeCnt = changeCnt;	// 기존 인원 수 변경하는 함수
-	changeCnt = function(change) {		// 함수 새로 정의
-		originalChangeCnt(change);		// 기존 기능은 그대로
-	        checkChanges();	
-	};
-	
-	document.addEventListener('click', function(e){
-		//예약 가능한 시간 클릭 시
-		if(e.target.classList.contains('time-list-y')){
-			const reserveTime=e.target.textContent;
-			document.getElementById('reserve_time').value=reserveTime;
-			const currentReserveDate = document.getElementById('reserve_date').value;
-			const currentReserveCnt = document.getElementById('reserve_cnt').value;
-			
-			var tableParam='store_idx='+store_idx+'&reserve_date='+currentReserveDate+'&reserve_cnt='+currentReserveCnt+'&reserve_time='+reserveTime;
-			sendRequest('/user/getTableList', tableParam, showTableList, 'GET');
-		}
-	});
-});
-function showTimeList(){
-	if(XHR.readyState===4){
-		if(XHR.status===200){
-			var data=XHR.responseText;
-			var jsondata=JSON.parse(data);
-			document.getElementById('time_wrapper').style.height='120px';
-			document.getElementById('time_wrapper').style.overflowY='auto';
-			document.getElementById('time_wrapper').style.padding='10px';
-			var html='<table class="time-list-table"><tr>';
-			for(var i=0; i<jsondata.length; i++){
-				if(jsondata[i].AVAILABLE==='N'){
-					html+='<td><span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span></td>';
-				}else{
-					html+='<td><span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+    // 테이블 목록 리셋
+    function resetTableList() {
+    	var tableWrapper=document.getElementById('table_wrapper');
+    	var btnWrapper=document.getElementById('btn_wrapper');
+    	
+    	tableWrapper.innerHTML = '';
+    	tableWrapper.style.height='0px';
+    	tableWrapper.style.padding='0px';
+    	btnWrapper.innerHTML='';
+    	btnWrapper.style.heigh='0px';
+    	btnWrapper.style.padding='0px';
+    }
+    
+    
+
+    // DOM 변화 감시
+    const changeFinder = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                checkChanges();
+            }
+        });
+    });
+
+    // 관찰 대상 설정 (날짜와 인원만 감시)
+    const reserveDateInput = document.getElementById('reserve_date');
+    const reserveCntInput = document.getElementById('reserve_cnt');
+
+    changeFinder.observe(reserveDateInput, { attributes: true });
+    changeFinder.observe(reserveCntInput, { attributes: true });
+
+    // input 이벤트 리스너 추가
+    reserveDateInput.addEventListener('input', checkChanges);
+    reserveCntInput.addEventListener('input', checkChanges);
+
+    // changeCnt 함수(+/- 버튼) 확장
+    const originalChangeCnt = changeCnt;
+    changeCnt = function(change) {
+        originalChangeCnt(change);  // 기존 인원 변경 로직 실행
+        checkChanges();             // 변경 사항 체크
+    };
+
+    // 시간 선택 클릭 이벤트
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('time-list-y')) {
+            // 1. 선택한 시간을 input에 설정
+            const selectedTime = e.target.textContent;
+            document.getElementById('reserve_time').value = selectedTime;
+            
+            // 2. 테이블 목록 불러오기
+            getTableList();
+        }else if (e.target.classList.contains('table-list')){
+        	const selectedTable=e.target.textContent;
+        	document.getElementById('reserve_table').value=selectedTable;
+        	
+      		document.getElementById('btn_wrapper').style.height='fit-content';
+      		document.getElementById('btn_wrapper').style.padding='10px';
+      		
+        	var btnHtml='<input type="button" value="예약하기" id="reserve_btn" class="reserve-btn">';
+        	document.getElementById('btn_wrapper').innerHTML=btnHtml;
+        	
+        }else if(e.target.classList.contains('reserve-btn')){
+        	
+        	var reserveParam='?store_idx='+store_idx+'&reserve_date='+reserve_date.value+'&reserve_cnt='+reserve_cnt.value+'&reserve_time='+reserve_time.value+'&reserve_table='+reserve_table.value;
+        	
+        	var user_idx = '${sessionScope.user_idx}';  // 서버에서 세션값 가져오기
+
+        	if (!user_idx || user_idx === 'null' || user_idx === '') {
+        	    alert('로그인 후 이용해주세요');
+        	    var callback='?callback=/user/storeInfo'+reserveParam;
+        	    location.href = '/user/login'+callback;  // 로그인 페이지로 리다이렉트
+        	} else {
+        	    location.href = '/user/reserveConfirm' + reserveParam;
+        	}
+        }
+    });
+
+    
+
+    function showTimeList(){
+		if(XHR.readyState===4){
+			if(XHR.status===200){
+				var data=XHR.responseText;
+				var jsondata=JSON.parse(data);
+				document.getElementById('time_wrapper').style.height='120px';
+				document.getElementById('time_wrapper').style.overflowY='auto';
+				document.getElementById('time_wrapper').style.padding='10px';
+				var html='<table class="time-list-table"><tr>';
+				for(var i=0; i<jsondata.length; i++){
+					if(jsondata[i].AVAILABLE==='N'){
+						html+='<td><span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+					}else{
+						html+='<td><span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+					}
+					
+					if(i%4===3){
+						html+='</tr><tr>'
+					}
 				}
+				html+='</tr></table>'
+				document.getElementById('time_area').innerHTML=html;
+				resetTableList();
+			}
+		}
+	}
+
+    function showTableList(){
+		if(XHR.readyState===4){
+			if(XHR.status===200){
+				var data=XHR.responseText;
+				var jsondata=JSON.parse(data);
 				
-				if(i%4===3){
-					html+='</tr><tr>'
+				var tableWrapper=document.getElementById('table_wrapper');
+				tableWrapper.style.height='70px';
+				tableWrapper.style.padding='10px';
+				tableWrapper.style.overflowY='auto';
+				
+				
+				var html='';
+				for(var i=0; i<jsondata.length; i++){
+					if(jsondata[i].COUNT != 0){
+						html+='<span class="table-list">'+jsondata[i].TABLE_TYPE+'</span>';
+					}
 				}
+				document.getElementById('table_wrapper').innerHTML=html;
 			}
-			html+='</tr></table>'
-			document.getElementById('time_area').innerHTML=html;
 		}
 	}
-}
-function showTableList(){
-	if(XHR.readyState===4){
-		if(XHR.status===200){
-			var data=XHR.responseText;
-			var jsondata=JSON.parse(data);
-			
-			var tableWrapper=document.getElementById('table_wrapper');
-			tableWrapper.style.height='100px';
-			tableWrapper.style.padding='10px';
-			tableWrapper.style.overflowY='auto';
-			
-			
-			var html='';
-			for(var i=0; i<jsondata.length; i++){
-				if(jsondata[i].COUNT != 0){
-					html+='<span class="table-list">'+jsondata[i].TABLE_TYPE+'</span>';
-				}
-				//alert(''+jsondata[i].TABLE_TYPE+':'+jsondata[i].COUNT);
-			}
-			document.getElementById('table_wrapper').innerHTML=html;
-		}
-	}
-}
+    
+});
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script src="../js/storeInfo/jquery-3.4.1.min.js"></script>

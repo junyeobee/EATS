@@ -12,7 +12,17 @@ const dayMapping = {
     '일': 0, '월': 1, '화': 2, '수': 3, '목': 4, '금': 5, '토': 6
 };
 
+const reserveData=document.getElementById('reserve_date').value;
+let reserveDataObj=null;
+if(reserveData){
+	reserveDataObj = new Date(reserveData);
+	
+	currentMonth=reserveDataObj.getMonth();
+	currentYear=reserveDataObj.getFullYear();
+}
+
 let activeDays = rundayList.map(day => dayMapping[day]);
+
 function generateCalendar(month, year) {
    const firstDay = new Date(year, month, 1);
    const lastDay = new Date(year, month + 1, 0);
@@ -48,13 +58,19 @@ function generateCalendar(month, year) {
 
                const isDisabled = currentDateObj < today || !activeDays.includes(j);
                const isSelectable = !isDisabled;
+			   
+			   //예약 날짜와 현재 셀의 날짜가 같은지 확인
+			   const isReserved = reserveDataObj &&
+			   		reserveDataObj.getDate() === date &&
+					reserveDataObj.getMonth() === month &&
+					reserveDataObj.getFullYear() === year;
+					
+				const dateStr=`${year}-${String(month+1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
 
-               html += '<td class="' + (isSelectable ? 'selectable' : 'disabled') + '" ' +
-               'data-date="' + year + '-' + String(month + 1).padStart(2, '0') + '-' + String(date).padStart(2, '0') + '" ' +
-               (isDisabled ? 'disabled' : '') + '>' +
-               date +
-               '</td>';
-               date++;
+				html += `<td class="${isSelectable ? 'selectable' : 'disabled'} ${isReserved ? 'selected' : ''}" ` +
+				                        `data-date="${dateStr}" ` +
+				                        `${isDisabled ? 'disabled' : ''}>${date}</td>`;
+				date++;
            }
        }
        html += '</tr>';
