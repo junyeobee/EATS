@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+	var user_id='${sessionScope.userID}';
+	if(!user_id || user_id===null || user_id===''){
+		alert('잘못된 접근입니다.');
+		location.href='/';
+	}
+});
+</script>
 <style>
 body{
 	font-family: "Noto Sans KR", sans-serif;
@@ -70,12 +79,6 @@ input[type="submit"]{
 	rel="stylesheet">
 </head>
 <body>
-<%-- <c:if test="${empty session.userId }">
-<script type="text/javascript">
-	alert("잘못된 접근입니다.");
-	window.location.href = "/";
-</script>
-</c:if> --%>
 <form name="pwdResetForm" action="/user/resetPwd" method="post">
 <div class="logo-wrapper">
 	<a href="/"><img src="img/eats_logo.png"></a>

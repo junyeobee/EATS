@@ -47,8 +47,6 @@ public class StoreLoginController {
 		int storeIdx = service.storeLogin(storeId, storePwd);
 
 		String msg = "";
-		
-		
 
 		if (storeIdx > 0) {
 			msg = "로그인 성공";
