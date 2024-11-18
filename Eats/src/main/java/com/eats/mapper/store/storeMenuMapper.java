@@ -26,6 +26,7 @@ public interface storeMenuMapper {
 	
 	public int updateMenu(MenuDTO dto);
 	
+	public MenuDTO updateMenuInfo(Integer menuIdx);
 	
 	
 

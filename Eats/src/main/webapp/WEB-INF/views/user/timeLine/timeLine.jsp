@@ -100,51 +100,8 @@
             color: #666;
         }
 
-        /* 이미지 슬라이더 */
-        .image-slider {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            height: 250px;
-            margin-bottom: 16px;
-        }
 
-        .slider-container {
-            display: flex;
-            transition: transform 0.3s ease;
-        }
-
-        .slide {
-            flex: 0 0 100%;
-            width: 100%;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .slider-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.8);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
+    
 
         .rating {
             color: #ff9933;
@@ -175,6 +132,47 @@
             font-size: 12px;
             color: #666;
         }
+        
+  .image-slider {
+    position: relative;
+    width: 100%; /* 슬라이더 너비 조정 */
+    margin: auto;
+    overflow: hidden; /* 넘치는 부분 숨기기 */
+    height:260px;
+}
+
+.slider-container {
+    display: flex; /* 슬라이드를 가로로 나열 */
+    transition: transform 0.5s ease; /* 애니메이션 효과 */
+}
+
+.slide {
+    min-width: 33.33%; /* 각 슬라이드가 전체 너비의 1/3 차지 */
+    box-sizing: border-box; /* 패딩과 보더를 포함한 너비 계산 */
+}
+
+img {
+    width: 100%; /* 이미지 너비를 슬라이드에 맞춤 */
+    display: block; /* 이미지 아래 여백 제거 */
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev {
+    left: 10px; /* 왼쪽 버튼 위치 */
+}
+
+.next {
+    right: 10px; /* 오른쪽 버튼 위치 */
+}
     </style>
     
     
@@ -237,20 +235,27 @@
                     </div>
                 </div>
 
-                <div class="image-slider">
-                    <button class="slider-button prev"><</button>
-                    <button class="slider-button next">></button>
-                    <div class="slider-container">
-                        <div class="slide">
-                            
-                        </div>
-                        <div class="slide">
-                        </div>
-                        <div class="slide">
-                        </div>
-                    </div>
-                </div>
-
+                  <div class="image-slider">
+        <button class="slider-button prev"><</button>
+        <button class="slider-button next">></button>
+        <div class="slider-container">
+            <div class="slide">
+                <img src="/img/user/a.jpg" alt="Image A">  
+            </div>
+            <div class="slide">
+                <img src="/img/user/b.jpg" alt="Image B">
+            </div>
+            <div class="slide">
+                <img src="/img/user/c.jpg" alt="Image C">
+            </div>
+            <div class="slide">
+                <img src="/img/user/d.jpg" alt="Image D">
+            </div>
+            <div class="slide">
+                <img src="/img/user/e.jpg" alt="Image E">
+            </div>
+        </div>
+    </div>
                 <div class="rating">⭐${dto.rev_score }</div>
                 <div class="review-content">
                     ${dto.rev_content}
@@ -272,27 +277,27 @@
 
     <script>
        
-        document.querySelectorAll('.image-slider').forEach(slider => {
-            const container = slider.querySelector('.slider-container');
-            const slides = slider.querySelectorAll('.slide');
-            const prevBtn = slider.querySelector('.prev');
-            const nextBtn = slider.querySelector('.next');
-            let currentIndex = 0;
+    document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector('.slider-container');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentIndex = 0;
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                updateSlider();
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                updateSlider();
-            });
-
-            function updateSlider() {
-                container.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
         });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
+
+        function updateSlider() {
+            container.style.transform = `translateX(-${currentIndex * (100 / (slides.length > 3 ? 3 : slides.length))}%)`;
+        }
+    });
 
      
         document.querySelectorAll('.follow-btn').forEach(btn => {

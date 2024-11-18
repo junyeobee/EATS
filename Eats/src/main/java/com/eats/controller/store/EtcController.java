@@ -69,7 +69,7 @@ public class EtcController {
         
         // store_idx가 null이면 기본값을 1로 설정
         if (store_idx == null) {
-            store_idx = 8;  // 기본값 설정
+            store_idx = 1;  // 기본값 설정
         }
 
         List<StoreCateDTO> lists = service.storeCate(store_idx);
