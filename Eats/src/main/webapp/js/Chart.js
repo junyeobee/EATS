@@ -181,7 +181,6 @@ const ChartManager = {
         };
 
         return {
-            //기본옵션 + 타입별옵션 + 사용자정의옵션
             ...baseOptions,
             ...(typeSpecificOptions[type] || {}),
             ...customOptions
