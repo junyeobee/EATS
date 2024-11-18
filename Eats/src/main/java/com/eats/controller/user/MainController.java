@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
+import com.eats.user.model.CateValueDTO;
 import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MainService;
 
@@ -26,19 +27,22 @@ public class MainController {
 	private MainService ms;
 
 	@GetMapping("/")
-	public ModelAndView mainPage(@CookieValue(value = "areaCk", required = false) String areaWord) {
+	public ModelAndView mainPage(@CookieValue(value = "cityCk", required = false) String cityWord,
+			@CookieValue(value = "unitCk", required = false) String unitWord) {
 		ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
-		Map<String, List<String>> valueList = new HashMap<>();
+		Map<String, List<CateValueDTO>> valueList = new HashMap<>();
+		Map<String, Integer> idxList = new HashMap<>();
 
 		for (int i = 0; i < keyList.size(); i++) {
-			valueList.put(keyList.get(i).getCate_key_name(), ms.getValueList(keyList.get(i).getCate_key_idx()));
+			valueList.put(keyList.get(i).getCate_key_name(), ms.getCateValues(keyList.get(i).getCate_key_idx()));
+			idxList.put(keyList.get(i).getCate_key_name(), keyList.get(i).getCate_key_idx());
 		}
 
 		List<AreaDTO> cityList = ms.getCityList();
 
-		List<Integer> revIdxList = ms.getPopularReviews(areaWord);
+		List<Integer> revIdxList = ms.getPopularReviews(cityWord, unitWord);
 		if (revIdxList.size() > 0) {
 			List<ReviewDTO> reviewData = new ArrayList<ReviewDTO>();
 			List<Integer> likeCount = new ArrayList<>();
@@ -82,6 +86,7 @@ public class MainController {
 		}
 
 		mv.addObject("keyList", keyList);
+		mv.addObject("idxList", idxList);
 		mv.addObject("valueList", valueList);
 		mv.addObject("cityList", cityList);
 		mv.setViewName("index");
@@ -102,16 +107,22 @@ public class MainController {
 	}
 
 	@GetMapping("/selectArea")
-	public String selectArea(String selectArea, HttpServletResponse resp, HttpServletRequest req) {
+	public String selectArea(String selectCity, String selectUnit, HttpServletResponse resp, HttpServletRequest req) {
 		Cookie cks[] = req.getCookies();
 		for (Cookie temp : cks) {
-			if (temp.getName().equals("areaCk")) {
+			if (temp.getName().equals("cityCk")) {
+				temp.setMaxAge(0);
+			}
+			if (temp.getName().equals("unitCk")) {
 				temp.setMaxAge(0);
 			}
 		}
-		Cookie ck = new Cookie("areaCk", selectArea);
-		ck.setMaxAge(10);
+		Cookie ck = new Cookie("cityCk", selectCity);
+		Cookie ck2 = new Cookie("unitCk", selectUnit);
+		ck.setMaxAge(60*60*24);
+		ck2.setMaxAge(60*60*24);
 		resp.addCookie(ck);
+		resp.addCookie(ck2);
 
 		return "index";
 	}

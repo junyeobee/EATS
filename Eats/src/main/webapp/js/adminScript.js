@@ -1,3 +1,23 @@
+window.addEventListener('load', function() {
+	var pathname = window.location.pathname;
+	
+	var texts = document.getElementsByClassName('navi_small_cate_text');
+	for(var i=0; i<texts.length; i++) {
+		if(texts[i].getAttribute("href")==pathname){
+			console.log(texts[i])
+			texts[i].style.fontWeight='600';
+			texts[i].style.color='#F3553C';
+			texts[i].parentElement.parentElement.style.height = 'auto';
+
+			var bigTag = texts[i].parentElement.parentElement.previousElementSibling;
+			bigTag.style.backgroundColor = 'rgba(255,181,60,0.72)';
+			bigTag.firstElementChild.style.fontWeight = '600';
+			bigTag.firstElementChild.style.color = 'rgb(243,85,60)';
+			
+		}
+	}
+})
+
 function selectThisMenu(t) {
         var small_cate_list = document.getElementsByClassName('navi_small_cate_box');
         var cate_box = document.getElementsByClassName('navi_cate_box');

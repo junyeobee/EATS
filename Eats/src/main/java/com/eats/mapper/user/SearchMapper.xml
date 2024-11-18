@@ -28,5 +28,27 @@
 		and search_date between to_date(#{first_date},'YYYY-MM-DD') and to_date(#{last_date},'YYYY-MM-DD')
 		group by search_word
 	</select>
+
+	<select id="getStoreInfo" parameterType="Map" resultType="com.eats.store.model.StoreDTO">
+		select distinct b.*
+		from (select a.*, stime_start, stime_end, stime_break
+		from (select * from store
+		where
+		<if test="area!=null and area!='' ">
+			store_addr like '%'||#{area}||'%'
+		</if>
+		and store_state='TRUE')a, store_time
+		<if test="week !=null and week!='' ">
+			where stime_day=#{week}
+		</if>
+		)b, (select category.* from 
+		<foreach collection="tag" item="tagList" open="(">
+			select category.* from
+		</foreach>
+		<foreach collection="tag" item="tagList" close=")" separator=",">
+			category where category.cate_value_idx=#{valueidx}
+		</foreach>
+		cate where b.store_idx=cate.store_idx
+	</select>
 	
 </mapper>

@@ -1,5 +1,6 @@
 package com.eats.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.eats.user.model.CateKeyDTO;
@@ -14,4 +15,6 @@ public interface TagService {
 	public int updateTag(Map<String, Object> map);
 	public int addNewCategory(CateKeyDTO dto);
 	public int getCateIdxByName(String cate_key_name);
+	public int deleteFromStoreTagByCateKey(int cate_key_idx);
+	public int deleteFromStoreTagByCateValue(CateValueDTO dto);
 }
