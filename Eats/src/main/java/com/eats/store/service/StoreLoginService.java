@@ -10,7 +10,7 @@ public interface StoreLoginService {
 	
 	public String storeidCheckForFindPwd(String storeId);
 	
-	public int storeUpdatePwd(String storeId, String newPwd);
+	public int storeUpdatePwd(String newPwd, String storeId);
 	
 	
 	

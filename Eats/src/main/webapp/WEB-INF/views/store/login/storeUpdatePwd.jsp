@@ -91,7 +91,7 @@ input[type="password"].error {
 </head>
 <body>
 
-	<form name="storeUpdatePwd" action="storeUpdatePwd" method="post" onsubmit="return PwdCheck();">
+	<form name="storeUpdatePwdOk" action="storeUpdatePwdOk" method="post" onsubmit="return PwdCheck();">
 
 		<div class="store-findid">
 			<div class="div2">비밀번호 재설정</div>
