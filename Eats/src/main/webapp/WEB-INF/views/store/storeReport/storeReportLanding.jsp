@@ -216,7 +216,7 @@
     <section class="hero">
         <div class="container">
             <h1>내 매장 맞춤 보고서</h1>
-            <p>사용자들의 실제 후기를 통해 내 매장의 서비스를 더욱 정확하게 분석해드려요</p>
+            <p>사용자들의 실제 후기를 통해 내 매장의 정보를 더욱 정확하게 분석해드려요</p>
             <div class = "imgcontianer">
             	<img src="../img/store/storeLanding/Landing2.png" alt="대시보드 미리보기">
         	</div>
