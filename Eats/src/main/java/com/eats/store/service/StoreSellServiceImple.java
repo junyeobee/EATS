@@ -5,8 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,86 +24,111 @@ import com.eats.store.model.SellsDetailDTO;
 @Service
 public class StoreSellServiceImple implements StoreSellService {
 	@Autowired
-	private  SalesMapper mapper;
+	private SalesMapper mapper;
 	   
 	@Override
 	@Transactional
 	public int sellInsert(MultipartFile file, int storeIdx) throws RuntimeException {
-		if (file == null || file.isEmpty()) {
-			throw new IllegalArgumentException("파일이 비어있습니다.");
-		}
-	
-		List<String[]> rows;
-		try {
-			rows = parseCsvFile(file);
-		} catch (IOException e) {
-			throw new RuntimeException("파일 읽기 실패: " + e.getMessage());
-		}
-	
-		int successCount = 0;
-	
-		for (String[] row : rows) {
-			try {
-				if (row.length < 4) {
-					throw new IllegalArgumentException("데이터 형식이 올바르지 않습니다.");
-			}
-	    
-				SalesSaveDTO salesDTO = new SalesSaveDTO();
-				salesDTO.setStoreIdx(storeIdx);
-	    
-				try {
-					salesDTO.setSellDate(parseSellDate(row[0]));
-				} catch (ParseException e) {
-					throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다: " + row[0]);
-				}
-	    
-				salesDTO.setSellMethod(validatePaymentMethod(row[1]));
-	    
-				try {
-					salesDTO.setTotalCnt(Integer.parseInt(row[2]));
-				} catch (NumberFormatException e) {
-					throw new IllegalArgumentException("주문수량이 올바르지 않습니다: " + row[2]);
-				}
-	    
-				List<SellsDetailDTO> details = new ArrayList<>();
-				for (int i = 4; i < row.length; i += 3) {
-					if (i + 2 >= row.length) {
-						throw new IllegalArgumentException("메뉴 데이터가 불완전합니다.");
-					}
-	        
-					SellsDetailDTO detail = new SellsDetailDTO();
-					try {
-						detail.setMenuIdx(Integer.parseInt(row[i]));
-						detail.setOrderNum(Integer.parseInt(row[i + 1]));
-					} catch (NumberFormatException e) {
-						throw new IllegalArgumentException("메뉴 정보가 올바르지 않습니다: 행 " + (i/3 + 1));
-					}
-					details.add(detail);
-				}
-				salesDTO.setDetails(details);
-	    
-				int result = mapper.insertSalesWithDetails(salesDTO);
-				if (result > 0) {
-					successCount++;
-				}
-	    
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException((successCount + 1) + "번째 행 처리 중 오류: " + e.getMessage());
-			} catch (Exception e) {
-				throw new RuntimeException((successCount + 1) + "번째 행 처리 중 예상치 못한 오류 발생");
-	        }
-	    }
-	    
-	    return successCount;
+	   if (file == null || file.isEmpty()) {
+	       throw new IllegalArgumentException("파일이 비어있습니다.");
+	   }
+
+	   List<String[]> rows;
+	   try {
+	       rows = parseCsvFile(file);
+	       System.out.println("Total rows parsed: " + rows.size());
+	   } catch (IOException e) {
+	       throw new RuntimeException("파일 읽기 실패: " + e.getMessage());
+	   }
+
+	   int successCount = 0;
+
+	   for (String[] row : rows) {
+	       try {
+	           if (row.length < 4) {
+	               throw new IllegalArgumentException("데이터 형식이 올바르지 않습니다.");
+	           }
+
+	           // SELL 테이블에 먼저 입력
+	           SalesSaveDTO salesDTO = new SalesSaveDTO();
+	           salesDTO.setStoreIdx(storeIdx);
+
+	           try {
+	               salesDTO.setSellDate(parseSellDate(row[0]));
+	           } catch (ParseException e) {
+	               throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다: " + row[0]);
+	           }
+
+	           salesDTO.setSellMethod(validatePaymentMethod(row[1]));
+	           salesDTO.setTotalCnt(Integer.parseInt(row[3]));
+
+	           int result = mapper.insertSell(salesDTO); // SELL 테이블 insert
+
+	           if(result > 0) {
+	               // SELL_DETAIL 테이블에 입력
+	               for (int i = 4; i < row.length; i += 3) {
+	                   if (i + 2 >= row.length) {
+	                       throw new IllegalArgumentException("메뉴 데이터가 불완전합니다.");
+	                   }
+
+	                   Map<String, Object> params = new HashMap<String, Object>();
+	                   params.put("sellIdx", salesDTO.getSellIdx());
+	                   params.put("menuIdx", Integer.parseInt(row[i]));
+	                   params.put("orderNum", Integer.parseInt(row[i + 1]));
+
+	                   mapper.insertSellDetails(params);
+	               }
+	               successCount++;
+	           }
+
+	           System.out.println("=== 매퍼 실행 결과 ===");
+	           System.out.println("SELL_IDX: " + salesDTO.getSellIdx());
+	           System.out.println("처리된 메뉴 수: " + ((row.length - 4) / 3));
+
+	       } catch (IllegalArgumentException e) {
+	           throw new RuntimeException((successCount + 1) + "번째 행 처리 중 오류: " + e.getMessage());
+	       } catch (Exception e) {
+	           throw new RuntimeException((successCount + 1) + "번째 행 처리 중 예상치 못한 오류 발생", e);
+	       }
+	   }
+
+	   return successCount;
 	}
 	
 	private List<String[]> parseCsvFile(MultipartFile file) throws IOException {
+	    // 파일 내용을 바이트 배열로 읽기
+	    byte[] bytes = file.getBytes();
+	    
+	    // BOM 체크 및 제거
+	    if (bytes.length >= 3 && 
+	        (bytes[0] & 0xFF) == 0xEF && 
+	        (bytes[1] & 0xFF) == 0xBB && 
+	        (bytes[2] & 0xFF) == 0xBF) {
+	        // BOM이 있다면 제거
+	        bytes = Arrays.copyOfRange(bytes, 3, bytes.length);
+	    }
+	    
 	    try (BufferedReader reader = new BufferedReader(
-	            new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-	        return reader.lines()
-	                .skip(1)
-	                .map(line -> line.split(","))
-	                .collect(Collectors.toList());
+	            new InputStreamReader(new ByteArrayInputStream(bytes), StandardCharsets.UTF_8))) {
+	        
+	        List<String[]> rows = new ArrayList<>();
+	        String line;
+	        boolean firstLine = true;
+	        
+	        while ((line = reader.readLine()) != null) {
+	            if (firstLine) {
+	                firstLine = false;
+	                continue; // 헤더 스킵
+	            }
+	            if (!line.trim().isEmpty()) {
+	                // 파싱 과정 로깅
+	                System.out.println("Parsing line: " + line);
+	                String[] fields = line.split(",");
+	                System.out.println("Fields length: " + fields.length);
+	                rows.add(fields);
+	            }
+	        }
+	        return rows;
 	    }
 	}
 	

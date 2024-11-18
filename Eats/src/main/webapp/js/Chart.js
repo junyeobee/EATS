@@ -88,7 +88,7 @@ const ChartManager = {
                     labels: rawData.labels,
                     datasets: rawData.datasets.map((dataset, index) => ({
                         label: dataset.label,
-                        data: dataset.data,
+                        ...dataset,
                         backgroundColor: this.colors.primary[index % this.colors.primary.length],
                         borderRadius: 4
                     }))

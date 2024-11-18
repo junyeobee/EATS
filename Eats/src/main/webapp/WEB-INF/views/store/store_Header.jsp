@@ -47,12 +47,12 @@
     }
 </style>
 <script>
-	document.addEventListener('DOMContentLoaded', function{
+	document.addEventListener('DOMContentLoaded', function(){
 		let homebtn = document.getElementById('homeLogo');
-		homebtn.addEventListener('click') => {
+		homebtn.addEventListener('click', function() {
 			location.href = '/storeMain';
-		}
-	})
+		});
+	});
 </script>
 <meta charset="UTF-8">
 <title>Insert title here</title>

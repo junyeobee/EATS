@@ -103,7 +103,7 @@
                 <p>CSV 파일을 드래그하여 놓거나 선택하세요</p>
                 <input type="file" accept=".csv" class="file-input" id="fileInput">
                 <label for="fileInput" class="upload-btn">파일 선택</label>
-                <p class="text-sm text-gray-500">지원 형식: CSV</p>
+                <p class="text-sm text-gray-500">CSV 파일만 지원합니다.</p>
             </div>
             
             <div class="error-message" id="errorMessage"></div>
@@ -132,6 +132,7 @@
 	            const dropZone = document.getElementById('dropZone');
 	            const fileInput = document.getElementById('fileInput');
 	            
+	            // 드래그 앤 드롭 이벤트 리스너
 	            dropZone.addEventListener('dragover', function(e) {
 	                e.preventDefault();
 	                dropZone.classList.add('drag-over');
@@ -145,217 +146,183 @@
 	            dropZone.addEventListener('drop', function(e) {
 	                e.preventDefault();
 	                dropZone.classList.remove('drag-over');
-	                
 	                const files = e.dataTransfer.files;
 	                if (files.length) {
 	                    fileInput.files = files;
 	                    handleFile(files[0]);
 	                }
 	            });
-	           	
+	            
 	            fileInput.addEventListener('change', function(e) {
 	                if (this.files.length) {
 	                    handleFile(this.files[0]);
 	                }
 	            });
 	            
-	            function handleFile(file) {
-	                if (!file) return;
+	            // 파일 업로드 버튼 이벤트
+	            document.getElementById('submitBtn').addEventListener('click', async function() {
+	                const fileInput = document.getElementById('fileInput');
+	                const file = fileInput.files[0];
 	                
-	                if (!file.name.endsWith('.csv')) {
-	                    showError('CSV 파일만 업로드 가능합니다.');
+	                if (!file) {
+	                    showError('업로드할 파일을 선택해주세요.');
 	                    return;
 	                }
-	                
-	                const reader = new FileReader();
-	                reader.onload = function(e) {
-	                    try {
-	                        const parsedRows = parseCSV(e.target.result);
-	                        displayPreview(parsedRows);
-	                        document.getElementById('submitBtn').disabled = false;
-	                    } catch (error) {
-	                        showError(error.message);
-	                        document.getElementById('submitBtn').disabled = true;
-	                    }
-	                };
-	                reader.readAsText(file);
+	                await handleSalesUpload(file);
+	            });
+	        });
+	
+	        // 파일 처리 함수
+	        function handleFile(file) {
+	            if (!file) return;
+	            
+	            if (!file.name.endsWith('.csv')) {
+	                showError('CSV 파일만 업로드 가능합니다.');
+	                return;
 	            }
 	            
-	            function displayPreview(rows) {
-	                const tbody = document.getElementById('previewBody');
-	                tbody.innerHTML = '';
+	            const reader = new FileReader();
+	            reader.onload = function(e) {
+	                try {
+	                    const content = e.target.result;
+	                    console.log('File content:', content); // 디버깅용
+	                    
+	                    const parsedRows = parseCSV(content);
+	                    console.log('Parsed rows:', parsedRows); // 디버깅용
+	                    
+	                    displayPreview(parsedRows);
+	                    document.getElementById('submitBtn').disabled = false;
+	                } catch (error) {
+	                    showError(error.message);
+	                    document.getElementById('submitBtn').disabled = true;
+	                }
+	            };
+	            reader.readAsText(file, 'UTF-8');
+	        }
+	
+	        // CSV 파싱 함수
+	        function parseCSV(content) {
+	            const rows = content.split(/\r?\n/).map(row => row.trim()).filter(row => row.length > 0);
+	            console.log(row.length);
+	            if (rows.length < 2) {
+	                throw new Error('데이터가 없는 파일입니다.');
+	            }
+	
+	            const expectedHeaders = ['거래일시', '결제방법', '총주문수량', '총결제금액', '메뉴ID', '메뉴수량', '메뉴단가'];
+	            const headers = rows[0].split(',').map(h => h.trim());
+	            
+	            if (!expectedHeaders.every(h => headers.includes(h))) {
+	                throw new Error('올바르지 않은 CSV 파일 형식입니다.');
+	            }
+	
+	            const parsedRows = [];
+	            for (let i = 1; i < rows.length; i++) {
+	                const fields = rows[i].split(',').map(field => field.trim());
 	                
-	                rows.forEach(function(row) {
-	                    const tr = document.createElement('tr');
-	                    tr.innerHTML = `
-	                        <td>${row.date}</td>
-	                        <td>${row.paymentMethod}</td>
-	                        <td>${row.totalQuantity}</td>
-	                        <td>${row.totalAmount.toLocaleString()}원</td>
-	                    `;
-	                    tbody.appendChild(tr);
+	                if (fields.length < 4) {
+	                    continue;
+	                }
+	
+	                parsedRows.push({
+	                    date: fields[0],
+	                    paymentMethod: fields[1],
+	                    totalQuantity: parseInt(fields[2]),
+	                    totalAmount: parseInt(fields[3])
 	                });
 	            }
-	        });
-            async function handleSalesUpload(file) {
-                const formData = new FormData();
-                formData.append('file', file);
+	            
+	            return parsedRows;
+	        }
+	
+	        // 미리보기 표시 함수
+	        function displayPreview(rows) {
+	            const tbody = document.getElementById('previewBody');
+	            tbody.innerHTML = '';
+	            
+	            rows.forEach(function(row) {
+	                const tr = document.createElement('tr');
+	                const cells = [
+	                    row.date,
+	                    row.paymentMethod,
+	                    row.totalQuantity,
+	                    row.totalAmount.toLocaleString() + '원'
+	                ];
+	                
+	                cells.forEach(function(cell) {
+	                    const td = document.createElement('td');
+	                    td.textContent = cell;
+	                    tr.appendChild(td);
+	                });
+	                
+	                tbody.appendChild(tr);
+	            });
+	        }
+	
+	        // 파일 업로드 처리 함수
+	        async function handleSalesUpload(file) {
+	            const formData = new FormData();
+	            formData.append('file', file);
 
-                const loadingEl = document.getElementById('loading');
-                const errorMessageEl = document.getElementById('errorMessage');
-                const submitBtn = document.getElementById('submitBtn');
-
-                try {
-                    loadingEl.style.display = 'block';
-                    submitBtn.disabled = true;
-                    errorMessageEl.style.display = 'none';
-
-                    const response = await fetch('/api/sales/upload', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-
-                    const result = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(result.error || '매출 등록 중 오류가 발생했습니다.');
-                    }
-
-                    showSuccessMessage(result.processedRows + '건의 매출이 등록되었습니다.');
-                    
-                    setTimeout(function() {
-                        location.reload();
-                    }, 3000);
-
-                } catch (error) {
-                    showError(error.message);
-                } finally {
-                    loadingEl.style.display = 'none';
-                    submitBtn.disabled = false;
-                }
-            }
-
-            function showSuccessMessage(message) {
-                const successEl = document.createElement('div');
-                successEl.className = 'success-message';
-                successEl.style.cssText = [
-                    'background-color: #dcfce7',
-                    'color: #166534',
-                    'padding: 12px',
-                    'border-radius: 6px',
-                    'margin: 10px 0',
-                    'text-align: center'
-                ].join(';');
-                
-                successEl.textContent = message;
-                
-                const container = document.querySelector('.sales-container');
-                container.insertBefore(successEl, document.querySelector('.preview-section'));
-            }
-
-            function showError(message) {
-                const errorMessageEl = document.getElementById('errorMessage');
-                errorMessageEl.textContent = message;
-                errorMessageEl.style.display = 'block';
-                errorMessageEl.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function parseCSV(content) {
-                const rows = content.split('\n')
-                    .map(function(row) { return row.trim(); })
-                    .filter(function(row) { return row.length > 0; });
-                
-                if (rows.length < 2) {
-                    throw new Error('데이터가 없는 파일입니다.');
-                }
-
-                const expectedHeaders = ['거래일시', '결제방법', '총주문수량', '총결제금액', '메뉴ID', '메뉴수량', '메뉴단가'];
-                const headers = rows[0].split(',').map(function(h) { return h.trim(); });
-                
-                if (!expectedHeaders.every(function(h) { return headers.includes(h); })) {
-                    throw new Error('올바르지 않은 CSV 파일 형식입니다.');
-                }
-
-                const parsedRows = [];
-                for (let i = 1; i < rows.length; i++) {
-                    const fields = rows[i].split(',').map(function(f) { return f.trim(); });
-                    
-                    if (fields.length < 4) {
-                        throw new Error((i+1) + '번째 행의 데이터가 부족합니다.');
-                    }
-
-                    if (!isValidDate(fields[0])) {
-                        throw new Error((i+1) + '번째 행의 날짜 형식이 올바르지 않습니다.');
-                    }
-
-                    const validPaymentMethods = ['CARD', 'CASH', 'KAKAOPAY', 'NAVERPAY'];
-                    if (!validPaymentMethods.includes(fields[1])) {
-                        throw new Error((i+1) + '번째 행의 결제 방법이 올바르지 않습니다.');
-                    }
-
-                    if (!isPositiveNumber(fields[2]) || !isPositiveNumber(fields[3])) {
-                        throw new Error((i+1) + '번째 행의 수량 또는 금액이 올바르지 않습니다.');
-                    }
-
-                    parsedRows.push({
-                        date: fields[0],
-                        paymentMethod: fields[1],
-                        totalQuantity: parseInt(fields[2]),
-                        totalAmount: parseInt(fields[3]),
-                        menuOrders: parseMenuOrders(fields.slice(4))
-                    });
-                }
-
-                return parsedRows;
-            }
-
-            function isValidDate(dateStr) {
-                const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-                if (!regex.test(dateStr)) return false;
-                
-                const date = new Date(dateStr);
-                return date instanceof Date && !isNaN(date);
-            }
-
-            function isPositiveNumber(str) {
-                const num = parseInt(str);
-                return !isNaN(num) && num > 0;
-            }
-
-            function parseMenuOrders(fields) {
-                const menuOrders = [];
-                
-                for (let i = 0; i < fields.length; i += 3) {
-                    if (i + 2 >= fields.length) break;
-                    
-                    const menuId = parseInt(fields[i]);
-                    const quantity = parseInt(fields[i + 1]);
-                    const unitPrice = parseInt(fields[i + 2]);
-
-                    if (isNaN(menuId) || isNaN(quantity) || isNaN(unitPrice)) {
-                        throw new Error('메뉴 주문 정보가 올바르지 않습니다.');
-                    }
-
-                    menuOrders.push({ menuId: menuId, quantity: quantity, unitPrice: unitPrice });
-                }
-
-                return menuOrders;
-            }
-
-            document.getElementById('submitBtn').addEventListener('click', async function() {
-                const fileInput = document.getElementById('fileInput');
-                const file = fileInput.files[0];
-                
-                if (!file) {
-                    showError('업로드할 파일을 선택해주세요.');
-                    return;
-                }
-
-                await handleSalesUpload(file);
-            });
+	            const loadingEl = document.getElementById('loading');
+	            const errorMessageEl = document.getElementById('errorMessage');
+	            const submitBtn = document.getElementById('submitBtn');
+	
+	            try {
+	                loadingEl.style.display = 'block';
+	                submitBtn.disabled = true;
+	                errorMessageEl.style.display = 'none';
+	
+	                const response = await fetch('/sellUpload', {
+	                    method: 'POST',
+	                    body: formData
+	                });
+	
+	                const result = await response.json();
+	
+	                if (!response.ok) {
+	                    throw new Error(result.error || '매출 등록 중 오류가 발생했습니다.');
+	                }
+	
+	                showSuccessMessage(result.processedRows + '건의 매출이 등록되었습니다.');
+	                
+	                setTimeout(function() {
+	                    location.reload();
+	                }, 3000);
+	
+	            } catch (error) {
+	                showError(error.message);
+	            } finally {
+	                loadingEl.style.display = 'none';
+	                submitBtn.disabled = false;
+	            }
+	        }
+	
+	        // 성공 메시지 표시 함수
+	        function showSuccessMessage(message) {
+	            const successEl = document.createElement('div');
+	            successEl.className = 'success-message';
+	            successEl.style.cssText = [
+	                'background-color: #dcfce7',
+	                'color: #166534',
+	                'padding: 12px',
+	                'border-radius: 6px',
+	                'margin: 10px 0',
+	                'text-align: center'
+	            ].join(';');
+	            
+	            successEl.textContent = message;
+	            
+	            const container = document.querySelector('.sales-container');
+	            container.insertBefore(successEl, document.querySelector('.preview-section'));
+	        }
+	
+	        // 에러 메시지 표시 함수
+	        function showError(message) {
+	            const errorMessageEl = document.getElementById('errorMessage');
+	            errorMessageEl.textContent = message;
+	            errorMessageEl.style.display = 'block';
+	            errorMessageEl.scrollIntoView({ behavior: 'smooth' });
+	        }
         </script>
     </body>
 </html>

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SalesSaveDTO {
+	private int sellIdx;
     private int storeIdx;
     private Date sellDate;
     private String sellMethod;
@@ -12,6 +13,25 @@ public class SalesSaveDTO {
     
     public SalesSaveDTO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public SalesSaveDTO(int sellIdx, int storeIdx, Date sellDate, String sellMethod, int totalCnt,
+			List<SellsDetailDTO> details) {
+		super();
+		this.sellIdx = sellIdx;
+		this.storeIdx = storeIdx;
+		this.sellDate = sellDate;
+		this.sellMethod = sellMethod;
+		this.totalCnt = totalCnt;
+		this.details = details;
+	}
+
+	public int getSellIdx() {
+		return sellIdx;
+	}
+
+	public void setSellIdx(int sellIdx) {
+		this.sellIdx = sellIdx;
 	}
 
 	public int getStoreIdx() {
@@ -53,15 +73,7 @@ public class SalesSaveDTO {
 	public void setDetails(List<SellsDetailDTO> details) {
 		this.details = details;
 	}
-
-	public SalesSaveDTO(int storeIdx, Date sellDate, String sellMethod, int totalCnt, List<SellsDetailDTO> details) {
-		this.storeIdx = storeIdx;
-		this.sellDate = sellDate;
-		this.sellMethod = sellMethod;
-		this.totalCnt = totalCnt;
-		this.details = details;
-	}
-	
-	
+    
+    
     
 }

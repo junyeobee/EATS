@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.eats.store.service.StoreSellService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class SellController {
 	@Autowired
@@ -26,8 +29,9 @@ public class SellController {
 	
 	@PostMapping("/sellUpload")
 	@ResponseBody
-    public Map<String, Object> uploadSales(@RequestParam("file") MultipartFile file, @SessionAttribute("storeIdx") int storeIdx) {
-
+    public Map<String, Object> uploadSales(@RequestParam("file") MultipartFile file, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
 		Map<String, Object> response = new HashMap<>();
 		try {
 			int processedCount = service.sellInsert(file, storeIdx);
