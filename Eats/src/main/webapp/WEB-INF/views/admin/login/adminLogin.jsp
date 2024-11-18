@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Eat's - 관리자 로그인</title>
+<link rel="stylesheet" href="../css/manager/adminLoginCSS.css">
 </head>
 <body>
 <form id="admin_login_form" name="admin_login_form" action="adminLogin" method="post">

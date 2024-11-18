@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.ReservationMapper;
+import com.eats.user.model.ReservationDTO;
 
 @Service
 public class ReservationServiceImple implements ReservationService {
@@ -53,7 +54,30 @@ public class ReservationServiceImple implements ReservationService {
 		param.put("reserve_time", reserve_time);
 		
 		List<Map> tableList=mapper.getAvailableTable(param);
-		
+
 		return tableList;
+	}
+	
+	@Override
+	public int makeReserve(ReservationDTO reservationDTO) {
+		
+		int result=mapper.makeReserve(reservationDTO);
+		return result;
+	}
+	
+	@Override
+	public int getMinTableIdx(int store_idx, Date reserve_date, int reserve_cnt, String reserve_time,
+			String reserve_table) {
+		
+		Map param=new HashMap<>();
+		param.put("store_idx", store_idx);
+		param.put("reserve_date", reserve_date);
+		param.put("reserve_count", reserve_cnt);
+		param.put("reserve_time",  reserve_time);
+		param.put("reserve_table", reserve_table);
+		
+		int minTableIdx = mapper.getMinTableIdx(param);
+		
+		return minTableIdx;
 	}
 }

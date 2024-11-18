@@ -196,12 +196,71 @@
 	    MENU m ON sd.menu_idx = m.menu_idx
 	WHERE 
 	    s.store_idx = #{store_idx}
-	    AND TO_CHAR(s.sell_date, 'yyyy-mm') = #{thismonth}
+	    AND TO_CHAR(s.sell_date, 'yyyy-mm') = TO_CHAR(TRUNC(SYSDATE), 'yyyy-mm')
 	    AND s.sell_stat = 1
 	GROUP BY 
 	    m.menu_idx, m.menu_name
 	ORDER BY 
 	    totalcnt DESC
+	</select>
 	
+	<select id="sellMethod" resultType="com.eats.store.model.main.SellMethodDTO">
+		SELECT 
+		    SELL_METHOD as paymentMethod,
+		    COUNT(*) as totalCount
+		FROM SELL
+		WHERE STORE_IDX = #{store_idx}
+		AND SELL_STAT = 1
+		AND TRUNC(SELL_DATE) = TRUNC(SYSDATE)
+		GROUP BY SELL_METHOD
+		ORDER BY totalCount DESC
+	</select>
+	<select id="todayReview" resultType = "com.eats.store.model.main.TodayReviewDTO">
+		SELECT 
+		    r.REV_SCORE as revScore,
+		    r.REV_CONTENT as revContent,
+		    TO_CHAR(r.REV_WRITEDATE, 'HH24:MI') as revWritedate
+		FROM 
+			REVIEW r
+		JOIN 
+			RESERVATION rv 
+		ON 
+			r.RESERVE_IDX = rv.RESERVE_IDX
+		WHERE 
+			rv.STORE_IDX = #{store_idx}
+		AND 
+			TRUNC(r.REV_WRITEDATE) = TRUNC(SYSDATE)
+		AND 
+			r.REV_STATE = 1
+		ORDER BY 
+			r.REV_WRITEDATE DESC
+	</select>
+	<select id="storeQnA" resultType = "com.eats.store.model.main.StoreAnswerDTO">
+		SELECT 
+		    SQNA_TITLE as sqnaTitle,
+		    SQNA_TYPE as sqnaType,
+		    TO_CHAR(SQNA_WDATE, 'MM/DD HH24:MI') as sqnaWdate,
+		    SQNA_STAT as sqnaStat
+		FROM 
+			STORE_QNA
+		WHERE 
+			STORE_IDX = #{store_idx}
+		AND 
+			SQNA_STAT = 0
+		ORDER BY 
+			SQNA_WDATE DESC
+	</select>
+	<select id="soonReserve" resultType = "com.eats.store.model.main.ReserveSoonDTO">
+		SELECT 
+		    RESERVE_TIME as reserveTime,
+		    RESERVE_COUNT as reserveCount,
+		    REQUEST as request
+		FROM RESERVATION
+		WHERE STORE_IDX = #{store_idx}
+		AND TRUNC(RESERVE_DATE) = TRUNC(SYSDATE)
+		AND RESERVE_TIME <![CDATA[>]]> TO_CHAR(SYSDATE, 'HH24:MI')
+		AND RESERVE_TIME <![CDATA[<=]]> TO_CHAR(SYSDATE + INTERVAL '1' HOUR, 'HH24:MI')
+		AND RESERVE_STATE = 1
+		ORDER BY RESERVE_TIME
 	</select>
 </mapper>

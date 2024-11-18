@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</select>
   
   
-  	<select id="storeidCheckForFindPwd">
+  	<select id="storeidCheckForFindPwd" parameterType="String" resultType="String">
 		SELECT
 			STORE_EMAIL
 		FROM
@@ -54,9 +54,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			STORE_ACCOUNT
 		WHERE
 			STORE_ID=#{store_id}
-		
 	
 	</select>
+	
+	
 	
 	
   </mapper>

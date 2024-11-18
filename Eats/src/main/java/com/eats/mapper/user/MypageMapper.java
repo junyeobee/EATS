@@ -1,17 +1,54 @@
 package com.eats.mapper.user;
 
-import com.eats.user.model.EatsUserDTO;
-import com.eats.user.model.JjimDTO;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.eats.user.model.*;
 
+@Mapper
 public interface MypageMapper {
-    EatsUserDTO getUserProfile(int userId); // 사용자 프로필 정보 가져오기
-    int updateUserProfile(EatsUserDTO userProfile); // 사용자 프로필 정보 업데이트
-    List<JjimDTO> getJjimList(int userId); // 찜 목록 가져오기
-    List<JjimDTO> getJjimListWithPaging(@Param("userId") int userId, @Param("offset") int offset, @Param("limit") int limit); // 페이징된 찜 목록 가져오기
-    void deleteJjim(@Param("userId") int userId, @Param("storeId") int storeId); // 찜 삭제
-    int getJjimCount(int userId); // 찜 개수 가져오기
-    void updateProfileImage(@Param("userId") int userId, @Param("imagePath") String imagePath); // 프로필 이미지 업데이트
+
+    // 마이페이지 정보 가져오기 (EatsUserDTO)
+    EatsUserDTO getUserProfile(int user_idx);
+
+    // 나의 정보 상세보기 (EatsUserProfileDTO)
+    EatsUserProfileDTO getUserProfileDetail(int user_idx);
+
+    // 나의 정보 수정
+    int updateUserProfile(EatsUserProfileDTO userProfile);
+
+    // 프로필 이미지 수정
+    int updateProfileImage(int user_idx, String profile_image);
+
+    // 나의 정보 수정 화면 데이터를 가져오기
+    EatsUserProfileDTO getEditProfile(int user_idx);
+
+    // 찜 관련
+    List<JjimDTO> getJjimList(int user_idx, int offset, int pageSize);
+    int getTotalJjimCount(int user_idx);
+    void deleteJjim(int user_idx, int store_idx);
+
+    // 리뷰 관련
+    // 리뷰 목록 가져오기
+//    List<ReviewDTO> getReviewList(@Param("user_idx") int user_idx,
+//                                  @Param("offset") int offset,
+//                                  @Param("pageSize") int pageSize);
+    List<ReviewDTO> getReviewList(int user_idx, int offset, int pageSize); // 인터페이스
+    int getTotalReviewCount(int user_idx);
+    // 리뷰 총 개수 가져오기
+    //int getTotalReviewCount(@Param("user_idx") int user_idx);
+    
+    // 결제 관련
+    List<PaymentDTO> getPaymentList(int user_idx, int offset, int pageSize);
+    int getTotalPaymentCount(int user_idx);
+
+	EatsUserProfileDTO getUserProfile1(Integer user_idx);
+
+//	List<PaymentDTO> getPaymentList(int user_idx, int offset, int pageSize);
+
+
 }

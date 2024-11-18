@@ -105,7 +105,7 @@
 			<c:forEach var="dto" items="${lists }">
 				<span>
 					<c:if test="${not empty dto.store_img}">
-						<span onclick="imgDelete(${dto.si_idx}, ${img_num })">X</span>
+						<span class="cspi" onclick="imgDelete(${dto.si_idx}, ${img_num })">X</span>
 						<img src="/img/storeUploadImg/${dto.store_img }">
 					</c:if>
 				</span>
