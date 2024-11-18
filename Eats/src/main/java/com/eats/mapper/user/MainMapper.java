@@ -22,6 +22,6 @@ public interface MainMapper {
 	public Integer getLikeCount(int rev_idx);
 	public Integer getFollowerCount(int user_idx);
 	public String getTag(int tag_idx);
-	
+	public Integer getReviewCountByStoreIdx(int store_idx);
 
 }

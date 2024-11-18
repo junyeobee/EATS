@@ -35,20 +35,26 @@
 		from (select * from store
 		where
 		<if test="area!=null and area!='' ">
-			store_addr like '%'||#{area}||'%'
+			store_addr like '%'||#{area}||'%' and 
 		</if>
-		and store_state='TRUE')a, store_time
+		store_state='TRUE')a, store_time
 		<if test="week !=null and week!='' ">
 			where stime_day=#{week}
 		</if>
-		)b, (select category.* from 
-		<foreach collection="tag" item="tagList" open="(">
-			select category.* from
+		)b
+		<if test="tag.size()>0">
+			,
+		</if>
+		<foreach collection="tag" item="tagList" index="i">	
+			(select category.* from
 		</foreach>
-		<foreach collection="tag" item="tagList" close=")" separator=",">
-			category where category.cate_value_idx=#{valueidx}
+		<foreach collection="tag" item="tagList" index="i" separator=",">
+			category where category.cate_value_idx=#{tagList.valueidx})
 		</foreach>
-		cate where b.store_idx=cate.store_idx
+		<if test="tag.size()>0">
+			cate where b.store_idx=cate.store_idx
+		</if>
+		order by store_name asc
 	</select>
 	
 </mapper>
