@@ -24,7 +24,7 @@
 					<th>이미지</th>
 					<td>
 						<span>
-							<img src="${data.s_news_img}">
+							<img src="/img/storeNewsImg/${data.s_news_img}">
 						</span>
 					</td>
 				</tr>

@@ -12,6 +12,11 @@
 		select cate_value_name from cate_value where
 		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
 	</select>
+	
+	<select id="getCateValues" parameterType="Integer" resultType="com.eats.user.model.CateValueDTO">
+		select * from cate_value where
+		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
+	</select>
 
 	<select id="getCityList" resultType="com.eats.user.model.AreaDTO">
 		select * from area where area_lev=1
@@ -25,12 +30,12 @@
 	<select id="getPopularReviews" parameterType="String" resultType="Integer">
 		select rev_idx from (select rownum rn, rev_idx from (select rev_idx
 		<choose>
-			<when test="areaWord != null and areaWord != ''">
+			<when test="cityWord != null and cityWord != '' and unitWord != null and unitWord != ''">
 				from (select rev_like.*
 				from rev_like, (select rev_idx
 				from review, (select reserve_idx
 				from reservation, (select store_idx
-				from store where store_addr like '%'||#{areaWord}||'%')a
+				from store where store_addr like '%'||#{cityWord}||'%'||#{unitWord}||'%')a
 				where reservation.store_idx=a.store_idx)b
 				where review.reserve_idx=b.reserve_idx)c
 				where rev_like.rev_idx=c.rev_idx)

@@ -6,16 +6,16 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">입점 신청 승인</div>
+			<a class="navi_small_cate_text">입점 신청 승인</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">정보 수정 승인</div>
+			<a class="navi_small_cate_text">정보 수정 승인</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">매장별 통계</div>
+			<a class="navi_small_cate_text">매장별 통계</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">가입 매장 조회</div>
+			<a class="navi_small_cate_text">가입 매장 조회</a>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -23,16 +23,16 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">가입 회원 조회</div>
+			<a class="navi_small_cate_text">가입 회원 조회</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">리뷰 관리</div>
+			<a class="navi_small_cate_text">리뷰 관리</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">리뷰 삭제 승인</div>
+			<a class="navi_small_cate_text">리뷰 삭제 승인</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">가입 매장 조회</div>
+			<a class="navi_small_cate_text">가입 매장 조회</a>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -40,7 +40,7 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">리뷰 삭제 승인</div>
+			<a class="navi_small_cate_text">리뷰 삭제 승인</a>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -48,10 +48,10 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">검색 관리</div>
+			<a href="/searchData" class="navi_small_cate_text">검색 관리</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">태그 관리</div>
+			<a href="/tagPage" class="navi_small_cate_text">태그 관리</a>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -59,13 +59,13 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">배너 관리</div>
+			<a class="navi_small_cate_text">배너 관리</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">배너 등록</div>
+			<a class="navi_small_cate_text">배너 등록</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">배너 수정</div>
+			<a class="navi_small_cate_text">배너 수정</a>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -73,10 +73,10 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">공지사항</div>
+			<a class="navi_small_cate_text">공지사항</a>
 		</div>
 		<div class="navi_small_cate_btn" onclick="selectThisCate(this)">
-			<div class="navi_small_cate_text">1:1 문의 관리</div>
+			<a class="navi_small_cate_text">1:1 문의 관리</a>
 		</div>
 	</div>
 </nav>
