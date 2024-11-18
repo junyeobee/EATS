@@ -38,12 +38,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<update id="storeUpdatePwd" parameterType="map">
-	UPDATE
-		STORE_ACCOUNT
-	SET
-		STORE_PWD=#{newPwd}
-	WHERE
-		STORE_ID=#{store_id}
+		UPDATE
+			STORE_ACCOUNT
+		SET
+			STORE_PWD=#{newPwd}
+		WHERE
+			STORE_ID=#{storeId}
+
 	</update>
 	
 	

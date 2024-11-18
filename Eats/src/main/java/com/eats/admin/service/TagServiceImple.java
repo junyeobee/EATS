@@ -1,5 +1,6 @@
 package com.eats.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,18 @@ public class TagServiceImple implements TagService {
 	@Override
 	public int addNewCategory(CateKeyDTO dto) {
 		int count = tm.addNewCategory(dto);
+		return count;
+	}
+	
+	@Override
+	public int deleteFromStoreTagByCateKey(int cate_key_idx) {
+		int count = tm.deleteFromStoreTagByCateKey(cate_key_idx);
+		return count;
+	}
+	
+	@Override
+	public int deleteFromStoreTagByCateValue(CateValueDTO dto) {
+		int count = tm.deleteFromStoreTagByCateValue(dto);
 		return count;
 	}
 }

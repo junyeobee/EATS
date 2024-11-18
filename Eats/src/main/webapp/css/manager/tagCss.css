@@ -312,6 +312,8 @@
 
 .cate_radio_box {
     padding: 15px 10px;
+    display: flex;
+    align-items: baseline;
 }
 .cate_radio_box input[type=radio]{
     display: none;
@@ -342,3 +344,8 @@
 	display: flex;
     flex-direction: row;
 }
+
+.cate_label_text {
+	font-size: 18px;
+    color: tomato;
+} 
