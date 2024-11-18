@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="./css/user/searchCss.css">
 <link rel="stylesheet" href="./css/user/userHeader.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
+<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +17,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
-	
+
 <script src="js/ajaxJs.js"></script>
 
 <style>
@@ -45,7 +46,7 @@ menu, ol, ul {
 </head>
 
 <body>
-<%@include file="../../userHeader.jsp" %>
+	<%@include file="../../userHeader.jsp"%>
 	<div class="modal_background" id="modal">
 		<div class="area-searching">
 			<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
@@ -76,36 +77,73 @@ menu, ol, ul {
 		</div>
 	</div>
 	<div class="search_body" id="main">
+		<input type="hidden" id="parameters"
+			value="word=${word }&areaWord=${areaWord}&selectedDate=${selectedDate}&selectedTime=${selectedTime}&tagWord=${tagWord}">
+		<c:forEach var="tags" items="${tagList }">
+			<input type="hidden" class="tagParam" value="${tags.keyidx},${tags.valueidx}">
+		</c:forEach>
 		<div class="filter_box">
+			<div class="filter_reset" onclick="resetThisTag('all')">전체 필터 초기화</div>
 			<div class="pick_group">
-				<div class="pick_box" onclick="openAreaSelectBox(this)">
-					<img class="pick_location_icon" src="/svg/location_icon${areaWord==null?'':'_tomato_line' }.svg" />
-					<div style="${areaWord!=null?'color:tomato;':'' }" class="pick_area" id="pick_area">${areaWord }</div>
+				<div class="pick_box pick_box_location"
+					onclick="openAreaSelectBox()">
+					<img class="pick_location_icon"
+						src="/svg/location_icon${areaWord==null||areaWord==''?'':'_tomato_line' }.svg" />
+					<div class="pick_area" id="pick_area">${areaWord==null||areaWord==''?"지역을 선택해주세요.":areaWord }</div>
 					<input type="hidden" id="areaText">
 				</div>
 				<div class="pick_box">
-					<img class="pick_date_icon" src="/svg/calander_icon.svg" />
-					<div class="pick_date">날짜를 선택해주세요.</div>
+					<div class="pick_box_date" onclick="openDateSelectBox()">
+						<img class="pick_date_icon" id="pick_date_icon"
+							src="/svg/calander_icon${selectedDate==null||selectedDate==''?'':'_tomato' }.svg" />
+						<div class="pick_date" id="selected_date">${selectedDate==null||selectedDate==''?"날짜를 선택해주세요.":selectedDate}</div>
+					</div>
+					<!-- 캘린더 영역(s) -->
+					<div class="cal-wrapper" id="calendar_box">
+						<div id="calendar"></div>
+					</div>
+					<!-- 캘린더 영역(e) -->
 				</div>
 				<div class="pick_box">
-					<img class="pick_time_icon" src="/svg/clock_icon.svg" />
-					<div class="pick_time">시간을 선택해주세요.</div>
+					<div class="pick_box_time" onclick="openTimeSelectBox(this)">
+						<img class="pick_time_icon"
+							src="/svg/clock_icon${selectedTime==null||selectedTime==''?'':'_tomato' }.svg" />
+						<div class="pick_time">${selectedTime==null||selectedTime==''?"시간을 선택해주세요.":selectedTime }</div>
+					</div>
+					<div class="time_paper">
+							<ul id="time_selector">
+								<c:forEach var="h" begin="9" end="22">
+									<li onclick="selectThisTime(this)">
+										<div>${h }</div>
+										<div>:</div>
+										<div>00</div>
+									</li>
+									<li onclick="selectThisTime(this)">
+										<div>${h }</div>
+										<div>:</div>
+										<div>30</div>
+									</li>
+								</c:forEach>
+							</ul>
+					</div>
 				</div>
 			</div>
-			<div class="seat filter_group">
-				<c:forEach var="keys" items="${valueList }">
-					<div class="filter_title">${keys.key }</div>
-					<div class="filter_tag_box">
-						<input type="hidden" id="${keyList[keys.key]}">
-						<c:forEach var="values" items="${keys.value }">
-							<div class="filter_tag"
-								onclick="addThisTagToFilter(this,${keyList[keys.key]}, '${values }')">
-								<div class="filter_text" style="color: black;">${values }</div>
-							</div>
-						</c:forEach>
-					</div>
-				</c:forEach>
-			</div>
+			<c:forEach var="keys" items="${mainValueList }">
+				<div class="seat filter_group">
+					<div class="filter_title_box">
+						<div class="filter_title">${keys.key }</div>
+						<div class="filter_title_option" onclick="resetThisTag(${mainKeyList[keys.key]})">초기화</div>
+					</div>	
+						<div class="filter_tag_box">
+							<c:forEach var="values" items="${keys.value }">
+								<div class="filter_tag" id="${mainKeyList[keys.key]},${values.cate_value_idx }"
+									onclick="addThisTagToFilter(this)">
+									<div class="filter_text" style="color: black;">${values.cate_value_name }</div>
+								</div>
+							</c:forEach>
+						</div>
+				</div>
+			</c:forEach>
 			<div class="price_group filter_group">
 				<div class="filter_title_box">
 					<div class="filter_title">가격</div>
@@ -151,6 +189,22 @@ menu, ol, ul {
 					</div>
 				</div>
 			</div>
+			<c:forEach var="keys" items="${subValueList }">
+				<div class="filter_group">
+					<div class="filter_title_box">
+						<div class="filter_title">${keys.key }</div>
+						<div class="filter_title_option" onclick="resetThisTag(${subKeyList[keys.key]})">초기화</div>
+					</div>
+					<div class="filter_tag_box">
+						<c:forEach var="values" items="${keys.value }">
+							<div class="filter_tag" id="${subKeyList[keys.key]},${values.cate_value_idx }"
+								onclick="addThisTagToFilter(this)">
+								<div class="filter_text" style="color: black;">${values.cate_value_name  }</div>
+							</div>
+						</c:forEach>
+					</div>
+				</div>
+			</c:forEach>
 		</div>
 
 		<div class="location_box">
@@ -205,4 +259,5 @@ menu, ol, ul {
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
 <script type="text/javascript" src="/js/sliderScript.js"></script>
 <script type="text/javascript" src="/js/searchScript.js"></script>
+
 </html>

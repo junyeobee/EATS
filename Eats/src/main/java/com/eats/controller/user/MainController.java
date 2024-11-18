@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
+import com.eats.user.model.CateValueDTO;
 import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MainService;
 
@@ -31,10 +32,12 @@ public class MainController {
 		ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
-		Map<String, List<String>> valueList = new HashMap<>();
+		Map<String, List<CateValueDTO>> valueList = new HashMap<>();
+		Map<String, Integer> idxList = new HashMap<>();
 
 		for (int i = 0; i < keyList.size(); i++) {
-			valueList.put(keyList.get(i).getCate_key_name(), ms.getValueList(keyList.get(i).getCate_key_idx()));
+			valueList.put(keyList.get(i).getCate_key_name(), ms.getCateValues(keyList.get(i).getCate_key_idx()));
+			idxList.put(keyList.get(i).getCate_key_name(), keyList.get(i).getCate_key_idx());
 		}
 
 		List<AreaDTO> cityList = ms.getCityList();
@@ -83,6 +86,7 @@ public class MainController {
 		}
 
 		mv.addObject("keyList", keyList);
+		mv.addObject("idxList", idxList);
 		mv.addObject("valueList", valueList);
 		mv.addObject("cityList", cityList);
 		mv.setViewName("index");

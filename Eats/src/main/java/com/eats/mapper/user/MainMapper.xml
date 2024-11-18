@@ -12,6 +12,11 @@
 		select cate_value_name from cate_value where
 		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
 	</select>
+	
+	<select id="getCateValues" parameterType="Integer" resultType="com.eats.user.model.CateValueDTO">
+		select * from cate_value where
+		cate_key_idx=#{cate_key_idx} order by cate_value_idx asc
+	</select>
 
 	<select id="getCityList" resultType="com.eats.user.model.AreaDTO">
 		select * from area where area_lev=1

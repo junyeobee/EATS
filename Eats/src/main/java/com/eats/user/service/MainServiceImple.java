@@ -30,6 +30,12 @@ public class MainServiceImple implements MainService {
 	}
 	
 	@Override
+	public List<CateValueDTO> getCateValues(int cate_key_idx) {
+		List<CateValueDTO> list = mp.getCateValues(cate_key_idx);
+		return list;
+	}
+	
+	@Override
 	public List<AreaDTO> getCityList() {
 		List<AreaDTO> list = mp.getCityList();
 		return list;

@@ -14,5 +14,5 @@ public interface SearchService {
 	public int addCount(String searchWord);
 	public List<SearchDTO> getSearchData(Map<String,String> dateMap);
 	public Map<String, Integer> getSearchCountByTag(List<String> valueList, Map<String, String> map);
-	public List<StoreDTO> getStoreInfo();
+	public List<StoreDTO> getStoreInfo(Map<String, Object> map);
 }

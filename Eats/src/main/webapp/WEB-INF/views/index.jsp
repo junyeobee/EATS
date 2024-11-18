@@ -186,14 +186,14 @@ menu, ol, ul {
 
 					<div class="subcate_box">
 						<c:forEach var="keyvalue" items="${values.value}">
-							<div class="sub_one" id="${keyvalue }"
+							<div class="sub_one" id="${idxList[values.key] },${keyvalue.cate_value_idx}"
 								onclick="searchThisTag(this)">
 								<div class="text">
-									<c:if test="${keyvalue.length()>5}">
-									${keyvalue.replace(" ", "<br>")}
+									<c:if test="${keyvalue.cate_value_name.length()>5}">
+									${keyvalue.cate_value_name.replace(" ", "<br>")}
 								</c:if>
-									<c:if test="${keyvalue.length()<=5}">
-									${keyvalue}
+									<c:if test="${keyvalue.cate_value_name.length()<=5}">
+									${keyvalue.cate_value_name}
 								</c:if>
 								</div>
 							</div>

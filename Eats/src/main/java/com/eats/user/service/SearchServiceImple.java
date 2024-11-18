@@ -69,8 +69,8 @@ public class SearchServiceImple implements SearchService {
 	}
 	
 	@Override
-	public List<StoreDTO> getStoreInfo() {
-		List<StoreDTO> list = mp.getStoreInfo();
+	public List<StoreDTO> getStoreInfo(Map<String, Object> map) {
+		List<StoreDTO> list = mp.getStoreInfo(map);
 		return list;
 	}
 }

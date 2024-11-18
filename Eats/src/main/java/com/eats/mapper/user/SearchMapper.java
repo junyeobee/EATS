@@ -14,5 +14,5 @@ public interface SearchMapper {
 	public int addCount(String searchWord);
 	public List<SearchDTO> getSearchData(Map<String,String> dateMap);
 	public List<SearchDTO> getSearchCountByTag(Map<String, Object> map);
-	public List<StoreDTO> getStoreInfo();
+	public List<StoreDTO> getStoreInfo(Map<String, Object> map);
 }

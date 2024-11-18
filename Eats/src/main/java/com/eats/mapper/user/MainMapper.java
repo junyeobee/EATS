@@ -11,6 +11,7 @@ public interface MainMapper {
 
 	public List<CateKeyDTO> getCateKey();
 	public List<String> getValueList(int cate_key_idx);
+	public List<CateValueDTO> getCateValues(int cate_key_idx);
 	
 	public List<AreaDTO> getCityList();
 	public List<String> getUnitList(int area_idx);
