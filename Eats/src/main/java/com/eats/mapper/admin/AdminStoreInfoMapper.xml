@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminStoreInfoMapper">
+		<select id="adminStoreInfoList" resultType="com.eats.admin.model.AdminStoreInfoUpdateDTO">
+			SELECT siu.*, s.*, ac.store_ceo
+			FROM STORE_INFO_UPDATE siu
+			LEFT JOIN STORE s ON siu.store_idx = s.store_idx
+			LEFT JOIN STORE_ACCOUNT ac ON s.store_idx = ac.store_idx
+			where siu.su_name != s.store_name OR siu.su_name != '' OR 
+			        siu.su_tel != s.store_tel OR siu.su_tel != '' OR  
+			        siu.su_addr != s.store_addr OR siu.su_addr != '' OR 
+			        siu.su_daddr != s.store_daddr OR siu.su_daddr != '' OR 
+			        siu.su_ceo != ac.store_ceo OR siu.su_ceo != ''
+		</select>
+		
+		<update id="infoUpdateAction" parameterType="com.eats.mapper.admin.AdminStoreInfoMapper">
+			update STORE_INFO_UPDATE set
+				su_state=#{su_state},
+				su_reason=#{su_reason}
+				where su_idx=#{su_idx}
+		</update>
+		
+		<update id="storeInfoUpdate" parameterType="com.eats.mapper.admin.AdminStoreInfoMapper">
+			update STORE set
+				store_name=#{su_name},
+				store_addr=#{su_addr},
+				store_daddr=#{su_daddr},
+				store_tel=#{su_tel}
+				where store_idx=#{store_idx}
+		</update>
+		
+		<update id="storeInfoUpdateCeo" parameterType="com.eats.mapper.admin.AdminStoreInfoMapper">
+			update STORE_ACCOUNT set
+				store_ceo=#{su_ceo}
+				where store_idx=#{store_idx}
+		</update>
+	</mapper>
+	

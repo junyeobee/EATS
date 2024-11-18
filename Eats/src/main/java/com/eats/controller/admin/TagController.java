@@ -61,7 +61,9 @@ public class TagController {
 	@ResponseBody
 	@PostMapping("deleteTag")
 	public Map<String,String> deleteTag(CateValueDTO dto) {
+		ts.deleteFromStoreTagByCateValue(dto);
 		ts.deleteCateValue(dto);
+		
 		Map<String,String> map = new HashMap<>();
 		map.put("catekey", ""+dto.getCate_key_idx());
 		map.put("keyname", ts.getCateKeyName(dto.getCate_key_idx()));
@@ -73,6 +75,7 @@ public class TagController {
 	@ResponseBody
 	@GetMapping("deleteCategory")
 	public Map<String, String> deleteCategory(String cate_key_name, int cate_key_idx) {
+		ts.deleteFromStoreTagByCateKey(cate_key_idx);
 		ts.deleteCategoryFromValue(cate_key_idx);
 		ts.deleteCategory(cate_key_idx);
 

@@ -11,11 +11,12 @@ public interface MainMapper {
 
 	public List<CateKeyDTO> getCateKey();
 	public List<String> getValueList(int cate_key_idx);
+	public List<CateValueDTO> getCateValues(int cate_key_idx);
 	
 	public List<AreaDTO> getCityList();
 	public List<String> getUnitList(int area_idx);
 	
-	public List<Integer> getPopularReviews(String areaWord);
+	public List<Integer> getPopularReviews(String cityWord, String unitWord);
 	public ReviewDTO getReview(int rev_idx);
 	public Double getStorePoint(int store_idx);
 	public Integer getLikeCount(int rev_idx);
