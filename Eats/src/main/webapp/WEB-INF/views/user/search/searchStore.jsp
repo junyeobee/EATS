@@ -216,38 +216,39 @@ menu, ol, ul {
 		</div>
 
 		<div class="store_box">
-			<div class="store_group">
+		<c:forEach var="list" items="${storeList }">
+			<div class="store_group" onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
 				<div class="store_info_top">
 					<img class="store_info_img" src="/img/banner_img.jpg" />
 					<div class="store_info_title">
-						<div class="store_name">멋진 헛간</div>
-						<div class="store_score_box">
-							<img class="store_star_icon" src="/svg/star_icon.svg" />
-							<div class="store_star_point">4.2</div>
-							<div class="store_review_cnt">(46)</div>
+						<div class="store_info_title_line">
+							<div class="store_name">${list.store_name }</div>
+							<div class="store_score_box">
+								<img class="store_star_icon" src="/svg/star_icon.svg" />
+								<div class="store_star_point">${reviewPoint[list.store_idx]==0.0?0:reviewPoint[list.store_idx] }</div>
+								<div class="store_review_cnt">(${reviewCount[list.store_idx] })</div>
+							</div>
 						</div>
 						<div class="store_addr_box">
 							<img class="store_location_icon" src="/svg/location_icon.svg" />
-							<div class="store_addr">서울 성동구</div>
-							<img class="store_arrow_icon" src="/svg/arrow_tomato.svg" />
+							<div class="store_addr">${list.store_addr }</div>
 						</div>
 						<div class="store_time_box">
+							<div class="store_last_time_box">
+								<div class="store_last_time_text">영업시간</div>
+								<div class="store_last_time_time">${list.stime_start }</div>
+								<div class="store_last_time_text">-</div>
+								<div class="store_last_time_time">${list.stime_end }</div>
+							</div>
 							<div class="store_break_time_box">
 								<div class="store_break_time_text">브레이크 타임</div>
-								<div class="store_break_time_time">15:30~17:00</div>
-							</div>
-							<div class="store_last_time_box">
-								<div class="store_last_time_text">라스트오더</div>
-								<div class="store_last_time_time">20:30</div>
+								<div class="store_break_time_time">${list.stime_break }</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="store_info_bottom">
-					<div class="store_info_content">깔끔하게 지저분한 헛간에서 동물들과 함께 식사를
-						해보세요! 새로운 경험!</div>
-				</div>
 			</div>
+			</c:forEach>
 		</div>
 
 	</div>

@@ -425,6 +425,9 @@ input[type=range]:focus::-ms-fill-upper {
 	margin: 0 15px;
 	border-radius: 10px;
 }
+.store_group:hover {
+	cursor: pointer;
+}
 
 .store_info_top {
 	display: flex;
@@ -434,17 +437,26 @@ input[type=range]:focus::-ms-fill-upper {
 
 .store_info_img {
 	object-fit: cover;
-	border-bottom-right-radius: 9px;
+	border-bottom-left-radius: 9px;
 	border-top-left-radius: 9px;
-	width: 190px;
-	height: 140px;
+	width: 160px;
+	height: 150px;
 }
 
 .store_info_title {
 	display: flex;
 	flex-direction: column;
 	margin-left: 18px;
-	row-gap: 4px;
+	row-gap: 3px;
+	padding-top: 5px;
+	    padding-right: 15px;
+}
+
+.store_info_title_line {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .store_name {
@@ -478,7 +490,7 @@ input[type=range]:focus::-ms-fill-upper {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .store_location_icon {

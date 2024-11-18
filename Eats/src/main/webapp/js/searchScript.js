@@ -173,6 +173,10 @@ function resetThisTag(range) {
 	}
 }
 
+function viewStoreDetail(store_idx,selectedDate) {
+	location.href='/user/storeInfo?store_idx='+store_idx+'&reserve_date='+selectedDate;
+}
+
 //캘린더 js(복사함)
 document.addEventListener('DOMContentLoaded', function() {
 	const calendar = document.getElementById('calendar');
