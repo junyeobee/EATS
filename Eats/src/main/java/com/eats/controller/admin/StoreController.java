@@ -15,12 +15,15 @@ import com.eats.admin.model.AdminStoreInfoUpdateDTO;
 public class StoreController {
 
     @Autowired
-    private AdminStoreInfoService service;
+    private AdminStoreInfoService si_service;
+
+    @Autowired
+    private AdminStoreEntryService se_service;
 
 	@GetMapping("/admin/storeEntryOkList")
     public ModelAndView storeEntry() {
 
-		List<AdminStoreInfoUpdateDTO> lists = service.adminStoreInfoList();
+		List<AdminStoreInfoUpdateDTO> lists = se_service.adminStoreInfoList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
 		//mav.addObject("pageStr", pageStr);
@@ -34,7 +37,7 @@ public class StoreController {
 	@GetMapping("/admin/storeInfoUpdateOkList")
     public ModelAndView storeInfoUpdateOkList() {
 
-		List<AdminStoreInfoUpdateDTO> lists = service.adminStoreInfoList();
+		List<AdminStoreInfoUpdateDTO> lists = si_service.adminStoreInfoList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
 		//mav.addObject("pageStr", pageStr);
@@ -48,16 +51,16 @@ public class StoreController {
     @PostMapping("/admin/infoUpdateAction")
     public ModelAndView infoUpdateAction(AdminStoreInfoUpdateDTO dto) {
     	
-        int result = service.infoUpdateAction(dto);
+        int result = si_service.infoUpdateAction(dto);
         
         System.out.println("승인여부"+dto.getSu_state());
         if ("승인".equals(dto.getSu_state())) {
         	
         	System.out.println("ttttt");
-            result += service.storeInfoUpdate(dto);
+            result += si_service.storeInfoUpdate(dto);
             
             System.out.println("tttttttttttttttttt");
-            result += service.storeInfoUpdateCeo(dto);
+            result += si_service.storeInfoUpdateCeo(dto);
             
             System.out.println(dto.getSu_addr());
             System.out.println(dto.getSu_ceo());

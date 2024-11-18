@@ -1,5 +1,7 @@
 package com.eats.store.model;
 
+import java.util.Date;
+
 public class StoreJoinDTO {
     private int sj_idx;           // 신청 ID
     private String sj_name;       // 신청자 매장 이름
@@ -11,6 +13,10 @@ public class StoreJoinDTO {
     private String sj_daddr;      // 매장 상세 주소
     private String sj_id;         // 승인 시 사용할 아이디
     private String sj_pwd;        // 승인 시 사용할 비밀번호
+    
+    private int sj_stat;
+    private String sj_reason;
+    private Date sj_req_date, sj_res_date;
     
 	public StoreJoinDTO() {
 		super();
