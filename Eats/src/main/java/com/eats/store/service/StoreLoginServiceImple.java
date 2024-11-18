@@ -54,7 +54,7 @@ public class StoreLoginServiceImple implements StoreLoginService {
 	}
 	
 	@Override
-	public String storeidCheckForFindId(String storeId) {
+	public String storeidCheckForFindPwd(String storeId) {
 		
 		String userEmail=mapper.storeidCheckForFindPwd(storeId);
 		return userEmail;

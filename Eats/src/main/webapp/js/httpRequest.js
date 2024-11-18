@@ -14,7 +14,7 @@ function getXHR(){
 //요청 담당 함수
 function sendRequest(url, params, callback, method){
    XHR=getXHR();
-   alert('sendRequest 호출')
+
    //유효성 검사
    var newMethod=method?method:'GET';   /*method 값을 넣지 않은 경우 get으로 초기화*/
    

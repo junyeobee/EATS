@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="js/httpRequest.js"></script>
   <style>
         * {
             margin: 0;
@@ -24,7 +25,7 @@
             background: white;
         }
 
-        /* 추천 유저 섹션 */
+    
         .recommended-users {
             display: flex;
             justify-content: space-between;
@@ -99,54 +100,11 @@
             color: #666;
         }
 
-        /* 이미지 슬라이더 */
-        .image-slider {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            height: 250px;
-            margin-bottom: 16px;
-        }
 
-        .slider-container {
-            display: flex;
-            transition: transform 0.3s ease;
-        }
-
-        .slide {
-            flex: 0 0 100%;
-            width: 100%;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .slider-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.8);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
+    
 
         .rating {
-            color: #ffd700;
+            color: #ff9933;
             margin-bottom: 8px;
         }
 
@@ -174,138 +132,174 @@
             font-size: 12px;
             color: #666;
         }
+        
+  .image-slider {
+    position: relative;
+    width: 100%; /* 슬라이더 너비 조정 */
+    margin: auto;
+    overflow: hidden; /* 넘치는 부분 숨기기 */
+    height:260px;
+}
+
+.slider-container {
+    display: flex; /* 슬라이드를 가로로 나열 */
+    transition: transform 0.5s ease; /* 애니메이션 효과 */
+}
+
+.slide {
+    min-width: 33.33%; /* 각 슬라이드가 전체 너비의 1/3 차지 */
+    box-sizing: border-box; /* 패딩과 보더를 포함한 너비 계산 */
+}
+
+img {
+    width: 100%; /* 이미지 너비를 슬라이드에 맞춤 */
+    display: block; /* 이미지 아래 여백 제거 */
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev {
+    left: 10px; /* 왼쪽 버튼 위치 */
+}
+
+.next {
+    right: 10px; /* 오른쪽 버튼 위치 */
+}
     </style>
+    
+    
+
+    
 </head>
 <body>
+
     <div class="container">
         <!-- 추천 유저 섹션 -->
-        <div class="recommended-users">
+        
+        <h1>잇츠타임</h1>
+        
+        <!-- 세션 idx값 받아오기 -->
+    	<c:if test="${empty sessionScope.user_idx}">
+    	
+        <p>로그인이 필요한 서비스입니다.🍽️</p>
+        
+        <a href="/user/login">로그인 하러가기 ></a>
+   		 </c:if>
+   		 
+   		 
+    	 <c:if test="${!empty sessionScope.user_idx}">
+      
+    	
+        
+        <div class="recommended-users">      
+       	
         <c:if test="${empty lists }">
         <span>추천할 유저가 없어요</span>
         </c:if>
         
+         <!-- 유저 랜덤 추천 반복문 -->
         <c:forEach var="dto" items="${lists }">
-        
+
             <div class="user-card">
                 <div class="user-profile">👤</div>
                 <span>${dto.user_nickname }</span>
-                <button class="follow-btn">팔로우</button>
-            </div>
-            
-            </c:forEach>
+                
+                <button class="follow-btn"  id="${dto.user_idx}" value="${dto.user_idx}" onclick="follow(value)" >팔로우</button>
+            </div>          
+          </c:forEach>
           
         </div>
 
         <!-- 리뷰 컨테이너 -->
         <div class="review-container">
+        <c:if test="${empty review }">
+         <p>리뷰가 없습니다.</p>
+        </c:if>
+        
+        <c:forEach var="dto" items="${review }">
             <!-- 리뷰 카드 1 -->
             <div class="review-card">
                 <div class="reviewer-info">
                     <div class="reviewer-profile"></div>
                     <div>
-                        <div class="reviewer-name">맛있는사람</div>
-                        <div class="reviewer-location">서울 강남구</div>
+                        <div class="reviewer-name">${dto.user_nickname}</div>
+                        <div class="reviewer-location">${dto.rev_writedate }</div>
                     </div>
                 </div>
 
-                <div class="image-slider">
-                    <button class="slider-button prev">←</button>
-                    <button class="slider-button next">→</button>
-                    <div class="slider-container">
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 1">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 2">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 3">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rating">★★★★★</div>
-                <div class="review-content">
-                    정말 맛있는 레스토랑이에요! 특히 스테이크가 일품이었습니다. 
-                    다음에도 꼭 방문하고 싶어요.
-                </div>
-
-                <div class="restaurant-info">
-                    <div>
-                        <div class="restaurant-name">뉴욕스테이크</div>
-                        <div class="restaurant-address">서울시 강남구 123-45</div>
-                    </div>
-                    <div>→</div>
-                </div>
+                  <div class="image-slider">
+        <button class="slider-button prev"><</button>
+        <button class="slider-button next">></button>
+        <div class="slider-container">
+            <div class="slide">
+                <img src="/img/user/a.jpg" alt="Image A">  
             </div>
-
-            <!-- 리뷰 카드 2 -->
-            <div class="review-card">
-                <div class="reviewer-info">
-                    <div class="reviewer-profile"></div>
-                    <div>
-                        <div class="reviewer-name">푸드리뷰어</div>
-                        <div class="reviewer-location">서울 서초구</div>
-                    </div>
-                </div>
-
-                <div class="image-slider">
-                    <button class="slider-button prev">←</button>
-                    <button class="slider-button next">→</button>
-                    <div class="slider-container">
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 1">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 2">
-                        </div>
-                        <div class="slide">
-                            <img src="/api/placeholder/400/320" alt="음식 사진 3">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rating">★★★★☆</div>
-                <div class="review-content">
-                    분위기도 좋고 음식도 맛있어요. 직원분들도 친절하시고 좋은 경험이었습니다.
-                </div>
-
-                <div class="restaurant-info">
-                    <div>
-                        <div class="restaurant-name">이탈리안키친</div>
-                        <div class="restaurant-address">서울시 서초구 456-78</div>
-                    </div>
-                    <div>→</div>
-                </div>
+            <div class="slide">
+                <img src="/img/user/b.jpg" alt="Image B">
+            </div>
+            <div class="slide">
+                <img src="/img/user/c.jpg" alt="Image C">
+            </div>
+            <div class="slide">
+                <img src="/img/user/d.jpg" alt="Image D">
+            </div>
+            <div class="slide">
+                <img src="/img/user/e.jpg" alt="Image E">
             </div>
         </div>
     </div>
+                <div class="rating">⭐${dto.rev_score }</div>
+                <div class="review-content">
+                    ${dto.rev_content}
+                </div>
+
+                <div class="restaurant-info">
+                    <div>
+                        <div class="restaurant-name">${dto.store_name }</div>
+                        <div class="restaurant-address">${dto.store_addr}</div>
+                    </div>
+                    <a href="/user/storeInfo">→</a>
+                </div>
+            </div>
+            </c:forEach>
+        </div>
+    </div>
+</c:if>
+
 
     <script>
-        // 이미지 슬라이더 기능
-        document.querySelectorAll('.image-slider').forEach(slider => {
-            const container = slider.querySelector('.slider-container');
-            const slides = slider.querySelectorAll('.slide');
-            const prevBtn = slider.querySelector('.prev');
-            const nextBtn = slider.querySelector('.next');
-            let currentIndex = 0;
+       
+    document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector('.slider-container');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentIndex = 0;
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                updateSlider();
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % slides.length;
-                updateSlider();
-            });
-
-            function updateSlider() {
-                container.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
         });
 
-        // 팔로우 버튼 토글
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
+
+        function updateSlider() {
+            container.style.transform = `translateX(-${currentIndex * (100 / (slides.length > 3 ? 3 : slides.length))}%)`;
+        }
+    });
+
+     
         document.querySelectorAll('.follow-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.textContent === '팔로우') {
@@ -317,7 +311,138 @@
                 }
             });
         });
+        
     </script>
+    
+    
+<script>
+function follow(idx) {
+	
+	var params='idx='+idx+'&following_idx='+${sessionScope.user_idx };
+	
+	sendRequest('followerReviewAjax', params, showSendResult, 'GET');
+
+}
+
+function showSendResult(){
+	
+	var reviewContainer = document.querySelector('.review-container');
+	
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			alert('팔로우되었습니다🧡')
+			var data=XHR.responseText;
+			var jsondata = JSON.parse(data);		
+			
+
+            if (Array.isArray(jsondata) && jsondata.length > 0) {
+                jsondata.forEach((dto) => {
+                	var reviewCard = document.createElement('div');
+                    reviewCard.className = 'review-card';
+
+                  
+                    var reviewerInfoDiv = document.createElement('div');
+                    reviewerInfoDiv.className = 'reviewer-info';
+
+                    var reviewerProfileDiv = document.createElement('div');
+                    reviewerProfileDiv.className = 'reviewer-profile';
+
+                    var reviewerDetailsDiv = document.createElement('div');
+                    var reviewerNameDiv = document.createElement('div');
+                    reviewerNameDiv.className = 'reviewer-name';
+                    reviewerNameDiv.textContent = dto.user_nickname;
+
+                    var reviewerLocationDiv = document.createElement('div');
+                    reviewerLocationDiv.className = 'reviewer-location';
+                    reviewerLocationDiv.textContent = '서울 강남구';
+
+                    reviewerDetailsDiv.appendChild(reviewerNameDiv);
+                    reviewerDetailsDiv.appendChild(reviewerLocationDiv);
+                    reviewerInfoDiv.appendChild(reviewerProfileDiv);
+                    reviewerInfoDiv.appendChild(reviewerDetailsDiv);
+
+                  
+                    var imageSliderDiv = document.createElement('div');
+                    imageSliderDiv.className = 'image-slider';
+
+                    var prevButton = document.createElement('button');
+                    prevButton.className = 'slider-button prev';
+                    prevButton.textContent = '←';
+
+                    var nextButton = document.createElement('button');
+                    nextButton.className = 'slider-button next';
+                    nextButton.textContent = '→';
+
+                    var sliderContainerDiv = document.createElement('div');
+                    sliderContainerDiv.className = 'slider-container';
+
+                    // 이미지 
+                    for (var i = 0; i < 3; i++) { 
+                        var slideDiv = document.createElement('div');
+                        slideDiv.className = 'slide';
+                        var imgElement = document.createElement('img');
+                        imgElement.src = ''; 
+                        imgElement.alt = '음식 사진 ' + (i + 1);
+                        slideDiv.appendChild(imgElement);
+                        sliderContainerDiv.appendChild(slideDiv);
+                    }
+
+                    imageSliderDiv.appendChild(prevButton);
+                    imageSliderDiv.appendChild(nextButton);
+                    imageSliderDiv.appendChild(sliderContainerDiv);
+
+                   
+                    var ratingDiv = document.createElement('div');
+                    ratingDiv.className = 'rating';
+                    ratingDiv.textContent = '⭐'+dto.rev_score;
+
+                  
+                    var reviewContentDiv = document.createElement('div');
+                    reviewContentDiv.className = 'review-content';
+                    reviewContentDiv.textContent = dto.rev_content;
+
+                  
+                    var restaurantInfoDiv = document.createElement('div');
+                    restaurantInfoDiv.className = 'restaurant-info';
+
+                    var restaurantDetailsDiv = document.createElement('div');
+                    var restaurantNameDiv = document.createElement('div');
+                    restaurantNameDiv.className = 'restaurant-name';
+                    restaurantNameDiv.textContent = '뉴욕스테이크';
+
+                    var restaurantAddressDiv = document.createElement('div');
+                    restaurantAddressDiv.className = 'restaurant-address';
+                    restaurantAddressDiv.textContent = dto.store_addr;
+
+                    restaurantDetailsDiv.appendChild(restaurantNameDiv);
+                    restaurantDetailsDiv.appendChild(restaurantAddressDiv);
+                    restaurantInfoDiv.appendChild(restaurantDetailsDiv);
+
+                    var storeLink = document.createElement('a');
+                    storeLink.href = '/user/storeInfo';
+                    storeLink.textContent = '→';
+                    restaurantInfoDiv.appendChild(storeLink);
+
+                   
+                    reviewCard.appendChild(reviewerInfoDiv);
+                    reviewCard.appendChild(imageSliderDiv);
+                    reviewCard.appendChild(ratingDiv);
+                    reviewCard.appendChild(reviewContentDiv);
+                    reviewCard.appendChild(restaurantInfoDiv);
+
+                
+                    reviewContainer.insertBefore(reviewCard, reviewContainer.firstChild);
+                });
+            } else {
+            	  var noReviewMessage = document.createElement('p');
+                  noReviewMessage.textContent = '';
+                  reviewContainer.insertBefore(noReviewMessage, reviewContainer.firstChild);
+            }
+        }
+    }
+}
+
+</script>
 
 </body>
 </html>
