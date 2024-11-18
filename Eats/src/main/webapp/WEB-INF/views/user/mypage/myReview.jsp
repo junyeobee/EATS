@@ -50,6 +50,9 @@
             <a href="?page=${currentPage + 1}">다음</a>
         </c:if>
     </div>
+    <div class="button-container">
+    <a href="javascript:history.back()" class="back-btn">돌아가기</a>
+</div>
 </div>
 </body>
 </html>

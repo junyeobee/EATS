@@ -1,24 +1,23 @@
 package com.eats.controller.user;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.EatsUserDTO;
+import com.eats.user.model.EatsUserProfileDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.PaymentDTO;
 import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MypageService;
-
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -27,192 +26,237 @@ public class MypageController {
     @Autowired
     private MypageService mypageService;
 
-    @Value("${profile.image.upload.path:/default/path}")
-    private String uploadPath;
-
     // 마이페이지 메인 화면
     @GetMapping("/user/mypage/myPage")
     public ModelAndView myPage(HttpSession session) {
-        Object userIdObj = session.getAttribute("user_idx");
-        int userId;
-        if (userIdObj instanceof BigDecimal) {
-            userId = ((BigDecimal) userIdObj).intValue();
-        } else if (userIdObj instanceof String) {
-            userId = Integer.parseInt((String) userIdObj);
-        } else {
-            return new ModelAndView("redirect:/user/login");
+        ModelAndView mav = new ModelAndView();
+
+        // 세션에서 user_idx 가져오기
+        Object userIdxObj = session.getAttribute("user_idx");
+        Integer user_idx = convertToInteger(userIdxObj);
+
+        if (user_idx == null) {
+            mav.setViewName("redirect:/user/login");
+            return mav;
         }
 
-        EatsUserDTO userProfile = mypageService.getUserProfile(userId);
+        // 사용자 기본 정보 가져오기
+        EatsUserDTO userProfile = mypageService.getUserProfile(user_idx);
+        EatsUserProfileDTO userProfile1 = mypageService.getUserProfile1(user_idx);
         if (userProfile == null) {
-            ModelAndView errorView = new ModelAndView("error");
-            errorView.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return errorView;
+            mav.setViewName("error");
+            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
+            return mav;
         }
 
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myPage");
-        modelAndView.addObject("userProfile", userProfile);
-        return modelAndView;
+        mav.addObject("userProfile", userProfile);
+        mav.addObject("userProfile1", userProfile1);
+        mav.setViewName("user/mypage/myPage");
+        return mav;
     }
 
-    // 내 정보 보기 화면
+    // 나의 정보 보기 화면
     @GetMapping("/user/mypage/myProfile")
     public ModelAndView myProfile(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
-            return new ModelAndView("redirect:/user/login");
+        ModelAndView mav = new ModelAndView();
+
+        // 세션에서 user_idx 가져오기
+        Object userIdxObj = session.getAttribute("user_idx");
+        Integer user_idx = convertToInteger(userIdxObj);
+
+        if (user_idx == null) {
+            mav.setViewName("redirect:/user/login");
+            return mav;
         }
 
-        EatsUserDTO userProfile = mypageService.getUserProfile(userId);
+        // 사용자 상세 정보 가져오기
+        EatsUserProfileDTO userProfile = mypageService.getUserProfileDetail(user_idx);
         if (userProfile == null) {
-            ModelAndView errorView = new ModelAndView("error");
-            errorView.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return errorView;
+            mav.setViewName("error");
+            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
+            return mav;
         }
 
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myProfile");
-        modelAndView.addObject("userProfile", userProfile);
-        return modelAndView;
+        mav.addObject("userProfile", userProfile);
+        mav.setViewName("user/mypage/myProfile");
+        return mav;
     }
 
-    // 내 정보 수정 화면
+    // 나의 정보 수정 화면
     @GetMapping("/user/mypage/editProfile")
     public ModelAndView editProfile(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
-            return new ModelAndView("redirect:/user/login");
+        ModelAndView mav = new ModelAndView();
+
+        // 세션에서 user_idx 가져오기
+        Object userIdxObj = session.getAttribute("user_idx");
+        Integer user_idx = convertToInteger(userIdxObj);
+
+        if (user_idx == null) {
+            mav.setViewName("redirect:/user/login");
+            return mav;
         }
 
-        EatsUserDTO userProfile = mypageService.getUserProfile(userId);
+        // 수정할 사용자 정보 가져오기
+        EatsUserProfileDTO userProfile = mypageService.getEditProfile(user_idx);
         if (userProfile == null) {
-            ModelAndView errorView = new ModelAndView("error");
-            errorView.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return errorView;
+            mav.setViewName("error");
+            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
+            return mav;
         }
 
-        ModelAndView modelAndView = new ModelAndView("user/mypage/editProfile");
-        modelAndView.addObject("userProfile", userProfile);
-        return modelAndView;
+        mav.addObject("userProfile", userProfile);
+        mav.setViewName("user/mypage/editProfile");
+        return mav;
     }
 
-    // 내 정보 업데이트
+    // 나의 정보 업데이트
     @PostMapping("/user/mypage/updateProfile")
-    public ModelAndView updateProfile(EatsUserDTO updatedProfile, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null || updatedProfile.getUser_idx() != userId) {
-            return new ModelAndView("redirect:/user/login");
-        }
+    public String updateProfile(EatsUserProfileDTO userProfile, HttpSession session) {
+        // 세션에서 user_idx 가져오기
+        Object userIdxObj = session.getAttribute("user_idx");
+        Integer user_idx = convertToInteger(userIdxObj);
 
-        boolean isUpdated = mypageService.updateUserProfile(updatedProfile);
-
-        ModelAndView modelAndView = new ModelAndView();
-        if (isUpdated) {
-            modelAndView.setViewName("redirect:/user/mypage/myProfile");
-        } else {
-            modelAndView.setViewName("error");
-            modelAndView.addObject("message", "정보 업데이트에 실패했습니다.");
-        }
-        return modelAndView;
-    }
-
-    // 프로필 이미지 업로드
-    @PostMapping("/user/mypage/uploadProfileImage")
-    public ModelAndView uploadProfileImage(@RequestParam("profileImage") MultipartFile file, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
-            return new ModelAndView("redirect:/user/login");
-        }
-
-        if (file.isEmpty()) {
-            ModelAndView modelAndView = new ModelAndView("user/mypage/editProfile");
-            modelAndView.addObject("error", "파일이 선택되지 않았습니다.");
-            return modelAndView;
-        }
-
-        try {
-            // 저장할 파일 이름 설정
-            String originalFilename = file.getOriginalFilename();
-            String filename = "profile_" + userId + "_" + originalFilename;
-
-            // 파일 저장 경로
-            File destinationFile = new File(uploadPath + "/" + filename);
-            file.transferTo(destinationFile);
-
-            // DB에 이미지 경로 업데이트
-            String imagePath = "/uploaded-images/" + filename;
-            mypageService.updateProfileImage(userId, imagePath);
-
-            return new ModelAndView("redirect:/user/mypage/myProfile");
-        } catch (IOException e) {
-            e.printStackTrace();
-            ModelAndView errorView = new ModelAndView("error");
-            errorView.addObject("message", "이미지 업로드에 실패했습니다.");
-            return errorView;
-        }
-    }
-
-    // 나의 찜 보기
-    @GetMapping("/user/mypage/myJjim")
-    public ModelAndView myJjim(HttpSession session, 
-                            @RequestParam(value = "page", defaultValue = "1") int page) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
-            return new ModelAndView("redirect:/user/login");
-        }
-
-        int itemsPerPage = 5; 
-        int totalItems = mypageService.getJjimCount(userId); 
-        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-
-        List<JjimDTO> jjimList = mypageService.getJjimListWithPaging(userId, page, itemsPerPage);
-
-        ModelAndView modelAndView = new ModelAndView("user/mypage/myJjim");
-        modelAndView.addObject("jjimList", jjimList);
-        modelAndView.addObject("currentPage", page);
-        modelAndView.addObject("totalPages", totalPages);
-        return modelAndView;
-    }
-
-    // 찜 삭제 기능
-    @PostMapping("/user/mypage/deleteJjim")
-    public String deleteJjim(HttpSession session, @RequestParam("storeId") int storeId) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
+        if (user_idx == null) {
             return "redirect:/user/login";
         }
 
-        mypageService.deleteJjim(userId, storeId);
+        // user_idx를 DTO에 설정
+        userProfile.setUser_idx(user_idx);
+
+        // 정보 업데이트
+        boolean isUpdated = mypageService.updateUserProfile(userProfile);
+        if (!isUpdated) {
+            return "redirect:/user/mypage/editProfile?error=true";
+        }
+
+        return "redirect:/user/mypage/myProfile";
+    }
+
+//    // Object를 Integer로 변환
+//    private Integer convertToInteger(Object obj) {
+//        if (obj instanceof BigDecimal) {
+//            return ((BigDecimal) obj).intValue();
+//        } else if (obj instanceof Integer) {
+//            return (Integer) obj;
+//        }
+//        return null;
+//    }
+//    // 찜 목록
+    // 찜 목록
+    @GetMapping("/user/mypage/myJjim")
+    public String myJjim(HttpSession session, Model model,
+                         @RequestParam(value = "page", defaultValue = "1") int page) {
+        Integer user_idx = convertToInteger(session.getAttribute("user_idx"));
+
+        if (user_idx == null) {
+            return "redirect:/user/login";
+        }
+
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
+
+        // 로그 출력으로 값 확인
+        System.out.println("user_idx: " + user_idx);
+        System.out.println("page: " + page);
+        System.out.println("offset: " + offset);
+
+        int totalItems = mypageService.getTotalJjimCount(user_idx);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        List<JjimDTO> jjimList = mypageService.getJjimList(user_idx, page, pageSize);
+        if (jjimList == null) {
+            jjimList = new ArrayList<>(); // 빈 리스트로 초기화
+        }
+
+        model.addAttribute("jjim", jjimList.get(0));
+        System.out.println("jjimList" + jjimList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("_csrf", session.getAttribute("_csrf"));
+        return "user/mypage/myJjim";
+    }
+
+    // 찜 삭제
+    @PostMapping("/user/mypage/deleteJjim")
+    public String deleteJjim(@RequestParam("storeId") int storeId, HttpSession session) {
+        Integer user_idx = convertToInteger(session.getAttribute("user_idx"));
+
+        if (user_idx != null) {
+            mypageService.deleteJjim(user_idx, storeId);
+        }
+
         return "redirect:/user/mypage/myJjim";
     }
-    // 나의 리뷰 보기
+
+    // 나의 리뷰
     @GetMapping("/user/mypage/myReviews")
-    public ModelAndView myReviews(HttpSession session, 
-                                  @RequestParam(value = "page", defaultValue = "1") int page) {
-        Integer userId = (Integer) session.getAttribute("user_idx");
-        if (userId == null) {
-            return new ModelAndView("redirect:/user/login");
+    public String myReviews(HttpSession session, Model model,
+                            @RequestParam(value = "page", defaultValue = "1") int page) {
+    	Integer user_idx = convertToInteger(session.getAttribute("user_idx"));
+    	//        Integer user_idx = extractUserIdx(session);
+        if (user_idx == null) {
+            return "redirect:/user/login";
         }
 
-        int itemsPerPage = 5; // 페이지 당 항목 수
-        try {
-            int totalItems = mypageService.getReviewCount(userId); // 총 리뷰 수
-            int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+        int pageSize = 5; // 한 페이지에 표시할 리뷰 수
+        int totalItems = mypageService.getTotalReviewCount(user_idx);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        List<ReviewDTO> reviewList = mypageService.getReviewList(user_idx, page, pageSize);
 
-            // 리뷰 리스트를 페이징 처리하여 가져옴
-            List<ReviewDTO> reviewList = mypageService.getReviewListWithPaging(userId, page, itemsPerPage);
+        model.addAttribute("review", reviewList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
 
-            ModelAndView modelAndView = new ModelAndView("user/mypage/myReview");
-            modelAndView.addObject("reviewList", reviewList);
-            modelAndView.addObject("currentPage", page);
-            modelAndView.addObject("totalPages", totalPages);
-            return modelAndView;
-        } catch (Exception e) {
-            e.printStackTrace();
-            ModelAndView errorView = new ModelAndView("error");
-            errorView.addObject("message", "리뷰 데이터를 가져오는 중 문제가 발생했습니다.");
-            return errorView;
+        return "user/mypage/myReview";
+    }
+
+    // 나의 결제 내역
+    @GetMapping("/user/mypage/myPayments")
+    public String myPayments(HttpSession session, Model model,
+                             @RequestParam(value = "page", defaultValue = "1") int page) {
+    	Integer user_idx = convertToInteger(session.getAttribute("user_idx"));
+
+        if (user_idx == null) {
+            return "redirect:/user/login";
+        }
+
+        int pageSize = 10;
+        int totalItems = mypageService.getTotalPaymentCount(user_idx);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        List<PaymentDTO> paymentList = mypageService.getPaymentList(user_idx, page, pageSize);
+
+        model.addAttribute("payment", paymentList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "user/mypage/myPayment";
+    }
+
+    // 유틸: 세션에서 user_idx 추출
+    private Integer extractUserIdx(HttpSession session) {
+        Object userIdxObj = session.getAttribute("user_idx");
+        if (userIdxObj instanceof BigDecimal) {
+            return ((BigDecimal) userIdxObj).intValue();
+        } else if (userIdxObj instanceof Integer) {
+            return (Integer) userIdxObj;
+        } else if (userIdxObj != null) {
+            try {
+                return Integer.parseInt(userIdxObj.toString());
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid user_idx format: " + userIdxObj, e);
+            }
+        }
+        return null;
+    }
+    // BigDecimal을 Integer로 변환하는 메서드
+    private Integer convertToInteger(Object obj) {
+        if (obj instanceof BigDecimal) {
+            return ((BigDecimal) obj).intValue(); // BigDecimal -> Integer 변환
+        } else if (obj instanceof Integer) {
+            return (Integer) obj;
+        } else {
+            return null; // 변환 불가능할 경우 null 반환
         }
     }
-}
-    
 
+}

@@ -1,69 +1,102 @@
 package com.eats.user.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.eats.mapper.user.MypageMapper;
 import com.eats.user.model.EatsUserDTO;
+import com.eats.user.model.EatsUserProfileDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.PaymentDTO;
 import com.eats.user.model.ReviewDTO;
-
-import java.util.List;
 
 @Service
 public class MypageServiceImple implements MypageService {
 
     @Autowired
-    private MypageMapper mapper; // MypageMapper 주입
+    private MypageMapper mypageMapper;
 
     @Override
-    public EatsUserDTO getUserProfile(int userId) {
-        return mapper.getUserProfile(userId); // 사용자 프로필 정보 가져오기
+    public EatsUserDTO getUserProfile(int user_idx) {
+        return mypageMapper.getUserProfile(user_idx);
     }
 
     @Override
-    public boolean updateUserProfile(EatsUserDTO userProfile) {
-        int result = mapper.updateUserProfile(userProfile); // 사용자 정보 업데이트
-        return result > 0; // 업데이트 성공 여부 반환
+    public EatsUserProfileDTO getUserProfileDetail(int user_idx) {
+        return mypageMapper.getUserProfileDetail(user_idx);
     }
 
     @Override
-    public List<JjimDTO> getJjimList(int userId) {
-        return mapper.getJjimList(userId); // 전체 찜 목록 가져오기
+    public EatsUserProfileDTO getEditProfile(int user_idx) {
+        return mypageMapper.getEditProfile(user_idx);
     }
 
     @Override
-    public void deleteJjim(int userId, int storeId) {
-        mapper.deleteJjim(userId, storeId); // 찜 삭제
+    public boolean updateUserProfile(EatsUserProfileDTO userProfile) {
+        int result = mypageMapper.updateUserProfile(userProfile);
+        return result > 0;
+    }
+    
+    // 찜 목록
+    @Override
+    public List<JjimDTO> getJjimList(int user_idx, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return mypageMapper.getJjimList(user_idx, offset, pageSize);
+    }
+
+    // 찜 총 개수
+    @Override
+    public int getTotalJjimCount(int user_idx) {
+        return mypageMapper.getTotalJjimCount(user_idx);
+    }
+
+    // 찜 삭제
+    @Override
+    public void deleteJjim(int user_idx, int store_idx) {
+        mypageMapper.deleteJjim(user_idx, store_idx);
     }
 
     @Override
-    public List<JjimDTO> getJjimListWithPaging(int userId, int page, int itemsPerPage) {
-        int offset = (page - 1) * itemsPerPage; // 페이징을 위한 offset 계산
-        return mapper.getJjimListWithPaging(userId, offset, itemsPerPage); // 페이징된 찜 목록 가져오기
+    public List<ReviewDTO> getReviewList(int user_idx, int page, int pageSize) {
+//        int startRow = (page - 1) * pageSize + 1;
+//        int endRow = page * pageSize;
+    	int offset = (page - 1) * pageSize;
+//    	
+//        Map<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("user_idx", user_idx);
+//        paramMap.put("startRow", startRow);
+//        paramMap.put("endRow", endRow);
+
+        return mypageMapper.getReviewList(user_idx, offset, pageSize);
+    }
+    @Override
+    public int getTotalReviewCount(int user_idx) {
+        return mypageMapper.getTotalReviewCount(user_idx); // 변환 불필요
+    }
+
+    // 결제 내역
+    @Override
+    public List<PaymentDTO> getPaymentList(int user_idx, int page, int pageSize) {
+
+    	int offset = (page - 1) * pageSize;
+        return mypageMapper.getPaymentList(user_idx, offset, pageSize);
     }
 
     @Override
-    public int getJjimCount(int userId) {
-        return mapper.getJjimCount(userId); // 찜 개수 가져오기
+    public int getTotalPaymentCount(int user_idx) {
+    	return mypageMapper.getTotalPaymentCount(user_idx);
+        
     }
 
-    @Override
-    @Transactional
-    public void updateProfileImage(int userId, String imagePath) {
-        mapper.updateProfileImage(userId, imagePath); // 프로필 이미지 업데이트
-    }
+	@Override
+	public EatsUserProfileDTO getUserProfile1(Integer user_idx) {
+		return mypageMapper.getUserProfile1(user_idx);
+	}
 
-    // 추가된 리뷰 관련 메서드
-    @Override
-    public int getReviewCount(int userId) {
-        return mapper.getReviewCount(userId); // 총 리뷰 개수 가져오기
-    }
 
-    @Override
-    public List<ReviewDTO> getReviewListWithPaging(int userId, int page, int itemsPerPage) {
-        int offset = (page - 1) * itemsPerPage; // 페이징을 위한 offset 계산
-        return mapper.getReviewListWithPaging(userId, offset, itemsPerPage); // 페이징된 리뷰 목록 가져오기
-    }
 }
