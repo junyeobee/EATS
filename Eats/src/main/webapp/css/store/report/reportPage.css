@@ -19,7 +19,7 @@ body {
 
 .container {
     max-width: 1500px;
-    margin: 32px auto;
+    margin: 100px auto;
     padding: 32px;
     position: relative;
 }

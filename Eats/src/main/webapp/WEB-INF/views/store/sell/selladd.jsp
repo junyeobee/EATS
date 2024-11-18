@@ -6,7 +6,7 @@
         <style>
             .sales-container {
                 max-width: 1200px;
-                margin: 20px auto;
+                margin: 100px auto;
                 padding: 20px;
                 background: #fff;
                 box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -97,6 +97,8 @@
         </style>
     </head>
     <body>
+		<%@ include file="../store_Header.jsp"%>
+		<%@ include file="../nav.jsp"%>
         <div class="sales-container">
             <h2>매출 등록</h2>
             <div class="upload-section" id="dropZone">
@@ -132,7 +134,6 @@
 	            const dropZone = document.getElementById('dropZone');
 	            const fileInput = document.getElementById('fileInput');
 	            
-	            // 드래그 앤 드롭 이벤트 리스너
 	            dropZone.addEventListener('dragover', function(e) {
 	                e.preventDefault();
 	                dropZone.classList.add('drag-over');
@@ -159,7 +160,6 @@
 	                }
 	            });
 	            
-	            // 파일 업로드 버튼 이벤트
 	            document.getElementById('submitBtn').addEventListener('click', async function() {
 	                const fileInput = document.getElementById('fileInput');
 	                const file = fileInput.files[0];
@@ -172,7 +172,6 @@
 	            });
 	        });
 	
-	        // 파일 처리 함수
 	        function handleFile(file) {
 	            if (!file) return;
 	            
@@ -185,10 +184,10 @@
 	            reader.onload = function(e) {
 	                try {
 	                    const content = e.target.result;
-	                    console.log('File content:', content); // 디버깅용
+	                    console.log('File content:', content);
 	                    
 	                    const parsedRows = parseCSV(content);
-	                    console.log('Parsed rows:', parsedRows); // 디버깅용
+	                    console.log('Parsed rows:', parsedRows);
 	                    
 	                    displayPreview(parsedRows);
 	                    document.getElementById('submitBtn').disabled = false;
@@ -200,7 +199,6 @@
 	            reader.readAsText(file, 'UTF-8');
 	        }
 	
-	        // CSV 파싱 함수
 	        function parseCSV(content) {
 	        	const rows = content.split(/\r?\n/).map(row => row.trim()).filter(row => row.length > 0);
 
@@ -234,7 +232,6 @@
 	            return parsedRows;
 	        }
 	
-	        // 미리보기 표시 함수
 	        function displayPreview(rows) {
 	            const tbody = document.getElementById('previewBody');
 	            tbody.innerHTML = '';
@@ -258,7 +255,6 @@
 	            });
 	        }
 	
-	        // 파일 업로드 처리 함수
 	        async function handleSalesUpload(file) {
 	            const formData = new FormData();
 	            formData.append('file', file);
@@ -297,7 +293,6 @@
 	            }
 	        }
 	
-	        // 성공 메시지 표시 함수
 	        function showSuccessMessage(message) {
 	            const successEl = document.createElement('div');
 	            successEl.className = 'success-message';
@@ -316,7 +311,6 @@
 	            container.insertBefore(successEl, document.querySelector('.preview-section'));
 	        }
 	
-	        // 에러 메시지 표시 함수
 	        function showError(message) {
 	            const errorMessageEl = document.getElementById('errorMessage');
 	            errorMessageEl.textContent = message;

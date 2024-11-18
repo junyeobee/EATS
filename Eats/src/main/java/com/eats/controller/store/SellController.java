@@ -1,5 +1,6 @@
 package com.eats.controller.store;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -68,19 +69,16 @@ public class SellController {
 		dto.setStartDateTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00")));
 		dto.setEndDateTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 23:59")));
 		List<SalesResponseDTO> result = service.sellList(dto);
-		if(result.get(0).getDateType().equals(result.get(1).getDateType()) && result.get(0).getDateType().equals("hour")) {
-			for(int i = 0; i < result.size(); i++) {
-				if(i % 2 != 0) {
-					String tmp = result.get(i).getSellDate().substring(0,2);
-					tmp += ":30";
-					result.get(i).setSellDate(tmp);
-				}
-			}
-		}else {
-			for(int i = 0; i < result.size(); i+=2) {
-				result.get(i).setSellDate(result.get(i).getSellDate().substring(0,2)+":30");
-			}
+		int totalSell = 0;
+		int totalCnt = 0;
+		
+		DecimalFormat df = new DecimalFormat("#,##0");
+		for(SalesResponseDTO dt : result) {
+			totalSell += Integer.parseInt(dt.getSalesAmount());
+			totalCnt += Integer.parseInt(dt.getSalesCount());
 		}
+		mv.addObject("totalSell", df.format(totalSell));
+		mv.addObject("totalCnt", totalCnt);
 		mv.addObject("sellData", result);
 		mv.setViewName("store/sell/sellDetail");
 		return mv;
@@ -95,15 +93,7 @@ public class SellController {
 		System.out.println(dto.getStartDateTime());
 		System.out.println(dto.getEndDateTime());
 		List<SalesResponseDTO> result = service.sellList(dto);
-		if(result.get(0).getDateType().equals(result.get(1).getDateType()) && result.get(0).getDateType().equals("hour")) {
-			for(int i = 0; i < result.size(); i++) {
-				if(i % 2 != 0) {
-					String tmp = result.get(i).getSellDate().substring(0,2);
-					tmp += ":30";
-					result.get(i).setSellDate(tmp);
-				}
-			}
-		}
+		
 		return result;
 	}
 }

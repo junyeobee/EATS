@@ -42,43 +42,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<select id="sellList" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
-	    WITH TIME_SLOTS AS (
-	        SELECT 
-	            LEVEL - 1 AS idx,
-	            TO_CHAR(
-	                TO_DATE('11:00', 'HH24:MI') + 
-	                NUMTODSINTERVAL((LEVEL-1)*30, 'MINUTE'), 'HH24'
-	            ) AS TIME_STRING
-	        FROM DUAL
-	        CONNECT BY LEVEL <![CDATA[<=]]> 23
-	    ),
-	    DAILY_SALES AS (
-	        SELECT 
-	            TO_CHAR(SELL_DATE, 'HH24') AS sell_time,
-	            SUM(TOTAL_CNT) AS sales_amount,
-	            COUNT(*) AS sales_count
-	        FROM SELL
-	        WHERE STORE_IDX = #{storeIdx}
-	            AND SELL_STAT = 1
-	            AND TRUNC(SELL_DATE) = TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')
-	        GROUP BY TO_CHAR(SELL_DATE, 'HH24')
-	    )
-	    SELECT 
-	        t.TIME_STRING AS sellDate,
-	        TO_CHAR(NVL(s.sales_amount, 0), 'FM999,999,999') AS salesAmount,
-	        TO_CHAR(NVL(s.sales_count, 0), 'FM999,999') AS salesCount,
-	        #{dateType} AS dateType
-	    FROM TIME_SLOTS t
-	    LEFT JOIN DAILY_SALES s ON t.TIME_STRING = s.sell_time
-	    ORDER BY t.idx
+	    WITH STORE_HOURS AS (
+			SELECT 
+				TO_NUMBER(SUBSTR(STIME_START, 1, 2)) AS start_hour,
+				TO_NUMBER(SUBSTR(STIME_END, 1, 2)) AS end_hour
+			FROM STORE_TIME 
+			WHERE STORE_IDX = #{storeIdx}
+			AND STIME_DAY = TO_CHAR(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI'), 'DY', 'NLS_DATE_LANGUAGE=KOREAN')
+		),
+		TIME_SLOTS AS (
+			SELECT 
+				LEVEL - 1 AS idx,
+				TO_CHAR(
+					TO_DATE('00:00', 'HH24:MI') + 
+					NUMTODSINTERVAL(LEVEL-1, 'HOUR'), 
+					'HH24'
+				) AS TIME_STRING
+			FROM DUAL
+			CONNECT BY LEVEL <![CDATA[<=]]> 24
+		),
+		DAILY_SALES AS (
+			SELECT 
+				TO_CHAR(SELL_DATE, 'HH24') AS sell_time,
+				SUM(TOTAL_CNT) AS sales_amount,
+				COUNT(*) AS sales_count
+			FROM SELL
+			WHERE STORE_IDX = #{storeIdx}
+			AND SELL_STAT = 1
+			AND SELL_DATE BETWEEN 
+				TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI') AND 
+				TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+			GROUP BY TO_CHAR(SELL_DATE, 'HH24')
+		)
+		SELECT 
+			t.TIME_STRING AS sellDate,
+			TO_CHAR(NVL(s.sales_amount, 0)) AS salesAmount,
+			TO_CHAR(NVL(s.sales_count, 0)) AS salesCount,
+			#{dateType} AS dateType
+		FROM TIME_SLOTS t
+		LEFT JOIN DAILY_SALES s ON t.TIME_STRING = s.sell_time
+		WHERE TO_NUMBER(t.TIME_STRING) BETWEEN 
+			(SELECT start_hour FROM STORE_HOURS) AND 
+			(SELECT end_hour FROM STORE_HOURS)
+		ORDER BY t.idx
 	</select>
 
 	<select id="sellListWeek" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
 		SELECT 
 			TO_CHAR(pivot_date, 'YYYY-MM-DD') AS sellDate,
-			TO_CHAR(NVL(sales_amount, 0), 'FM999,999,999') AS salesAmount,
-			TO_CHAR(NVL(sales_count, 0), 'FM999,999') AS salesCount,
-			'week' AS dateType
+			TO_CHAR(NVL(sales_amount, 0)) AS salesAmount,
+			TO_CHAR(NVL(sales_count, 0)) AS salesCount,
+			#{dateType} AS dateType
 		FROM (
 			SELECT 
 				TRUNC(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')) + LEVEL - 1 AS pivot_date
@@ -126,9 +140,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            THEN w.month || '월 ' || w.week || '주 (현재)'
 	            ELSE w.month || '월 ' || w.week || '주'
 	        END AS sellDate,
-	        TO_CHAR(NVL(sales_amount, 0), 'FM999,999,999') AS salesAmount,
-	        TO_CHAR(NVL(sales_count, 0), 'FM999,999') AS salesCount,
-	        'month' AS dateType
+	        TO_CHAR(NVL(sales_amount, 0)) AS salesAmount,
+	        TO_CHAR(NVL(sales_count, 0)) AS salesCount,
+	        #{dateType} AS dateType
 	    FROM WEEKS w
 	    LEFT JOIN (
 	        SELECT 
@@ -159,8 +173,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    )
 	    SELECT 
 	        TO_CHAR(m.MONTH_START, 'YYYY"년 "MM"월"') AS sellDate,
-	        TO_CHAR(NVL(s.sales_amount, 0), 'FM999,999,999') AS salesAmount,
-	        TO_CHAR(NVL(s.sales_count, 0), 'FM999,999') AS salesCount,
+	        TO_CHAR(NVL(s.sales_amount, 0)) AS salesAmount,
+	        TO_CHAR(NVL(s.sales_count, 0)) AS salesCount,
 	        #{dateType} AS dateType
 	    FROM MONTHS m
 	    LEFT JOIN (

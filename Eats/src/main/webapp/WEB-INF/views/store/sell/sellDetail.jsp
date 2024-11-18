@@ -22,27 +22,149 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+    .body{
+        margin: 0;
+        padding: 0;
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+	.container {
+	    max-width: 1200px;
+	    margin: 0 auto;
+	    margin-top : 100px;
+	}
+	
+	.title {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 24px;
+	}
+	
+	h1 {
+	    font-size: 24px;
+	    font-weight: 600;
+	    margin: 0;
+	}
+	
+	.period-tabs {
+	    display: inline-flex;
+	    background: #fff;
+	    border-radius: 100px;
+	    padding: 4px;
+	    border: 1px solid #e2e8f0;
+	}
+	
+	.btn-period {
+	    padding: 8px 16px;
+	    border: none;
+	    background: transparent;
+	    border-radius: 100px;
+	    font-size: 14px;
+	    color: #666;
+	    cursor: pointer;
+	    transition: all 0.2s;
+	}
+	
+	.btn-period.active {
+	    background: #3182f6;
+	    color: white;
+	    font-weight: 500;
+	}
+	
+	.sales-summary {
+	    background: white;
+	    border-radius: 16px;
+	    padding: 24px;
+	    margin-bottom: 24px;
+	    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	}
+	
+	.total-sales {
+	    margin-bottom: 24px;
+	}
+	
+	.total-sales .label {
+	    font-size: 13px;
+	    color: #666;
+	    margin-bottom: 4px;
+	}
+	
+	.total-sales .amount {
+	    font-size: 24px;
+	    font-weight: 600;
+	}
+	
+	.sales-details {
+	    display: grid;
+	    grid-template-columns: repeat(3, 1fr);
+	    gap: 24px;
+	    padding-top: 24px;
+	    border-top: 1px solid #e2e8f0;
+	}
+	
+	.detail-item .label {
+	    font-size: 13px;
+	    color: #666;
+	    margin-bottom: 4px;
+	}
+	
+	.detail-item .value {
+	    font-size: 16px;
+	    font-weight: 500;
+	}
+	
+	.detail-item .count {
+	    font-size: 13px;
+	    color: #666;
+	    margin-left: 4px;
+	}
+	
+	.negative {
+	    color: #dc2626;
+	}
+	
+	.chart-container {
+	    background: white;
+	    border-radius: 16px;
+	    padding: 24px;
+        height: 500px;
+	    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	}
+    #salesChart {
+        width: 100%;
+        height: 100%;
+    }
+</style>
 </head>
 <body>
-	<div class="container">
-		<div class="period-wrap">
-			<button type="button" class="btn-period active" data-period="hour">최근영업</button>
-			<button type="button" class="btn-period" data-period="1w">1주</button>
-			<button type="button" class="btn-period" data-period="1m">1달</button>
-			<button type="button" class="btn-period" data-period="3m">3달</button>
-		</div>
-		
-		<div class="chart-wrap">
-			<canvas id="salesChart"></canvas>
-		</div>
-		
-		<div class="date-picker-wrap" style="display:none;">
-			<input type="text" id="startDate" readonly>
-			<span>~</span>
-			<input type="text" id="endDate" readonly>
-			<button type="button" id="searchBtn">조회</button>
-		</div>
-	</div>
+	<%@ include file="../store_Header.jsp"%>
+	<%@ include file="../nav.jsp"%>
+	 <div class="container">
+        <div class="title">
+            <h1>매출 분석</h1>
+            <div class="period-tabs">
+                <button type="button" class="btn-period active" data-period="hour">최근영업</button>
+                <button type="button" class="btn-period" data-period="1w">1주</button>
+                <button type="button" class="btn-period" data-period="1m">1달</button>
+                <button type="button" class="btn-period" data-period="3m">3달</button>
+            </div>
+        </div>
+
+        <div class="sales-summary">
+            <div class="total-sales">
+                <div class="label" id = "dateTitle">최근 24시간</div>
+                <div class="amount">총 매출 금액 <span id = "totalSellDetail">${totalSell}원</span></div>
+                <div class="detail-item">
+                    <div class="value"><span class="count">${totalCnt}건</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
 </body>
 <script>
 const chartData = {
@@ -62,11 +184,25 @@ const chartData = {
 
 const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     interaction: {
         mode: 'point',
         intersect: true
     },
+    
     plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+                padding: 20,
+                boxWidth: 12,
+                font: {
+                    size: 12
+                }
+            }
+        },
         annotation: {
             annotations: {
                 line1: {
@@ -164,7 +300,8 @@ function initChart() {
     return new Chart(ctx, {
         type: 'line',
         data: chartData,
-        options: chartOptions
+        options: chartOptions        
+        
     });
 }
 
@@ -221,6 +358,38 @@ function sendRequest(period) {
 		dataType: 'json',
         success: function(response) {
             updateChart(response);
+            let totalSellDetail = 0;
+            let totalCnt = 0;
+            response.forEach(function(item) {
+                item.salesAmount = parseInt(item.salesAmount);
+                item.salesCount = parseInt(item.salesCount);
+                console.log(item.salesAmount);
+                totalSellDetail += item.salesAmount;
+                totalCnt += item.salesCount;
+                
+            });
+            let totalselltext = document.getElementById('totalSellDetail');
+            let df = new Intl.NumberFormat();
+            totalSellDetail = df.format(totalSellDetail, '#.##0');
+            totalselltext.textContent = totalSellDetail + '원';
+            let totalCnttext = document.querySelector('.detail-item .value .count');
+            totalCnttext.textContent = totalCnt + '건';
+            let dateTitle = document.getElementById('dateTitle');
+            switch(period) {
+                case 'hour':
+                    dateTitle.textContent = '최근 24시간';
+                    break;
+                case '1w':
+                    dateTitle.textContent = '최근 1주';
+                    break;
+                case '1m':
+                    dateTitle.textContent = '최근 1달';
+                    break;
+                case '3m':
+                    dateTitle.textContent = '최근 3달';
+                    break;
+            }
+            dateTitle.textContent = dateTitle.textContent;
         }
     });
 }
