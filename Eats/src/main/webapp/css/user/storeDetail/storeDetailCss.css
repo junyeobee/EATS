@@ -362,11 +362,7 @@
     flex-wrap: wrap;
     gap: 10px;
     padding: 10px;
-}
-.reservation .cnt-wrapper{
-	display: flex;
-    flex-direction: row;
-	align-items: center;
+    align-items: center;
 }
 .reservation .cnt-wrapper span{
 	width:30%;
@@ -484,5 +480,16 @@
 	cursor: pointer;
 }
 .reservation .btn-wrapper{
-	height:70px;
+	height:fit-content;
+	background-color: unset;
+	padding:0px;
+}
+.reservation .btn-wrapper .reserve-btn{
+    background-color: #f3553c;
+    border: 0;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    color: #fefefe;
+    font-size: 20px;
 }
