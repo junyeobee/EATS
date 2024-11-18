@@ -96,7 +96,13 @@
 			alert("태그를 2개 이상 선택해주세요.");
 			return false;
 		}
+	}
+	
+	function cate_two(){
 		
+		alert("찾아오시는 길 작업 안하면 해당부분 tag_count로 변경필요");
+		return false;
+		tag_count();
 	}
 	
 </script>

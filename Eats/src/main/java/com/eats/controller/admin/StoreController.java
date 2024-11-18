@@ -16,18 +16,24 @@ public class StoreController {
 
     @Autowired
     private AdminStoreInfoService service;
-    
 
 	@GetMapping("/admin/storeEntryOkList")
-    public String storeEntry() {
-        return "admin/store/storeEntryOkList";
+    public ModelAndView storeEntry() {
+
+		List<AdminStoreInfoUpdateDTO> lists = service.adminStoreInfoList();
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("lists", lists);
+		//mav.addObject("pageStr", pageStr);
+		
+		mav.setViewName("admin/store/storeEntryOkList");
+		return mav;
+        //return "admin/store/storeEntryOkList";
     }
 
 
 	@GetMapping("/admin/storeInfoUpdateOkList")
     public ModelAndView storeInfoUpdateOkList() {
 
-		
 		List<AdminStoreInfoUpdateDTO> lists = service.adminStoreInfoList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);

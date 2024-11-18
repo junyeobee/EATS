@@ -5,7 +5,7 @@
 <%@include file="../common/header_cate.jsp"%>
 
 <div class="mainCon_400">
-	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return tag_count()">
+	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return cate_two()">
 	
 		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<input type="hidden" name="cate_level" value=2>
@@ -74,7 +74,7 @@
 				<span>&lt; 찾아오시는 길 &gt;</span>
 			</div>
 			<div class="cb_bottom mt10">
-				<textarea></textarea>
+				<textarea name="store_road"></textarea>
 			</div>
 		</div>
 		
