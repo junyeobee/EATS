@@ -9,7 +9,9 @@ public interface LoginMapper {
 	public EatsStoreDTO storeLogin(String storeId);
 	
 	public String findId(EatsStoreDTO dto);
+	
 	public String storeidCheckForFindPwd(String storeId);
+	
 	public int storeUpdatePwd(Map<String,String> map);
 	
 }

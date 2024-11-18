@@ -116,13 +116,13 @@
 		<div class="div4">
 
 			<c:choose>
-				<c:when test="${empty findId || empty findId.store_id}">
+				<c:when test="${empty findId}">
 					<p>아이디를 찾을 수 없습니다.</p>
 					<p>${message}</p>
 				</c:when>
 
 				<c:otherwise>
-  					${findId.store_id}
+  					${findId}
   				</c:otherwise>
 			</c:choose>
 		</div>
