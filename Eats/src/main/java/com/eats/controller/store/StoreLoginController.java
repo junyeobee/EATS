@@ -1,6 +1,8 @@
 package com.eats.controller.store;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -263,7 +265,7 @@ public class StoreLoginController {
 	public String storeUpdatePwdPage(HttpSession session) {
 		
 		 String storeId = (String) session.getAttribute("storeId");
-		 
+			System.out.println("아이디111"+storeId);
 		  if (storeId == null) {
 		       
 		        return "redirect:/storeLogin"; 
@@ -275,20 +277,22 @@ public class StoreLoginController {
 	}
 	
 	
-	@PostMapping("storeUpdatePwd")
+	@PostMapping("storeUpdatePwdOk")
 	public ModelAndView storeUpdatePwd(String newPwd, 
 			HttpSession session){
 		
 		String storeId = (String) session.getAttribute("storeId");
+		System.out.println("아이디222"+storeId);
+		
 		ModelAndView mav= new ModelAndView();
 		
-		if(storeId!=null && storeId!="") {
-		int result=service.storeUpdatePwd(storeId, newPwd);
+		if(storeId!=null && !storeId.isEmpty()) {
+
+		int result=service.storeUpdatePwd(newPwd,storeId);
 		session.removeAttribute("storeId");
 		
-		String msg=(result>0)?"비밀번호가 변경되었습니다.":"다시 확인해주세요.";
-		
-		
+		System.out.println("비번!!!"+result);
+		String msg= result>0 ? "비밀번호가 변경되었습니다.":"다시 확인해주세요.";
 		
 		mav.addObject("result",msg);
 		mav.setViewName("store/login/storeUpdatePwdOk");
