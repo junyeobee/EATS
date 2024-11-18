@@ -2,7 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eats.mapper.store.StoreImgMapper">
+
+
+
+	
 	<insert id="storeImgInsert" parameterType="com.eats.store.model.StoreImgDTO">
+    	insert into STORE_IMG
+		    (
+		        SI_IDX,
+		        store_idx, 
+		        store_img,
+		        img_order
+		    )
+		    values (
+		        SI_IDX_SEQ.nextval,
+		        #{store_idx},
+		        #{store_img},
+		        #{img_order}
+		    )
+	</insert>
+	
+   	<select id="storeImgData" resultType="com.eats.store.model.StoreImgDTO">
+		SELECT * 
+		    FROM store_img 
+		    where store_idx=#{store_idx} 
+		    ORDER BY img_order 
+	</select>
+	
+	<update id="storeImgUpdate" parameterType="com.eats.store.model.StoreImgDTO">
+		update store_img set
+	        store_img=#{store_img}, 
+	        img_order=#{img_order}
+		where 
+			si_idx=#{si_idx}
+	</update>
+	
+	
+	<delete id="storeImgUpDel2" parameterType="int">
+      delete from store_img  
+      where si_idx=#{si_idx}
+	</delete>
+	
+	
+	
+	
+	
+
+
+
+
+	<insert id="storeImgInsertBefore" parameterType="com.eats.store.model.StoreImgBeforeDTO">
     	insert into STORE_IMG
        		values(SI_IDX_SEQ.nextval,
         	#{store_idx},
@@ -13,17 +62,17 @@
         	#{store_img5})
    	</insert>
    	
-   	<select id="storeImgData" resultType="com.eats.store.model.StoreImgDTO">
+   	<select id="storeImgBeforeData" resultType="com.eats.store.model.StoreImgBeforeDTO">
 		SELECT *
 		FROM (
 		    SELECT * 
-		    FROM store_img
+		    FROM store_img_before
 		    ORDER BY si_idx DESC
 		)
 		WHERE ROWNUM = 1
 	</select>
 	
-	<update id="storeImgUpdate" parameterType="com.eats.store.model.StoreImgDTO">
+	<update id="storeImgBeforeUpdate" parameterType="com.eats.store.model.StoreImgBeforeDTO">
 		update store_img set
 			store_img1=#{store_img1},
 			store_img2=#{store_img2},
@@ -34,7 +83,7 @@
 			si_idx=#{si_idx}
 	</update>
 	
-	<delete id="storeImgUpDel" parameterType="com.eats.store.model.StoreImgDTO">
+	<delete id="storeImgUpDel" parameterType="com.eats.store.model.StoreImgBeforeDTO">
 		update store_img set
 			store_img1=#{store_img1},
 			store_img2=#{store_img2},

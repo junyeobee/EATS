@@ -6,150 +6,90 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
 <style>
-.store-login,
-.store-login * {
-  box-sizing: border-box;
+body{
+	font-family: "Noto Sans KR", sans-serif;
 }
-.store-login {
-  background: #ffffff;
-  height: 1024px;
-  position: relative;
-  overflow: hidden;
+#store_login_form{
+	width:50%;
+	margin:100px auto;
 }
-.rectangle-3 {
-  background: var(--color-6, #daf0ff);
-  border-radius: 10px;
-  border-style: solid;
-  border-color: var(--gray1, rgba(117, 117, 117, 0.29));
-  border-width: 1px;
-  width: 548px;
-  height: 69px;
-  position: absolute;
-  left: 446px;
-  top: 424px;
+.login-wrapper{
+	width:100%;
+	margin:auto;
+	text-align:center;
 }
-.rectangle-4 {
-  background: #e5f3ff;
-  border-radius: 10px;
-  border-style: solid;
-  border-color: var(--gray1, rgba(117, 117, 117, 0.29));
-  border-width: 1px;
-  width: 548px;
-  height: 69px;
-  position: absolute;
-  left: 446px;
-  top: 517px;
+.logo-wrapper{
+	width:20%;
+	margin:20px auto;
 }
-.rectangle-6 {
-  background: #e2e2e2;
-  border-radius: 4px;
-  width: 20px;
-  height: 19px;
-  position: absolute;
-  left: 451px;
-  top: 606px;
+.logo-wrapper img{
+	width:150px;
 }
-.rectangle-5 {
-  background: var(--storeblue2, #349ffb);
-  border-radius: 12px;
-  width: 548.32px;
-  height: 83.73px;
-  position: absolute;
-  left: 446px;
-  top: 681px;
+.text-wrapper{
+	width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.div {
-  color: #ffffff;
-  text-align: left;
-  font-family: "NotoSansKr-Bold", sans-serif;
-  font-size: 21px;
-  font-weight: 700;
-  position: absolute;
-  left: 667px;
-  top: 708px;
+.text-wrapper input{
+	width:95%;
+    margin-top: 20px;
+    background-color: #DAF0FF;
+    border: 1px solid gray;
+    height: 30px;
+    border-radius: 5px;
+    padding: 10px 5px 10px 10px;
+    color: black;
+    font-family: "Noto Sans KR", sans-serif;
 }
-.div2 {
-  color: #000000;
-  text-align: left;
-  font-family: "NotoSansKr-Regular", sans-serif;
-  font-size: 20.258302688598633px;
-  font-weight: 400;
-  position: absolute;
-  left: 589px;
-  top: 820px;
+.saveId-wrapper{
+	margin: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
 }
-.div3 {
-  color: #000000;
-  text-align: left;
-  font-family: "NotoSansKr-Regular", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  position: absolute;
-  left: 480px;
-  top: 603px;
-  width: 78px;
+.button-wrapper{
+	display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
 }
-.div4 {
-  color: #000000;
-  text-align: left;
-  font-family: "NotoSansKr-Medium", sans-serif;
-  font-size: 36px;
-  font-weight: 500;
-  position: absolute;
-  left: calc(50% - 121px);
-  top: 319.84px;
+#button-login{
+    font-size: 15px;
+    padding: 20px 0px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    border: 0;
+    font-family: "Noto Sans KR", sans-serif;
 }
-.div5 {
-  color: #505050;
-  text-align: left;
-  font-family: "NotoSansKr-DemiLight", sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  position: absolute;
-  left: 471px;
-  top: 445px;
-}
-.div6 {
-  color: #505050;
-  text-align: left;
-  font-family: "NotoSansKr-DemiLight", sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  position: absolute;
-  left: 470.66px;
-  top: 538px;
+#button-login{
+	background-color:#349FFB;
+	color:#FFF8EB;
 }
 
-.group-185 {
-  position: absolute;
-  inset: 0;
+.findAcc-wrapper{
+	text-align:center;
+	margin-top:20px;
+	color:gray;
 }
-.clip-path-group {
-  width: 183.1px;
-  height: 86.88px;
-  position: absolute;
-  left: 623px;
-  top: 175px;
-  overflow: visible;
+.findAcc-wrapper a{
+	text-decoration:none;
+	color:gray;
 }
-.store {
-  color: rgba(117, 117, 117, 0.58);
-  text-align: left;
-  font-family: "NotoSansKr-Black", sans-serif;
-  font-size: 31.112558364868164px;
-  font-weight: 900;
-  position: absolute;
-  left: 677.45px;
-  top: 250.84px;
+.findAcc-wrapper a:hover{
+	text-decoration:underline;
 }
 
 </style>
+</head>
 <body>
+
+
 <form name="store_login_form" id="store_login_form" action="storeLogin" method="post">
 
-<div class="store-login">
+<%-- <div class="store-login">
   <div class="rectangle-3"></div>
   <div class="rectangle-4"></div>
   <div class="rectangle-6"></div>
@@ -160,10 +100,32 @@
   <input type="checkbox" name="check" <c:if test="${!empty cookie.saveid}">checked</c:if>>
   아이디 저장</div>
   <div class="div4">매장회원 로그인</div>
-  <input type="text" name="storeId" id="storeId" class="div5" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
-  <input type="password" name="storePwd" id="storePwd" class="div6" placeholder="비밀번호를 입력해주세요.">
+  <input type="text" name="store_id" id="store_id" class="div5" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
+  <input type="password" name="store_pwd" id="store_pwd" class="div6" placeholder="비밀번호를 입력해주세요.">
   <img class="clip-path-group" src="img/store_logo.png"/>
-</div>
+</div> --%>
+
+
+<div class="login-wrapper">
+		<div class="logo-wrapper">
+			<a href="/"><img src="/img/store_logo.png"></a>
+		</div>
+		<div class="text-wrapper">
+			<input type="text" name="store_id" id="store_id" placeholder="아이디를 입력해주세요." value="${cookie.saveid.value}">
+			<input type="password" name="store_pwd" id="store_pwd" placeholder="비밀번호를 입력해주세요.">
+		</div>
+		<div class="saveId-wrapper">
+			<input type="checkbox" name="check" <c:if test="${!empty cookie.saveid}">checked</c:if>>
+  			아이디 저장</div>
+		</div>
+		<div class="button-wrapper">
+			<input type="submit" value="로그인" id="button-login">
+			
+		</div>
+		<div class="findAcc-wrapper">
+			<a href="/storeFindIdPage">아이디 찾기</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/storeFindPwdPage">비밀번호 찾기</a>
+		</div>
+	</div>
 
 </form>
 </body>

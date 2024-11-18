@@ -1,0 +1,349 @@
+:root {
+    --primary-blue: #3b82f6;
+    --primary-red: #ef4444;
+    --light-blue: #f0f7ff;
+    --dark-blue: #1e40af;
+    --gray: #64748b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background-color: #f8fafc;
+}
+
+.container {
+    max-width: 1500px;
+    margin: 32px auto;
+    padding: 32px;
+    position: relative;
+}
+
+.report-card {
+    background-color: var(--light-blue);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.title {
+    font-size: 28.8px;
+    color: var(--dark-blue);
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.date-select {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    padding: 8px 16px;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    background-color: white;
+    min-width: 150px;
+}
+
+.keyword-section {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 40px;
+}
+
+.keyword-content {
+    flex: 7;
+}
+
+.donut-container {
+    flex: 3;
+    background-color: white;
+    padding: 24px;
+    border-radius: 12.8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    width: 300px;
+    height: 350px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+#keywordDonut {
+    width: 250px !important;
+    height: 250px !important;
+    margin-left: 20px;
+}
+
+#legend-container {
+    margin-left: auto;
+    margin-top: -50px;
+}
+
+.tag-box {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding: 8px 16px;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 32px;
+    font-size: 14.4px;
+}
+
+.emoji-tag {
+    padding: 8px 16px;
+    background-color: #fef3c7;
+    color: #92400e;
+    border-radius: 32px;
+    font-size: 14.4px;
+}
+
+.description {
+    margin: 24px 0;
+    color: var(--gray);
+    font-size: 16px;
+}
+
+/* 예약 통계 섹션 */
+.stats-section {
+    margin: 40px 0;
+}
+
+.keywordSpan{
+    color: var(--primary-blue); 
+    font-weight: 600;
+}
+
+.main-chart-container {
+    background-color: white;
+    padding: 24px;
+    border-radius: 12.8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    min-height: 300px;
+}
+
+.sub-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.chart-container {
+    background-color: white;
+    padding: 24px;
+    border-radius: 12.8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    min-height: 200px;
+}
+
+.chart-title {
+    font-size: 19.2px;
+    color: var(--dark-blue);
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-size: 24px;
+    color: var(--dark-blue);
+    margin: 40px 0 24px 0;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: white;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 14.4px;
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+}
+
+#createReport {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 25px;
+    border-radius: 5px;
+    background-color: #121212;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 100;
+    cursor: pointer;
+    display: none;
+}
+
+.blur {
+    filter: blur(5px);
+}
+
+#donut_flex {
+    display: flex;
+}
+
+/* 분석 섹션 스타일 */
+.anal-section {
+    margin: 48px 0;
+}
+
+.dualAnalContent{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+/* 분석 카드 스타일 */
+.anal-card {
+    background-color: white;
+    border-radius: 12.8px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.anal-content {
+    display: flex;
+    gap: 32px;
+}
+
+.anal-info {
+    flex: 3;
+    padding-right: 32px;
+    border-right: 1px solid #e5e7eb;
+}
+
+.chart-wrapper {
+    flex: 7;
+    min-height: 300px;
+    position: relative;
+}
+
+/* 스크롤 가능한 차트 */
+.chart-wrapper.scrollable {
+    overflow-x: auto;
+    padding-bottom: 12px;
+}
+
+/* 차트 제목과 설명 */
+.anal-title {
+    font-size: 20px;
+    color: var(--dark-blue);
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.anal-description {
+    color: var(--gray);
+    font-size: 14.4px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* 주요 지표 스타일 */
+.key-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metric {
+    background-color: var(--light-blue);
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metric-label {
+    font-size: 12.8px;
+    color: var(--gray);
+}
+
+.metric-value {
+    font-size: 24px;
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+/* 섹션 제목 스타일 수정 */
+.section-title {
+    font-size: 24px;
+    color: var(--dark-blue);
+    font-weight: 700;
+    margin: 48px 0 32px 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+@media (max-width: 1200px) {
+    .anal-content {
+        flex-direction: column;
+    }
+
+    .anal-info {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding-right: 0;
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+    }
+
+    .key-metrics {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .metric {
+        flex: 1;
+        min-width: 200px;
+    }
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.scrollable::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

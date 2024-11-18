@@ -51,6 +51,7 @@ function checkForm(){
 			<a href="/user/findId">아이디 찾기</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/user/findPwd">비밀번호 찾기</a>
 		</div>
 	</div>
+	<input type="hidden" name="callback" value="${callback }">
 </form>
 </body>
 </html>

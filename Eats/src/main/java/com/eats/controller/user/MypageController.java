@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,10 @@ public class MypageController {
 
     @Autowired
     private MypageService mypageService;
+
+
+    @Value("${profile.image.upload.path:/default/path}")
+    private String uploadPath;
 
     // 마이페이지 메인 화면
     @GetMapping("/user/mypage/myPage")

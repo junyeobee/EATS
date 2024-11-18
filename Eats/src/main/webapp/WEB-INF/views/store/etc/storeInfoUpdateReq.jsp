@@ -8,10 +8,10 @@
 	<form name="infoUpdateReq" action="storeInfoUpdateReqSave" method="post">
 	
 		<c:if test="${not empty data}">	
-			<input type="text" name="store_idx" id="" value="1">
+		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 			
-			<input type=text name="su_state" id="" class="ws400" value="대기" placeholder="">
-			<input type=text name="su_reason" id="" class="ws400" value="" placeholder="">
+			<input type="hidden" name="su_state" id="" class="ws400" value="대기" placeholder="">
+			<input type="hidden" name="su_reason" id="" class="ws400" value="" placeholder="">
 			<h2>정보수정신청</h2>
 			<div class="btnBox_top">
 				<input type="submit" class="btn_black" value="수정요청">

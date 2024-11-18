@@ -1,52 +1,7 @@
 @charset "utf-8";
-body{
-	background-color:#FFF8EB;
+.wrapper{
+	margin-top:50px;
 }
-/* header */
-header {
-	width: 100%; 
-	height: 103px; 
-	/* box-shadow: 0px 5px 10px rgba(0,0,0,0.12); */
-	/* border-bottom:3px solid #FFB53C; */
-	/* background-color:#fefefe; */
-}
-header .inner {
-	position: relative; 
-	display: flex; 
-	justify-content: right; 
-	align-items: center; 
-	max-width: 1190px; 
-	height: 100%; 
-	margin:0 auto;
-}
-header .inner .logo {
-	position: absolute; 
-	top: 50%; 
-	left: 50%; 
-	transform:translate(-50%,-50%);
-}
-header .inner .user-area {
-	display: flex; 
-	flex-direction: column; 
-	justify-content: center; 
-	height: 74px; 
-	padding-left: 92px; 
-	background: url(/img/user/storeInfo/img_user.png) no-repeat left center;
-}
-header .inner .user-area .user {
-	display: inline-block; 
-	max-width: 84px;  
-	overflow: hidden; 
-	text-overflow: ellipsis; 
-	display: -webkit-box; 
-	-webkit-line-clamp: 1; 
-	-webkit-box-orient: vertical; 
-	font-size: 15px;
-}
-header .inner .user-area .noti {
-	font-size: 12px;
-}
-
 /* contents */
 .content-wrap {
 	width: 836px;
@@ -105,7 +60,7 @@ header .inner .user-area .noti {
 	padding-left: 42px; 
 	background: url(/img/user/storeInfo/icon_fork.png) no-repeat left center; 
 	color: #ff533e; 
-	font-size: 12px;
+	font-size: 25px;
 	font-weight: 500;
 }
 
@@ -128,7 +83,7 @@ header .inner .user-area .noti {
 	margin: 35px 0; 
 	padding: 15px; 
 	border-radius: 12px; 
-	background: #FFF8EB;
+	background: #FFE8E4;
 }
 .bg-box .inner {
 	padding: 15px; 
@@ -166,10 +121,11 @@ header .inner .user-area .noti {
 	font-size: 0;
 }
 .acco-wrap .acco-head .btn-acco {
-	position: relative; 
-	display: inline-block; 
-	padding-right: 36px; 
-	font-size: 16px;
+	position: relative;
+    display: flex;
+    padding-right: 36px;
+    font-size: 16px;
+    gap: 10px;
 }
 .acco-wrap .acco-head .btn-acco:after {
 	content:''; 
@@ -233,7 +189,10 @@ header .inner .user-area .noti {
 }
 .acco-wrap .acco-body .time-list li {
 	display: flex; 
-	font-size: 12px;
+	font-size: 15px;
+}
+.acco-wrap .acco-body .time-list li span p{
+	color:gray;
 }
 .acco-wrap .acco-body .time-list li .item {
 	flex-basis: 28px;
@@ -275,10 +234,11 @@ header .inner .user-area .noti {
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
-    background: #FFB53C;
+    background: #F3553C;
     text-align: center;
     width: 98%;
     margin: auto;
+    color:#fefefe;
 }
 
 /* 메뉴 리스트 */
@@ -297,16 +257,21 @@ header .inner .user-area .noti {
 .tab-wrap .tab-list li {
 	display: inline-block; 
 	padding: 8px 28px; 
-	border:2px solid #FFB53C;
+	border:2px solid #F3553C;
 	border-radius: 20px; 
 	font-size: 15px; 
 	font-weight: 500;
+	background-color:#fefefe;
+	color: #F3553C;
+}
+.tab-wrap .tab-list li:hover{
+	background-color: #FFE8E4;
 }
 /* .tab-wrap .tab-list li + li {
 	margin-left: 24px;
 } */
 .tab-wrap .tab-list li.on {
-	background: #FFB53C; 
+	background: #F3553C; 
 	color: #fefefe; 
 	font-weight: 700;
 }
@@ -324,7 +289,7 @@ header .inner .user-area .noti {
 	height:140px;
 	overflow: hidden;
 	text-align:center;
-	border:1px solid #FFB53C;
+	border:1px solid #F3553C;
 	margin:0px 20px;
 }
 .tab-wrap .tab-contents .menu-list li img {
@@ -377,24 +342,154 @@ header .inner .user-area .noti {
     width: 328px;
     height: fit-content;
     margin-top: 24px;
-    background: #FFB53C;
+    background: #FECBC3;
     border-radius: 10px;
+    font-family: "Noto Sans KR", sans-serif;
 }
 .reservation div{
-	width:300px;
-	margin:10px auto;
-	background-color:#fefefe;
+    width: 95%;
+    margin: 10px auto;
+    background-color: #fefefe;
 }
 .reservation .cal-wrapper{
-	height:300px;
+    padding: 5px;
+    height: fit-content;
+    text-align: center;
+}
+.reservation .cnt-wrapper{
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+}
+.reservation .cnt-wrapper span{
+	width:30%;
 	text-align:center;
 }
-.reservation .cnt-wrapper, .reservation .time-wrapper{
-	height:70px;
+.reservation .cnt-wrapper div{
+	width:60%;
+	display:flex;
+	justify-content: flex-end;
+}
+.reservation .cnt-wrapper div input[type="button"]{
+    font-family: 'SBAggroB';
+    background-color: #f3553c;
+    border: 0;
+    border-radius: 50%;
+    padding: 10px 12px;
+    font-size: 10px;
+    width: fit-content;
+    height: fit-content;
+    color: #fefefe;
+}
+.reservation .cnt-wrapper div input[type="text"]{
+	border:0;
+	width:30%;
+	text-align:center;
+	font-family: 'SBAggroB';
+}
+.reservation .time-wrapper{
+	height: 0;
+	overflow-y: auto;
+}
+.reservation .time-wrapper::-webkit-scrollbar, .reservation .table-wrapper::-webkit-scrollbar{
+	background-color: #fefefe;
+	/* opacity: 0.5; */
+}
+.reservation .time-wrapper::-webkit-scrollbar-thumb, .reservation .table-wrapper::-webkit-scrollbar{
+	background-color: #f3553c;
+	border-radius: 30px;
+}
+.reservation .time-wrapper::-webkit-scrollbar-track{
+	/* background-color: #FECBC3; */
+}
+.reservation .time-wrapper .label-area{
+	display:flex;
+	margin:0px;
+	padding-left: 18px;
+}
+.reservation .time-wrapper .label-area div{
+	margin:0px;
+	padding: 0px;
+	display:flex;
+	align-items: center;
+}
+.reservation .time-wrapper .label-area .yellow-label{
+	width:5px;
+	height: 5px;
+	background-color: #ffb53c;
+}
+.reservation .time-wrapper .label-area .red-label{
+	width:5px;
+	height: 5px;
+	background-color: #f3553c;
+}
+.reservation .time-wrapper .time-list-table{
+	width:90%;
+	margin:10px auto;
+	border:0;
+	height: fit-content;
+}
+.reservation .time-wrapper .time-list-table td{
+	width:23%;
+	padding:0;	
+	text-align: center;
+}
+.reservation .time-wrapper span{
+	display:flex;
+	width:95%;
+	padding: 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    text-align: center;
+    margin:5px auto;
+}
+.reservation .time-wrapper .time-list-y{
+	border: 3px solid #f3553c;
+	color: #f3553c;
+	cursor: pointer;
+}
+.reservation .time-wrapper .time-list-y:hover{
+	background-color:#FECBC3;
+}
+.reservation .time-wrapper .time-list-n{
+	border: 3px solid #ffb53c;
+	color:#ffb53c;
+	cursor: pointer;
+}
+.reservation .time-wrapper .time-list-n:hover{
+	background-color: #FFE9C5;
 }
 .reservation .table-wrapper{
-	height:100px;
+    height: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+.reservation .table-wrapper .table-list{
+	border:3px solid #f3553c;
+	padding:10px;
+	border-radius: 30px;
+	color: #f3553c;
+	width:22%;
+	text-align:center;
+	font-size: 12px;
+	cursor: pointer;
 }
 .reservation .btn-wrapper{
-	height:70px;
+	height:fit-content;
+	background-color: unset;
+	padding:0px;
+}
+.reservation .btn-wrapper .reserve-btn{
+    background-color: #f3553c;
+    border: 0;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    color: #fefefe;
+    font-size: 20px;
 }

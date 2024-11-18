@@ -11,121 +11,18 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 		rel="stylesheet">
-	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+	<link rel="stylesheet" href="../css/user/storeDetail/reset.css">
 	<link rel="stylesheet" href="../css/user/storeDetail/storeDetailCss.css">
-	<script src="/js/storeInfo/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script>
-	$(document).ready(function(){
-		/* 초기화 */ 
-		$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
-		tabInit();
-
-		// 이미지 스와이프
-	    var swiperStore = new Swiper(".swp-store", {
-	      navigation: {
-	        nextEl: ".swiper-button-next",
-	        prevEl: ".swiper-button-prev",
-	      },
-	    });
-
-		// 공지사항 스와이프
-		var swiperNoti = new Swiper(".swp-noti", {
-			spaceBetween: 20,
-	        pagination: {
-	          el: ".swiper-pagination",
-	        },
-	    });
-
-		// 아코디언
-		$('.acco-head .btn-acco').on('click', function(e){
-			e.preventDefault();
-
-			if ($(this).hasClass('on')) {
-				$(this).removeClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
-			} else {
-				$(this).addClass('on');
-				$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
-			}
-		});
-
-		// 메뉴 탭
-		$('.tab-list li').on('click', function(e){
-			e.preventDefault();
-			var idx;
-
-			if (!$(this).hasClass('on')){
-				$('.tab-list li').removeClass('on');
-				$(this).addClass('on');
-				idx = $(this).index();
-				$('.tab-contents .tab-panel').hide();
-				$('.tab-contents .tab-panel').eq(idx).show();
-
-				tabInit();	// 다른 탭 눌렀다가 돌아왔을 때 더보기가 이미 되어있는 상태를 원하면 삭제해도 됨.
-			}
-		})
-
-		// 메뉴 더보기 클릭
-		$('.btn-menu-more').on('click',function(){
-			$(this).siblings('.menu-list').find('li').css('display','flex');
-			$(this).hide();
-		})
-
-		// 탭 초기화 함수
-		/* function tabInit() {
-			$('.tab-contents .tab-panel .menu-list').each(function(){
-				if ($(this).find('li').length > 5){
-					$(this).siblings('.btn-menu-more').show();
-		
-					$(this).find('li:gt(4)').hide();
-				}
-			});
-		} */
-		function tabInit() {
-		    $('.tab-contents .tab-panel .menu-list').each(function() {
-		        console.log('Checking menu-list:', $(this));
-		        if ($(this).find('li').length > 5) {
-		            $(this).siblings('.btn-menu-more').show();
-		            $(this).find('li:gt(4)').hide();
-		            console.log('More than 5 items found, hiding items.');
-		        } else {
-		            console.log('5 or fewer items, no action needed.');
-		        }
-		    });
-		}
-	})
-	</script>
-	<script>
-	//문구 복사 함수
-	function copyText(){
-		var textElement=document.getElementById('street_addr');
-		
-		var range=document.createRange();
-		range.selectNodeContents(textElement);
-		
-		var selection=window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		
-		try{
-			document.execCommand('copy');
-			alert('복사되었습니다.');
-		}catch(err){
-			console.error('복사 실패', err);
-		}
-		
-		selection.removeAllRange();
-	}
-	</script>
+	<script type="text/javascript" src="../js/httpRequest.js"></script>
 <title></title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
 <%@include file="/WEB-INF/views/userHeader.jsp" %>
-	<div class="wrapper">
-		
+	<div class="wrapper">		
 		<section id="content">
 			<c:set var="stInfo" value="${storeTotalInfo }"></c:set>
 			<!-- 왼쪽 컨텐츠 영역 (s) -->
@@ -329,33 +226,63 @@
 
 			<!-- 오른쪽 예약 영역 (s) -->
 			<div class="reservation">
+				<input type="hidden" id="runningDayList" value="${runningDayList}">
+				<c:if test="${empty reserve_date }">
+				<input type="hidden" id="reserve_date" value="${empty reserve_date?'':reserve_date }">
+				</c:if>
+				<c:if test="${!empty reserve_date }">
+				<input type="hidden" id="reserve_date" value="${reserve_date }">
+				</c:if>
+				<input type="hidden" name="reserve_time" id="reserve_time">
+				<input type="hidden" name="reserve_table" id="reserve_table">
 				<!-- 캘린더 영역(s) -->
 				<div class="cal-wrapper">
-					달력
+					<div id="calendar"></div>
 				</div>
 				<!-- 캘린더 영역(e) -->
 				
 				<!-- 인원 선택 영역(s) -->
 				<div class="cnt-wrapper">
-					인원
+					<span>인원</span>
+					<div>
+						<input type="button" value="-" id="cntMinusBtn" onclick="changeCnt('minus')">
+						<c:if test="${!empty reserve_count }">
+						<input type="text" value="${reserve_count}" id="reserve_cnt" readonly="readonly">
+						</c:if>
+						<c:if test="${empty reserve_count }">
+						<input type="text" value="2" id="reserve_cnt" readonly="readonly">
+						</c:if>
+						<input type="button" value="+" id="cntPlusBtn" onclick="changeCnt('plus')">
+					</div>	
 				</div>
 				<!-- 인원 선택 영역(e) -->
 				
 				<!-- 시간 선택 영역(s) -->
-				<div class="time-wrapper">
-					시간
+				<div class="time-wrapper" id="time_wrapper">
+					<div class="label-area">
+						<div>
+							<span class="yellow-label"> </span>
+							<span>알림신청</span>
+						</div>
+						<div>
+							<span class="red-label"> </span>
+							<span>예약 가능</span>
+						</div>
+					</div>
+					<div class="time-area" id="time_area"></div>
+					
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				
 				<!-- 테이블 선택 영역(s) -->
-				<div class="table-wrapper">
-					테이블 타입
+				<div class="table-wrapper" id="table_wrapper">
+					
 				</div>
 				<!-- 테이블 선택 영역(e) -->
 				
 				<!-- 버튼 영역 (s) -->
-				<div class="btn-wrapper">
-					버튼
+				<div class="btn-wrapper" id="btn_wrapper" style="padding:0px;">
+					
 				</div>
 				<!-- 버튼 영역 (e) -->
 			</div>
@@ -363,4 +290,231 @@
 		</section>
 	</div>
 </body>
+<script>
+const store_idx=${storeTotalInfo.storeDTO.store_idx};
+var maxCnt=parseInt(${max_people_cnt});
+
+function changeCnt(change){
+	var crCnt=document.getElementById('reserve_cnt');
+	var newCnt=parseInt(crCnt.value);
+	var minusBtn=document.getElementById('cntMinusBtn');
+	var plusBtn=document.getElementById('cntPlusBtn');
+	
+	minusBtn.style.cursor='pointer';
+	plusBtn.style.cursor='pointer';
+	
+	if(crCnt && change){
+		if(change==='minus'){
+			newCnt--;
+		}else{
+			newCnt++;
+		}
+	}
+	
+	crCnt.value=newCnt;
+	
+	if(crCnt.value==1){
+		minusBtn.disabled=true;
+	}else{
+		minusBtn.disabled=false;
+	}	
+	
+	if(crCnt.value==maxCnt){
+		plusBtn.disabled=true;
+	}else{
+		plusBtn.disabled=false;
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let lastReserveDate = '';
+    let lastReserveCnt = '';
+
+    // 날짜나 인원 변경 시 체크
+    function checkChanges() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        alert(currentReserveDate);
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        
+        // 날짜와 인원이 모두 선택되어 있고, 둘 중 하나라도 변경된 경우
+        if (currentReserveDate && currentReserveCnt && 
+            (currentReserveDate !== lastReserveDate || currentReserveCnt !== lastReserveCnt)) {
+            
+            // 1. 새로운 시간 목록 불러오기
+            getTimeList();
+            
+            // 2. 시간 선택 초기화
+            document.getElementById('reserve_time').value = '';
+            
+            // 3. 테이블 목록 초기화
+            resetTableList();
+            
+            // 4. 마지막 선택 값 업데이트
+            lastReserveDate = currentReserveDate;
+            lastReserveCnt = currentReserveCnt;
+        }
+    }
+
+    // 시간 목록 가져오기
+    function getTimeList() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        
+        var params = 'store_idx=' + store_idx + 
+                    '&reserve_date=' + currentReserveDate + 
+                    '&reserve_cnt=' + currentReserveCnt;
+        sendRequest('/user/getTimeList', params, showTimeList, 'GET');
+    }
+
+    // 테이블 목록 가져오기
+    function getTableList() {
+        const currentReserveDate = document.getElementById('reserve_date').value;
+        const currentReserveCnt = document.getElementById('reserve_cnt').value;
+        const currentReserveTime = document.getElementById('reserve_time').value;
+        
+        // 세 값이 모두 있는 경우에만 테이블 목록 요청
+        if (currentReserveDate && currentReserveCnt && currentReserveTime) {
+            var tableParam = 'store_idx=' + store_idx + 
+                           '&reserve_date=' + currentReserveDate + 
+                           '&reserve_cnt=' + currentReserveCnt + 
+                           '&reserve_time=' + currentReserveTime;
+            sendRequest('/user/getTableList', tableParam, showTableList, 'GET');
+        }
+    }
+
+    // 테이블 목록 리셋
+    function resetTableList() {
+    	var tableWrapper=document.getElementById('table_wrapper');
+    	var btnWrapper=document.getElementById('btn_wrapper');
+    	
+    	tableWrapper.innerHTML = '';
+    	tableWrapper.style.height='0px';
+    	tableWrapper.style.padding='0px';
+    	btnWrapper.innerHTML='';
+    	btnWrapper.style.heigh='0px';
+    	btnWrapper.style.padding='0px';
+    }
+    
+    
+
+    // DOM 변화 감시
+    const changeFinder = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                checkChanges();
+            }
+        });
+    });
+
+    // 관찰 대상 설정 (날짜와 인원만 감시)
+    const reserveDateInput = document.getElementById('reserve_date');
+    const reserveCntInput = document.getElementById('reserve_cnt');
+
+    changeFinder.observe(reserveDateInput, { attributes: true });
+    changeFinder.observe(reserveCntInput, { attributes: true });
+
+    // input 이벤트 리스너 추가
+    reserveDateInput.addEventListener('input', checkChanges);
+    reserveCntInput.addEventListener('input', checkChanges);
+
+    // changeCnt 함수(+/- 버튼) 확장
+    const originalChangeCnt = changeCnt;
+    changeCnt = function(change) {
+        originalChangeCnt(change);  // 기존 인원 변경 로직 실행
+        checkChanges();             // 변경 사항 체크
+    };
+
+    // 시간 선택 클릭 이벤트
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('time-list-y')) {
+            // 1. 선택한 시간을 input에 설정
+            const selectedTime = e.target.textContent;
+            document.getElementById('reserve_time').value = selectedTime;
+            
+            // 2. 테이블 목록 불러오기
+            getTableList();
+        }else if (e.target.classList.contains('table-list')){
+        	const selectedTable=e.target.textContent;
+        	document.getElementById('reserve_table').value=selectedTable;
+        	
+      		document.getElementById('btn_wrapper').style.height='fit-content';
+      		document.getElementById('btn_wrapper').style.padding='10px';
+      		
+        	var btnHtml='<input type="button" value="예약하기" id="reserve_btn" class="reserve-btn">';
+        	document.getElementById('btn_wrapper').innerHTML=btnHtml;
+        	
+        }else if(e.target.classList.contains('reserve-btn')){
+        	
+        	var reserveParam='?store_idx='+store_idx+'&reserve_date='+reserve_date.value+'&reserve_cnt='+reserve_cnt.value+'&reserve_time='+reserve_time.value+'&reserve_table='+reserve_table.value;
+        	
+        	var user_idx = '${sessionScope.user_idx}';  // 서버에서 세션값 가져오기
+
+        	if (!user_idx || user_idx === 'null' || user_idx === '') {
+        	    alert('로그인 후 이용해주세요');
+        	    var callback='?callback=/user/storeInfo'+reserveParam;
+        	    location.href = '/user/login'+callback;  // 로그인 페이지로 리다이렉트
+        	} else {
+        	    location.href = '/user/reserveConfirm' + reserveParam;
+        	}
+        }
+    });
+
+    
+
+    function showTimeList(){
+		if(XHR.readyState===4){
+			if(XHR.status===200){
+				var data=XHR.responseText;
+				var jsondata=JSON.parse(data);
+				document.getElementById('time_wrapper').style.height='120px';
+				document.getElementById('time_wrapper').style.overflowY='auto';
+				document.getElementById('time_wrapper').style.padding='10px';
+				var html='<table class="time-list-table"><tr>';
+				for(var i=0; i<jsondata.length; i++){
+					if(jsondata[i].AVAILABLE==='N'){
+						html+='<td><span class="time-list-n">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+					}else{
+						html+='<td><span class="time-list-y">'+jsondata[i].RESERVE_HOUR+'</span></td>';
+					}
+					
+					if(i%4===3){
+						html+='</tr><tr>'
+					}
+				}
+				html+='</tr></table>'
+				document.getElementById('time_area').innerHTML=html;
+				resetTableList();
+			}
+		}
+	}
+
+    function showTableList(){
+		if(XHR.readyState===4){
+			if(XHR.status===200){
+				var data=XHR.responseText;
+				var jsondata=JSON.parse(data);
+				
+				var tableWrapper=document.getElementById('table_wrapper');
+				tableWrapper.style.height='70px';
+				tableWrapper.style.padding='10px';
+				tableWrapper.style.overflowY='auto';
+				
+				
+				var html='';
+				for(var i=0; i<jsondata.length; i++){
+					if(jsondata[i].COUNT != 0){
+						html+='<span class="table-list">'+jsondata[i].TABLE_TYPE+'</span>';
+					}
+				}
+				document.getElementById('table_wrapper').innerHTML=html;
+			}
+		}
+	}
+    
+});
+</script>
+<script type="text/javascript" src="../js/userHeader.js"></script>
+<script src="../js/storeInfo/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../js/storeInfo/storeInfo.js"></script>
+<script type="text/javascript" src="../js/storeInfo/reserveCal.js"></script>
 </html>

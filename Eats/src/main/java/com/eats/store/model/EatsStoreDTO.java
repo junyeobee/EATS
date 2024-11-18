@@ -17,11 +17,11 @@ public class EatsStoreDTO {
 	
 	
 	public EatsStoreDTO() {
-		super();
+		
 	}
 	
 	public EatsStoreDTO(int store_idx, String store_id, String store_pwd, String store_email, String store_ceo) {
-		super();
+		
 		this.store_idx = store_idx;
 		this.store_id = store_id;
 		this.store_pwd = store_pwd;
