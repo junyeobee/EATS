@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	if(joinSpan){
 		joinSpan.style.cursor='pointer';
 		joinSpan.addEventListener('click', function(){
-			location.href='';
+			location.href='/userJoin';
 		});
 	}
 	if(adminSpan){
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	if(liMyplate){
 		liMyplate.style.cursor='pointer';
 		liMyplate.addEventListener('click', function(){
-			location.href='#';
+			location.href='/user/myPlate';
 		});
 	}
 	

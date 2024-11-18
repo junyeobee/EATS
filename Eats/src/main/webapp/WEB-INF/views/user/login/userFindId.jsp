@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>EATS - FIND ID</title>
 <script type="text/javascript" src="../js/httpRequest.js"></script>
 <script>
 var sendState=false;

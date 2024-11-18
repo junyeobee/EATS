@@ -491,22 +491,6 @@ $(document).ready(function(){
 	$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
 	tabInit();
 
-	// 이미지 스와이프
-    var swiperStore = new Swiper(".swp-store", {
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-
-	// 공지사항 스와이프
-	var swiperNoti = new Swiper(".swp-noti", {
-		spaceBetween: 20,
-        pagination: {
-          el: ".swiper-pagination",
-        },
-    });
-
 	// 아코디언
 	$('.acco-head .btn-acco').on('click', function(e){
 		e.preventDefault();
@@ -538,11 +522,6 @@ $(document).ready(function(){
 		}
 	})
 
-	// 메뉴 더보기 클릭
-	$('.btn-menu-more').on('click',function(){
-		$(this).siblings('.menu-list').find('li').css('display','flex');
-		$(this).hide();
-	})
 
 	$('.list-check input[type=checkbox]').on('change',function(e){
 		var selChk = $(this).next().text(); 

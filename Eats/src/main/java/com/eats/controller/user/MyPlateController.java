@@ -10,4 +10,9 @@ public class MyPlateController {
 	public String goWriteReview() {
 		return "user/myplate/writeReview";
 	}
+	
+	@GetMapping("/user/myPlate")
+	public String goMyPlate() {
+		return "user/myplate/main";
+	}
 }

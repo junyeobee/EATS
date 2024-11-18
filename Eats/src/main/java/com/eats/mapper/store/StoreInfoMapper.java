@@ -10,6 +10,7 @@ import com.eats.store.model.HYStoreDTO;
 import com.eats.store.model.HYStoreImgDTO;
 import com.eats.store.model.HYStoreNewsDTO;
 import com.eats.store.model.StoreTimeDTO;
+import com.eats.user.model.JjimDTO;
 
 public interface StoreInfoMapper {
 
@@ -22,4 +23,9 @@ public interface StoreInfoMapper {
 	public List<CategoryDTO> getStoreConvinient(int store_idx);
 	public int getJjimCnt(int store_idx);
 	public StoreTimeDTO getTodayTime(Map<String, Object> param);
+	public int getRevCount(int store_idx);
+	public double getAvgRevScore(int store_idx);
+	public int checkJjim(JjimDTO dto);
+	public int insertJjim(JjimDTO dto);
+	public int deleteJjim(JjimDTO dto);
 }
