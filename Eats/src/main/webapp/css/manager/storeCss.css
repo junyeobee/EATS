@@ -1,11 +1,53 @@
 @charset "UTF-8";
 
 	body {margin:0; padding:0; font-size:12px;}
-	.header {width:100%; height:80px; background:#DAF0FF;}
+	.header {width:100%; height:80px; background:#FFEDD0;}
 	.contents {display: flex;}
 	.contents > * {float:left;}
-	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#DAF0FF;}
+	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#FFEDD0;}
 	.contents .mainCont {width:calc(100% - 200px); padding:20px 30px;}
+	
+	
+	/* 매장-정보수정신청승인 리스트박스 */
+	.contents .mainCont .mainCon_1400 {width:1400px;}
+	.mainCon_1400 .tableList {}
+	.mainCon_1400 .tableList table {width:100%;}
+	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
+	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
+	.mainCon_1400 .tableList table tbody tr td span.beforeText {color:gray;}
+	.mainCon_1400 .tableList table tbody tr td span.afterText {color:darkred; font-weight:600; }
+	.mainCon_1400 .tableList table tbody tr td div.cancel_box {display:none; height:30px; margin:3px;}
+	
+	/*
+	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
+	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
+	*/
+	
+	/* <버튼> */	
+	/* 매장-정보수정신청승인 버튼 */
+	.btn_orange {cursor:pointer; background:orange; color:white; text-align:center; border:1px solid #E17814; border-radius:5px; padding:5px 10px;}
+		
+	/* 매장-정보수정신청반려 버튼 */
+	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
+	
+	/* 매장-정보수정신청반려하기 버튼*/
+	.btn_red{cursor:pointer; background:red; color:white; text-align:center; border:1px solid darkred; border-radius:5px; padding:5px 10px;}
+	
+	
+	.a_left {text-align:left; padding-left:10px;}
+	.a_center {text-align:center;}
+	.a_right {text-align:right; padding-right:10px;}
+	
+	.ws100 {width:100px;}
+	.ws200 {width:200px;}
+	.ws400 {width:400px;}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
@@ -44,7 +86,16 @@
 	.mainCon_800 .tableWrite_2 table tr td img {width:600px;}
 	
 	
+	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
+	.contents .mainCont .mainCon_0 {} 
+	.mainCon_0 .mc0_imgBox {}
+	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px; vertical-align:top;}
+	
+	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
+	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
+	
 	/* 정보수정신청 테이블박스 */
+	.contents .mainCont .mainCon_800 {width:800px;}
 	.mainCon_800 .tableWrite_4 {}
 	.mainCon_800 .tableWrite_4 table {width:100%;}
 	.mainCon_800 .tableWrite_4 table tr {height:60px;}
@@ -55,45 +106,7 @@
 	
 	
 	
-	/* 소식관리 - 리스트 박스 */
-	.contents .mainCont .mainCon_1400 {width:1400px;}
-	.mainCon_1400 .tableList {}
-	.mainCon_1400 .tableList table {width:100%;}
-	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
-	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
-	
-	/*
-	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
-	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
-	*/
-	
-	
-	/* 그리드 테이블 */
-	.mainCon_1400 .gridBox .gridTable {border:1px solid gray; border-collapse : collapse;}
-	.mainCon_1400 .gridBox .gridTable tr td {width:200px; padding:5px; border:1px solid gray; }
-	
-	
-	
-	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
-	.contents .mainCont .mainCon_0 {} 
-	.mainCon_0 .mc0_imgBox {}
-	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px; vertical-align:top;}
-	
-	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
-	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
-	
-	
-	/*태그관리, 특징관리 페이지*/
-	.cateBox {margin-bottom:50px; border:0px solid red;}
-	.cateBox .cb_top {border:0px solid blue;}
-	.cateBox .cb_top span {font-weight:600; font-size:14px;}
-	.cateBox .cb_bottom {}
-	.cateBox .cb_bottom > span {display:inline-block; padding:5px; background-color:#5dd5ff; border-radius:5px;}
-	
-	
-	/* <버튼> */
 	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
-	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
 	
 	/* 이미지관리-삭제버튼 / 소식등록-취소버튼 */
 	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
@@ -103,7 +116,6 @@
 	
 	/* 정보수정신청 input */
 	input[type='text'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
-	input[type='number'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
 	input[type='text']:focus {
 	    outline: none;  /* 포커스 시 outline 제거 */
 	    border: none;   /* 포커스 시 border 제거 (선택 사항) */
@@ -113,40 +125,10 @@
 	/* 소식등록 textarea */
 	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
 	
-	select {
-		padding:5px; border:1px solid gray; border-radius:3px; 
-		/*
-		appearance:none; background:url('/img/select_icon.png') no-repeat right 0px center;
-		border:1px solid #999;
-		*/
-	}
-	
-	hr {width:100%; border:1px solid gray; margin:30px 0;}
-	
-	.mt10 {margin-top:10px;}
-	
-	.mr10 {margin-right:10px;}
-	
-	.mb10 {margin-bottom:10px;}
+	/* 이미지관리 - 상단컨텐츠 박스 */
 	.mb60 {margin-bottom:60px;}
 	
-	.ml10 {margin-left:10px;}
-	.ml20 {margin-left:20px;}
-	
-	
-	.ws50 {width:50px;}
-	.ws60 {width:60px;}
-	.ws80 {width:80px;}
-	.ws90 {width:90px;}
-	.ws100 {width:100px;}
+	/* 정보수정신청 주소input */
 	.ws400 {width:400px;}
 	.ws800 {width:800px;}
-	
-	.ws95p {width:95%;}
-	
-	.cspi {cursor:pointer;}
-	
-	.a_left {text-align:left; padding-left:10px;}
-	.a_center {text-align:center;}
-	.a_right {text-align:right; padding-right:10px;}
 	

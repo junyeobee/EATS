@@ -34,10 +34,11 @@
    </insert>
    
    <select id="storeCate" resultType="com.eats.store.model.StoreCateDTO">
-		SELECT cate.*, cvalue.CATE_VALUE_NAME   
+		SELECT cate.*, cv.CATE_VALUE_NAME   
 		FROM CATEGORY cate 
-		LEFT JOIN CATE_VALUE cvalue ON cate.cate_value_idx = cvalue.cate_value_idx 
-		WHERE store_idx = #{store_idx}
+		LEFT JOIN CATE_VALUE cv ON cate.cate_value_idx = cv.cate_value_idx 
+		where 
+		    store_idx = #{store_idx} and cate.cate_key_idx = 3 
    </select>
    
    <insert id="StoreGridBaseInsert" parameterType="com.eats.store.model.StoreInfoUpdateDTO">
