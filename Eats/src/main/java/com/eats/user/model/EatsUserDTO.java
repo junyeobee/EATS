@@ -1,6 +1,6 @@
 package com.eats.user.model;
 
-import java.sql.Date;
+
 
 public class EatsUserDTO {
     private int user_idx;
@@ -8,7 +8,7 @@ public class EatsUserDTO {
     private String user_pwd;
     private String user_name;
     private String user_email;
-    private Date user_birth;
+    private int user_birth;
     private int user_gender;
     private String join_method;
     private String user_nickname;   // 닉네임 추가
@@ -19,7 +19,7 @@ public class EatsUserDTO {
 
     // 모든 필드 포함 생성자
     public EatsUserDTO(int user_idx, String user_id, String user_pwd, String user_name, String user_email,
-                       Date user_birth, int user_gender, String join_method, String user_nickname, int user_point) {
+                       int user_birth, int user_gender, String join_method, String user_nickname, int user_point) {
         this.user_idx = user_idx;
         this.user_id = user_id;
         this.user_pwd = user_pwd;
@@ -73,11 +73,11 @@ public class EatsUserDTO {
         this.user_email = user_email;
     }
 
-    public Date getUser_birth() {
+    public int getUser_birth() {
         return user_birth;
     }
 
-    public void setUser_birth(Date user_birth) {
+    public void setUser_birth(int user_birth) {
         this.user_birth = user_birth;
     }
 
