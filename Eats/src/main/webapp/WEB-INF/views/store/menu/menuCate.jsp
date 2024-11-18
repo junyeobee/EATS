@@ -202,17 +202,7 @@ width:330px;
 
 
 <script>
-	const addCategoryBtn = document.querySelector('.add-category-btn');
-	const categoryList = document.querySelector('.category-list');
-	const categoryNameInput = document.querySelector('.input-group input');
-	const saveBtn = document.querySelector('.btn-save');
-	const cancelBtn = document.querySelector('.btn-cancel');
 	
-	
-	function newCate(){
-		
-		
-	}
 </script>
 
 
