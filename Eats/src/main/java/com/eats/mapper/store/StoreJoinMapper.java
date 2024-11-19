@@ -2,12 +2,22 @@ package com.eats.mapper.store;
 
 import com.eats.store.model.StoreJoinDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface StoreJoinMapper {
-    void insertStoreJoin(StoreJoinDTO storeJoinDto);
+    /**
+     * 입점 신청 데이터 삽입
+     *
+     * @param storeJoinDto 입점 신청 데이터
+     * @return 삽입된 행의 수
+     */
+    int insertStoreJoin(StoreJoinDTO storeJoinDto);
 
-    @Select("SELECT COUNT(*) > 0 FROM STORE_JOIN WHERE SJ_ID = #{approvalId}")
-    boolean existsByApprovalId(String approvalId); // 아이디 중복 체크 쿼리
+    /**
+     * 아이디 중복 확인
+     *
+     * @param approvalId 승인 아이디
+     * @return 아이디 중복 여부 (true: 중복됨, false: 사용 가능)
+     */
+    boolean existsByApprovalId(String approvalId);
 }

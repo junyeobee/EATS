@@ -9,27 +9,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StoreJoinServiceImple implements StoreJoinService {
 
-    private final StoreJoinMapper storeJoinMapper;
-
     @Autowired
-    public StoreJoinServiceImple(StoreJoinMapper storeJoinMapper) {
-        this.storeJoinMapper = storeJoinMapper;
-    }
+    private StoreJoinMapper storeJoinMapper;
 
+    /**
+     * 입점 신청 처리
+     *
+     * @param storeJoinDto 입점 신청 데이터
+     * @return 성공 여부 (1: 성공, 0: 실패)
+     */
     @Override
     @Transactional
-    public boolean applyStore(StoreJoinDTO storeJoinDto) {
+    public int applyStore(StoreJoinDTO storeJoinDto) {
         try {
-            storeJoinMapper.insertStoreJoin(storeJoinDto);
-            return true; // 성공 시 true 반환
+            return storeJoinMapper.insertStoreJoin(storeJoinDto); // 성공 시 1 반환
         } catch (Exception e) {
-            // 예외가 발생할 경우 false 반환 (예외 로깅을 추가할 수 있습니다)
-            return false;
+            e.printStackTrace(); // 에러 로그 출력
+            return 0; // 실패 시 0 반환
         }
     }
 
+    /**
+     * 아이디 중복 확인
+     *
+     * @param approvalId 승인 아이디
+     * @return 중복 여부 (true: 중복됨, false: 사용 가능)
+     */
     @Override
     public boolean isDuplicateId(String approvalId) {
-        return storeJoinMapper.existsByApprovalId(approvalId);
+        try {
+            return storeJoinMapper.existsByApprovalId(approvalId); // 중복 여부 반환
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 로그 출력
+            return true; // 예외 발생 시 기본적으로 중복된 것으로 간주
+        }
     }
 }

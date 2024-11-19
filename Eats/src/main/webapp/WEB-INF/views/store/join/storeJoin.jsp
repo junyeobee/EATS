@@ -151,56 +151,55 @@ input[type="text"], input[type="password"] {
 
 <div class="container">
     <h2>입점 신청</h2>
-    <form method="post" action="/store/apply">
-        <div class="form-group">
-            <label for="storeName">신청자 매장 이름</label>
-            <input type="text" id="storeName" name="storeName" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="registrationNumber">사업자 등록 번호</label>
-            <input type="text" id="registrationNumber" name="registrationNumber" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="ownerName">점주 이름</label>
-            <input type="text" id="ownerName" name="ownerName" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="ownerContact">점주 연락처</label>
-            <input type="text" id="ownerContact" name="ownerContact" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="ownerEmail">점주 이메일</label>
-            <input type="text" id="ownerEmail" name="ownerEmail" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="storeAddress">매장 주소</label>
-            <input type="text" id="storeAddress" name="storeAddress" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="detailedAddress">매장 상세 주소</label>
-            <input type="text" id="detailedAddress" name="detailedAddress" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="approvalId">승인 시 사용할 아이디</label>
-            <input type="text" id="approvalId" name="approvalId" class="form-control" />
-            <button type="button" class="btn-check" onclick="checkDuplicateId()">중복 체크</button>
-        </div>
-        <div class="form-group">
-            <label for="approvalPassword">승인 시 사용할 비밀번호</label>
-            <input type="password" id="approvalPassword" name="approvalPassword" class="form-control" />
-        </div>
-        <div class="form-group checkbox-container">
-            <input type="checkbox" id="agree" required />
-            <label for="agree">개인정보 수집에 동의합니다.</label>
-        </div>
+<form method="post" action="/store/apply">
+    <div class="form-group">
+        <label for="sj_name">신청자 매장 이름</label>
+        <input type="text" id="sj_name" name="sj_name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="biz_num">사업자 등록 번호</label>
+        <input type="text" id="biz_num" name="biz_num" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="owner_name">점주 이름</label>
+        <input type="text" id="owner_name" name="owner_name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="owner_tel">점주 연락처</label>
+        <input type="text" id="owner_tel" name="owner_tel" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="sj_email">점주 이메일</label>
+        <input type="text" id="sj_email" name="sj_email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="sj_addr">매장 주소</label>
+        <input type="text" id="sj_addr" name="sj_addr" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="sj_daddr">매장 상세 주소</label>
+        <input type="text" id="sj_daddr" name="sj_daddr" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="sj_id">승인 시 사용할 아이디</label>
+        <input type="text" id="sj_id" name="sj_id" class="form-control" />
+        <button type="button" class="btn-check" onclick="checkDuplicateId()">중복 체크</button>
+    </div>
+    <div class="form-group">
+        <label for="sj_pwd">승인 시 사용할 비밀번호</label>
+        <input type="password" id="sj_pwd" name="sj_pwd" class="form-control" />
+    </div>
+    <div class="form-group checkbox-container">
+        <input type="checkbox" id="agree" required />
+        <label for="agree">개인정보 수집에 동의합니다.</label>
+    </div>
 
-        <button type="button" class="privacy-button" onclick="showPopup()">개인정보 수집</button>
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">신청</button>
+        <button type="reset" class="btn btn-secondary">취소</button>
+    </div>
+</form>
 
-        <div class="form-buttons">
-            <button type="submit" class="btn btn-primary">신청</button>
-            <button type="reset" class="btn btn-secondary">취소</button>
-        </div>
-    </form>
 </div>
 
 <!-- 팝업 -->

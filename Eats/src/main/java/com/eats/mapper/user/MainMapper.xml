@@ -65,7 +65,7 @@
 	</select>
 
 	<select id="getStorePoint" parameterType="Integer" resultType="Double">
-		select round(avg, 2)
+		select nvl(round(avg, 2),0)
 		from (select avg(rev_score) avg
 		from
 		(select review.*, store_idx
@@ -86,5 +86,11 @@
 	
 	<select id="getTag" parameterType="Integer" resultType="String">
 		select cate_value_name from cate_value where cate_value_idx=#{cate_value_idx}
+	</select>
+	
+	<select id="getReviewCountByStoreIdx" parameterType="Integer" resultType="Integer">
+		select count(*) from review, reservation
+		where review.reserve_idx=reservation.reserve_idx
+		and store_idx=#{store_idx}
 	</select>
 </mapper>

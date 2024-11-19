@@ -88,16 +88,16 @@ public class SearchController {
 			// 요일을 숫자로 구하기 (1=월요일, 7=일요일)
 			int weekNumber = date.getDayOfWeek().getValue();
 			switch (weekNumber) {
-			case 1: week = "월";
-			case 2: week = "화";
-			case 3: week = "수";
-			case 4: week = "목";
-			case 5: week = "금";
-			case 6: week = "토";
-			case 7: week = "일";
+			case 1: week = "월"; break;
+			case 2: week = "화";break;
+			case 3: week = "수";break;
+			case 4: week = "목";break;
+			case 5: week = "금";break;
+			case 6: week = "토";break;
+			case 7: week = "일";break;
 			}
 		}
-
+		
 		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
 		words.put("area", areaWord);
@@ -105,9 +105,19 @@ public class SearchController {
 		words.put("week", week);
 		words.put("time", selectedTime);
 		words.put("price", price);
-		//List<StoreDTO> storeList = ss.getStoreInfo(words);
-
+		List<StoreDTO> storeList = ss.getStoreInfo(words);
+		
 		ModelAndView mv = new ModelAndView();
+		
+		if(storeList.size()!=0) {
+		Map<Integer, Integer> reviewCount = new HashMap<>();
+		Map<Integer, Double> reviewPoint = new HashMap<>();
+		for(StoreDTO dto:storeList) {
+			reviewCount.put(dto.getStore_idx(), ms.getReviewCountByStoreIdx(dto.getStore_idx())==null?0:ms.getReviewCountByStoreIdx(dto.getStore_idx()));
+			reviewPoint.put(dto.getStore_idx(), ms.getStorePoint(dto.getStore_idx()));
+		}
+
+		
 		mv.addObject("tagList", tagList);
 		mv.addObject("tagWord", tagIdx);
 		mv.addObject("word", word);
@@ -119,7 +129,10 @@ public class SearchController {
 		mv.addObject("subValueList", subValueList);
 		mv.addObject("subKeyList", subKeyList);
 		mv.addObject("cityList", cityList);
-		//mv.addObject("storeList", storeList);
+		mv.addObject("storeList", storeList);
+		mv.addObject("reviewCount", reviewCount);
+		mv.addObject("reviewPoint", reviewPoint);
+		}
 		mv.setViewName("user/search/searchStore");
 
 		return mv;
