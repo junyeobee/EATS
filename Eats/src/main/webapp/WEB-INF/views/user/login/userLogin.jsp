@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>EATS - LOGIN</title>
 <script>
 function checkForm(){
 	var inputId=document.getElementById('userId').value;

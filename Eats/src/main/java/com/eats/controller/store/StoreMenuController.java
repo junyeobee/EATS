@@ -170,7 +170,7 @@ public class StoreMenuController {
 				) {
 
 			String realpath = req.getServletContext().getRealPath("/");
-			
+			System.out.println("메뉴ㅠ뉴2222"+realpath);
 	        ModelAndView mav = new ModelAndView();
 	        
 	        MenuDTO menuDTO = new MenuDTO();
@@ -222,7 +222,7 @@ public class StoreMenuController {
 	
 	@PostMapping("/deleteMenuCate")
 	public ModelAndView deleteMenuCate(
-			@RequestParam(value = "m_cate_name", required = false, defaultValue = "") String cateName) {
+			@RequestParam(value = "m_cate_name", required = true) String cateName) {
 		
 		int result = service.deleteMenuCate(cateName);
 
@@ -251,6 +251,8 @@ public class StoreMenuController {
 
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", "storeMenuCate");
+		
+		
 		mav.setViewName("store/menu/menuMsg");
 
 		return mav;

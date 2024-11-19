@@ -70,7 +70,7 @@ menu, ol, ul {
 	background-color: #f3553c;
 }
 </style>
-<title>Document</title>
+<title>EATS</title>
 </head>
 
 <body>

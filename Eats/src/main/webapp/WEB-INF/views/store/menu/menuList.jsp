@@ -11,6 +11,7 @@
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
 	rel="stylesheet">
 <style>
+
 * {
 	margin: 0;
 	padding: 0;
@@ -181,6 +182,7 @@ font-size:12px;
 <body>
 
 	<!-- 카테고리 출력 -->
+	<p style='color:gray;' ><c:out value="${sessionScope.storeName }"></c:out></p>
 	<div class="menu-header category-tabs">
 		<h1 class="menu-title">메뉴 관리</h1>
 		<c:if test="${empty lists }">

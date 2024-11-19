@@ -109,16 +109,17 @@
 <body>
     <div class="container">
         <h1>배너 등록</h1>
-        <form>
+        <form name="banenerInsertForm" action="bannerInsertOk" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label>배너명</label>
-                <input type="text" class="form-control" required>
+                <input type="text" name="banner_name" id="banner_name" class="form-control" required>
+               
             </div>
 
             <div class="form-group">
                 <label>파일업로드</label>
                 <div class="file-upload">
-                    <input type="file" accept="image/jpeg,image/jpg,image/png" required>
+                    <input type="file" name="banner_img" id="banner_img" accept="image/jpeg,image/jpg,image/png" required>
                 </div>
                 <div class="file-notice">
                     • 정사각형 이미지 사용 (1440px X 1440px / 1080px X 1080px 권장)<br>
@@ -128,21 +129,29 @@
 
             <div class="form-group">
                 <label>링크 URL</label>
-                <input type="url" class="form-control">
+                <input type="url" name="banner_url" id="banner_url" class="form-control">
+            </div>
+            
+            
+            <div class="form-group">
+                <label>배너 순서</label>
+                <select name="banner_order"> 
+                
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  
+                  </select>
             </div>
 
-            <div class="form-group">
-                <label>
-                    <input type="checkbox"> 무제한
-                </label>
-            </div>
+    
 
             <div class="form-group">
                 <label>반영 기간</label>
                 <div class="date-group">
-                    <input type="datetime-local" class="form-control date-input">
+                    <input type="date" name="banner_sdate" id="banner_sdate" class="form-control date-input">
                     <span>~</span>
-                    <input type="datetime-local" class="form-control date-input">
+                    <input type="date" name="banner_edate" id="banner_edate" class="form-control date-input">
                 </div>
             </div>
 
@@ -150,18 +159,15 @@
                 <label>반영 여부</label>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="status" value="yes" checked> YES
+                        <input type="radio" name="banner_stat" value="1" checked> YES
                     </label>
                     <label>
-                        <input type="radio" name="status" value="no"> NO
+                        <input type="radio" name="banner_stat" value="2"> NO
                     </label>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>등록 일시</label>
-                <input type="datetime-local" class="form-control" readonly>
-            </div>
+         
 
             <div class="button-group">
                 <button type="button" class="btn btn-cancel">취소</button>

@@ -16,7 +16,9 @@ public class HYStoreInfoDTO {
 	private List<HYMenuCateDTO> menuCateList;
 	private List<HYMenuDTO> menuList;
 	
-	private int jjimCnt;
+	private int jjimCnt;	//찜 개수
+	private double avgRevScore;	//평점
+	private int revCount;
 	
 	public HYStoreInfoDTO() {
 		
@@ -24,7 +26,7 @@ public class HYStoreInfoDTO {
 
 	public HYStoreInfoDTO(HYStoreDTO storeDTO, List<HYStoreImgDTO> storeImgList, StoreTimeDTO todayTime, List<StoreTimeDTO> storeTimeList,
 			List<HYStoreNewsDTO> storeNewsList, List<CategoryDTO> convList, List<HYMenuCateDTO> menuCateList,
-			List<HYMenuDTO> menuList, int jjimCnt) {
+			List<HYMenuDTO> menuList, int jjimCnt, double avgRevScore, int revCount) {
 		super();
 		this.storeDTO = storeDTO;
 		this.storeImgList = storeImgList;
@@ -35,6 +37,8 @@ public class HYStoreInfoDTO {
 		this.menuCateList = menuCateList;
 		this.menuList = menuList;
 		this.jjimCnt = jjimCnt;
+		this.avgRevScore = avgRevScore;
+		this.revCount = revCount;
 	}
 
 	public HYStoreDTO getStoreDTO() {
@@ -107,5 +111,21 @@ public class HYStoreInfoDTO {
 
 	public void setJjimCnt(int jjimCnt) {
 		this.jjimCnt = jjimCnt;
+	}
+
+	public double getAvgRevScore() {
+		return avgRevScore;
+	}
+
+	public void setAvgRevScore(double avgRevScore) {
+		this.avgRevScore = avgRevScore;
+	}
+
+	public int getRevCount() {
+		return revCount;
+	}
+
+	public void setRevCount(int revCount) {
+		this.revCount = revCount;
 	}
 }

@@ -169,13 +169,11 @@ width:330px;
 			<form name="cateDel" action="deleteMenuCate" method="post">
 				<div class="category-list">
 					<c:forEach var="dto" items="${lists }">
-
 						<div class="category-item">
 							${dto.m_cate_name} <input type="hidden" name="m_cate_name"
 								value="${dto.m_cate_name}"> <input type="submit"
 								class="delete-btn" value="x"></input>
 						</div>
-
 					</c:forEach>
 				</div>
 			</form>
@@ -202,17 +200,7 @@ width:330px;
 
 
 <script>
-	const addCategoryBtn = document.querySelector('.add-category-btn');
-	const categoryList = document.querySelector('.category-list');
-	const categoryNameInput = document.querySelector('.input-group input');
-	const saveBtn = document.querySelector('.btn-save');
-	const cancelBtn = document.querySelector('.btn-cancel');
 	
-	
-	function newCate(){
-		
-		
-	}
 </script>
 
 

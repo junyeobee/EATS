@@ -82,4 +82,10 @@ public class MainServiceImple implements MainService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Integer getReviewCountByStoreIdx(int store_idx) {
+		int count = mp.getReviewCountByStoreIdx(store_idx);
+		return count;
+	}
 }

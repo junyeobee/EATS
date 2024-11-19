@@ -53,15 +53,27 @@
 .store-wrap .info .review {
 	padding-left: 20px;
 }
+.store-wrap .recommend-non {
+	position: absolute; 
+	top: 10px; 
+	right: 0; 
+	padding-left: 42px; 
+	background: url(/svg/fork_icon_white.svg) no-repeat left center; 
+	color: #ff533c; 
+	font-size: 25px;
+	background-size: contain;
+	cursor: pointer;
+}
 .store-wrap .recommend {
 	position: absolute; 
 	top: 10px; 
 	right: 0; 
 	padding-left: 42px; 
-	background: url(/img/user/storeInfo/icon_fork.png) no-repeat left center; 
-	color: #ff533e; 
+	background: url(/svg/fork_icon.svg) no-repeat left center; 
+	color: #ff533c; 
 	font-size: 25px;
-	font-weight: 500;
+	background-size: contain;
+	cursor: pointer;
 }
 
 /* 매장 이미지 스와이프 */
