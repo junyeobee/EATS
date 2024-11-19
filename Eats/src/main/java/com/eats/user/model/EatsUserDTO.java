@@ -1,14 +1,12 @@
 package com.eats.user.model;
 
-
-
 public class EatsUserDTO {
     private int user_idx;
     private String user_id;
     private String user_pwd;
     private String user_name;
     private String user_email;
-    private int user_birth;
+    private String user_birth;
     private int user_gender;
     private String join_method;
     private String user_nickname;   // 닉네임 추가
@@ -19,7 +17,7 @@ public class EatsUserDTO {
 
     // 모든 필드 포함 생성자
     public EatsUserDTO(int user_idx, String user_id, String user_pwd, String user_name, String user_email,
-                       int user_birth, int user_gender, String join_method, String user_nickname, int user_point) {
+                       String user_birth, int user_gender, String join_method, String user_nickname, int user_point) {
         this.user_idx = user_idx;
         this.user_id = user_id;
         this.user_pwd = user_pwd;
@@ -73,11 +71,11 @@ public class EatsUserDTO {
         this.user_email = user_email;
     }
 
-    public int getUser_birth() {
+    public String getUser_birth() {
         return user_birth;
     }
 
-    public void setUser_birth(int user_birth) {
+    public void setUser_birth(String user_birth) {
         this.user_birth = user_birth;
     }
 

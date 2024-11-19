@@ -1,6 +1,5 @@
 package com.eats.user.service;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +38,9 @@ public class MypageServiceImple implements MypageService {
     @Override
     public boolean updateUserProfile(EatsUserProfileDTO userProfile) {
         int result = mypageMapper.updateUserProfile(userProfile);
-        return result > 0;
+        return result > 0; // 업데이트 성공 여부 반환
     }
+
     
     // 찜 목록
     @Override
