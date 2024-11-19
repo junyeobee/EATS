@@ -18,6 +18,9 @@ import com.eats.store.model.HYStoreImgDTO;
 import com.eats.store.model.HYStoreInfoDTO;
 import com.eats.store.model.HYStoreNewsDTO;
 import com.eats.store.model.StoreTimeDTO;
+import com.eats.user.model.JjimDTO;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class StoreInfoServiceImple implements StoreInfoService {
@@ -46,11 +49,42 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		List<CategoryDTO> conv_list=mapper.getStoreConvinient(store_idx);
 		List<HYMenuCateDTO> menu_cate_list=mapper.getStoreMenuCate(store_idx);
 		List<HYMenuDTO> menu_list=mapper.getStoreMenu(store_idx);
-		int jjimCnt=0;
+		int jjimCnt=mapper.getJjimCnt(store_idx);
+		int revCount=mapper.getRevCount(store_idx);
+		double avgRevScore=mapper.getAvgRevScore(store_idx);
 		
-		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt);
+		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt, avgRevScore, revCount);
 		
 		return storeTotalInfo;
 	}
 
+	@Override
+	public boolean checkJjim(int user_idx, int store_idx) {
+		
+		JjimDTO dto=new JjimDTO(user_idx, store_idx);
+		boolean isJjimed = mapper.checkJjim(dto)>0?true:false;
+		
+		return isJjimed;
+	}
+	
+	@Override
+	public boolean insertJjim(JjimDTO dto) {
+		
+		boolean result=mapper.insertJjim(dto)>0 ? true:false;
+		return result;
+	}
+	
+	@Override
+	public boolean deleteJjim(JjimDTO dto) {
+
+		boolean result=mapper.deleteJjim(dto)>0? true:false;
+		return result;
+	}
+	
+	@Override
+	public int getJjimCnt(int store_idx) {
+		
+		int jjimCnt=mapper.getJjimCnt(store_idx);
+		return jjimCnt;
+	}
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>EATS - SHOW USER'S ID</title>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
 	var user_id='${sessionScope.userId}';

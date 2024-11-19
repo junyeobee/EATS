@@ -89,8 +89,13 @@
    		AND
    			C.CATE_VALUE_IDX=V.CATE_VALUE_IDX
 	</select>
-	<select id="getJjimCnt" resultType="int">
-   		
+	<select id="getJjimCnt" resultType="int" parameterType="int">
+   		SELECT
+   			COUNT(*)
+   		FROM
+   			JJIM
+   		WHERE
+   			STORE_IDX=#{store_idx}
 	</select>
 	<select id="getTodayTime" resultType="com.eats.store.model.StoreTimeDTO" parameterType="map">
 		SELECT
@@ -102,4 +107,63 @@
 		AND
 			STIME_DAY=#{kor_today}
 	</select>
+	<select id="getRevCount" resultType="int" parameterType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX IN (
+				SELECT
+					RESERVE_IDX
+				FROM
+					RESERVATION
+				WHERE
+					STORE_IDX = #{store_idx}
+			)
+		AND REV_STATE=1
+	</select>
+	<select id="getAvgRevScore" resultType="double" parameterType="int">
+		SELECT
+			ROUND(AVG(REV_SCORE), 1)
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX IN (
+				SELECT
+					RESERVE_IDX
+				FROM
+					RESERVATION
+				WHERE
+					STORE_IDX = #{store_idx}
+			)
+		AND
+			REV_STATE = 1
+	</select>
+	<select id="checkJjim" parameterType="com.eats.user.model.JjimDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			JJIM
+		WHERE
+			USER_IDX=#{user_idx}
+		AND
+			STORE_IDX=#{store_idx}
+	</select>
+	<insert id="insertJjim" parameterType="com.eats.user.model.JjimDTO">
+		INSERT INTO
+			JJIM
+		VALUES(
+			#{user_idx}
+			, #{store_idx}
+		)
+	</insert>
+	<delete id="deleteJjim" parameterType="com.eats.user.model.JjimDTO">
+		DELETE FROM
+			JJIM
+		WHERE
+			USER_IDX=#{user_idx}
+		AND
+			STORE_IDX=#{store_idx}
+	</delete>
 </mapper>

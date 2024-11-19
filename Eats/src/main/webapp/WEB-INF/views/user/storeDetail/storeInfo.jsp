@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script type="text/javascript" src="../js/httpRequest.js"></script>
-<title></title>
+<title>EATS - STORE INFOMATION</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
@@ -36,10 +36,21 @@
 						</span>
 					</div>
 					<div class="info">
-						<span class="start">4.7</span>
-						<span class="review">리뷰 <em>192</em></span>
+						<span class="start">${stInfo.avgRevScore }</span>
+						<span class="review">리뷰 <em>${stInfo.revCount }</em></span>
 					</div>
-					<div class="recommend">${stInfo.jjimCnt }</div>
+					<c:if test="${empty sessionScope.user_idx }">
+					<div class="recommend-non">${stInfo.jjimCnt }</div>
+					</c:if>
+					<c:if test="${!empty sessionScope.user_idx }">
+						<c:if test="${isJjimed }">
+						<div class="recommend" id="jjim_true">${stInfo.jjimCnt }</div>
+						</c:if>
+						<c:if test="${!isJjimed }">
+						<div class="recommend-non" id="jjim_false">${stInfo.jjimCnt }</div>
+						</c:if>
+					</c:if>
+					
 				</div>
 
 				<!-- 상단 가게 이미지 영역 (s) -->
@@ -66,7 +77,7 @@
 							</div>
 							<div class="acco-body">
 								<ul class="addr-list">
-								<!-- 후에 수정 필요 (s) -->
+									<!-- 후에 수정 필요 (s) -->
 									<li>
 										<span class="item">도로명</span>
 										<span class="val" id="street_addr">서울 용산구 이태원로55가길 45</span>
@@ -84,9 +95,6 @@
 								</ul>
 							</div>
 						</div>
-						<!-- 후에 수정 필요 (s) -->
-						<p class="desc">한강진역 1번 출구에서 500m 정도 걸어오시면 됩니다.</p>
-						<!-- 후에 수정 필요 (e) -->
 					</div>
 					
 					<div class="inner">
@@ -95,7 +103,12 @@
 								<a href="#" class="btn-acco">
 									<i class="clock"></i>
 									<span id="today-day"></span>
+									<c:if test="${empty stInfo.todayTime.stime_start }">
+									<span>오늘 휴무</span>
+									</c:if>
+									<c:if test="${!empty stInfo.todayTime.stime_start }">
 									<span>${stInfo.todayTime.stime_start }-${stInfo.todayTime.stime_end }</span>
+									</c:if> 
 								</a>
 							</div>
 							<div class="acco-body">
@@ -131,7 +144,7 @@
 							</div>
 						</div>
 					</div>
-
+					<c:if test="${!empty stInfo.convList }">
 					<div class="inner txt">
 						<strong class="tit">편의시설</strong>
 						<ul class="convenience-list">
@@ -140,11 +153,13 @@
 							</c:forEach>
 						</ul>
 					</div>
+					</c:if>
 
 				</div>
 				<!-- 위치, 시간, 편의시설 (e) -->
 
 				<!-- 공지사항 (s) -->
+				<c:if test="${!empty stInfo.storeNewsList }">
 				<div class="bg-box">
 					<div class="swiper swp-noti">
 						<div class="swiper-wrapper">
@@ -163,6 +178,7 @@
 						<div class="swiper-pagination"></div>
 					</div>
 				</div>
+				</c:if>
 				<!-- 공지사항 (e) -->
 			
 				<!-- 리뷰 버튼 (s) -->
@@ -327,6 +343,7 @@ function changeCnt(change){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+	//alert('${isJjimed}');
     let lastReserveDate = '';
     let lastReserveCnt = '';
 
@@ -511,6 +528,62 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
     
+	//찜 해제
+	if(document.getElementById('jjim_true')){
+		document.getElementById('jjim_true').addEventListener('click', function(){
+	    	var user_idx='${sessionScope.user_idx}';
+	    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
+	    	
+	    	sendRequest('/user/deleteJjim', jjimParam, showJjimDltResult, 'POST');
+	    });
+	}
+    
+    
+    function showJjimDltResult(){
+    	if(XHR.readyState===4){
+    		if(XHR.status===200){
+    			var data=XHR.responseText;
+    			var msg='';
+    			if(data!==-1){
+    				document.getElementById('jjim_true').textContent=data;
+    				document.getElementById('jjim_true').classList.replace('recommend', 'recommend-non');
+    				document.getElementById('jjim_true').setAttribute('id', 'jjim_false');
+    				msg='콕! 해제 완료';
+    			}else{
+    				msg='콕! 해제 실패';
+    			}
+    			alert(msg);
+    		}
+    	}
+    }
+    
+  	//찜
+  	if(document.getElementById('jjim_false')){
+  		document.getElementById('jjim_false').addEventListener('click', function(){
+  	    	var user_idx='${sessionScope.user_idx}';
+  	    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
+  	    	sendRequest('/user/insertJjim', jjimParam, showJjimResult, 'POST');
+  	    });
+  	}
+    
+    
+    function showJjimResult(){
+    	if(XHR.readyState===4){
+    		if(XHR.status===200){
+    			var data=XHR.responseText;
+    			var msg='';
+    			if(data!==-1){
+    				document.getElementById('jjim_false').textContent=data;
+    				document.getElementById('jjim_false').classList.replace('recommend-non', 'recommend');
+    				document.getElementById('jjim_false').setAttribute('id', 'jjim_true');
+    				msg='콕! 완료';
+    			}else{
+    				msg='콕! 실패';
+    			}
+    			alert(msg);
+    		}
+    	}
+    }
 });
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
