@@ -64,35 +64,46 @@ public class SellController {
 		SalesSearchDTO dto = new SalesSearchDTO();
 		dto.setStoreIdx(storeIdx);
 		dto.setDateType("hour");
-		
 		LocalDateTime now = LocalDateTime.now();
 		dto.setStartDateTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00")));
 		dto.setEndDateTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 23:59")));
 		List<SalesResponseDTO> result = service.sellList(dto);
+		if(result.get(0).getDateType().equals(result.get(1).getDateType()) && result.get(0).getDateType().equals("hour")) {
+			for(int i = 0; i < result.size(); i++) {
+				if(i % 2 != 0) {
+					String tmp = result.get(i).getSellDate().substring(0,2);
+					tmp += ":30";
+					result.get(i).setSellDate(tmp);
+				}
+			}
+		}else {
+			for(int i = 0; i < result.size(); i+=2) {
+				result.get(i).setSellDate(result.get(i).getSellDate().substring(0,2)+":30");
+			}
+		}
 		mv.addObject("sellData", result);
 		mv.setViewName("store/sell/sellDetail");
 		return mv;
 	}
 	
-	@PostMapping("/list")
+	@PostMapping("/sellDetailLists")
 	@ResponseBody
 	public List<SalesResponseDTO> getSalesList(SalesSearchDTO dto, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = (int) session.getAttribute("storeIdx");
+		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
 		dto.setStoreIdx(storeIdx);
-		calculateDateType(dto);
+		System.out.println(dto.getStartDateTime());
+		System.out.println(dto.getEndDateTime());
 		List<SalesResponseDTO> result = service.sellList(dto);
+		if(result.get(0).getDateType().equals(result.get(1).getDateType()) && result.get(0).getDateType().equals("hour")) {
+			for(int i = 0; i < result.size(); i++) {
+				if(i % 2 != 0) {
+					String tmp = result.get(i).getSellDate().substring(0,2);
+					tmp += ":30";
+					result.get(i).setSellDate(tmp);
+				}
+			}
+		}
 		return result;
-	}
-	   
-	private void calculateDateType(SalesSearchDTO searchDTO) {
-		LocalDateTime startDate = LocalDateTime.parse(searchDTO.getStartDateTime());
-		LocalDateTime endDate = LocalDateTime.parse(searchDTO.getEndDateTime());
-		long daysDiff = ChronoUnit.DAYS.between(startDate, endDate);
-		       
-		if(daysDiff <= 1) searchDTO.setDateType("hour");
-		else if(daysDiff <= 31) searchDTO.setDateType("day");
-		else if(daysDiff <= 365) searchDTO.setDateType("week");
-		else searchDTO.setDateType("month");
 	}
 }

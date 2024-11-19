@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import com.eats.mapper.store.SalesMapper;
 import com.eats.store.model.SalesResponseDTO;
 import com.eats.store.model.SalesSaveDTO;
 import com.eats.store.model.SalesSearchDTO;
-import com.eats.store.model.SellsDetailDTO;
 
 @Service
 public class StoreSellServiceImple implements StoreSellService {
@@ -70,7 +68,7 @@ public class StoreSellServiceImple implements StoreSellService {
 	               // SELL_DETAIL 테이블에 입력
 	               for (int i = 4; i < row.length; i += 3) {
 	                   if (i + 2 >= row.length) {
-	                       throw new IllegalArgumentException("메뉴 데이터가 불완전합니다.");
+	                       throw new IllegalArgumentException("메뉴데이터없음");
 	                   }
 
 	                   Map<String, Object> params = new HashMap<String, Object>();
@@ -90,7 +88,7 @@ public class StoreSellServiceImple implements StoreSellService {
 	       } catch (IllegalArgumentException e) {
 	           throw new RuntimeException((successCount + 1) + "번째 행 처리 중 오류: " + e.getMessage());
 	       } catch (Exception e) {
-	           throw new RuntimeException((successCount + 1) + "번째 행 처리 중 예상치 못한 오류 발생", e);
+	           e.printStackTrace();
 	       }
 	   }
 
@@ -146,7 +144,21 @@ public class StoreSellServiceImple implements StoreSellService {
 	
 	@Override
 	public List<SalesResponseDTO> sellList(SalesSearchDTO searchDTO) {
-		List<SalesResponseDTO> result = mapper.sellList(searchDTO);
-		return result;
+		List<SalesResponseDTO> result;
+		System.out.println(searchDTO.getDateType());
+		switch(searchDTO.getDateType()) {
+			case "hour" : result = mapper.sellList(searchDTO);
+			for(SalesResponseDTO dto : result) {
+				dto.setSellDate(dto.getSellDate()+"시");
+			}
+			return result;
+			case "1w" : result = mapper.sellListWeek(searchDTO); 
+			return result;
+			case "1m" : result = mapper.sellListMonth(searchDTO); 
+			return result;
+			case "3m" : result = mapper.sellList3Month(searchDTO);
+			return result;
+		}
+		return null;
 	}
 }

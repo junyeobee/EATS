@@ -202,7 +202,7 @@
 		           tooltip: {
 		               callbacks: {
 		                   label: function(context) {
-		                       return ${context.raw}+'건';
+		                       return context.raw+'건';
 		                   }
 		               }
 		           }
@@ -340,7 +340,7 @@
 		            tooltip: {
 		                callbacks: {
 		                    label: function(context) {
-		                        return ${context.raw.toLocaleString()} + '원';
+		                        return context.raw.toLocaleString() + '원';
 		                    }
 		                }
 		            }
