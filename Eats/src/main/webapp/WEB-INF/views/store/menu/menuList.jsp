@@ -182,6 +182,7 @@ font-size:12px;
 <body>
 
 	<!-- 카테고리 출력 -->
+	<p style='color:gray;' ><c:out value="${sessionScope.storeName }"></c:out></p>
 	<div class="menu-header category-tabs">
 		<h1 class="menu-title">메뉴 관리</h1>
 		<c:if test="${empty lists }">
