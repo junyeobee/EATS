@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminReviewMapper">
+		<select id="adminRevDelList" resultType="com.eats.admin.model.ReviewDeleteDTO">
+			select 
+				rv.rev_idx, rv.rev_content, rv.rev_writedate, 
+				rd.req_date, rd.del_state, rd.del_reason, rd.check_date, 
+				rs.store_idx, rs.user_idx, st.store_name
+                
+			from rev_del rd 
+			left join review rv on rv.rev_idx = rd.rev_idx 
+			left join reservation rs on rv.reserve_idx = rs.reserve_idx 
+			left join store st on rs.store_idx = st.store_idx 
+		</select>
+		
+		<update id="review_stateChange" parameterType="com.eats.admin.model.ReviewDeleteDTO">
+			update review set
+				rev_state=#{rev_state}
+				where rev_idx=#{rev_idx}
+		</update>
+		
+		<update id="revDel_stateChange" parameterType="com.eats.admin.model.ReviewDeleteDTO">
+			update rev_del set
+				del_state=#{del_state},
+				check_date=SYSDATE
+				where rev_idx=#{rev_idx}
+		</update>
+	</mapper>
+	

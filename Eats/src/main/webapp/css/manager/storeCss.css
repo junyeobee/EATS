@@ -51,7 +51,8 @@
 	
 	
 	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
-	.mainCont .btnBox_top > * {float:right; margin-top:-40px;}
+	.mainCont .btnBox_top {float:right; }
+	.mainCont .btnBox_top > * {margin-top:-40px; margin-left:10px;}
 	
 	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
 	
@@ -129,6 +130,9 @@
 	.mb60 {margin-bottom:60px;}
 	
 	/* 정보수정신청 주소input */
+	.ws100 {width:100px;}
+	.ws200 {width:200px;}
+	.ws300 {width:300px;}
 	.ws400 {width:400px;}
 	.ws800 {width:800px;}
 	
