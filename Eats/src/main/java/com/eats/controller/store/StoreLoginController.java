@@ -47,7 +47,7 @@ public class StoreLoginController {
 		ModelAndView mav = new ModelAndView();
 		 
 		int storeIdx = service.storeLogin(storeId, storePwd);
-
+		
 		String msg = "";
 
 		if (storeIdx > 0) {
@@ -57,10 +57,16 @@ public class StoreLoginController {
 			
 			session.setAttribute("storeIdx", storeIdx);
 			
-			System.out.println(storeIdx);
+			System.out.println(storeIdx); 
+			
+			String storeName = service.storeName(storeIdx);
+			
+			session.setAttribute("storeName", storeName);
+			
+			System.out.println("가게이름"+storeName);
 			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeMain"); //매장 index생기면 추후 변경
+			mav.addObject("goUrl", "storeMain"); 
 
 			Cookie ck = new Cookie("saveid", storeId);
 

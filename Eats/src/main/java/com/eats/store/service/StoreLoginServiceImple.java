@@ -77,4 +77,12 @@ public class StoreLoginServiceImple implements StoreLoginService {
 		
 		return result;
 	}
+	
+	
+	
+	@Override
+	public String storeName(int storeIdx) {
+		String result = mapper.storeName(storeIdx);
+		return result;
+	}
 }
