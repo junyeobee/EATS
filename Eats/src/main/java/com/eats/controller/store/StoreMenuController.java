@@ -170,7 +170,7 @@ public class StoreMenuController {
 				) {
 
 			String realpath = req.getServletContext().getRealPath("/");
-			
+			System.out.println("메뉴ㅠ뉴2222"+realpath);
 	        ModelAndView mav = new ModelAndView();
 	        
 	        MenuDTO menuDTO = new MenuDTO();

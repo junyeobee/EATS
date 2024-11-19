@@ -66,7 +66,7 @@ public class StoreLoginServiceImple implements StoreLoginService {
 	public int storeUpdatePwd(String newPwd,String storeId) {
 		
 		Map<String, String> map= new HashMap<String, String>();
-		System.out.println("서비스"+storeId+newPwd);
+	
 		
 		map.put("newPwd", newPwd);
 		map.put("storeId", storeId);

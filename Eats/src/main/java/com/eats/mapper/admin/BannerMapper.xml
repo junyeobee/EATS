@@ -14,12 +14,25 @@
 	</select>
   
   	<insert id="bannerInsert" parameterType="com.eats.admin.model.BannerDTO">
-  		insert into
-  		banner
-  		values(
-  		banner_idx_seq.nextval
-  		)
-  		
+    INSERT INTO banner (
+        BANNER_IDX,
+        BANNER_IMG,
+        BANNER_ORDER,
+        BANNER_NAME,
+        BANNER_URL,
+        BANNER_STAT,
+        BANNER_SDATE,
+        BANNER_EDATE
+    ) VALUES (
+        banner_idx_seq.nextval,
+        #{banner_img},
+        #{banner_order},
+        #{banner_name},
+        #{banner_url},
+        #{banner_stat},
+        #{banner_sdate},
+        #{banner_edate}    
+    )
   	</insert>
   
   </mapper>

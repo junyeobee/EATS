@@ -60,7 +60,7 @@ public class StoreLoginController {
 			System.out.println(storeIdx);
 			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeMenuList"); //매장 index생기면 추후 변경
+			mav.addObject("goUrl", "storeMain"); //매장 index생기면 추후 변경
 
 			Cookie ck = new Cookie("saveid", storeId);
 
