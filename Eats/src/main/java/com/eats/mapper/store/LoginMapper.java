@@ -14,4 +14,6 @@ public interface LoginMapper {
 	
 	public int storeUpdatePwd(Map<String,String> map);
 	
+	public String storeName(int storeIdx);
+	
 }

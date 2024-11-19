@@ -7,5 +7,8 @@ import com.eats.admin.model.BannerDTO;
 public interface BannerMapper {
 	
 	public List<BannerDTO> bannerList();
+	
+	public int bannerInsert(BannerDTO dto);
+	
 
 }

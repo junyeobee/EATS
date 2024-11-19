@@ -41,6 +41,10 @@
 						<img src="/img/user/myplate_icon.png"> 
 						<span>My plate</span>
 					</li>
+					<li class="menu-list" id="li_timeline">
+						<img src="/img/user/timeline_icon.png">
+						<span>타임라인</span>
+					</li>
 					<li class="menu-list" id="li_mypage">
 						<img src="/img/user/mypage_icon.png">
 						<span>My Page</span>

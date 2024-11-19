@@ -12,6 +12,8 @@ public interface StoreLoginService {
 	
 	public int storeUpdatePwd(String newPwd, String storeId);
 	
+	public String storeName(int storeIdx);
+
 	
 	
 	
