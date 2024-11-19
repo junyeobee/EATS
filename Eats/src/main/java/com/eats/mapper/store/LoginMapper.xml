@@ -2,63 +2,71 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.eats.mapper.store.LoginMapper">
-  
-  
-  	<select id="storeLogin" parameterType="String" resultType="com.eats.store.model.EatsStoreDTO">
-  		SELECT
-  		STORE_PWD,STORE_IDX
-  		FROM
-  		STORE_ACCOUNT
-  		WHERE
-  		STORE_ID=#{store_id}  		
-  	</select>
-  	
-  	
-  	<select id="findId"  parameterType="com.eats.store.model.EatsStoreDTO" resultType="String">
-  		
-  		SELECT STORE_ID
-  		FROM STORE_ACCOUNT
-  		WHERE
-  		STORE_EMAIL=#{store_email}
-  		AND
-  		STORE_CEO=#{store_ceo}	
-  	
-  	</select>
-  
-  
-  	<select id="storeidCheckForFindPwd" parameterType="String" resultType="String">
+<mapper namespace="com.eats.mapper.store.LoginMapper">
+
+
+	<select id="storeLogin" parameterType="String"
+		resultType="com.eats.store.model.EatsStoreDTO">
 		SELECT
-			STORE_EMAIL
+		STORE_PWD,STORE_IDX
 		FROM
-			STORE_ACCOUNT
+		STORE_ACCOUNT
 		WHERE
-			STORE_ID=#{store_id}
+		STORE_ID=#{store_id}
 	</select>
-	
-	
+
+
+	<select id="findId"
+		parameterType="com.eats.store.model.EatsStoreDTO" resultType="String">
+
+		SELECT STORE_ID
+		FROM STORE_ACCOUNT
+		WHERE
+		STORE_EMAIL=#{store_email}
+		AND
+		STORE_CEO=#{store_ceo}
+
+	</select>
+
+
+	<select id="storeidCheckForFindPwd" parameterType="String"
+		resultType="String">
+		SELECT
+		STORE_EMAIL
+		FROM
+		STORE_ACCOUNT
+		WHERE
+		STORE_ID=#{store_id}
+	</select>
+
+
 	<update id="storeUpdatePwd" parameterType="map">
 		UPDATE
-			STORE_ACCOUNT
+		STORE_ACCOUNT
 		SET
-			STORE_PWD=#{newPwd}
+		STORE_PWD=#{newPwd}
 		WHERE
-			STORE_ID=#{storeId}
+		STORE_ID=#{storeId}
 
 	</update>
+
+
+	<!-- 가게 이름 -->
 	
-	
-	<select id="storeInfo" parameterType="String" resultType="String">
-		SELECT 
-			STORE_CEO
+	<select id="storeName" parameterType="int" resultType="String">
+		SELECT
+		s.STORE_NAME
 		FROM
-			STORE_ACCOUNT
+		STORE_ACCOUNT sa
+		JOIN
+		STORE s ON sa.STORE_IDX = s.STORE_IDX
 		WHERE
-			STORE_ID=#{store_id}
-	
+		sa.STORE_IDX = #{store_idx}
 	</select>
-	
-	
-	
-	
-  </mapper>
+
+
+
+
+
+
+</mapper>
