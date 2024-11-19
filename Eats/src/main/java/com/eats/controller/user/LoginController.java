@@ -16,6 +16,7 @@ import com.eats.user.service.UserLoginService;
 
 import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -30,10 +31,12 @@ public class LoginController {
 	private EmailService emailService;
 	
 	@GetMapping("/user/login")
-	public String goLogin(@RequestParam(value="callback", required = false)String callback, org.springframework.ui.Model model) {
+	public String goLogin(org.springframework.ui.Model model,
+			HttpServletRequest request, HttpSession session) {
 		
-		if(callback != null && callback != "") {
-			model.addAttribute("callback", callback);
+		String uri=request.getHeader("Referer");
+		if(uri!=null && !uri.contains("user/login")) {
+			session.setAttribute("callbackUri", uri);
 		}
 		//로그인 페이지로 이동
 		return "/user/login/userLogin";
@@ -46,18 +49,18 @@ public class LoginController {
 			@RequestParam(value="saveId", required = false)String saveId,
 			@RequestParam(value="callback", required = false) String callback, 
 			HttpSession session, 
-			HttpServletResponse resp) {
+			HttpServletResponse resp,
+			HttpServletRequest req) {
 		//로그인 처리
 		boolean result=service.loginCheck(userId, userPwd);
-		
+				
+
 		ModelAndView mv=null;
 		if(result) {
-			//로그인성공
-			if(callback!=null && callback!="") {
-				mv=new ModelAndView("redirect:"+callback);
-			}else {
-				mv=new ModelAndView("redirect:/");
-			}
+			String callbackUri=(String)session.getAttribute("callbackUri");
+			System.out.println(callbackUri);
+			mv=new ModelAndView("redirect:"+callbackUri);
+			session.removeAttribute("callbackUri");
 			Map<String, Object> map=service.getUserInfo(userId);
 			BigDecimal user_idx_bd = (BigDecimal)map.get("USER_IDX");
 			int user_idx=user_idx_bd.intValue();
@@ -85,11 +88,19 @@ public class LoginController {
 	}
 	
 	@GetMapping("/user/logout")
-	public String goLogout(HttpSession session) {
+	public String goLogout(HttpSession session, HttpServletRequest request) {
 		//로그아웃 처리
-		session.invalidate();
+		session.removeAttribute("user_idx");
+		session.removeAttribute("user_nickname");
 		
-		return "redirect:/";
+		String uri=request.getHeader("referer");
+		
+		if(uri==null) {
+			uri="/";
+		}else {
+			uri=uri.substring(uri.indexOf("9090")+4);
+		}
+		return "redirect:"+uri;
 	}
 	
 	@GetMapping("/user/findId")

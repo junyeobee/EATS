@@ -125,7 +125,7 @@
 	</select>
 	<select id="getAvgRevScore" resultType="double" parameterType="int">
 		SELECT
-			ROUND(AVG(REV_SCORE), 1)
+			COALESCE(ROUND(AVG(REV_SCORE), 1), 0)
 		FROM
 			REVIEW
 		WHERE
