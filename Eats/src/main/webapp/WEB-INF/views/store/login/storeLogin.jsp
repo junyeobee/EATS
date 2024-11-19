@@ -42,7 +42,6 @@ body{
     border-radius: 5px;
     padding: 10px 5px 10px 10px;
     color: black;
-    font-family: "Noto Sans KR", sans-serif;
 }
 .saveId-wrapper{
 	margin: auto;

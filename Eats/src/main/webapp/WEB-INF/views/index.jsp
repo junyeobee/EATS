@@ -118,12 +118,12 @@ menu, ol, ul {
 				<div class="search_box">
 				<div class="location_box" id="location_box" data-target="modalArea"
 					data-toggle="modal">
-					<c:if test="${empty cookie.areaCk.value }">
+					<c:if test="${empty cookie.unitCk.value }">
 						<img class="ep-location" src="/svg/location_icon.svg" />
 					</c:if>
-					<c:if test="${!empty cookie.areaCk.value }">
+					<c:if test="${!empty cookie.unitCk.value }">
 						<img class="ep-location" src="/svg/location_icon_tomato.svg" />
-						<div class="locaton_text">${cookie.areaCk.value }</div>
+						<div class="locaton_text">${cookie.unitCk.value }</div>
 					</c:if>
 				</div>
 	
@@ -132,7 +132,7 @@ menu, ol, ul {
 					<form name="searchForm" id="form" action="searchStore" method="GET">
 						<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
 						<input type="hidden" id="word" name="word">
-						<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
+						<input type="hidden" id="areaWord" name="areaWord" value="${cookie.cityCk.value } ${cookie.unitCk.value }">
 					</form>
 				</div>
 				<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
@@ -186,14 +186,14 @@ menu, ol, ul {
 
 					<div class="subcate_box">
 						<c:forEach var="keyvalue" items="${values.value}">
-							<div class="sub_one" id="${keyvalue }"
+							<div class="sub_one" id="${idxList[values.key] },${keyvalue.cate_value_idx}"
 								onclick="searchThisTag(this)">
 								<div class="text">
-									<c:if test="${keyvalue.length()>5}">
-									${keyvalue.replace(" ", "<br>")}
+									<c:if test="${keyvalue.cate_value_name.length()>5}">
+									${keyvalue.cate_value_name.replace(" ", "<br>")}
 								</c:if>
-									<c:if test="${keyvalue.length()<=5}">
-									${keyvalue}
+									<c:if test="${keyvalue.cate_value_name.length()<=5}">
+									${keyvalue.cate_value_name}
 								</c:if>
 								</div>
 							</div>
@@ -524,7 +524,7 @@ menu, ol, ul {
 
      locationBox.addEventListener('click', function () {
     	modal.style.display='flex';
-        var main = document.getElementById('main');
+		var main = document.getElementsByTagName('section')[0];
         var header = document.getElementById('userHeader');
         var h = main.scrollHeight+header.scrollHeight;
         modal.style.height = h+'px';
@@ -541,22 +541,21 @@ menu, ol, ul {
 		}
     });
     
-    
-    
     function searchThisTag(t){
     	var url = "searchStore?tagWord="+t.id;
     	
-    	if(areaWord.value!=''){
+    	if(areaWord.value!=''){	
     		url+="&areaWord="+areaWord.value;
+    		console.log(url);
     	}
     	location.href=url;
     }
     
     function selectThisArea(t){
     	var city = areaWord.value.split(" ");
-		var newparam = city[0]+' '+t.innerText;
+		var newparam = city[0].substring(0,2)+' '+t.innerText;
 
-    	var param = 'selectArea='+t.innerText;
+    	var param = 'selectCity='+city[0].substring(0,2)+'&selectUnit='+t.innerText;
     	sendRequest('selectArea', param , showSelectArea, 'GET');
     	
     	locationBox.firstElementChild.src = '/svg/location_icon_tomato.svg';
@@ -567,7 +566,6 @@ menu, ol, ul {
     function showSelectArea(){
     	if(XHR.readyState==4){
     		if(XHR.status==200){
-    			//modal.style.display='none';
     			location.href='/?areaWord='+areaWord.value;
     		}
     	}
@@ -633,5 +631,11 @@ menu, ol, ul {
    searchInput.addEventListener('input', function(e){
 	   word.value=e.target.value;
    })
+   
+   window.addEventListener('scroll', function(event){
+	   var sy = this.scrollY;
+
+	   modal.firstElementChild.style.top=sy+250+'px';
+   });
 </script>
 </html>

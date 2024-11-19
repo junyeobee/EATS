@@ -63,12 +63,14 @@ public class StoreLoginServiceImple implements StoreLoginService {
 	
 	
 	@Override
-	public int storeUpdatePwd(String storeId, String newPwd) {
+	public int storeUpdatePwd(String newPwd,String storeId) {
 		
 		Map<String, String> map= new HashMap<String, String>();
+		System.out.println("서비스"+storeId+newPwd);
 		
-		map.put("storeId", storeId);
 		map.put("newPwd", newPwd);
+		map.put("storeId", storeId);
+		
 		
 		int result=mapper.storeUpdatePwd(map);
 		

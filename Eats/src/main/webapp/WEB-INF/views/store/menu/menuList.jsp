@@ -45,12 +45,12 @@ body {
 	font-size: 0.9rem;
 	cursor: pointer;
 	background: none;
-	border: 2px solid #1e90ff;
-	color: #1e90ff;
+	border: 2px solid #349FFB;
+	color: #349FFB;
 }
 
 .tab.active {
-	background-color: #1e90ff;
+	background-color: #349FFB;
 	color: white;
 }
 
@@ -72,7 +72,7 @@ body {
 }
 
 .menu-item.selected {
-	border-color: #1e90ff;
+	border-color: #349FFB;
 }
 
 .menu-item:hover .edit-button {
@@ -110,7 +110,7 @@ body {
 	position: absolute;
 	top: 0.5rem;
 	right: 0.5rem;
-	background-color: #1e90ff;
+	background-color: #349FFB;
 	color: white;
 	border: none;
 	padding: 0.3rem 0.8rem;
@@ -131,7 +131,7 @@ body {
 }
 
 .add-button {
-	background-color: #1e90ff;
+	background-color: #349FFB;
 	color: white;
 	border: none;
 	padding: 0.3rem 0.8rem;
@@ -164,9 +164,9 @@ body {
 }
 
 .page-number.active {
-	background-color: #1e90ff;
+	background-color: #349FFB;
 	color: white;
-	border-color: #1e90ff;
+	border-color: #349FFB;
 }
 h2{width:300px;}
 
@@ -287,9 +287,9 @@ function showSendResult(){
 			            
 			           
 			            if (menu.menu_preorder === 2) {
-			                menuInfoDiv.innerHTML += "<div class='menu-preorder'>선주문</div>";
+			                menuInfoDiv.innerHTML += "<div class='menu-preorder' style='color: #F3553C; font-size: 12px;'>선주문</div>";
 			            } else {
-			                menuInfoDiv.innerHTML += "<div class='menu-preorder'>일반 주문</div>";
+			                menuInfoDiv.innerHTML += "<div class='menu-preorder' style='color: #F3553C; font-size: 12px;'>일반 주문</div>";
 			            }
 
 			            

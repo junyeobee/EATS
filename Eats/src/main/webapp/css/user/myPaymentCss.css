@@ -1,0 +1,82 @@
+@charset "UTF-8";
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff7e6; /* 배경색을 찜 목록과 동일하게 설정 */
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #fff3d9; /* 톤을 찜 목록에 맞게 조정 */
+    border-bottom: 2px solid #f0e1c7;
+    font-weight: bold;
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #f0e1c7;
+    background-color: #ffffff;
+}
+
+.payment-row:nth-child(odd) {
+    background-color: #fffdf4;
+}
+
+span {
+    flex: 1;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.no-payment {
+    text-align: center;
+    color: #999999;
+    margin: 20px 0;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #c4c4c4; /* 찜 목록 버튼 색상 */
+    color: #333333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #a3a3a3; /* 버튼 호버 색상 */
+}
+
