@@ -23,6 +23,9 @@
 	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
 	*/
 	
+	.mainCon_1400 > .mc_left {float:left; width:49%;}
+	.mainCon_1400 > .mc_right {float:right; width:49%;}
+	
 	/* <버튼> */	
 	/* 매장-정보수정신청승인 버튼 */
 	.btn_orange {cursor:pointer; background:orange; color:white; text-align:center; border:1px solid #E17814; border-radius:5px; padding:5px 10px;}

@@ -17,6 +17,14 @@ public class AdminReviewServiceImple implements AdminReviewService {
 	@Autowired
 	private AdminReviewMapper mapper;
 
+
+	@Override
+	public List<ReviewDeleteDTO> adminMainReviewList() {
+		
+		List<ReviewDeleteDTO> lists = mapper.adminMainReviewList();
+		return lists;
+	}
+	
 	@Override
 	public List<ReviewDeleteDTO> adminRevDelList() {
 		

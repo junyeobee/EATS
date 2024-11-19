@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	<mapper namespace="com.eats.mapper.admin.AdminStoreEntryMapper">
+	<mapper namespace="com.eats.mapper.admin.AdminStoreEntryMapper">		 
+		<select id="adminMainEntryList" resultType="com.eats.store.model.StoreJoinDTO">
+		    select 
+	            sj_idx, sj_name, biz_num, owner_name, owner_tel, sj_email, 
+	            sj_addr, sj_daddr, sj_id, sj_pwd, sj_stat, sj_reason, 
+	            sj_req_date, sj_res_date 
+	        from 
+	            store_join 
+	        order by 
+	            sj_idx desc
+		</select>
+		
+		
+		
 		<select id="adminStoreEntryList" resultType="com.eats.store.model.StoreJoinDTO">
 			select 
 				sj_idx, sj_name, biz_num, owner_name, owner_tel, sj_email, 

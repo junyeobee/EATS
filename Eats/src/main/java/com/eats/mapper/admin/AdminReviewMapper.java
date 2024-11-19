@@ -9,6 +9,7 @@ import com.eats.admin.model.ReviewDeleteDTO;
 
 @Mapper
 public interface AdminReviewMapper {
+	public List<ReviewDeleteDTO> adminMainReviewList();
 	public List<ReviewDeleteDTO> adminRevDelList();
 	public int review_stateChange(ReviewDeleteDTO dto);
 	public int revDel_stateChange(ReviewDeleteDTO dto);

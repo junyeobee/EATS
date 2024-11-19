@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminStoreMapper">
+		<select id="storeList" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			left join 
+				gudok gd on st.store_idx = gd.store_idx
+		</select>
+		<!--
+			1 활성/ 2 만료/ 3 일시정지
+			gd.stat가 1이면 프리미엄 아니면 일반 
+		 -->
+		 
+		 
+	   <select id="adminStoreDetail" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			left join 
+				gudok gd on st.store_idx = gd.store_idx
+			WHERE 
+				st.store_idx = #{st_idx}
+	   </select>
+		
+	   <select id="storeChartList" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+	   </select>
+	   <!--
+	   		운영상태 ready, true, false
+	   		r, y, n
+	    -->
+	    
+	    
+	   <select id="adminStoreChartDetail" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			WHERE 
+				st.store_idx = #{st_idx}
+	   </select>
+   
+	</mapper>

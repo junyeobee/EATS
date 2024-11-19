@@ -17,6 +17,12 @@ public class AdminStoreEntryServiceImple implements AdminStoreEntryService {
 	private AdminStoreEntryMapper mapper;
 
 	@Override
+	public List<StoreJoinDTO> adminMainEntryList() {
+		List<StoreJoinDTO> lists = mapper.adminMainEntryList();
+		return lists;
+	}
+
+	@Override
 	public List<StoreJoinDTO> adminStoreEntryList() {
 		List<StoreJoinDTO> lists = mapper.adminStoreEntryList();
 		return lists;
@@ -41,5 +47,6 @@ public class AdminStoreEntryServiceImple implements AdminStoreEntryService {
 		int count = mapper.storeInsert(dto);
 		return count;
 	}
+
 
 }

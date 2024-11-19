@@ -17,7 +17,6 @@ public class StoreJoinDTO {
     private int sj_stat;
     private String sj_reason;
     private String sj_req_date, sj_res_date;
-    
 
 	public StoreJoinDTO() {
 		super();
@@ -58,7 +57,6 @@ public class StoreJoinDTO {
 		this.sj_req_date = sj_req_date;
 		this.sj_res_date = sj_res_date;
 	}
-
 
    public int getSj_idx() {
       return sj_idx;
@@ -136,45 +134,6 @@ public class StoreJoinDTO {
       return sj_pwd;
    }
 
-<<<<<<< HEAD
-	public void setSj_pwd(String sj_pwd) {
-		this.sj_pwd = sj_pwd;
-	}
-
-	public int getSj_stat() {
-		return sj_stat;
-	}
-
-	public void setSj_stat(int sj_stat) {
-		this.sj_stat = sj_stat;
-	}
-
-	public String getSj_reason() {
-		return sj_reason;
-	}
-
-	public void setSj_reason(String sj_reason) {
-		this.sj_reason = sj_reason;
-	}
-
-	public String getSj_req_date() {
-		return sj_req_date;
-	}
-
-	public void setSj_req_date(String sj_req_date) {
-		this.sj_req_date = sj_req_date;
-	}
-
-	public String getSj_res_date() {
-		return sj_res_date;
-	}
-
-	public void setSj_res_date(String sj_res_date) {
-		this.sj_res_date = sj_res_date;
-	}
-	
-	
-=======
    public void setSj_pwd(String sj_pwd) {
       this.sj_pwd = sj_pwd;
    }
@@ -207,31 +166,24 @@ public class StoreJoinDTO {
       return sj_res_date;
    }
 
-   public void setSj_res_date(String sj_res_date) {
-      this.sj_res_date = sj_res_date;
-   }
-
-public StoreJoinDTO(int sj_idx, String sj_name, String biz_num, String owner_name, String owner_tel, String sj_email,
-		String sj_addr, String sj_daddr, String sj_id, String sj_pwd, int sj_stat, String sj_req_date) {
-	super();
-	this.sj_idx = sj_idx;
-	this.sj_name = sj_name;
-	this.biz_num = biz_num;
-	this.owner_name = owner_name;
-	this.owner_tel = owner_tel;
-	this.sj_email = sj_email;
-	this.sj_addr = sj_addr;
-	this.sj_daddr = sj_daddr;
-	this.sj_id = sj_id;
-	this.sj_pwd = sj_pwd;
-	this.sj_stat = sj_stat;
-	this.sj_req_date = sj_req_date;
-}
-
-
-   
-   
->>>>>>> develop
-    
-   
+   	public void setSj_res_date(String sj_res_date) {
+   		this.sj_res_date = sj_res_date;
+	}
+	
+	public StoreJoinDTO(int sj_idx, String sj_name, String biz_num, String owner_name, String owner_tel, String sj_email,
+			String sj_addr, String sj_daddr, String sj_id, String sj_pwd, int sj_stat, String sj_req_date) {
+		super();
+		this.sj_idx = sj_idx;
+		this.sj_name = sj_name;
+		this.biz_num = biz_num;
+		this.owner_name = owner_name;
+		this.owner_tel = owner_tel;
+		this.sj_email = sj_email;
+		this.sj_addr = sj_addr;
+		this.sj_daddr = sj_daddr;
+		this.sj_id = sj_id;
+		this.sj_pwd = sj_pwd;
+		this.sj_stat = sj_stat;
+		this.sj_req_date = sj_req_date;
+	}
 }

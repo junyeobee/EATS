@@ -9,6 +9,8 @@ import com.eats.store.model.StoreJoinDTO;
 @Mapper
 public interface AdminStoreEntryMapper {
 
+	public List<StoreJoinDTO> adminMainEntryList();
+	
 	public List<StoreJoinDTO> adminStoreEntryList();
 	public StoreJoinDTO adminStoreEntryDetail(int sj_idx);
 	

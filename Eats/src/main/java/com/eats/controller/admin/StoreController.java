@@ -12,7 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.admin.service.AdminStoreEntryService;
 import com.eats.admin.service.AdminStoreInfoService;
-import com.eats.store.model.StoreDTO;
+import com.eats.admin.service.AdminStoreService;
+import com.eats.admin.model.AdminStoreDTO;
 import com.eats.store.model.StoreJoinDTO;
 import com.eats.store.model.StoreNewsDTO;
 import com.eats.admin.model.AdminStoreInfoUpdateDTO;
@@ -25,6 +26,9 @@ public class StoreController {
 
     @Autowired
     private AdminStoreEntryService se_service;
+
+    @Autowired
+    private AdminStoreService st_service;
 
 	@GetMapping("/admin/storeEntryOkList")
     public ModelAndView storeEntry() {
@@ -108,12 +112,53 @@ public class StoreController {
     }
 
 	@GetMapping("/admin/storeChart")
-    public String storeChart() {
-        return "admin/store/storeChart";
+    public ModelAndView storeChart() {
+
+		List<AdminStoreDTO> lists = st_service.storeChartList();
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("lists", lists);
+		
+		mav.setViewName("admin/store/storeChart");
+		return mav;
+    }
+
+
+	@GetMapping("/admin/storeChartDetail")
+    public ModelAndView storeChartDetail(@RequestParam("st_idx") int st_idx, Model model) {
+		
+	    model.addAttribute("st_idx", st_idx); // store_idx 값을 모델에 추가
+	    
+	    AdminStoreDTO data = st_service.adminStoreChartDetail(st_idx);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("data", data);
+        //System.out.println(data.toString());
+        mav.setViewName("admin/store/storeChartDetail");
+
+        return mav;
     }
 
 	@GetMapping("/admin/storeList")
-    public String storeList() {
-        return "admin/store/storeList";
+    public ModelAndView storeList() {
+
+		List<AdminStoreDTO> lists = st_service.storeList();
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("lists", lists);
+		
+		mav.setViewName("admin/store/storeList");
+		return mav;
+    }
+
+
+	@GetMapping("/admin/storeDetail")
+    public ModelAndView storeDetail(@RequestParam("st_idx") int st_idx, Model model) {
+		
+	    model.addAttribute("st_idx", st_idx); // store_idx 값을 모델에 추가
+	    AdminStoreDTO data = st_service.adminStoreDetail(st_idx);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("data", data);
+        //System.out.println(data.toString());
+        mav.setViewName("admin/store/storeDetail");
+
+        return mav;
     }
 }
