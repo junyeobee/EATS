@@ -28,4 +28,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by 
 			table_num asc
 	</select>
+	<select id = "reserveList" parameterType="map" resultType="com.eats.store.model.reserve.ReserveListDTO">
+		SELECT 
+			r.reserve_idx,
+			r.reserve_date,
+			r.reserve_time,
+			r.reserve_count,
+			r.reserve_table_idx,
+			r.request,
+			r.reserve_state,
+			r.reserve_applydate,
+			u.user_name,
+			up.user_tel,
+			up.user_nickname
+		FROM 
+			reservation r
+		JOIN eats_user u 
+			ON r.user_idx = u.user_idx
+		JOIN user_profile up 
+			ON u.user_idx = up.user_idx
+		WHERE 
+			r.store_idx = #{storeIdx}
+			AND r.reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD')
+			AND r.reserve_time = #{time}
+	</select>
 </mapper>

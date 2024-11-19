@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eats.store.model.reserve.ReservOkViewDTO;
+import com.eats.store.model.reserve.ReserveListDTO;
 import com.eats.store.model.reserve.TableDTO;
 import com.eats.store.service.ReserveService;
 
@@ -24,24 +26,28 @@ public class ReserveController {
 	
 	@GetMapping("/suminbabo")
 	@ResponseBody
-	public List<TableDTO> getTables(HttpServletRequest req){
+	public ReservOkViewDTO getTables(HttpServletRequest req){
 		HttpSession session = req.getSession();
 		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
 		LocalDateTime now =	LocalDateTime.now();
 		int year = now.getYear();
 		int month = now.getMonthValue();
 		int today = now.getDayOfMonth();
-		
-		
 		Date day = Date.valueOf(year+"-"+month+"-"+today);
-		
 		int hour = now.getHour();
 		int min = now.getMinute();
 		Map map = new HashMap<>();
 		map.put("storeIdx", storeIdx);
 		map.put("day", day);
 		map.put("time", hour+":"+min);
-		List<TableDTO> lists = service.tables(map);
-		return lists;
+		List<TableDTO> tables = service.tables(map);
+		List<ReserveListDTO> lists = service.reserveLists(map);
+		ReservOkViewDTO dto = new ReservOkViewDTO();
+		dto.setTables(tables);
+		dto.setLists(lists);
+		return dto;
 	}
+	
+	
+	
 }
