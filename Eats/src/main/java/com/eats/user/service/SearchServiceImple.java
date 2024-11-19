@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.eats.admin.model.SearchDTO;
 import com.eats.mapper.user.MainMapper;
 import com.eats.mapper.user.SearchMapper;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.store.model.StoreDTO;
 import com.eats.user.model.CateKeyDTO;
 
@@ -69,8 +70,8 @@ public class SearchServiceImple implements SearchService {
 	}
 	
 	@Override
-	public List<StoreDTO> getStoreInfo(Map<String, Object> map) {
-		List<StoreDTO> list = mp.getStoreInfo(map);
+	public List<HYStoreDTO> getStoreInfo(Map<String, Object> map) {
+		List<HYStoreDTO> list = mp.getStoreInfo(map);
 		return list;
 	}
 }

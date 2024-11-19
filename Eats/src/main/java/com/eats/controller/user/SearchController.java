@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eats.store.model.StoreDTO;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -100,21 +100,31 @@ public class SearchController {
 		
 		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
-		words.put("area", areaWord);
+		if(areaWord!=null) {
+			words.put("city", areaWord.split(" ")[0]);
+			words.put("unit", areaWord.split(" ")[1]);
+		}
+
 		words.put("date", selectedDate);
 		words.put("week", week);
 		words.put("time", selectedTime);
 		words.put("price", price);
-		List<StoreDTO> storeList = ss.getStoreInfo(words);
+		List<HYStoreDTO> storeList = ss.getStoreInfo(words);
 		
 		ModelAndView mv = new ModelAndView();
 		
-		if(storeList.size()!=0) {
 		Map<Integer, Integer> reviewCount = new HashMap<>();
 		Map<Integer, Double> reviewPoint = new HashMap<>();
-		for(StoreDTO dto:storeList) {
+		List<Map<String, Double>> location = new ArrayList<>();
+		for(HYStoreDTO dto:storeList) {
 			reviewCount.put(dto.getStore_idx(), ms.getReviewCountByStoreIdx(dto.getStore_idx())==null?0:ms.getReviewCountByStoreIdx(dto.getStore_idx()));
 			reviewPoint.put(dto.getStore_idx(), ms.getStorePoint(dto.getStore_idx()));
+			
+			Map<String, Double> latlng = new HashMap<>();
+			latlng.put("lat", dto.getStore_lat());
+			latlng.put("lng", dto.getStore_lng());
+			
+			location.add(latlng);
 		}
 
 		
@@ -132,7 +142,8 @@ public class SearchController {
 		mv.addObject("storeList", storeList);
 		mv.addObject("reviewCount", reviewCount);
 		mv.addObject("reviewPoint", reviewPoint);
-		}
+		mv.addObject("location", location);
+		
 		mv.setViewName("user/search/searchStore");
 
 		return mv;
@@ -157,5 +168,10 @@ public class SearchController {
 		resp.addCookie(ck2);
 
 		return "user/search/searchStore";
+	}
+	
+	@GetMapping("/getAddr")
+	public String getAddr() {
+		return "user/home/getAddr";
 	}
 }

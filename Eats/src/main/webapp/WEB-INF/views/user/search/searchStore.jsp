@@ -82,6 +82,9 @@ menu, ol, ul {
 		<c:forEach var="tags" items="${tagList }">
 			<input type="hidden" class="tagParam" value="${tags.keyidx},${tags.valueidx}">
 		</c:forEach>
+		<c:forEach var="locs" items="${location }">
+			<input type="hidden" class="locationParam" value="${locs.lat },${locs.lng}">
+		</c:forEach>
 		<div class="filter_box">
 			<div class="filter_reset" onclick="resetThisTag('all')">전체 필터 초기화</div>
 			<div class="pick_group">
@@ -209,10 +212,6 @@ menu, ol, ul {
 
 		<div class="location_box">
 			<div class="location_map" id="map"></div>
-			<input type="button" value="부드러운 이동" onclick="panTo()"> <input
-				type="button" value="지도 확대" onclick="zoomIn()"> <input
-				type="button" value="지도 축소" onclick="zoomOut()"> <span
-				id="maplevel">${word }</span>
 		</div>
 
 		<div class="store_box">

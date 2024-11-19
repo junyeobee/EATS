@@ -16,6 +16,10 @@ public class HYStoreDTO {
 	private String parent_area_name;
 	private String area_name;
 	
+	private String stime_start;
+	private String stime_end;
+	private String stime_break;
+	
 	public HYStoreDTO() {
 		
 	}
@@ -51,6 +55,25 @@ public class HYStoreDTO {
 		this.store_lng = store_lng;
 		this.parent_area_name = parent_area_name;
 		this.area_name = area_name;
+	}
+
+	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
+			String stime_start, String stime_end, String stime_break) {
+		super();
+		this.store_idx = store_idx;
+		this.store_name = store_name;
+		this.store_area = store_area;
+		this.store_addr = store_addr;
+		this.store_daddr = store_daddr;
+		this.store_tel = store_tel;
+		this.store_biznum = store_biznum;
+		this.store_state = store_state;
+		this.store_lat = store_lat;
+		this.store_lng = store_lng;
+		this.stime_start = stime_start;
+		this.stime_end = stime_end;
+		this.stime_break = stime_break;
 	}
 
 	public int getStore_idx() {
@@ -148,4 +171,30 @@ public class HYStoreDTO {
 	public void setArea_name(String area_name) {
 		this.area_name = area_name;
 	}
+
+	public String getStime_start() {
+		return stime_start;
+	}
+
+	public void setStime_start(String stime_start) {
+		this.stime_start = stime_start;
+	}
+
+	public String getStime_end() {
+		return stime_end;
+	}
+
+	public void setStime_end(String stime_end) {
+		this.stime_end = stime_end;
+	}
+
+	public String getStime_break() {
+		return stime_break;
+	}
+
+	public void setStime_break(String stime_break) {
+		this.stime_break = stime_break;
+	}
+	
+	
 }

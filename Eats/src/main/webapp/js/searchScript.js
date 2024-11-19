@@ -1,18 +1,86 @@
+var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+var options = { //지도를 생성할 때 필요한 기본 옵션
+	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+	level: 4
+	//지도의 레벨(확대, 축소 정도)
+};
 
-window.addEventListener('load', function(){ 
+var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+window.addEventListener('load', function() {
 	var tags = document.getElementsByClassName('filter_tag');
 	var params = document.getElementsByClassName('tagParam');
-	
-	for(var i=0; i<params.length; i++) {
-		for(var j=0; j<tags.length; j++) {
-			if(params[i].value==tags[j].id) {
+
+	for (var i = 0; i < params.length; i++) {
+		for (var j = 0; j < tags.length; j++) {
+			if (params[i].value == tags[j].id) {
 				tags[j].style.backgroundColor = '#ffb53c';
 				tags[j].style.borderColor = '#ffb53c';
 				tags[j].firstElementChild.style.color = 'white';
 			}
 		}
 	}
+
+	var locs = document.getElementsByClassName('locationParam');
+	var areaWord = document.getElementById('pick_area');
+	
+	var area = area==null?'서울':areaWord.innerText;
+	
+	if (locs.length > 0) {
+		for (var i = 0; i < locs.length; i++) {
+			var lat = locs[i].value.split(',')[0];
+			var lng = locs[i].value.split(',')[1];
+
+			var markerPosition = new kakao.maps.LatLng(lat, lng);
+			var marker = new kakao.maps.Marker({
+				position: markerPosition
+			});
+
+			marker.setMap(map);
+		}
+	}
+
+	var ps = new kakao.maps.services.Places();
+
+	// 키워드로 장소를 검색합니다
+	ps.keywordSearch(area, placesSearchCB);
 });
+
+function placesSearchCB(data, status, pagination) {
+	if (status === kakao.maps.services.Status.OK) {
+
+		// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+		// LatLngBounds 객체에 좌표를 추가합니다
+		var bounds = new kakao.maps.LatLngBounds();
+
+		for (var i = 0; i < data.length; i++) {
+			//displayMarker(data[i]);    
+			bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+		}
+
+		// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+		map.setBounds(bounds);
+		
+		var level = map.getLevel();
+		map.setLevel(level - 1);
+	}
+}
+
+function displayMarker(place) {
+
+	// 마커를 생성하고 지도에 표시합니다
+	var marker = new kakao.maps.Marker({
+		map: map,
+		position: new kakao.maps.LatLng(place.y, place.x)
+	});
+
+	// 마커에 클릭이벤트를 등록합니다
+	kakao.maps.event.addListener(marker, 'click', function() {
+		// 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+		infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+		infowindow.open(map, marker);
+	});
+}
 
 var modal = document.getElementById("modal");
 var exitbtn = document.getElementById("exitbtn");
@@ -28,8 +96,8 @@ function addThisTagToFilter(t) {
 		var url = document.getElementById('parameters');
 		var paramArr = url.value.split(param);
 
-		var newUrl = (paramArr[0]+paramArr[1]).replace(/\s+/g, ' ');
-		location.href = 'searchStore?'+newUrl;
+		var newUrl = (paramArr[0] + paramArr[1]).replace(/\s+/g, ' ');
+		location.href = 'searchStore?' + newUrl;
 
 	} else if (t.firstElementChild.style.color == 'black') {
 		checkParams(parameters.value, 'tagWord', param);
@@ -107,9 +175,9 @@ function showSelectArea() {
 function selectThisTime(t) {
 	var h = t.firstElementChild.innerText
 	var m = t.lastElementChild.innerText;
-	var selectedTime= h+":"+m;
-	
-	checkParams(parameters.value, 'selectedTime',selectedTime);
+	var selectedTime = h + ":" + m;
+
+	checkParams(parameters.value, 'selectedTime', selectedTime);
 }
 
 function checkParams(paramValue, paramName, value) {
@@ -120,9 +188,9 @@ function checkParams(paramValue, paramName, value) {
 			result += '&';
 		}
 		if (params[i].includes(paramName)) {
-			
-			if(paramName=='tagWord') {
-				result+=params[i]+'%20'+value;
+
+			if (paramName == 'tagWord') {
+				result += params[i] + '%20' + value;
 			} else {
 				result += paramName + '=' + value;
 			}
@@ -131,13 +199,13 @@ function checkParams(paramValue, paramName, value) {
 		}
 	}
 
-	location.href='searchStore?'+result;
+	location.href = 'searchStore?' + result;
 }
 
 function openDateSelectBox() {
 	if (calendar_box.style.height == '100%') {
 		calendar_box.style.height = '0';
-				calendar_box.style.margin = '0px auto';
+		calendar_box.style.margin = '0px auto';
 	} else {
 		calendar_box.style.height = '100%';
 		calendar_box.style.margin = '20px auto';
@@ -147,34 +215,34 @@ function openDateSelectBox() {
 function openTimeSelectBox(t) {
 	var time_paper = t.nextElementSibling;
 	if (time_paper.style.height == '100%') {
-			time_paper.style.height = '0';
-			time_paper.style.overflow='hidden';
-		} else {
-			time_paper.style.height = '100%';
-			time_paper.style.overflow='auto';
-		}
-}
-
-function resetThisTag(range) {
-	if(range=='all') {
-		console.log(range);
-		location.href='/searchStore';
+		time_paper.style.height = '0';
+		time_paper.style.overflow = 'hidden';
 	} else {
-		var url = document.getElementById('parameters').value;
-		var tags = url.split('tagWord=')[1].split(' ');
-		var newUrl = url.split('tagWord=')[0]+'tagWord=';
-		for(var i=1; i<tags.length; i++) {
-			if(tags[i].split(',')[0]!=range) {
-				newUrl += ' '+tags[i];
-			}
-		}
-		
-		location.href='searchStore?'+newUrl;
+		time_paper.style.height = '100%';
+		time_paper.style.overflow = 'auto';
 	}
 }
 
-function viewStoreDetail(store_idx,selectedDate) {
-	location.href='/user/storeInfo?store_idx='+store_idx+'&reserve_date='+selectedDate;
+function resetThisTag(range) {
+	if (range == 'all') {
+		console.log(range);
+		location.href = '/searchStore';
+	} else {
+		var url = document.getElementById('parameters').value;
+		var tags = url.split('tagWord=')[1].split(' ');
+		var newUrl = url.split('tagWord=')[0] + 'tagWord=';
+		for (var i = 1; i < tags.length; i++) {
+			if (tags[i].split(',')[0] != range) {
+				newUrl += ' ' + tags[i];
+			}
+		}
+
+		location.href = 'searchStore?' + newUrl;
+	}
+}
+
+function viewStoreDetail(store_idx, selectedDate) {
+	location.href = '/user/storeInfo?store_idx=' + store_idx + '&reserve_date=' + selectedDate;
 }
 
 //캘린더 js(복사함)
@@ -276,18 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-var options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-	level: 3
-	//지도의 레벨(확대, 축소 정도)
-};
-
-var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-
-
-
 function panTo() {
 	// 이동할 위도 경도 위치를 생성합니다 
 	var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
@@ -317,11 +373,6 @@ function zoomOut() {
 
 	// 지도 레벨을 표시합니다
 	displayLevel();
-}
-
-function displayLevel() {
-	var levelEl = document.getElementById('maplevel');
-	levelEl.innerHTML = '현재 지도 레벨은 ' + map.getLevel() + ' 레벨 입니다.';
 }
 
 function getInfo() {
