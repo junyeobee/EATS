@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.MainMapper;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -79,13 +80,25 @@ public class MainServiceImple implements MainService {
 
 	@Override
 	public ReviewDTO getReview(int rev_idx) {
-		// TODO Auto-generated method stub
-		return null;
+		ReviewDTO dto = mp.getReview(rev_idx);
+		return dto;
 	}
 	
 	@Override
 	public Integer getReviewCountByStoreIdx(int store_idx) {
 		int count = mp.getReviewCountByStoreIdx(store_idx);
 		return count;
+	}
+	
+	@Override
+	public List<HYStoreDTO> getStoreByJjimCount(Map<String, Object> map) {
+		List<HYStoreDTO> list = mp.getStoreByJjimCount(map);
+		return list;
+	}
+	
+	@Override
+	public List<HYStoreDTO> getStoreByStarPoint(Map<String, Object> map) {
+		List<HYStoreDTO> list = mp.getStoreByStarPoint(map);
+		return list;
 	}
 }

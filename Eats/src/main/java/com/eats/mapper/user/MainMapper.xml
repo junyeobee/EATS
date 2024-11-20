@@ -50,7 +50,7 @@
 	</select>
 
 	<select id="getReview" parameterType="Integer" resultType="com.eats.user.model.ReviewDTO">
-		select c.*, user_nickname
+		select c.*, user_nickname, profile_image
 		from (select b.*, store_name,
 		store_addr
 		from (select a.*, user_idx, store_idx, reserve_date
@@ -92,5 +92,39 @@
 		select count(*) from review, reservation
 		where review.reserve_idx=reservation.reserve_idx
 		and store_idx=#{store_idx}
+	</select>
+	
+	<select id="getStoreByJjimCount" parameterType="map" resultType="com.eats.store.model.HYStoreDTO">
+		select jcnt, c.* from
+		(select b.*, store_img from
+		(select a.* from
+		(select * from store where store_state=upper('true')
+		<if test="cityWord != null and cityWord != '' and unitWord != null and unitWord != ''">
+			and store_addr like '%'||#{cityWord}||'%'||#{unitWord}||'%'
+		</if>
+		)a, store_time
+		where stime_day=#{week} and store_time.store_idx=a.store_idx)b, store_img
+		where b.store_idx=store_img.store_idx and img_order=1)c,
+		(select store_idx, count(*) jcnt from jjim group by store_idx)j
+		where c.store_idx=j.store_idx
+		order by jcnt desc
+	</select>
+	
+	<select id="getStoreByStarPoint" parameterType="map" resultType="com.eats.store.model.HYStoreDTO">
+		select point, c.* from
+		(select b.*, store_img from
+		(select a.* from 
+		(select * from store where store_state=upper('true')
+		<if test="cityWord != null and cityWord != '' and unitWord != null and unitWord != ''">
+			and store_addr like '%'||#{cityWord}||'%'||#{unitWord}||'%'
+		</if>
+		)a, store_time
+		where stime_day=#{week} and store_time.store_idx=a.store_idx)b, store_img
+		where b.store_idx=store_img.store_idx and img_order=1)c,
+		(select store_idx, round(avg(rev_score),2) point from review, reservation
+		where reservation.reserve_idx=review.reserve_idx
+		group by store_idx)p
+		where c.store_idx=p.store_idx
+		order by point desc
 	</select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.eats.controller.user;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -29,7 +32,19 @@ public class MainController {
 	@GetMapping("/")
 	public ModelAndView mainPage(@CookieValue(value = "cityCk", required = false) String cityWord,
 			@CookieValue(value = "unitCk", required = false) String unitWord) {
-		ModelAndView mv = new ModelAndView();
+		Map<String, Object> forStore = new HashMap<>();
+		
+		LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        String[] koreanDays = {"일", "월", "화", "수", "목", "금", "토"};
+		forStore.put("week", koreanDays[dayOfWeek.getValue() % 7]);
+		forStore.put("cityWord", cityWord);
+		forStore.put("unitWord", unitWord);
+		
+		List<HYStoreDTO> jcntList = ms.getStoreByJjimCount(forStore);
+		List<HYStoreDTO> pointList = ms.getStoreByStarPoint(forStore);
+		
+        ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
 		Map<String, List<CateValueDTO>> valueList = new HashMap<>();
@@ -54,26 +69,17 @@ public class MainController {
 			List<Double> storePoint = new ArrayList<>();
 			List<Integer> followCount = new ArrayList<>();
 			
-			String tagIdx_s[] = new String[2];
-			int tagIdx[] = new int[2];
-			List<List<String>> tags = new ArrayList<>();
+			List<String> tags = new ArrayList<>();
 
 			for (ReviewDTO rev_dto : reviewData) {
 				if(rev_dto!=null) {
 					storePoint.add(ms.getStorePoint(rev_dto.getStore_idx()));
 					followCount.add(ms.getFollowerCount(rev_dto.getUser_idx()));
 	
-					tagIdx_s = rev_dto.getRev_tag().split(",");
-	
-					tagIdx[0] = Integer.parseInt(tagIdx_s[0]);
-					tagIdx[1] = Integer.parseInt(tagIdx_s[1]);
-	
-					List<String> box = new ArrayList<>();
-	
-					box.add(ms.getTag(tagIdx[0]));
-					box.add(ms.getTag(tagIdx[1]));
-	
-					tags.add(box);
+					String[] tag_arr = rev_dto.getRev_tag().split(",");
+					for(String str:tag_arr) {
+						tags.add(str);
+					}
 				}
 				
 				mv.addObject("reviewData", reviewData);
@@ -81,7 +87,6 @@ public class MainController {
 				mv.addObject("likeCount", likeCount);
 				mv.addObject("followCount", followCount);
 				mv.addObject("tags", tags);
-				
 			}
 		}
 
@@ -89,6 +94,8 @@ public class MainController {
 		mv.addObject("idxList", idxList);
 		mv.addObject("valueList", valueList);
 		mv.addObject("cityList", cityList);
+		mv.addObject("jcntList", jcntList);
+		mv.addObject("pointList", pointList);
 		mv.setViewName("index");
 
 		return mv;

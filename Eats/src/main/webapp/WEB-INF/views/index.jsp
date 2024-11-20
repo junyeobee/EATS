@@ -235,10 +235,11 @@ menu, ol, ul {
 				
 				<c:forEach var="reviews" items="${reviewData }" varStatus="cnt">
 				<c:if test="${!empty reviews }">
-					<div class="user_review">
+					<div class="user_review" onclick="location.href='/user/storeInfo?store_idx=${reviews.store_idx}';">
 						<div class="user_info">
-							<img src="/svg/profile_icon.svg">
-							<div class="user_pro">
+						<div class="user_info_img">
+							<img src="${reviews.profile_image==null||reviews.profile_image==''?'/svg/profile_icon.svg':reviews.profile_image }">
+						</div>	<div class="user_pro">
 								<div class="user_id_info">
 									<div class="user_id">${reviews.user_nickname }</div>
 									<div class="user_follow">팔로워 ${followCount.get(cnt.index) }</div>
@@ -285,37 +286,37 @@ menu, ol, ul {
 			</div>
 			</c:if>
 
+		<c:if test="${jcntList.size()>0 }">
 			<div class="reserve_box">
 				<div class="reserve_text">
 					<div class="reserve_title">
-						빠른 예약<br />가능 식당
+						찜 순
 					</div>
 					<div class="reserve_sub">
-						바로 예약 가능한<br />식당이 알고 싶다면?
+						가장 많이 찜한<br />식당이 알고 싶다면?
 					</div>
 				</div>
 
 				<div class="reserve_container">
+				<c:forEach var="jcnt" items="${jcntList }">
 					<div class="store_reserve">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
+							<img class="reserve_img" src="${jcnt.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
+									<div class="store_reserve_title">${jcnt.store_name }</div>
 									<div class="store_reserve_sub">
 										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
+											<img class="star_icon" src="/svg/fork_icon.svg" />
+											<div class="star_point">${jcnt.jcnt }</div>
 										</div>
 										<div class="store_location">
 											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
+											<div class="location_text">${jcnt.store_addr }</div>
 										</div>
 									</div>
 								</div>
-
 								<div class="store_reserve_tag_box">
 									<div class="store_reserve_tag">
 										<div class="store_reserve_tag_text">대화</div>
@@ -329,120 +330,60 @@ menu, ol, ul {
 								</div>
 							</div>
 						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
-							</div>
-						</div>
 					</div>
-					<div class="store_reserve">
-						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
-
-							<div class="store_reserve_info">
-								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-									<div class="store_reserve_sub">
-										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
-										</div>
-										<div class="store_location">
-											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="store_reserve_tag_box">
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
-							</div>
-						</div>
-					</div>
-					<div class="store_reserve">
-						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
-
-							<div class="store_reserve_info">
-								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-									<div class="store_reserve_sub">
-										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
-										</div>
-										<div class="store_location">
-											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="store_reserve_tag_box">
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
-							</div>
-						</div>
-					</div>
+				</c:forEach>
 				</div>
 			</div>
+		</c:if>
+		<c:if test="${pointList.size()>0 }">
+			<div class="reserve_box">
+				<div class="reserve_text">
+					<div class="reserve_title">
+						별점 순
+					</div>
+					<div class="reserve_sub">
+						리뷰 별점이 높은<br />식당이 알고 싶다면?
+					</div>
+				</div>
 
+				<div class="reserve_container">
+				<c:forEach var="point" items="${pointList }">
+					<div class="store_reserve">
+						<div class="store_reserve_box">
+							<img class="reserve_img" src="${point.store_img }" />
+
+							<div class="store_reserve_info">
+								<div class="store_reserve_info_box">
+									<div class="store_reserve_title">${point.store_name }</div>
+									<div class="store_reserve_sub">
+										<div class="store_star">
+											<img class="star_icon" src="/svg/star_icon.svg" />
+											<div class="star_point">${point.point }</div>
+										</div>
+										<div class="store_location">
+											<img class="location_icon" src="/svg/location_icon.svg" />
+											<div class="location_text">${point.store_addr }</div>
+										</div>
+									</div>
+								</div>
+								<div class="store_reserve_tag_box">
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">대화</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">야채</div>
+									</div>
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">양식</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+				</div>
+			</div>
+		</c:if>
 			<div class="content_box">
 				<div class="content_text">
 					<div class="content_title">
