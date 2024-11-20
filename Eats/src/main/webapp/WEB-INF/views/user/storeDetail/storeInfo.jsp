@@ -43,12 +43,7 @@
 					<div class="recommend-non">${stInfo.jjimCnt }</div>
 					</c:if>
 					<c:if test="${!empty sessionScope.user_idx }">
-						<c:if test="${isJjimed }">
-						<div class="recommend" id="jjim_true">${stInfo.jjimCnt }</div>
-						</c:if>
-						<c:if test="${!isJjimed }">
-						<div class="recommend-non" id="jjim_false">${stInfo.jjimCnt }</div>
-						</c:if>
+						<div class="${!isJjimed?"recommend-non":"recommend"}" id="jjim_t" onclick="sssshow(${!isJjimed?1:0})">${stInfo.jjimCnt }</div>
 					</c:if>
 					
 				</div>
@@ -310,6 +305,18 @@
 const store_idx=${storeTotalInfo.storeDTO.store_idx};
 var maxCnt=parseInt(${max_people_cnt});
 
+function sssshow(sw){
+	if(sw==0){
+		var user_idx='${sessionScope.user_idx}';
+    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
+    	sendRequest('/user/deleteJjim', jjimParam, showJjimDltResult, 'POST');
+	}else{
+		var user_idx='${sessionScope.user_idx}';
+    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
+    	sendRequest('/user/insertJjim', jjimParam, showJjimResult, 'POST');
+	}
+}
+
 function changeCnt(change){
 	var crCnt=document.getElementById('reserve_cnt');
 	var newCnt=parseInt(crCnt.value);
@@ -444,11 +451,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 시간 선택 클릭 이벤트
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('time-list-y')) {
-            // 1. 선택한 시간을 input에 설정
+            // 선택한 시간 저장
             const selectedTime = e.target.textContent;
             document.getElementById('reserve_time').value = selectedTime;
             
-            // 2. 테이블 목록 불러오기
             getTableList();
         }else if (e.target.classList.contains('table-list')){
         	const selectedTable=e.target.textContent;
@@ -468,8 +474,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         	if (!user_idx || user_idx === 'null' || user_idx === '') {
         	    alert('로그인 후 이용해주세요');
-        	    var callback='?callback=/user/storeInfo'+reserveParam;
-        	    location.href = '/user/login'+callback;  // 로그인 페이지로 리다이렉트
+        	    //var callback='?callback=/user/storeInfo'+reserveParam;
+        	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
         	} else {
         	    location.href = '/user/reserveConfirm' + reserveParam;
         	}
@@ -528,63 +534,48 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
     
-	//찜 해제
-	if(document.getElementById('jjim_true')){
-		document.getElementById('jjim_true').addEventListener('click', function(){
-	    	var user_idx='${sessionScope.user_idx}';
-	    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
-	    	
-	    	sendRequest('/user/deleteJjim', jjimParam, showJjimDltResult, 'POST');
-	    });
-	}
-    
-    
-    function showJjimDltResult(){
-    	if(XHR.readyState===4){
-    		if(XHR.status===200){
-    			var data=XHR.responseText;
-    			var msg='';
-    			if(data!==-1){
-    				document.getElementById('jjim_true').textContent=data;
-    				document.getElementById('jjim_true').classList.replace('recommend', 'recommend-non');
-    				document.getElementById('jjim_true').setAttribute('id', 'jjim_false');
-    				msg='콕! 해제 완료';
-    			}else{
-    				msg='콕! 해제 실패';
-    			}
-    			alert(msg);
-    		}
-    	}
-    }
-    
-  	//찜
-  	if(document.getElementById('jjim_false')){
-  		document.getElementById('jjim_false').addEventListener('click', function(){
-  	    	var user_idx='${sessionScope.user_idx}';
-  	    	var jjimParam='user_idx='+user_idx+'&store_idx='+store_idx;
-  	    	sendRequest('/user/insertJjim', jjimParam, showJjimResult, 'POST');
-  	    });
-  	}
-    
-    
-    function showJjimResult(){
-    	if(XHR.readyState===4){
-    		if(XHR.status===200){
-    			var data=XHR.responseText;
-    			var msg='';
-    			if(data!==-1){
-    				document.getElementById('jjim_false').textContent=data;
-    				document.getElementById('jjim_false').classList.replace('recommend-non', 'recommend');
-    				document.getElementById('jjim_false').setAttribute('id', 'jjim_true');
-    				msg='콕! 완료';
-    			}else{
-    				msg='콕! 실패';
-    			}
-    			alert(msg);
-    		}
-    	}
-    }
+
 });
+
+function showJjimDltResult(){
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			var data=XHR.responseText;
+			var msg='';
+			if(data!==-1){
+				document.getElementById('jjim_t').textContent=data;	//데이터 넣어주기
+				document.getElementById('jjim_t').classList.replace('recommend', 'recommend-non'); //클래스 바꿔주기
+				document.getElementById('jjim_t').setAttribute('onclick', 'sssshow(1)'); //온클릭이벤트 매개변수 바꿔주기
+				//document.getElementById('jjim_true').setAttribute('id', 'jjim_false');
+				msg='콕! 해제 완료';
+			}else{
+				msg='콕! 해제 실패';
+			}
+			alert(msg);
+		}
+	}
+}
+
+function showJjimResult(){
+	//alert('aaaa='+XHR.readyState+'/'+XHR.status);
+	if(XHR.readyState===4){
+		if(XHR.status===200){
+			//alert('tttt');
+			var data=XHR.responseText;
+			var msg='';
+			if(data!==-1){
+				document.getElementById('jjim_t').textContent=data;
+				document.getElementById('jjim_t').classList.replace('recommend-non', 'recommend');
+				document.getElementById('jjim_t').setAttribute('onclick', 'sssshow(0)');
+				//document.getElementById('jjim_false').setAttribute('id', 'jjim_true');
+				msg='콕! 완료';
+			}else{
+				msg='콕! 실패';
+			}
+			alert(msg);
+		}
+	}
+}
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script src="../js/storeInfo/jquery-3.4.1.min.js"></script>

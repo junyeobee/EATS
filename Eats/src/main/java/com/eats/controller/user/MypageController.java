@@ -1,15 +1,30 @@
 package com.eats.controller.user;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Resource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.user.model.EatsUserDTO;
@@ -53,6 +68,7 @@ public class MypageController {
             mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
             return mav;
         }
+        long currentTime = System.currentTimeMillis(); // 현재 시간 추가
 
         mav.addObject("userProfile", userProfile);
         mav.addObject("userProfile1", userProfile1);
@@ -64,28 +80,27 @@ public class MypageController {
     @GetMapping("/user/mypage/myProfile")
     public ModelAndView myProfile(HttpSession session) {
         ModelAndView mav = new ModelAndView();
-
-        // 세션에서 user_idx 가져오기
-        Object userIdxObj = session.getAttribute("user_idx");
-        Integer user_idx = convertToInteger(userIdxObj);
-
+        Integer user_idx = extractUserIdx(session);
+        
         if (user_idx == null) {
             mav.setViewName("redirect:/user/login");
             return mav;
         }
 
-        // 사용자 상세 정보 가져오기
         EatsUserProfileDTO userProfile = mypageService.getUserProfileDetail(user_idx);
-        if (userProfile == null) {
-            mav.setViewName("error");
-            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return mav;
+
+        // 디버깅: 프로필 이미지 확인
+        if (userProfile != null) {
+            System.out.println("Profile Image Path: " + userProfile.getProfile_image());
+        } else {
+            System.out.println("User profile is null.");
         }
 
         mav.addObject("userProfile", userProfile);
         mav.setViewName("user/mypage/myProfile");
         return mav;
     }
+
 
     // 나의 정보 수정 화면
     @GetMapping("/user/mypage/editProfile")
@@ -116,26 +131,81 @@ public class MypageController {
 
     // 나의 정보 업데이트
     @PostMapping("/user/mypage/updateProfile")
-    public String updateProfile(EatsUserProfileDTO userProfile, HttpSession session) {
-        // 세션에서 user_idx 가져오기
-        Object userIdxObj = session.getAttribute("user_idx");
-        Integer user_idx = convertToInteger(userIdxObj);
+    public String updateProfile(@ModelAttribute EatsUserProfileDTO userProfile, HttpSession session) {
+        try {
+            Integer user_idx = (Integer) session.getAttribute("user_idx");
+            if (user_idx == null) {
+                return "redirect:/user/login";
+            }
 
-        if (user_idx == null) {
-            return "redirect:/user/login";
-        }
+            userProfile.setUser_idx(user_idx);
 
-        // user_idx를 DTO에 설정
-        userProfile.setUser_idx(user_idx);
+            // 프로필 업데이트
+            boolean isUpdated = mypageService.updateUserProfile(userProfile);
+            if (!isUpdated) {
+                return "redirect:/user/mypage/editProfile?error=true";
+            }
 
-        // 정보 업데이트
-        boolean isUpdated = mypageService.updateUserProfile(userProfile);
-        if (!isUpdated) {
+            return "redirect:/user/mypage/myProfile";
+        } catch (Exception e) {
+            e.printStackTrace();
             return "redirect:/user/mypage/editProfile?error=true";
         }
-
-        return "redirect:/user/mypage/myProfile";
     }
+
+
+    @PostMapping("/file/upload")
+    @ResponseBody
+    public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 업로드 디렉토리 설정
+            String uploadDir = "C:/uploads/";
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            File destFile = new File(uploadDir + fileName);
+            file.transferTo(destFile); // 파일 저장
+
+            // 파일 경로 반환
+            response.put("success", true);
+            response.put("filePath", "/uploads/" + fileName); // JSP에서 사용될 파일 경로
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/uploads/{filename}")
+    public ResponseEntity<FileSystemResource> getImage(@PathVariable String filename) {
+        try {
+            // 파일 경로
+            String uploadDir = "C:/uploads/";
+            File file = new File(uploadDir + filename);
+
+            // 파일 존재 여부 확인
+            if (!file.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일 리소스를 읽어 반환
+            FileSystemResource resource = new FileSystemResource(file);
+            String contentType = Files.probeContentType(file.toPath());
+
+            // MIME 타입 설정
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 //    // Object를 Integer로 변환
 //    private Integer convertToInteger(Object obj) {
@@ -204,6 +274,7 @@ public class MypageController {
         }
 
         int pageSize = 5; // 한 페이지에 표시할 리뷰 수
+        int offset = (page - 1) * pageSize;
         int totalItems = mypageService.getTotalReviewCount(user_idx);
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
         List<ReviewDTO> reviewList = mypageService.getReviewList(user_idx, page, pageSize);
