@@ -12,7 +12,7 @@
     </select>
     
     <select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
-        SELECT user_idx, user_nickname
+        SELECT user_idx, user_nickname, user_intro, profile_image
         FROM user_profile
         WHERE user_idx = #{user_idx}
     </select>
@@ -25,15 +25,17 @@
     </select>
 
     <!-- 나의 정보 수정 -->
-    <update id="updateUserProfile">
-        UPDATE user_profile
-        SET 
-            user_nickname = #{user_nickname},
-            user_intro = #{user_intro},
-            user_location = #{user_location},
-            user_tel = #{user_tel}
-        WHERE user_idx = #{user_idx}
-    </update>
+<update id="updateUserProfile">
+    UPDATE user_profile
+    SET 
+        user_nickname = #{user_nickname},
+        user_intro = #{user_intro},
+        user_location = #{user_location},
+        user_tel = #{user_tel},
+        profile_image = #{profile_image}  <!-- 프로필 이미지 경로 업데이트 -->
+    WHERE user_idx = #{user_idx}
+</update>
+
 
     <!-- 프로필 이미지 수정 -->
     <update id="updateProfileImage">
@@ -56,16 +58,16 @@
     </select>
 
     <!-- 찜 관련 -->
-<select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
-    SELECT * FROM (
-        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
-               ROWNUM AS rnum
-        FROM JJIM jjim
-        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
-        WHERE jjim.USER_IDX = #{user_idx}
-        ORDER BY store.STORE_NAME
-    ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
-</select>
+    <select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
+        SELECT * FROM (
+            SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
+                   ROWNUM AS rnum
+            FROM JJIM jjim
+            JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+            WHERE jjim.USER_IDX = #{user_idx}
+            ORDER BY store.STORE_NAME
+        ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
+    </select>
 
     <select id="getTotalJjimCount" resultType="int">
         SELECT COUNT(*)
@@ -78,75 +80,68 @@
         WHERE USER_IDX = #{user_idx} AND STORE_IDX = #{store_idx}
     </delete>
     
+    <!-- 리뷰 관련 -->
+    <select id="getReviewList" parameterType="map" resultType="com.eats.user.model.ReviewDTO">
+        SELECT * FROM (
+            SELECT 
+                r.REV_IDX, 
+                r.RESERVE_IDX, 
+                r.REV_SCORE, 
+                r.REV_CONTENT, 
+                r.REV_WRITEDATE,
+                r.REV_STATE, 
+                r.REV_IMG, 
+                r.REV_MENU, 
+                r.REV_TAG,
+                res.RESERVE_DATE, 
+                s.STORE_NAME, 
+                s.STORE_ADDR,
+                ROWNUM AS rnum
+            FROM 
+                REVIEW r
+            JOIN 
+                RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+            JOIN 
+                STORE s ON res.STORE_IDX = s.STORE_IDX
+            WHERE 
+                res.USER_IDX = #{user_idx}
+            ORDER BY 
+                r.REV_WRITEDATE DESC
+        ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
+    </select>
 
-<select id="getReviewList" parameterType="map" resultType="com.eats.user.model.ReviewDTO">
-    SELECT * FROM (
-        SELECT 
-            r.REV_IDX, 
-            r.RESERVE_IDX, 
-            r.REV_SCORE, 
-            r.REV_CONTENT, 
-            r.REV_WRITEDATE,
-            r.REV_STATE, 
-            r.REV_IMG, 
-            r.REV_MENU, 
-            r.REV_TAG,
-            res.RESERVE_DATE, 
-            s.STORE_NAME, 
-            s.STORE_ADDR,
-            ROWNUM AS rnum
-        FROM 
-            REVIEW r
-        JOIN 
-            RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
-        JOIN 
-            STORE s ON res.STORE_IDX = s.STORE_IDX
-        WHERE 
-            res.USER_IDX = #{user_idx}
-        ORDER BY 
-            r.REV_WRITEDATE DESC
-    ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
-</select>
-
-
-
-<!-- 리뷰 총 개수 가져오기 -->
-<select id="getTotalReviewCount" resultType="int">
-    SELECT COUNT(*) AS count
-    FROM REVIEW r
-    JOIN RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
-    WHERE res.USER_IDX = #{user_idx}
-</select>
-
+    <select id="getTotalReviewCount" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEW r
+        JOIN RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+        WHERE res.USER_IDX = #{user_idx}
+    </select>
 
     <!-- 결제 관련 -->
-<select id="getPaymentList" parameterType="map" resultType="com.eats.user.model.PaymentDTO">
-    SELECT * 
-    FROM (
-        SELECT 
-            pay.RESERVE_IDX,
-            store.STORE_NAME,
-            res.RESERVE_DATE,
-            pay.PAY_PRICE,
-            pay.PAY_METHOD,
-            res.RESERVE_STATE,
-            ROW_NUMBER() OVER (ORDER BY res.RESERVE_DATE DESC) AS rnum
+    <select id="getPaymentList" parameterType="map" resultType="com.eats.user.model.PaymentDTO">
+        SELECT * 
+        FROM (
+            SELECT 
+                pay.RESERVE_IDX,
+                store.STORE_NAME,
+                res.RESERVE_DATE,
+                pay.PAY_PRICE,
+                pay.PAY_METHOD,
+                res.RESERVE_STATE,
+                ROW_NUMBER() OVER (ORDER BY res.RESERVE_DATE DESC) AS rnum
+            FROM RESERVE_PAY pay
+            JOIN RESERVATION res ON pay.RESERVE_IDX = res.RESERVE_IDX
+            JOIN STORE store ON res.STORE_IDX = store.STORE_IDX
+            WHERE res.USER_IDX = #{user_idx}
+        )
+        WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
+    </select>
+
+    <select id="getTotalPaymentCount" parameterType="int" resultType="java.lang.Integer">
+        SELECT COUNT(*)
         FROM RESERVE_PAY pay
         JOIN RESERVATION res ON pay.RESERVE_IDX = res.RESERVE_IDX
-        JOIN STORE store ON res.STORE_IDX = store.STORE_IDX
         WHERE res.USER_IDX = #{user_idx}
-    )
-    WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
-</select>
-
-<select id="getTotalPaymentCount" parameterType="int" resultType="java.lang.Integer">
-    SELECT COUNT(*)
-    FROM RESERVE_PAY pay
-    JOIN RESERVATION res ON pay.RESERVE_IDX = res.RESERVE_IDX
-    WHERE res.USER_IDX = #{user_idx}
-</select>
-
-
-
+    </select>
 
 </mapper>

@@ -10,18 +10,11 @@
     <c:set var="timeSlotData" value="${timeSlotData}${slot.reservationcount}${!status.last ? ',' : ''}" />
 </c:forEach>
 
-<c:set var="monthlyLabels" value="" />
-<c:set var="monthlyReserveCnt" value="" />
-<c:set var="monthlyTotalCnt" value="" />
-
 <c:forEach items="${dash.monthResereve}" var="month" varStatus="status">
     <c:set var="monthlyLabels" value="${monthlyLabels}'${month.month}월'${!status.last ? ',' : ''}" />
     <c:set var="monthlyReserveCnt" value="${monthlyReserveCnt}${month.reservecnt}${!status.last ? ',' : ''}" />
     <c:set var="monthlyTotalCnt" value="${monthlyTotalCnt}${month.totalcnt}${!status.last ? ',' : ''}" />
 </c:forEach>
-
-<c:set var="weeklyLabels" value="" />
-<c:set var="weeklyAmount" value="" />
 
 <c:forEach items="${dash.reserveWeek}" var="day" varStatus="status">
     <c:set var="weeklyLabels" value="${weeklyLabels}'${day.saledate}'${!status.last ? ',' : ''}" />
@@ -209,7 +202,7 @@
 		           tooltip: {
 		               callbacks: {
 		                   label: function(context) {
-		                       return ${context.raw}+'건';
+		                       return context.raw+'건';
 		                   }
 		               }
 		           }
@@ -257,7 +250,7 @@
 		        labels: monthlyData.labels,
 		        datasets: [{
 		            label: '예약 건수',
-		            data: monthlyData.reserveCnt,
+		            data: [${monthlyReserveCnt}],
 		            borderColor: ChartManager.colors.primary[0],
 		            backgroundColor: 'transparent',
 		            tension: 0.4,
@@ -265,10 +258,11 @@
 		            pointRadius: 2,
 		            pointHoverRadius: 1,
 		            borderWidth: 1
+		            
 		        },
 		        {
-		            label: '전체 건수',
-		            data: monthlyData.totalCnt,
+		            label: '총 인원수',
+		            data: [${monthlyTotalCnt}],
 		            borderColor: ChartManager.colors.primary[2],
 		            backgroundColor: 'transparent',
 		            tension: 0.4,
@@ -324,21 +318,29 @@
 		        labels: weeklyData.labels,
 		        datasets: [{
 		            label: '일별 매출',
-		            data: weeklyData.amount,
+		            data:[${weeklyAmount}],
 		            backgroundColor: ChartManager.colors.primary[1],
-		            borderRadius: 4
+		            borderRadius: 4,
+					barThickness: 35
 		        }]
 		    }, {
 		        plugins: {
 		            legend: {
 		                display: true,
 		                position: 'top',
-		                align: 'end'
+		                align: 'end',
+						labels: {
+		                   padding: 20,
+		                   boxWidth: 12,
+		                   font: {
+		                       size: 12
+		                   }
+		               }
 		            },
 		            tooltip: {
 		                callbacks: {
 		                    label: function(context) {
-		                        return ${context.raw.toLocaleString()}+'원';
+		                        return context.raw.toLocaleString() + '원';
 		                    }
 		                }
 		            }
@@ -357,7 +359,7 @@
 		            }
 		        },
 		        maintainAspectRatio: false
-		    });
+		});
 		}
 		
 		function createCompareChart(compareData) {
@@ -372,14 +374,22 @@
 		                ChartManager.colors.primary[2],  // 전주
 		                ChartManager.colors.primary[0]   // 이번주
 		            ],
-		            borderRadius: 4
+		            borderRadius: 4,
+		            barThickness: 35
 		        }]
 		    }, {
 		        plugins: {
 		            legend: {
 		                display: true,
 		                position: 'top',
-		                align: 'end'
+		                align: 'end',
+						labels: {
+		                   padding: 20,
+		                   boxWidth: 12,
+		                   font: {
+		                       size: 12
+		                   }
+		               }
 		            },
 		            tooltip: {
 		                callbacks: {
@@ -428,7 +438,14 @@
 				</div>
 				<div class="stat-card">
 					<div class="stat-label">방문율</div>
-					<div class="stat-value">${dash.reserveNoshowOrCancel.visitRate}%</div>
+					<c:choose>
+						<c:when test ="${empty dash.reserveNoshowOrCancel.visitRate}">
+							<div class="stat-value">정보가 없습니다.</div>
+						</c:when>
+						<c:otherwise>
+							<div class="stat-value">${dash.reserveNoshowOrCancel.visitRate}%</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 
@@ -491,8 +508,8 @@
 						</c:if>
 						<c:forEach items="${dash.reserveReq}" var="req">
 							<div class="request-item">
-								<div class="request-time">${req.reserveTime}</div>
-								<div class="request-count">${req.reserveCount}명</div>
+								<div class="request-time">${req.reservetime}</div>
+								<div class="request-count">${req.reservecnt}명</div>
 								<div class="request-text">${req.request}</div>
 							</div>
 						</c:forEach>
@@ -516,6 +533,7 @@
                 labels: [${weeklyLabels}],
                 data: [${weeklyAmount}]
             };
+			console.log(weeklyData);
 
             const timeSlotData = {
                 labels: [${timeSlotLabels}],
@@ -526,7 +544,7 @@
                 labels: ['전주', '이번주'],
                 amount: [${dash.sellCompare.lastweekamount}, ${dash.sellCompare.thisweekamount}]
             };
-
+			console.log(${weeklyAmount});
             // 차트 생성
             createMonthlyChart(monthlyData);
             createGenderChart(genderData);

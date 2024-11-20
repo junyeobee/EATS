@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.HYStoreInfoDTO;
+import com.eats.user.model.JjimDTO;
 import com.eats.user.model.ReservationDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.store.service.StoreInfoService;
@@ -42,7 +43,8 @@ public class StoreInfoController {
 			@RequestParam(value="reserve_date", required=false) String reserve_date,
 			@RequestParam(value="reserve_time", required = false) String reserve_time,
 			@RequestParam(value="reserve_count", required=false) String reserve_count,
-			@RequestParam(value="reserve_table", required = false) String reserve_table) {
+			@RequestParam(value="reserve_table", required = false) String reserve_table,
+			HttpSession session) {
 		
 		HYStoreInfoDTO storeTotalInfo = service.getStoreTotalInfo(store_idx);
 		List<String> dayArr = (List<String>) Arrays.asList("월", "화", "수", "목", "금", "토", "일");
@@ -69,6 +71,12 @@ public class StoreInfoController {
 		}
 		if(reserve_count != null && reserve_count != "") {
 			mv.addObject("reserve_count", reserve_count);
+		}
+		
+		if(session.getAttribute("user_idx")!=null){
+			Integer user_idx = (Integer)session.getAttribute("user_idx");
+			boolean isJjimed=service.checkJjim(user_idx, store_idx);
+			mv.addObject("isJjimed", isJjimed);
 		}
 		mv.setViewName("user/storeDetail/storeInfo");
 		
@@ -131,6 +139,31 @@ public class StoreInfoController {
 		}
 		
 		return mv;
+	}
+	
+	@PostMapping("/user/insertJjim")
+	@ResponseBody
+	public int insertJjim(JjimDTO dto) {
+		boolean result=service.insertJjim(dto);
+		if(result) {
+			int jjimCnt=service.getJjimCnt(dto.getStore_idx());
+			return jjimCnt;
+		}else {
+			return -1;
+		}
+	}
+	
+	@PostMapping("/user/deleteJjim")
+	@ResponseBody
+	public int deleteJjim(JjimDTO dto) {
+		
+		boolean result=service.deleteJjim(dto);
+		if(result) {
+			int jjimCnt=service.getJjimCnt(dto.getStore_idx());
+			return jjimCnt;
+		}else {
+			return -1;
+		}
 	}
 	
 	@GetMapping("/goHeader")

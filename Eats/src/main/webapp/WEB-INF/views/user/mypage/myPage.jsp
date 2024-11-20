@@ -12,7 +12,8 @@
     <div class="container">
         <!-- 프로필 섹션 -->
         <div class="profile">
-            <img src="/myPageImg/default-icon.png" alt="프로필 이미지" class="profile-img">
+<img src="${not empty userProfile1.profile_image ? userProfile1.profile_image : '/myPageImg/default-icon.png'}?timestamp=${currentTime}" 
+     alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile1.user_nickname}</div>
             <div class="profile-points">${userProfile.user_point} 포인트</div>
         </div>

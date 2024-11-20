@@ -1,10 +1,10 @@
 window.addEventListener('load', function() {
 	var pathname = window.location.pathname;
+	var realpath = pathname.split('?')[0];
 	
 	var texts = document.getElementsByClassName('navi_small_cate_text');
 	for(var i=0; i<texts.length; i++) {
-		if(texts[i].getAttribute("href")==pathname){
-			console.log(texts[i])
+		if(texts[i].getAttribute("href")==realpath){
 			texts[i].style.fontWeight='600';
 			texts[i].style.color='#F3553C';
 			texts[i].parentElement.parentElement.style.height = 'auto';

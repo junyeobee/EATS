@@ -9,6 +9,11 @@ public class JjimDTO {
 
     // 기본 생성자
     public JjimDTO() {}
+    
+    public JjimDTO(int user_idx, int store_idx) {
+    	this.user_idx = user_idx;
+    	this.store_idx = store_idx;
+    }
 
     // 모든 필드를 포함하는 생성자
     public JjimDTO(int user_idx, int store_idx, String store_name, String store_addr, String store_tel) {
