@@ -88,7 +88,7 @@ const ChartManager = {
                     labels: rawData.labels,
                     datasets: rawData.datasets.map((dataset, index) => ({
                         label: dataset.label,
-                        data: dataset.data,
+                        ...dataset,
                         backgroundColor: this.colors.primary[index % this.colors.primary.length],
                         borderRadius: 4
                     }))
@@ -181,7 +181,6 @@ const ChartManager = {
         };
 
         return {
-            //기본옵션 + 타입별옵션 + 사용자정의옵션
             ...baseOptions,
             ...(typeSpecificOptions[type] || {}),
             ...customOptions

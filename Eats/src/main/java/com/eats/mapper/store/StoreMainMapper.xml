@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM 
 			RESERVATION
 		WHERE 
-			STORE_IDX = 1
+			STORE_IDX = #{store_idx}
 		AND 
 			TRUNC(RESERVE_DATE) = TRUNC(SYSDATE)
 	</select>
@@ -230,8 +230,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			RESERVE_STATE = 1
 		AND 
 			REQUEST IS NOT NULL
-		AND 
-			REQUEST <![CDATA[!=]]> ''
 		ORDER 
 			BY RESERVE_TIME
 	</select>

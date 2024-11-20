@@ -80,10 +80,6 @@ menu, ol, ul {
 		<div class="area-searching">
 			<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
 			<div class="area_container">
-				<div class="mini_search_box">
-					<input type="text" class="mini_search_input" placeholder="지역 검색">
-					<img class="search_icon_yellow" src="/svg/search_icon_yellow.svg" />
-				</div>
 				<div class="area_box">
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
@@ -519,7 +515,7 @@ menu, ol, ul {
 	var areaWord = document.getElementById('areaWord');
 	
  	exitbtn.addEventListener('click', function(){
-		modal.style.display='none';
+ 		modalExit();
 	});
 
      locationBox.addEventListener('click', function () {
@@ -537,9 +533,17 @@ menu, ol, ul {
     
    modal.addEventListener('click', function(e){
     	if(e.target.id=='modal'){
-			modal.style.display='none';
+    		modalExit();
 		}
     });
+   
+   function modalExit(){
+	   modal.style.display='none';
+	   
+	   if(!areaWord.value.includes(' ')) {
+			areaWord.value='';
+	   }
+   }
     
     function searchThisTag(t){
     	var url = "searchStore?tagWord="+t.id;

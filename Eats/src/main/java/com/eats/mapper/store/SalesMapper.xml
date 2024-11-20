@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.SalesMapper">
+	<insert id="insertSell" parameterType="com.eats.store.model.SalesSaveDTO">
+	    <selectKey keyProperty="sellIdx" resultType="int" order="BEFORE">
+	        SELECT SELL_IDX_SEQ.NEXTVAL FROM DUAL
+	    </selectKey>
+	    
+	    INSERT INTO SELL (
+	        SELL_IDX,
+	        STORE_IDX,
+	        SELL_DATE,
+	        SELL_STAT,
+	        TOTAL_CNT,
+	        SELL_METHOD
+	    ) VALUES (
+	        #{sellIdx},
+	        #{storeIdx},
+	        #{sellDate},
+	        1,
+	        #{totalCnt},
+	        #{sellMethod}
+	    )
+	</insert>
+	
+	<insert id="insertSellDetails" parameterType="map">
+	    INSERT INTO SELL_DETAIL (
+	        SELL_D_IDX,
+	        SELL_IDX,
+	        MENU_IDX,
+	        ORDER_NUM
+	    ) VALUES (
+	        SELL_D_IDX_SEQ.NEXTVAL,
+	        #{sellIdx},
+	        #{menuIdx},
+	        #{orderNum}
+	    )
+	</insert>
+	
+	
+	<select id="sellList" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
+	    WITH STORE_HOURS AS (
+			SELECT 
+				TO_NUMBER(SUBSTR(STIME_START, 1, 2)) AS start_hour,
+				TO_NUMBER(SUBSTR(STIME_END, 1, 2)) AS end_hour
+			FROM STORE_TIME 
+			WHERE STORE_IDX = #{storeIdx}
+			AND STIME_DAY = TO_CHAR(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI'), 'DY', 'NLS_DATE_LANGUAGE=KOREAN')
+		),
+		TIME_SLOTS AS (
+			SELECT 
+				LEVEL - 1 AS idx,
+				TO_CHAR(
+					TO_DATE('00:00', 'HH24:MI') + 
+					NUMTODSINTERVAL(LEVEL-1, 'HOUR'), 
+					'HH24'
+				) AS TIME_STRING
+			FROM DUAL
+			CONNECT BY LEVEL <![CDATA[<=]]> 24
+		),
+		DAILY_SALES AS (
+			SELECT 
+				TO_CHAR(SELL_DATE, 'HH24') AS sell_time,
+				SUM(TOTAL_CNT) AS sales_amount,
+				COUNT(*) AS sales_count
+			FROM SELL
+			WHERE STORE_IDX = #{storeIdx}
+			AND SELL_STAT = 1
+			AND SELL_DATE BETWEEN 
+				TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI') AND 
+				TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+			GROUP BY TO_CHAR(SELL_DATE, 'HH24')
+		)
+		SELECT 
+			t.TIME_STRING AS sellDate,
+			TO_CHAR(NVL(s.sales_amount, 0)) AS salesAmount,
+			TO_CHAR(NVL(s.sales_count, 0)) AS salesCount,
+			#{dateType} AS dateType
+		FROM TIME_SLOTS t
+		LEFT JOIN DAILY_SALES s ON t.TIME_STRING = s.sell_time
+		WHERE TO_NUMBER(t.TIME_STRING) BETWEEN 
+			(SELECT start_hour FROM STORE_HOURS) AND 
+			(SELECT end_hour FROM STORE_HOURS)
+		ORDER BY t.idx
+	</select>
+
+	<select id="sellListWeek" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
+		SELECT 
+			TO_CHAR(pivot_date, 'YYYY-MM-DD') AS sellDate,
+			TO_CHAR(NVL(sales_amount, 0)) AS salesAmount,
+			TO_CHAR(NVL(sales_count, 0)) AS salesCount,
+			#{dateType} AS dateType
+		FROM (
+			SELECT 
+				TRUNC(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')) + LEVEL - 1 AS pivot_date
+			FROM DUAL
+			CONNECT BY LEVEL <![CDATA[<=]]> 7
+		) pivot_table
+		LEFT JOIN (
+			SELECT 
+				TRUNC(SELL_DATE) AS sale_date,
+				SUM(TOTAL_CNT) AS sales_amount,
+				COUNT(*) AS sales_count
+			FROM SELL
+			WHERE STORE_IDX = #{storeIdx}
+				AND SELL_STAT = 1
+				AND SELL_DATE BETWEEN TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')
+								AND TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+			GROUP BY TRUNC(SELL_DATE)
+		) sales ON pivot_table.pivot_date = sales.sale_date
+		ORDER BY sellDate
+	</select>
+	
+	<select id="sellListMonth" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
+	    WITH WEEKS AS (
+	        SELECT 
+	            pivot_date,
+	            TO_CHAR(pivot_date, 'YYYY') AS year,
+	            TO_CHAR(pivot_date, 'MM') AS month,
+	            TO_CHAR(pivot_date, 'W') AS week,
+	            TO_CHAR(LAST_DAY(pivot_date), 'W') AS total_weeks
+	        FROM (
+	            SELECT 
+	                TRUNC(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI'), 'IW') + (LEVEL-1)*7 AS pivot_date
+	            FROM DUAL
+	            CONNECT BY LEVEL <![CDATA[<=]]> CEIL(
+	                (TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI') - 
+	                 TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')) / 7
+	            ) + 1
+	        )
+	    )
+	    SELECT 
+	        CASE 
+	            WHEN TO_CHAR(SYSDATE, 'YYYY-MM-DD') BETWEEN 
+	                 TO_CHAR(w.pivot_date, 'YYYY-MM-DD') AND 
+	                 TO_CHAR(w.pivot_date + 6, 'YYYY-MM-DD')
+	            THEN w.month || '월 ' || w.week || '주 (현재)'
+	            ELSE w.month || '월 ' || w.week || '주'
+	        END AS sellDate,
+	        TO_CHAR(NVL(sales_amount, 0)) AS salesAmount,
+	        TO_CHAR(NVL(sales_count, 0)) AS salesCount,
+	        #{dateType} AS dateType
+	    FROM WEEKS w
+	    LEFT JOIN (
+	        SELECT 
+	            TRUNC(SELL_DATE, 'IW') AS week_start,
+	            SUM(TOTAL_CNT) AS sales_amount,
+	            COUNT(*) AS sales_count
+	        FROM SELL
+	        WHERE STORE_IDX = #{storeIdx}
+	            AND SELL_STAT = 1
+	            AND SELL_DATE BETWEEN TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')
+	                            AND TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+	        GROUP BY TRUNC(SELL_DATE, 'IW')
+	    ) sales ON w.pivot_date = sales.week_start
+	    WHERE w.pivot_date <![CDATA[<=]]> TRUNC(SYSDATE, 'IW')
+	    ORDER BY w.pivot_date
+	</select>
+	
+	<select id="sellList3Month" parameterType="com.eats.store.model.SalesSearchDTO" resultType="com.eats.store.model.SalesResponseDTO">
+	    WITH MONTHS AS (
+	        SELECT 
+	            ADD_MONTHS(TRUNC(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI'), 'MM'), LEVEL-1) AS MONTH_START
+	        FROM DUAL
+	        CONNECT BY LEVEL <![CDATA[<=]]> 
+	            MONTHS_BETWEEN(
+	                TRUNC(TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI'), 'MM'),
+	                TRUNC(TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI'), 'MM')
+	            ) + 1
+	    )
+	    SELECT 
+	        TO_CHAR(m.MONTH_START, 'YYYY"년 "MM"월"') AS sellDate,
+	        TO_CHAR(NVL(s.sales_amount, 0)) AS salesAmount,
+	        TO_CHAR(NVL(s.sales_count, 0)) AS salesCount,
+	        #{dateType} AS dateType
+	    FROM MONTHS m
+	    LEFT JOIN (
+	        SELECT 
+	            TRUNC(SELL_DATE, 'MM') AS sale_month,
+	            SUM(TOTAL_CNT) AS sales_amount,
+	            COUNT(*) AS sales_count
+	        FROM SELL
+	        WHERE STORE_IDX = #{storeIdx}
+	            AND SELL_STAT = 1
+	            AND SELL_DATE BETWEEN 
+	                TO_DATE(#{startDateTime}, 'YYYY-MM-DD HH24:MI')
+	                AND TO_DATE(#{endDateTime}, 'YYYY-MM-DD HH24:MI')
+	        GROUP BY TRUNC(SELL_DATE, 'MM')
+	    ) s ON m.MONTH_START = s.sale_month
+	    ORDER BY m.MONTH_START
+	</select>
+</mapper>

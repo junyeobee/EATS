@@ -12,14 +12,8 @@
     <div class="container">
         <!-- 프로필 섹션 -->
         <div class="profile">
-            <c:choose>
-                <c:when test="${not empty userProfile.profile_image}">
-                    <img src="${userProfile.profile_image}" alt="프로필 이미지" class="profile-img">
-                </c:when>
-                <c:otherwise>
-                    <img src="/myPageImg/default-icon.png" alt="기본 이미지" class="profile-img">
-                </c:otherwise>
-            </c:choose>
+<img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/myPageImg/default-icon.png'}" 
+     alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile.user_nickname}</div>
             <div class="profile-points">${userProfile.user_point} 포인트</div>
         </div>
@@ -33,25 +27,11 @@
             </tr>
             <tr>
                 <th>소개</th>
-                <td>
-                    <c:if test="${empty userProfile.user_intro}">
-                        소개 정보가 없습니다.
-                    </c:if>
-                    <c:if test="${not empty userProfile.user_intro}">
-                        ${userProfile.user_intro}
-                    </c:if>
-                </td>
+                <td>${not empty userProfile.user_intro ? userProfile.user_intro : '소개 정보가 없습니다.'}</td>
             </tr>
             <tr>
                 <th>위치</th>
-                <td>
-                    <c:if test="${empty userProfile.user_location}">
-                        위치 정보가 없습니다.
-                    </c:if>
-                    <c:if test="${not empty userProfile.user_location}">
-                        ${userProfile.user_location}
-                    </c:if>
-                </td>
+                <td>${not empty userProfile.user_location ? userProfile.user_location : '위치 정보가 없습니다.'}</td>
             </tr>
             <tr>
                 <th>전화번호</th>
