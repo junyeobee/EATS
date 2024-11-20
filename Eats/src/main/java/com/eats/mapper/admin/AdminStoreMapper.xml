@@ -20,7 +20,8 @@
 		 
 	   <select id="adminStoreDetail" resultType="com.eats.admin.model.AdminStoreDTO">
 			select 
-			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat 
+			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat, 
+			    st.store_addr, st.store_daddr, st.store_biznum 
 			from 
 			     store st 
 			left join 
@@ -29,6 +30,18 @@
 				gudok gd on st.store_idx = gd.store_idx
 			WHERE 
 				st.store_idx = #{st_idx}
+	   </select>
+	   
+		 
+	   <select id="storeTimeList" resultType="com.eats.store.model.StoreTimeDTO">
+			select 
+			    stime_idx, stime_day, stime_start, stime_end, stime_break 
+			from 
+			    store_time
+			WHERE 
+				store_idx = #{st_idx}
+			order by 
+				stime_idx 
 	   </select>
 		
 	   <select id="storeChartList" resultType="com.eats.admin.model.AdminStoreDTO">

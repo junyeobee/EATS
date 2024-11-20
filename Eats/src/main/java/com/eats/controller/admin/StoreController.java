@@ -16,6 +16,7 @@ import com.eats.admin.service.AdminStoreService;
 import com.eats.admin.model.AdminStoreDTO;
 import com.eats.store.model.StoreJoinDTO;
 import com.eats.store.model.StoreNewsDTO;
+import com.eats.store.model.StoreTimeDTO;
 import com.eats.admin.model.AdminStoreInfoUpdateDTO;
 
 @Controller
@@ -153,9 +154,27 @@ public class StoreController {
     public ModelAndView storeDetail(@RequestParam("st_idx") int st_idx, Model model) {
 		
 	    model.addAttribute("st_idx", st_idx); // store_idx 값을 모델에 추가
+	    
 	    AdminStoreDTO data = st_service.adminStoreDetail(st_idx);
+	    
+	    System.out.println(st_idx);
+	    List<StoreTimeDTO> t_list = st_service.storeTimeList(st_idx);
+	    
+
+	    // t_list의 값 출력 (비어있는지 확인)
+	    if (t_list.isEmpty()) {
+	        System.out.println("t_list is empty.");
+	    } else {
+	        // t_list에 값이 있을 경우, 리스트 내용 출력
+	        System.out.println("t_list contains " + t_list.size() + " elements.");
+	        for (StoreTimeDTO storeTime : t_list) {
+	            System.out.println(storeTime.toString());
+	        }
+	    }
+	    
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data);
+        mav.addObject("t_list", t_list);
         //System.out.println(data.toString());
         mav.setViewName("admin/store/storeDetail");
 

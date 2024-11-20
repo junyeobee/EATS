@@ -10,6 +10,7 @@ import com.eats.mapper.admin.AdminStoreEntryMapper;
 import com.eats.mapper.admin.AdminStoreMapper;
 import com.eats.store.model.StoreDTO;
 import com.eats.store.model.StoreJoinDTO;
+import com.eats.store.model.StoreTimeDTO;
 
 @Service
 public class AdminStoreServiceImple implements AdminStoreService {
@@ -27,6 +28,12 @@ public class AdminStoreServiceImple implements AdminStoreService {
 	public AdminStoreDTO adminStoreDetail(int st_idx) {
 		AdminStoreDTO data = mapper.adminStoreDetail(st_idx);
 		return data;
+	}
+
+	@Override
+	public List<StoreTimeDTO> storeTimeList(int st_idx) {
+		List<StoreTimeDTO> t_list = mapper.storeTimeList(st_idx);
+		return t_list;
 	}
 
 	@Override
