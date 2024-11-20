@@ -65,29 +65,18 @@
 					<div class="inner">
 						<div class="acco-wrap">
 							<div class="acco-head">
-								<a href="#" class="btn-acco">
+								<a href="#" class="openMap">
 									<i class="map"></i>
 									<span>${stInfo.storeDTO.store_addr }</span>
+									<span class="open-map-span">지도로 보기</span>
 								</a>
 							</div>
 							<div class="acco-body">
-								<ul class="addr-list">
-									<!-- 후에 수정 필요 (s) -->
-									<!-- <li>
-										<span class="item">도로명</span>
-										<span class="val" id="street_addr">서울 용산구 이태원로55가길 45</span>
-										<span class="val">&nbsp;&nbsp;<a href="javascript:copyText();" class="copy-link">복사</a></span>
-									</li>
-									<li>
-										<span class="item">지번</span>
-										<span class="val">한남동 738-11</span>
-									</li>
-									<li>
-										<span class="item">우편번호</span>
-										<span class="val">04348</span>
-									</li> -->
-									<!-- 후에 수정 필요 (e) -->
-								</ul>
+								<!-- 지도 들어갈 영역 (s) -->
+								<div class="map-area">
+								지도
+								</div>
+								<!-- 지도 영역 (e) -->
 							</div>
 						</div>
 					</div>

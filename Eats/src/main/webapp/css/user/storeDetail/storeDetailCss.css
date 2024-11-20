@@ -132,7 +132,7 @@
 .acco-wrap .acco-head {
 	font-size: 0;
 }
-.acco-wrap .acco-head .btn-acco {
+.acco-wrap .acco-head .btn-acco, .openMap {
 	position: relative;
     display: flex;
     padding-right: 36px;
@@ -150,7 +150,23 @@
 	transform: translateY(-45%); 
 	transform-origin: center center;
 }
-.acco-wrap .acco-head .btn-acco.on:after {
+.openMap:after{
+	content:''; 
+	position: absolute; 
+	right: 0; 
+	top: 50%; 
+	width: 20px; 
+	height: 20px; 
+	/* background: url(/img/user/storeInfo/icon_down.png) no-repeat center center;  */
+	transform: translateY(-45%); 
+	transform-origin: center center;
+}
+.openMap .open-map-span{
+	cursor: pointer;
+	color:blue;
+	text-decoration: underline;
+}
+.acco-wrap .acco-head .btn-acco.on:after, .openMap.on:after {
 	transform: translateY(-45%) rotate(180deg);
 }
 .acco-wrap .acco-head i {
@@ -173,23 +189,17 @@
 	font-size: 15px;
 }
 
-.acco-wrap .acco-body .addr-list {
-	display: block; 
-	width: 495px; 
-	padding: 16px; 
-	border: 1px solid rgba(0,0,0,0.5); 
-	border-radius: 10px;
-}
-.acco-wrap .acco-body .addr-list li {
+.acco-wrap .acco-body .map-area {
 	display: flex;
+    width: 50%;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
 }
-.acco-wrap .acco-body .addr-list li + li {
-	margin-top: 5px;
-}
-.acco-wrap .acco-body .addr-list li .item {
-	flex-basis: 85px; 
-	flex-shrink: 0;
-}
+
 .acco-wrap + .desc {
 	padding-left: 26px; 
 	margin-top: 20px; 

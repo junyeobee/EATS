@@ -10,6 +10,7 @@ import com.eats.mapper.user.UserReviewMapper;
 import com.eats.store.model.HYMenuCateDTO;
 import com.eats.store.model.HYMenuDTO;
 import com.eats.user.model.ReservationDTO;
+import com.eats.user.model.ReviewDTO;
 
 @Service
 public class UserReviewServiceImple implements UserReviewService {
@@ -49,6 +50,13 @@ public class UserReviewServiceImple implements UserReviewService {
 	public List<String> tagList() {
 		List<String> tagList = reviewMapper.getTagList();
 		return tagList;
+	}
+	
+	@Override
+	public int insertReview(ReviewDTO dto) {
+		
+		int result=reviewMapper.insertReview(dto);
+		return result;
 	}
 
 }

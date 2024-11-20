@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eats.store.model.HYMenuCateDTO;
 import com.eats.store.model.HYMenuDTO;
 import com.eats.user.model.ReservationDTO;
+import com.eats.user.model.ReviewDTO;
 
 public interface UserReviewService {
 
@@ -14,4 +15,5 @@ public interface UserReviewService {
 	public List<HYMenuCateDTO> getMenuCateListByReserveIdx(int reserve_idx);
 	public List<HYMenuDTO> getMenuListByReserveIdx(int reserve_idx);
 	public List<String> tagList();
+	public int insertReview(ReviewDTO dto);
 }
