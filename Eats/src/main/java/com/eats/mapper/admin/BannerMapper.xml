@@ -34,6 +34,19 @@
         #{banner_edate}    
     )
   	</insert>
+  	
+  	
+  	<delete id="deleteBanner" parameterType="java.util.List">
+  		delete from
+  		BANNER
+  		where
+  		BANNER_IDX in
+  		<foreach item="banner_idx" collection="list" open="(" separator="," close=")">
+  		 	#{banner_idx}
+  		</foreach>
+  	</delete> 
   
+  	
+   	
   </mapper>
 

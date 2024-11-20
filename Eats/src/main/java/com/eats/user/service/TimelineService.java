@@ -15,6 +15,8 @@ public interface TimelineService {
 	
 	public int userFollow(Map<String, Integer> map);
 	
+	public int unFollow(Map<String, Integer> map);
+	
 	
 	
 

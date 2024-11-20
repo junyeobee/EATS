@@ -21,7 +21,7 @@ public class BannerController {
 
 	@Autowired
 	BannerService service;
-	@GetMapping("/admin/banner")
+	@GetMapping("/bannerList")
 	public ModelAndView bannerList() {
 		
 		List<BannerDTO> lists = service.bannerList();
@@ -87,6 +87,25 @@ public class BannerController {
 		
 	}
 	
+	
+	@PostMapping("/bannerDeleteOk")
+	public ModelAndView bannerDelete(@RequestParam(value="banner_idx", required= true) List<Integer> bannerIdx) {
+		
+		int result = service.deleteBanner(bannerIdx);
+		
+		System.out.println(result);
+		
+		String msg = result>0?"배너가 삭제되었습니다.":"배너 삭제가 실패했습니다.";
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg",msg);
+		mav.addObject("goUrl","/bannerList");
+		
+		mav.setViewName("store/menu/menuMsg");
+		
+		return mav;
+		
+	}
 	
 	
 	

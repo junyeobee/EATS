@@ -12,5 +12,6 @@ public interface BannerService {
 	
 	public int bannerInsert(BannerDTO dto,MultipartFile menuImg,String realpath);
 	
+	public int deleteBanner(List<Integer> bannerIdx);
 	
 }

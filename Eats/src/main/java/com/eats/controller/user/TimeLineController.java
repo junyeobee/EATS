@@ -54,6 +54,31 @@ public class TimeLineController {
 	}
 	
 	
+	@ResponseBody
+	@GetMapping("/unFollowAjax")
+	public Map<String, Object> unFollow(@RequestParam(value="idx", defaultValue = "0")Integer userIdx,          
+			@RequestParam(value="following_idx")int followingIdx) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("user_idx", userIdx);
+		map.put("following_idx", followingIdx);
+		
+		int result = service.unFollow(map);
+		
+		
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("result", result > 0);
+	    response.put("following_idx", followingIdx); 
+	    
+	    return response;
+		
+	}
+	
+	
+
+	
+	
 	
 	
 

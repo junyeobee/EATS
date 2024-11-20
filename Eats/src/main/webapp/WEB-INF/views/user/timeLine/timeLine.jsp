@@ -211,8 +211,7 @@ img {
             <div class="user-card">
                 <div class="user-profile">👤</div>
                 <span>${dto.user_nickname }</span>
-                
-                <button class="follow-btn"  id="${dto.user_idx}" value="${dto.user_idx}" onclick="follow(value)" >팔로우</button>
+                <button class="follow-btn"  data-idx="${dto.user_idx}" id="${dto.user_idx}" >팔로우</button>
             </div>          
           </c:forEach>
           
@@ -251,9 +250,7 @@ img {
             <div class="slide">
                 <img src="/img/user/d.jpg" alt="Image D">
             </div>
-            <div class="slide">
-                <img src="/img/user/e.jpg" alt="Image E">
-            </div>
+            
         </div>
     </div>
                 <div class="rating">⭐${dto.rev_score }</div>
@@ -275,72 +272,60 @@ img {
 </c:if>
 
 
-    <script>
-       
-    document.addEventListener("DOMContentLoaded", () => {
-        const container = document.querySelector('.slider-container');
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-        let currentIndex = 0;
 
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateSlider();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateSlider();
-        });
-
-        function updateSlider() {
-            container.style.transform = `translateX(-${currentIndex * (100 / (slides.length > 3 ? 3 : slides.length))}%)`;
-        }
-    });
-
-     
-        document.querySelectorAll('.follow-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (btn.textContent === '팔로우') {
-                    btn.textContent = '팔로잉';
-                    btn.style.backgroundColor = '#cccccc';
-                } else {
-                    btn.textContent = '팔로우';
-                    btn.style.backgroundColor = '#ff9933';
-                }
-            });
-        });
-        
-    </script>
     
     
 <script>
-function follow(idx) {
-	
-	var params='idx='+idx+'&following_idx='+${sessionScope.user_idx };
-	
-	sendRequest('followerReviewAjax', params, showSendResult, 'GET');
+/* function follow(idx) {
+   
+   
+   */
+    
+    document.querySelectorAll('.follow-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.textContent === '팔로우') {
+                button.textContent = '팔로잉';
+                button.style.backgroundColor = '#cccccc';
 
-}
+                // 팔로우 요청
+                var idx = button.getAttribute('data-idx');  
+                var userId = ${sessionScope.user_idx}; 
+                var params = 'idx=' + idx + '&following_idx=' + userId;
+                sendRequest('followerReviewAjax', params, showSendResult, 'GET');
+            
+                
+            } else {
+                button.textContent = '팔로우';
+                button.style.backgroundColor = '#ff9933';
 
-function showSendResult(){
-	
-	var reviewContainer = document.querySelector('.review-container');
-	
-	if(XHR.readyState==4){
-		if(XHR.status==200){
-			alert('팔로우되었습니다🧡')
-			var data=XHR.responseText;
-			var jsondata = JSON.parse(data);		
-			
+                // 언팔로우 요청
+                var idx = button.getAttribute('data-idx');
+           		var userId = ${sessionScope.user_idx}; 
+                var params = 'idx=' + idx + '&following_idx=' + userId;
+                sendRequest('unFollowAjax', params, unFollowRequest, 'GET');
+                
+       
+            }
+        });
+    } );
+/* } */
+
+
+
+function showSendResult() {
+    var reviewContainer = document.querySelector('.review-container');
+
+    if (XHR.readyState == 4) {
+        if (XHR.status == 200) {
+            alert('팔로우되었습니다🧡');
+            var data = XHR.responseText;
+            var jsondata = JSON.parse(data);
 
             if (Array.isArray(jsondata) && jsondata.length > 0) {
                 jsondata.forEach((dto) => {
-                	var reviewCard = document.createElement('div');
+                    var reviewCard = document.createElement('div');
                     reviewCard.className = 'review-card';
 
-                  
                     var reviewerInfoDiv = document.createElement('div');
                     reviewerInfoDiv.className = 'reviewer-info';
 
@@ -361,7 +346,6 @@ function showSendResult(){
                     reviewerInfoDiv.appendChild(reviewerProfileDiv);
                     reviewerInfoDiv.appendChild(reviewerDetailsDiv);
 
-                  
                     var imageSliderDiv = document.createElement('div');
                     imageSliderDiv.className = 'image-slider';
 
@@ -391,17 +375,14 @@ function showSendResult(){
                     imageSliderDiv.appendChild(nextButton);
                     imageSliderDiv.appendChild(sliderContainerDiv);
 
-                   
                     var ratingDiv = document.createElement('div');
                     ratingDiv.className = 'rating';
-                    ratingDiv.textContent = '⭐'+dto.rev_score;
+                    ratingDiv.textContent = '⭐' + dto.rev_score;
 
-                  
                     var reviewContentDiv = document.createElement('div');
                     reviewContentDiv.className = 'review-content';
                     reviewContentDiv.textContent = dto.rev_content;
 
-                  
                     var restaurantInfoDiv = document.createElement('div');
                     restaurantInfoDiv.className = 'restaurant-info';
 
@@ -423,26 +404,35 @@ function showSendResult(){
                     storeLink.textContent = '→';
                     restaurantInfoDiv.appendChild(storeLink);
 
-                   
                     reviewCard.appendChild(reviewerInfoDiv);
                     reviewCard.appendChild(imageSliderDiv);
                     reviewCard.appendChild(ratingDiv);
                     reviewCard.appendChild(reviewContentDiv);
                     reviewCard.appendChild(restaurantInfoDiv);
 
-                
                     reviewContainer.insertBefore(reviewCard, reviewContainer.firstChild);
                 });
             } else {
-            	  var noReviewMessage = document.createElement('p');
-                  noReviewMessage.textContent = '';
-                  reviewContainer.insertBefore(noReviewMessage, reviewContainer.firstChild);
+                var noReviewMessage = document.createElement('p');
+                noReviewMessage.textContent = '리뷰가 없습니다.';
+                reviewContainer.insertBefore(noReviewMessage, reviewContainer.firstChild);
             }
         }
     }
 }
 
+function unFollowRequest() {
+    if (XHR.readyState == 4) {
+        if (XHR.status == 200) {
+            alert('언팔로우되었습니다.');
+            var data = XHR.responseText;
+            var jsondata = JSON.parse(data);
+            // 추가적인 처리 로직 필요 시 여기에 작성
+        }
+    }
+}
 </script>
+
 
 </body>
 </html>

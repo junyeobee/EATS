@@ -47,5 +47,11 @@ public class TimelineServiceImple implements TimelineService {
 		int result = mapper.userFollow(map);
 		return result;
 	}
+	
+	@Override
+	public int unFollow(Map<String, Integer> map) {
+		int result = mapper.unFollow(map);
+		return result;
+	}
 
 }

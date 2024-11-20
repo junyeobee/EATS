@@ -90,8 +90,10 @@ input[type="button"] {
 <body>
 
 <h2>배너 관리</h2>
+
+<form name="bannerlistForm" action="/bannerDeleteOk" method="post">
 <div class="button-group">
-    <button class="btn-delete">선택삭제</button>
+    <input type="submit" class="btn-delete" value="선택삭제">
     <button class="btn-register"><a href="/bannerInsert">등록하기</a></button>
 </div>
 	<table>
@@ -99,6 +101,7 @@ input[type="button"] {
 			<tr>
 				<th>✅</th>
 				<th>번호</th>
+				<th>배너이미지</th>
 				<th>배너명</th>
 				<th>배너url</th>
 				<th>사용여부</th>
@@ -108,7 +111,6 @@ input[type="button"] {
 		
 		<tbody>
 		<c:if test="${empty lists }">
-		
 		 	<tr>
 		 		<td>등록된 배너가 없습니다.</td>
 		 	</tr>
@@ -117,8 +119,9 @@ input[type="button"] {
 		
 		<c:forEach var="dto" items="${lists }">
 			<tr>
-			<td><input type="checkbox"></td>
+			<td><input type="checkbox" name="banner_idx" value="${dto.banner_idx }"></td>
 			<td>${dto.banner_idx }</td>
+			<td><img src="../img/${dto.banner_img }" style='width:60px;height:60px;'></td>
 			<td>${dto.banner_name }</td>
 			<td>${dto.banner_url }</td>
 			
@@ -136,6 +139,8 @@ input[type="button"] {
 		</tbody>
 
 	</table>
+</form>
+
 
 </body>
 </html>
