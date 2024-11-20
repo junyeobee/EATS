@@ -30,7 +30,8 @@
 	</select>
 
 	<select id="getStoreInfo" parameterType="Map" resultType="com.eats.store.model.HYStoreDTO">
-		select distinct b.*
+		select c.*, avg_price
+		from (select distinct b.*
 		from (select a.*, stime_start, stime_end, stime_break
 		from (select * from store
 		where
@@ -39,7 +40,7 @@
 		</if>
 		store_state='TRUE')a, store_time
 		<if test="week !=null and week!='' ">
-			where stime_day=#{week}
+			where stime_day=#{week} and a.store_idx=store_time.store_idx
 		</if>
 		)b
 		<if test="tag.size()>0">
@@ -54,6 +55,10 @@
 		<if test="tag.size()>0">
 			cate where b.store_idx=cate.store_idx
 		</if>
+		)c, (select store_idx, round(avg(menu_price),0) avg_price
+		from menu, menu_cate where menu.m_cate_idx=menu_cate.m_cate_idx
+		group by store_idx)price
+		where c.store_idx=price.store_idx
 		order by store_name asc
 	</select>
 	

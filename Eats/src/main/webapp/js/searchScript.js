@@ -1,11 +1,14 @@
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-	level: 4
+	center: new kakao.maps.LatLng(36.35137969556768, 127.92635971181551), //지도의 중심좌표.
+	level: 12,
 	//지도의 레벨(확대, 축소 정도)
 };
 
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+var imageSrc = '/svg/gps_icon.svg',
+	imageSize = new kakao.maps.Size(55, 59),
+	imageOption = { offset: new kakao.maps.Point(27, 69) };
 
 window.addEventListener('load', function() {
 	var tags = document.getElementsByClassName('filter_tag');
@@ -22,29 +25,59 @@ window.addEventListener('load', function() {
 	}
 
 	var locs = document.getElementsByClassName('locationParam');
-	var areaWord = document.getElementById('pick_area');
-	
-	var area = area==null?'서울':areaWord.innerText;
-	
+	var areaWord = document.getElementById('pick_area').innerText;
+
 	if (locs.length > 0) {
 		for (var i = 0; i < locs.length; i++) {
 			var lat = locs[i].value.split(',')[0];
 			var lng = locs[i].value.split(',')[1];
+			var storeName = locs[i].value.split(',')[2];
+			var storePoint = locs[i].value.split(',')[3];
+			var storeCnt = locs[i].value.split(',')[4];
+			var content = '<div class="marker_position"><div class="marker_info"><div class="marker_text">' + storeName + '</div>'
+			+'<div class="marker_review"><div class="marker_point"><img class="marker_point_icon" src="/svg/star_icon.svg">'
+			+'<div class="marker_point_text">'+storePoint
+			+'</div></div><div class="marker_cnt">('+storeCnt+')</div></div></div></div>';
 
 			var markerPosition = new kakao.maps.LatLng(lat, lng);
+			var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
 			var marker = new kakao.maps.Marker({
+				position: markerPosition,
+				image: markerImage,
+			});
+			
+			marker.setMap(map);
+
+			var overlay = new kakao.maps.CustomOverlay({
+				content: content,
 				position: markerPosition
 			});
-
-			marker.setMap(map);
+			
+			kakao.maps.event.addListener(marker, 'click', goToClickPlace);
+			kakao.maps.event.addListener(marker, 'mouseover', function(){
+				overlay.setMap(map);
+			});
+			
+			
 		}
 	}
 
 	var ps = new kakao.maps.services.Places();
 
 	// 키워드로 장소를 검색합니다
-	ps.keywordSearch(area, placesSearchCB);
+	ps.keywordSearch(areaWord, placesSearchCB);
 });
+
+function goToClickPlace() {
+	var pos = this.getPosition();
+
+	var lat = pos.getLat();
+	var lng = pos.getLng();
+
+	map.setLevel(5);
+	panTo(lat, lng);
+}
 
 function placesSearchCB(data, status, pagination) {
 	if (status === kakao.maps.services.Status.OK) {
@@ -60,9 +93,10 @@ function placesSearchCB(data, status, pagination) {
 
 		// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 		map.setBounds(bounds);
-		
-		var level = map.getLevel();
-		map.setLevel(level - 1);
+
+		//var level = map.getLevel();
+		map.setLevel(5);
+
 	}
 }
 
@@ -71,7 +105,8 @@ function displayMarker(place) {
 	// 마커를 생성하고 지도에 표시합니다
 	var marker = new kakao.maps.Marker({
 		map: map,
-		position: new kakao.maps.LatLng(place.y, place.x)
+		position: new kakao.maps.LatLng(place.y, place.x),
+		image: markerImage
 	});
 
 	// 마커에 클릭이벤트를 등록합니다
@@ -157,7 +192,7 @@ function showUnit() {
 function selectThisArea(t) {
 	var city = areaText.innerText.substring(0, 2);
 	var newparam = city + ' ' + t.innerText;
-	//pickArea.innerText=city+' '+t.innerText;
+
 	areaText.value = newparam;
 
 	var param = 'selectCity=' + city + '&selectUnit=' + t.innerText;
@@ -178,6 +213,17 @@ function selectThisTime(t) {
 	var selectedTime = h + ":" + m;
 
 	checkParams(parameters.value, 'selectedTime', selectedTime);
+}
+
+var selectedMinPrice = document.getElementById('selectedMinPrice');
+var selectedMaxPrice = document.getElementById('selectedMaxPrice');
+
+function selectThisPrice() {
+	var minp = selectedMinPrice.innerText.split('만원')[0] + '0000';
+	var maxp = selectedMaxPrice.innerText.split('만원')[0] + '0000';
+	var selectedPrice = minp + ',' + maxp;
+
+	checkParams(parameters.value, 'selectedPrice', selectedPrice);
 }
 
 function checkParams(paramValue, paramName, value) {
@@ -224,11 +270,16 @@ function openTimeSelectBox(t) {
 }
 
 function resetThisTag(range) {
+	var url = document.getElementById('parameters').value;
+
 	if (range == 'all') {
 		console.log(range);
 		location.href = '/searchStore';
+	} else if (range == 'price') {
+		var newUrl = url.split('selectedPrice=')[0] + 'selectedPrice=';
+
+		location.href = 'searchStore?' + newUrl;
 	} else {
-		var url = document.getElementById('parameters').value;
 		var tags = url.split('tagWord=')[1].split(' ');
 		var newUrl = url.split('tagWord=')[0] + 'tagWord=';
 		for (var i = 1; i < tags.length; i++) {
@@ -343,67 +394,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	generateCalendar(currentMonth, currentYear);
 });
 
-
-function panTo() {
+function panTo(lat, lng) {
 	// 이동할 위도 경도 위치를 생성합니다 
-	var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
+	var moveLatLon = new kakao.maps.LatLng(lat, lng);
 
-	// 지도 중심을 부드럽게 이동시킵니다
-	// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 	map.panTo(moveLatLon);
-}
-
-function zoomIn() {
-	// 현재 지도의 레벨을 얻어옵니다
-	var level = map.getLevel();
-
-	// 지도를 1레벨 내립니다 (지도가 확대됩니다)
-	map.setLevel(level - 1);
-
-	// 지도 레벨을 표시합니다
-	displayLevel();
-}
-
-function zoomOut() {
-	// 현재 지도의 레벨을 얻어옵니다
-	var level = map.getLevel();
-
-	// 지도를 1레벨 올립니다 (지도가 축소됩니다)
-	map.setLevel(level + 1);
-
-	// 지도 레벨을 표시합니다
-	displayLevel();
-}
-
-function getInfo() {
-	// 지도의 현재 중심좌표를 얻어옵니다 
-	var center = map.getCenter();
-
-	// 지도의 현재 레벨을 얻어옵니다
-	var level = map.getLevel();
-
-	// 지도타입을 얻어옵니다
-	var mapTypeId = map.getMapTypeId();
-
-	// 지도의 현재 영역을 얻어옵니다 
-	var bounds = map.getBounds();
-
-	// 영역의 남서쪽 좌표를 얻어옵니다 
-	var swLatLng = bounds.getSouthWest();
-
-	// 영역의 북동쪽 좌표를 얻어옵니다 
-	var neLatLng = bounds.getNorthEast();
-
-	// 영역정보를 문자열로 얻어옵니다. ((남,서), (북,동)) 형식입니다
-	var boundsStr = bounds.toString();
-}
-
-
-function relayout() {
-
-	// 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-	// 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
-	// window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-	map.relayout();
-}
-
+}     

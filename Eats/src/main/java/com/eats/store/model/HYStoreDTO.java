@@ -19,6 +19,7 @@ public class HYStoreDTO {
 	private String stime_start;
 	private String stime_end;
 	private String stime_break;
+	private int avg_price;
 	
 	public HYStoreDTO() {
 		
@@ -57,9 +58,11 @@ public class HYStoreDTO {
 		this.area_name = area_name;
 	}
 
+	
+
 	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
 			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
-			String stime_start, String stime_end, String stime_break) {
+			String stime_start, String stime_end, String stime_break, int avg_price) {
 		super();
 		this.store_idx = store_idx;
 		this.store_name = store_name;
@@ -74,6 +77,7 @@ public class HYStoreDTO {
 		this.stime_start = stime_start;
 		this.stime_end = stime_end;
 		this.stime_break = stime_break;
+		this.avg_price = avg_price;
 	}
 
 	public int getStore_idx() {
@@ -194,6 +198,14 @@ public class HYStoreDTO {
 
 	public void setStime_break(String stime_break) {
 		this.stime_break = stime_break;
+	}
+
+	public int getAvg_price() {
+		return avg_price;
+	}
+
+	public void setAvg_price(int avg_price) {
+		this.avg_price = avg_price;
 	}
 	
 	
