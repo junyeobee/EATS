@@ -13,4 +13,5 @@ public interface UserReviewService {
 	public ReservationDTO getReserveInfo(int reserve_idx);
 	public List<HYMenuCateDTO> getMenuCateListByReserveIdx(int reserve_idx);
 	public List<HYMenuDTO> getMenuListByReserveIdx(int reserve_idx);
+	public List<String> tagList();
 }

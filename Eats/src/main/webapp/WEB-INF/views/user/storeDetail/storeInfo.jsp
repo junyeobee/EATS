@@ -73,7 +73,7 @@
 							<div class="acco-body">
 								<ul class="addr-list">
 									<!-- 후에 수정 필요 (s) -->
-									<li>
+									<!-- <li>
 										<span class="item">도로명</span>
 										<span class="val" id="street_addr">서울 용산구 이태원로55가길 45</span>
 										<span class="val">&nbsp;&nbsp;<a href="javascript:copyText();" class="copy-link">복사</a></span>
@@ -85,7 +85,7 @@
 									<li>
 										<span class="item">우편번호</span>
 										<span class="val">04348</span>
-									</li>
+									</li> -->
 									<!-- 후에 수정 필요 (e) -->
 								</ul>
 							</div>
@@ -357,7 +357,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 날짜나 인원 변경 시 체크
     function checkChanges() {
         const currentReserveDate = document.getElementById('reserve_date').value;
-        alert(currentReserveDate);
         const currentReserveCnt = document.getElementById('reserve_cnt').value;
         
         // 날짜와 인원이 모두 선택되어 있고, 둘 중 하나라도 변경된 경우

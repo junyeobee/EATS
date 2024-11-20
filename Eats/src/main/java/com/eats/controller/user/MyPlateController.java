@@ -28,11 +28,12 @@ public class MyPlateController {
 		ReservationDTO reserveDTO = reviewService.getReserveInfo(reserve_idx);
 		List<HYMenuCateDTO> menuCateList = reviewService.getMenuCateListByReserveIdx(reserve_idx);
 		List<HYMenuDTO> menuList = reviewService.getMenuListByReserveIdx(reserve_idx);
+		List<String> tagList = reviewService.tagList();
 		
 		ModelAndView mv=new ModelAndView();
 		
 		if(storeInfo==null || storeInfo.size()==0 || reserveDTO==null || menuCateList==null || menuCateList.size()==0 
-				|| menuList==null || menuList.size()==0) {
+				|| menuList==null || menuList.size()==0 || tagList==null || tagList.size()==0 ) {
 			mv.addObject("errorMsg", "잘못된 접근입니다.");
 			mv.setViewName("user/myplate/error");
 		}else {
@@ -40,6 +41,7 @@ public class MyPlateController {
 			mv.addObject("reserveDTO", reserveDTO);
 			mv.addObject("menuCateList", menuCateList);
 			mv.addObject("menuList", menuList);
+			mv.addObject("tagList", tagList);
 			mv.setViewName("user/myplate/writeReview");
 		}
 		return mv;

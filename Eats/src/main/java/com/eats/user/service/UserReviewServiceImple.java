@@ -44,5 +44,11 @@ public class UserReviewServiceImple implements UserReviewService {
 		List<HYMenuDTO> menuList = reviewMapper.getMenuListByReserveIdx(reserve_idx);
 		return menuList;
 	}
+	
+	@Override
+	public List<String> tagList() {
+		List<String> tagList = reviewMapper.getTagList();
+		return tagList;
+	}
 
 }

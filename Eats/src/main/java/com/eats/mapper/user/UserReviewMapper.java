@@ -16,4 +16,5 @@ public interface UserReviewMapper {
 	public List<HYMenuDTO> getMenuListByReserveIdx(int reserve_idx);
 	public ReservationDTO getReviewInfoByReserve(int reserve_idx);
 	public int insertReview(ReviewDTO dto);
+	public List<String> getTagList();
 }

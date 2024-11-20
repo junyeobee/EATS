@@ -101,7 +101,7 @@ ul {
 
 #content {
 	position: relative;
-	max-width: 1190px;
+	width: 65%;
 	margin: 0 auto 63px auto;
 }
 
@@ -279,6 +279,60 @@ ul {
 	margin-bottom: 30px;
 }
 
+/*별점*/
+.rev-score-wrapper {
+  margin-left: 15px;
+  display: flex;
+  gap: 5px;
+}
+
+.score-input {
+  display: none;
+}
+
+.star-label {
+  width: 24px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.star-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  background-image: url("../img/user/star_empty.png");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  transition: background-image 0.2s;
+}
+
+/* 호버 상태 */
+.star-label:hover .star-icon,
+.star-label:has(~ .star-label:hover) .star-icon {
+  background-image: url("../img/user/star_hover.png");
+}
+
+/* 선택된 상태 */
+.score-input:checked + .star-icon {
+  background-image: url("../img/user/star_active.png");
+}
+
+.star-label:has(.score-input:checked) .star-icon,
+.star-label:has(~ .star-label .score-input:checked) .star-icon {
+  background-image: url("../img/user/star_active.png");
+}
+
+/* 선택된 별점보다 높은 별은 빈 별로 유지 */
+.star-label:has(.score-input:checked) ~ .star-label .star-icon {
+  background-image: url("../img/user/star_empty.png");
+}
+
+/* 선택된 별점보다 높은 별에 호버 시 */
+.star-label:has(.score-input:checked) ~ .star-label:hover .star-icon,
+.star-label:has(.score-input:checked) ~ .star-label:has(~ .star-label:hover) .star-icon {
+  background-image: url("../img/user/star_hover.png");
+}
+
 .ipt-start {
 	position:relative; 
 	width:260px; 
@@ -371,9 +425,9 @@ ul {
 	display: inline-block; 
 	padding: 14px 68px; 
 	border-radius: 10px; 
-	background: orange; 
+	background-color: #f3553c; 
 	color: #fff; 
-	font-size: 20px; 
+	font-size: 12px; 
 	font-weight: 600; 
 	text-align: center;
 }
@@ -454,6 +508,9 @@ ul {
 	background: #ff533e;
 }
 </style>
+<script>
+
+</script>
 </head>
 <body>
 <%@include file="/WEB-INF/views/userHeader.jsp" %>
@@ -462,17 +519,28 @@ ul {
 		<section>
 			<div class="tit-area">
 				<h2 class="tit-h2">${storeInfo.STORE_NAME }에서의 경험은 어떠셨나요?</h2>
-				<div class="ipt-start">
-					<input type="radio" class="ipt" name="star_group" id="star1_1">
-					<label for="star1_1"><span class="blind">5점만점에 1점</span></label>
-					<input type="radio" class="ipt" name="star_group" id="star1_2">
-					<label for="star1_2"><span class="blind">5점만점에 2점</span></label>
-					<input type="radio" class="ipt" name="star_group" id="star1_3">
-					<label for="star1_3"><span class="blind">5점만점에 3점</span></label>
-					<input type="radio" class="ipt" name="star_group" id="star1_4">
-					<label for="star1_4"><span class="blind">5점만점에 4점</span></label>
-					<input type="radio" class="ipt" name="star_group" id="star1_5">
-					<label for="star1_5"><span class="blind">5점만점에 5점</span></label>
+				<div class="rev-score-wrapper">
+					<input type="hidden" name="rev_score" id="rev_score">
+					<label class="star-label" for="score_1">
+				    	<input type="radio" id="score_1" name="rev_score_radio" value="1" class="score-input">
+				    	<span class="star-icon"></span>
+				  	</label>
+					<label class="star-label" for="score_2">
+				    	<input type="radio" id="score_2" name="rev_score_radio" value="2" class="score-input">
+				    	<span class="star-icon"></span>
+				  	</label>
+				  	<label class="star-label" for="score_3">
+				    	<input type="radio" id="score_3" name="rev_score_radio" value="3" class="score-input">
+				    	<span class="star-icon"></span>
+				  	</label>
+				  	<label class="star-label" for="score_4">
+				    	<input type="radio" id="score_4" name="rev_score_radio" value="4" class="score-input">
+				    	<span class="star-icon"></span>
+				  	</label>
+				  	<label class="star-label" for="score_5">
+				    	<input type="radio" id="score_5" name="rev_score_radio" value="5" class="score-input">
+				    	<span class="star-icon"></span>
+				  </label>
 				</div>
 			</div>
 			<div class="info-box">
@@ -513,11 +581,9 @@ ul {
 			<label for="file_1" class="label-file">
 				<span class="btn-upload">사진 첨부하기</span>
 			</label>
-			<input type="file" id="file_1" title="사진 첨부하기" multiple>
+			<!-- <input type="file" id="file_1" title="사진 첨부하기" multiple> -->
 			<div class="img-box">
-				<div class="img"></div>
-				<div class="img"></div>
-				<div class="img"></div>
+				
 			</div>
 		</section>
 		<!-- 사진 첨부 영역 (e) -->
@@ -572,7 +638,7 @@ ul {
 		</section>
 		<!-- 메뉴 선택 영역 (e) -->
 
-		<!-- 단어 선택 영역 (s) -->
+		<!-- 태그 선택 영역 (s) -->
 		<section>
 			<div class="tit-area">
 				<h2 class="tit-h2">파브리키친을 잘 표현한 단어는 무엇인가요? (5개까지 선택 가능)</h2>
@@ -580,84 +646,58 @@ ul {
 			<div class="bg-box lg bg1">
 				<div class="inner pt-0 pb-0 bdr-0">
 					<ul class="list-check type1">
+						<c:forEach var="tag" items="${tagList }">
 						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_1">
-							<label for="chk4_1">맛있어요</label>
+							<input type="checkbox" class="ipt" name="" id="${tag }">
+							<label for="${tag }">${tag }</label>
 						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_2">
-							<label for="chk4_2">친절해요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_3">
-							<label for="chk4_3">데이트</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_4">
-							<label for="chk4_4">인테리어</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_5">
-							<label for="chk4_5">사진이 잘 나와요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_6">
-							<label for="chk4_6">조용해요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_7">
-							<label for="chk4_7">따뜻한 분위기</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_8">
-							<label for="chk4_8">화장실이 깨끗해요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_9">
-							<label for="chk4_9">음식이 빨리 나와요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_10">
-							<label for="chk4_10">건강한 맛이에요</label>
-						</li>
-						<li>
-							<input type="checkbox" class="ipt" name="" id="chk4_11">
-							<label for="chk4_11">현지맛에 가까워요</label>
-						</li>
+						</c:forEach>
 					</ul>
 				</div>
 				<div class="btn-group type1"></div>
 			</div>
 		</section>
-		<!-- 단어 선택 영역 (s) -->
+		<!-- 태그 선택 영역 (s) -->
 
 		<div class="btn-area">
-			<a href="#" class="btn-submit">리뷰 등록하기</a>
+			<form name="review_insert" action="/user/insertReview">
+				<input type="hidden" id="reserve_idx" name="reserve_idx" value="${reserveDTO.reserve_idx }">
+				<!-- <input type="hidden" id="rev_score" name="rev_score"> -->
+				<input type="hidden" id="rev_content" name="rev_content">
+				<input type="hidden" id="rev_img" name="rev_img">
+				<input type="hidden" id="rev_menu" name="rev_menu">
+				<input type="hidden" id="rev_tag" name="rev_tag">
+				<input type="submit" value="리뷰 등록하기" class="btn-submit">
+				<!-- <a href="#" class="btn-submit" onclick="showResult()">리뷰 등록하기</a> -->
+			</form>
+			
 		</div>
 	</section>
 </body>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="../js/myplate/reviewWrite.js"></script>
 <script>
+document.querySelectorAll('.score-input').forEach(input => {
+	  input.addEventListener('change', function() {
+	    const selectedScore = this.value;
+	    // hidden input에 선택된 값 설정
+	    document.getElementById('rev_score').value = selectedScore;
+	  });
+});
+
+function showResult(){
+	var score=document.getElementById('rev_score').value;
+	var menulist=document.getElementById('rev_menu').value;
+	var tagList=document.getElementById('rev_tag').value;
+	alert('score:'+score+'/menulist:'+menulist+'/tagList:'+tagList);
+	
+}
 $(document).ready(function(){
 	/* 초기화 */ 
 	$('.tab-contents .tab-panel').eq(0).show(); // 첫번째 탭 활성화
 	tabInit();
 
-	// 아코디언
-	$('.acco-head .btn-acco').on('click', function(e){
-		e.preventDefault();
-
-		if ($(this).hasClass('on')) {
-			$(this).removeClass('on');
-			$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
-		} else {
-			$(this).addClass('on');
-			$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
-		}
-	});
-
-	// 메뉴 탭
+ 	// 메뉴 탭
 	$('.tab-list li').on('click', function(e){
 		e.preventDefault();
 		var idx;
@@ -670,43 +710,93 @@ $(document).ready(function(){
 			$('.tab-contents .tab-panel').eq(idx).show();
 
 			if (!$(this).closest('.tab-wrap').hasClass('type1')){
-				tabInit();	// 다른 탭 눌렀다가 돌아왔을 때 더보기가 이미 되어있는 상태를 원하면 삭제해도 됨.
+				tabInit();	
 			}
 		}
-	})
+	});
 
 
-	$('.list-check input[type=checkbox]').on('change',function(e){
-		var selChk = $(this).next().text(); 
-		var btnTag = "<button type='button'>" + selChk + "</button>";
+	$('.list-check input[type=checkbox]').on('change', function(e){
+	    var selChk = $(this).next().text();
+	    var btnTag = "<button type='button'>" + selChk + "</button>";
+	    
+	    // 메뉴 선택인 경우
+	    if ($(this).attr('id').includes('_')) {
+	        var menuIdx = $(this).attr('id').split('_')[1];
+	        var $hiddenInput = $('#rev_menu');
+	        btnTag = "<button type='button' data-menu-idx='" + menuIdx + "'>" + selChk + "</button>";
+	    } 
+	    // 태그 선택인 경우
+	    else {
+	        var $hiddenInput = $('#rev_tag');
+	        // 5개 초과 선택 방지
+	        if ($(this).is(':checked')) {
+	            var checkedCount = $('.list-check.type1 input[type=checkbox]:checked').length;
+	            if (checkedCount > 5) {
+	                alert('태그는 최대 5개까지 선택 가능합니다.');
+	                $(this).prop('checked', false);
+	                return;
+	            }
+	        }
+	    }
 
-		if ($(this).is(':checked')){	// 체크 할 때
-			if ($(this).closest('.tab-wrap').length > 0){
-				$(this).closest('.tab-wrap').siblings('.btn-group').append(btnTag);
-			}else {
-				$(this).closest('.inner').siblings('.btn-group').append(btnTag);
-			}
+	    if ($(this).is(':checked')){ // 체크 할 때
+	        if ($(this).closest('.tab-wrap').length > 0){
+	            $(this).closest('.tab-wrap').siblings('.btn-group').append(btnTag);
+	        } else {
+	            $(this).closest('.inner').siblings('.btn-group').append(btnTag);
+	        }
 
-		}else {	// 체크 해제 할 때
-			if ($(this).closest('.tab-wrap').length > 0){
-				$(this).closest('.tab-wrap').siblings('.btn-group').find('button').each(function(){
-					if ( $(this).text() == selChk) {
-						$(this).remove();
-					}
-				})
-			}else {
-				$(this).closest('.inner').siblings('.btn-group').find('button').each(function(){
-					if ( $(this).text() == selChk) {
-						$(this).remove();
-					}
-				})
-			}
-		}
-	})
+	        // hidden input에 값 추가
+	        var currentValue = $hiddenInput.val();
+	        if(currentValue) {
+	            $hiddenInput.val(currentValue + ", " + (menuIdx || selChk));
+	        } else {
+	            $hiddenInput.val(menuIdx || selChk);
+	        }
 
+	    } else { // 체크 해제 할 때
+	        if ($(this).closest('.tab-wrap').length > 0){
+	            $(this).closest('.tab-wrap').siblings('.btn-group').find('button').each(function(){
+	                if ($(this).text() == selChk) {
+	                    $(this).remove();
+	                }
+	            });
+	        } else {
+	            $(this).closest('.inner').siblings('.btn-group').find('button').each(function(){
+	                if ($(this).text() == selChk) {
+	                    $(this).remove();
+	                }
+	            });
+	        }
+
+	        // hidden input에서 값 제거
+	        var currentValue = $hiddenInput.val();
+	        if(currentValue) {
+	            var valueArray = currentValue.split(', ');
+	            valueArray = valueArray.filter(function(value) {
+	                return value != (menuIdx || selChk);
+	            });
+	            $hiddenInput.val(valueArray.join(', '));
+	        }
+	    }
+	});
+	
 	$(document).on("click", ".btn-group button", function(){
 		var target = $(this);
 		var selTxt = target.text();
+		var menuIdx = target.data('menu-idx');
+		var $hiddenInput = $('#rev_menu');
+		
+		// hidden input에서 menu_idx 제거
+        var currentValue = $hiddenInput.val();
+        if(currentValue) {
+            var menuArray = currentValue.split(', ');
+            menuArray = menuArray.filter(function(value) {
+                return value != menuIdx;
+            });
+            $hiddenInput.val(menuArray.join(', '));
+        }
 		
 		if ($(this).closest('.btn-group').siblings('.tab-wrap').length > 0){
 			$(this).closest('.btn-group').siblings('.tab-wrap').find('label').each(function(){
