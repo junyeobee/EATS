@@ -51,10 +51,6 @@ menu, ol, ul {
 		<div class="area-searching">
 			<img class="exitbtn" id="exitbtn" src="/svg/exit.svg">
 			<div class="area_container">
-				<div class="mini_search_box">
-					<input type="text" class="mini_search_input" placeholder="지역 검색">
-					<img class="search_icon_yellow" src="/svg/search_icon_yellow.svg" />
-				</div>
 				<div class="area_box">
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
@@ -78,7 +74,7 @@ menu, ol, ul {
 	</div>
 	<div class="search_body" id="main">
 		<input type="hidden" id="parameters"
-			value="word=${word }&areaWord=${areaWord}&selectedDate=${selectedDate}&selectedTime=${selectedTime}&tagWord=${tagWord}">
+			value="word=${word }&areaWord=${areaWord}&selectedDate=${selectedDate}&selectedTime=${selectedTime}&tagWord=${tagWord}&selectedPrice=${selectedPrice}">
 		<c:forEach var="tags" items="${tagList }">
 			<input type="hidden" class="tagParam" value="${tags.keyidx},${tags.valueidx}">
 		</c:forEach>
@@ -147,15 +143,22 @@ menu, ol, ul {
 			<div class="price_group filter_group">
 				<div class="filter_title_box">
 					<div class="filter_title">가격</div>
-					<div class="filter_title_option">초기화</div>
+					<div class="filter_title_option" onclick="resetThisTag('price')">초기화</div>
+				</div>
+				<div class="select_price">
+					<div class="filter_min_price" id="selectedMinPrice"></div>
+					<div>~</div>
+					<div class="filter_max_price" id="selectedMaxPrice"></div>
+					<input type="button" class="filter_price_btn"
+					style="${selectedPrice!=null&&selectedPrice!=''?'border-color: #f3553c; background-color: #f3553c; color: white; font-weight: 600;':''}" id="price_save_btn" value="저장" onclick="selectThisPrice()">
 				</div>
 				<div class="price_select_group">
 					<div class="price_slide_box">
 						<div class="wrapper">
 							<div class="multi-range-slider">
-								<input type="range" id="input-left" min="0" step="50" max="5000"
-									value="1000"> <input type="range" id="input-right"
-									min="0" step="50" max="5000" value="4000">
+								<input type="range" id="input-left" min="0" step="10000" max="300000"
+									value="30000"> <input type="range" id="input-right"
+									min="0" step="10000" max="300000" value="100000">
 
 								<div class="slider">
 									<div class="track"></div>
@@ -168,23 +171,23 @@ menu, ol, ul {
 						</div>
 					</div>
 					<div class="price_selected_group">
-						<div class="filter_tag">
+						<div class="filter_tag" onclick="selectThisRange(30000)">
 							<div class="price_selected_text">3만원 이하</div>
 						</div>
-						<div class="filter_tag">
+						<div class="filter_tag" onclick="selectThisRange(50000)">
 							<div class="price_selected_text">5만원 이하</div>
 						</div>
-						<div class="filter_tag">
+						<div class="filter_tag" onclick="selectThisRange(70000)">
 							<div class="price_selected_text">7만원 이하</div>
 						</div>
-						<div class="filter_tag">
+						<div class="filter_tag" onclick="selectThisRange(100000)">
+							<div class="price_selected_text">10만원 이하</div>
+						</div>
+						<div class="filter_tag" onclick="selectThisRange(100000,190000)">
 							<div class="price_selected_text">10만원 대</div>
 						</div>
-						<div class="filter_tag">
-							<div class="price_selected_text">20만원 대</div>
-						</div>
-						<div class="filter_tag">
-							<div class="price_selected_text">30만원 대</div>
+						<div class="filter_tag"  onclick="selectThisRange(200000,300000)">
+							<div class="price_selected_text">20만원 이상</div>
 						</div>
 					</div>
 				</div>
@@ -209,14 +212,12 @@ menu, ol, ul {
 
 		<div class="location_box">
 			<div class="location_map" id="map"></div>
-			<input type="button" value="부드러운 이동" onclick="panTo()"> <input
-				type="button" value="지도 확대" onclick="zoomIn()"> <input
-				type="button" value="지도 축소" onclick="zoomOut()"> <span
-				id="maplevel">${word }</span>
 		</div>
 
 		<div class="store_box">
+		<c:if test="${!empty storeList }">
 		<c:forEach var="list" items="${storeList }">
+			<input type="hidden" class="locationParam" value="${location[list.store_name].lat },${location[list.store_name].lng},${list.store_name },${reviewPoint[list.store_idx]},${reviewCount[list.store_idx]}">
 			<div class="store_group" onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
 				<div class="store_info_top">
 					<img class="store_info_img" src="/img/banner_img.jpg" />
@@ -249,6 +250,10 @@ menu, ol, ul {
 				</div>
 			</div>
 			</c:forEach>
+			</c:if>
+			<c:if test="${empty storeList }">
+			<div class="no_store">검색된 식당이 없습니다.</div>
+			</c:if>
 		</div>
 
 	</div>

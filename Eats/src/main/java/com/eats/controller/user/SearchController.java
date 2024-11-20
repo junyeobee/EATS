@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eats.store.model.StoreDTO;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -39,7 +39,7 @@ public class SearchController {
 	public ModelAndView searchStore(@RequestParam(value = "tagWord", required = false) String tagIdx,
 			@RequestParam(required = false) String word, @RequestParam(required = false) String areaWord,
 			@RequestParam(required = false) String selectedDate, @RequestParam(required = false) String selectedTime,
-			@RequestParam(required = false) String price) {
+			@RequestParam(required = false) String selectedPrice) {
 
 		if (word != null && !word.equals("")) {
 			ss.addSearchWord(word);
@@ -80,44 +80,39 @@ public class SearchController {
 			}
 		}
 
-		String week = null;
-		if (selectedDate != null && !selectedDate.equals("")) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate date = LocalDate.parse(selectedDate, formatter);
-
-			// 요일을 숫자로 구하기 (1=월요일, 7=일요일)
-			int weekNumber = date.getDayOfWeek().getValue();
-			switch (weekNumber) {
-			case 1: week = "월"; break;
-			case 2: week = "화";break;
-			case 3: week = "수";break;
-			case 4: week = "목";break;
-			case 5: week = "금";break;
-			case 6: week = "토";break;
-			case 7: week = "일";break;
-			}
-		}
-		
 		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
-		words.put("area", areaWord);
-		words.put("date", selectedDate);
-		words.put("week", week);
-		words.put("time", selectedTime);
-		words.put("price", price);
-		List<StoreDTO> storeList = ss.getStoreInfo(words);
+
+		if(areaWord!=null && !areaWord.equals("")) {
+			words.put("city", areaWord.split(" ")[0]);
+			words.put("unit", areaWord.split(" ")[1]);
+		} else {
+			words.put("city", null);
+			words.put("unit", null);
+		}
 		
+		words.put("date", selectedDate);
+		words.put("time", selectedTime);
+		words.put("price", selectedPrice);
+		List<HYStoreDTO> storeList = ss.getStoreInfo(words);
+
 		ModelAndView mv = new ModelAndView();
 		
-		if(storeList.size()!=0) {
 		Map<Integer, Integer> reviewCount = new HashMap<>();
 		Map<Integer, Double> reviewPoint = new HashMap<>();
-		for(StoreDTO dto:storeList) {
+		Map<String, Map<String, Double>> location = new HashMap<>();
+		if(storeList!=null) {
+		for(HYStoreDTO dto:storeList) {
 			reviewCount.put(dto.getStore_idx(), ms.getReviewCountByStoreIdx(dto.getStore_idx())==null?0:ms.getReviewCountByStoreIdx(dto.getStore_idx()));
 			reviewPoint.put(dto.getStore_idx(), ms.getStorePoint(dto.getStore_idx()));
-		}
+			
+			Map<String, Double> latlng = new HashMap<>();
+			latlng.put("lat", dto.getStore_lat());
+			latlng.put("lng", dto.getStore_lng());
+			
+			location.put(dto.getStore_name() ,latlng);
+		}}
 
-		
 		mv.addObject("tagList", tagList);
 		mv.addObject("tagWord", tagIdx);
 		mv.addObject("word", word);
@@ -132,7 +127,9 @@ public class SearchController {
 		mv.addObject("storeList", storeList);
 		mv.addObject("reviewCount", reviewCount);
 		mv.addObject("reviewPoint", reviewPoint);
-		}
+		mv.addObject("location", location);
+		mv.addObject("selectedPrice",selectedPrice);
+		
 		mv.setViewName("user/search/searchStore");
 
 		return mv;
@@ -157,5 +154,10 @@ public class SearchController {
 		resp.addCookie(ck2);
 
 		return "user/search/searchStore";
+	}
+	
+	@GetMapping("/getAddr")
+	public String getAddr() {
+		return "user/home/getAddr";
 	}
 }
