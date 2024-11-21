@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.store.ReserveMapper;
+import com.eats.store.model.reserve.StoreTimeDTO;
 import com.eats.store.model.reserve.ReserveListDTO;
 import com.eats.store.model.reserve.TableDTO;
 
@@ -23,8 +24,13 @@ public class ReserveServiceImple implements ReserveService {
 	}
 	
 	@Override
-	public List<ReserveListDTO> reserveLists(Map map) {
-		List<ReserveListDTO> result = mapper.reserveLists(map);
+	public List<ReserveListDTO> reserveList(Map map) {
+		List<ReserveListDTO> result = mapper.reserveList(map);
+		return result;
+	}
+
+	public StoreTimeDTO storeTime(Map map){
+		StoreTimeDTO result = mapper.storeTime(map);
 		return result;
 	}
 }
