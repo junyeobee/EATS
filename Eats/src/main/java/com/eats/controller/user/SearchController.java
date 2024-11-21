@@ -44,6 +44,14 @@ public class SearchController {
 		if (word != null && !word.equals("")) {
 			ss.addSearchWord(word);
 		}
+		
+		LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        
+        if(selectedDate==null || selectedDate.equals("")) {
+        	selectedDate = formattedDate;
+        }
 
 		List<CateKeyDTO> keyDTOList = ms.getCateKey();
 		Map<String, List<CateValueDTO>> mainValueList = new HashMap<>();
@@ -83,7 +91,7 @@ public class SearchController {
 		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
 
-		if(areaWord!=null && !areaWord.equals("")) {
+		if(areaWord!=null && !areaWord.equals("") && !areaWord.equals(" ")) {
 			words.put("city", areaWord.split(" ")[0]);
 			words.put("unit", areaWord.split(" ")[1]);
 		} else {

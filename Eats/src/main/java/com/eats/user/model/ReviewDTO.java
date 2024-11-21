@@ -21,6 +21,7 @@ public class ReviewDTO {
 	private int store_idx;
 	private String store_name;
 	private String store_addr;
+	private String profile_image;
 	
 	public ReviewDTO() {
 		// TODO Auto-generated constructor stub
@@ -40,9 +41,11 @@ public class ReviewDTO {
 		this.rev_tag = rev_tag;
 	}
 
+
+
 	public ReviewDTO(int rev_idx, int reserve_idx, int rev_score, String rev_content, Date rev_writedate, int rev_state,
 			String rev_img, String rev_menu, String rev_tag, Date reserve_date, int user_idx, String user_nickname,
-			int store_idx, String store_name, String store_addr) {
+			int store_idx, String store_name, String store_addr, String profile_image) {
 		super();
 		this.rev_idx = rev_idx;
 		this.reserve_idx = reserve_idx;
@@ -59,6 +62,7 @@ public class ReviewDTO {
 		this.store_idx = store_idx;
 		this.store_name = store_name;
 		this.store_addr = store_addr;
+		this.profile_image = profile_image;
 	}
 
 	public int getRev_idx() {
@@ -180,6 +184,15 @@ public class ReviewDTO {
 	public void setStore_addr(String store_addr) {
 		this.store_addr = store_addr;
 	}
+
+	public String getProfile_image() {
+		return profile_image;
+	}
+
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
+	}
+
 
 	
 }

@@ -76,10 +76,12 @@ menu, ol, ul {
 		<input type="hidden" id="parameters"
 			value="word=${word }&areaWord=${areaWord}&selectedDate=${selectedDate}&selectedTime=${selectedTime}&tagWord=${tagWord}&selectedPrice=${selectedPrice}">
 		<c:forEach var="tags" items="${tagList }">
-			<input type="hidden" class="tagParam" value="${tags.keyidx},${tags.valueidx}">
+			<input type="hidden" class="tagParam"
+				value="${tags.keyidx},${tags.valueidx}">
 		</c:forEach>
 		<div class="filter_box">
-			<div class="filter_reset" onclick="resetThisTag('all')">전체 필터 초기화</div>
+			<div class="filter_reset" onclick="resetThisTag('all')">전체 필터
+				초기화</div>
 			<div class="pick_group">
 				<div class="pick_box pick_box_location"
 					onclick="openAreaSelectBox()">
@@ -107,20 +109,20 @@ menu, ol, ul {
 						<div class="pick_time">${selectedTime==null||selectedTime==''?"시간을 선택해주세요.":selectedTime }</div>
 					</div>
 					<div class="time_paper">
-							<ul id="time_selector">
-								<c:forEach var="h" begin="9" end="22">
-									<li onclick="selectThisTime(this)">
-										<div>${h }</div>
-										<div>:</div>
-										<div>00</div>
-									</li>
-									<li onclick="selectThisTime(this)">
-										<div>${h }</div>
-										<div>:</div>
-										<div>30</div>
-									</li>
-								</c:forEach>
-							</ul>
+						<ul id="time_selector">
+							<c:forEach var="h" begin="9" end="22">
+								<li onclick="selectThisTime(this)">
+									<div>${h }</div>
+									<div>:</div>
+									<div>00</div>
+								</li>
+								<li onclick="selectThisTime(this)">
+									<div>${h }</div>
+									<div>:</div>
+									<div>30</div>
+								</li>
+							</c:forEach>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -128,16 +130,18 @@ menu, ol, ul {
 				<div class="seat filter_group">
 					<div class="filter_title_box">
 						<div class="filter_title">${keys.key }</div>
-						<div class="filter_title_option" onclick="resetThisTag(${mainKeyList[keys.key]})">초기화</div>
-					</div>	
-						<div class="filter_tag_box">
-							<c:forEach var="values" items="${keys.value }">
-								<div class="filter_tag" id="${mainKeyList[keys.key]},${values.cate_value_idx }"
-									onclick="addThisTagToFilter(this)">
-									<div class="filter_text" style="color: black;">${values.cate_value_name }</div>
-								</div>
-							</c:forEach>
-						</div>
+						<div class="filter_title_option"
+							onclick="resetThisTag(${mainKeyList[keys.key]})">초기화</div>
+					</div>
+					<div class="filter_tag_box">
+						<c:forEach var="values" items="${keys.value }">
+							<div class="filter_tag"
+								id="${mainKeyList[keys.key]},${values.cate_value_idx }"
+								onclick="addThisTagToFilter(this)">
+								<div class="filter_text" style="color: black;">${values.cate_value_name }</div>
+							</div>
+						</c:forEach>
+					</div>
 				</div>
 			</c:forEach>
 			<div class="price_group filter_group">
@@ -150,15 +154,17 @@ menu, ol, ul {
 					<div>~</div>
 					<div class="filter_max_price" id="selectedMaxPrice"></div>
 					<input type="button" class="filter_price_btn"
-					style="${selectedPrice!=null&&selectedPrice!=''?'border-color: #f3553c; background-color: #f3553c; color: white; font-weight: 600;':''}" id="price_save_btn" value="저장" onclick="selectThisPrice()">
+						style="${selectedPrice!=null&&selectedPrice!=''?'border-color: #f3553c; background-color: #f3553c; color: white; font-weight: 600;':''}"
+						id="price_save_btn" value="저장" onclick="selectThisPrice()">
 				</div>
 				<div class="price_select_group">
 					<div class="price_slide_box">
 						<div class="wrapper">
 							<div class="multi-range-slider">
-								<input type="range" id="input-left" min="0" step="10000" max="300000"
-									value="30000"> <input type="range" id="input-right"
-									min="0" step="10000" max="300000" value="100000">
+								<input type="range" id="input-left" min="0" step="10000"
+									max="300000" value="30000"> <input type="range"
+									id="input-right" min="0" step="10000" max="300000"
+									value="100000">
 
 								<div class="slider">
 									<div class="track"></div>
@@ -186,7 +192,7 @@ menu, ol, ul {
 						<div class="filter_tag" onclick="selectThisRange(100000,190000)">
 							<div class="price_selected_text">10만원 대</div>
 						</div>
-						<div class="filter_tag"  onclick="selectThisRange(200000,300000)">
+						<div class="filter_tag" onclick="selectThisRange(200000,300000)">
 							<div class="price_selected_text">20만원 이상</div>
 						</div>
 					</div>
@@ -196,11 +202,13 @@ menu, ol, ul {
 				<div class="filter_group">
 					<div class="filter_title_box">
 						<div class="filter_title">${keys.key }</div>
-						<div class="filter_title_option" onclick="resetThisTag(${subKeyList[keys.key]})">초기화</div>
+						<div class="filter_title_option"
+							onclick="resetThisTag(${subKeyList[keys.key]})">초기화</div>
 					</div>
 					<div class="filter_tag_box">
 						<c:forEach var="values" items="${keys.value }">
-							<div class="filter_tag" id="${subKeyList[keys.key]},${values.cate_value_idx }"
+							<div class="filter_tag"
+								id="${subKeyList[keys.key]},${values.cate_value_idx }"
 								onclick="addThisTagToFilter(this)">
 								<div class="filter_text" style="color: black;">${values.cate_value_name  }</div>
 							</div>
@@ -215,44 +223,50 @@ menu, ol, ul {
 		</div>
 
 		<div class="store_box">
-		<c:if test="${!empty storeList }">
-		<c:forEach var="list" items="${storeList }">
-			<input type="hidden" class="locationParam" value="${location[list.store_name].lat },${location[list.store_name].lng},${list.store_name },${reviewPoint[list.store_idx]},${reviewCount[list.store_idx]}">
-			<div class="store_group" onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
-				<div class="store_info_top">
-					<img class="store_info_img" src="/img/banner_img.jpg" />
-					<div class="store_info_title">
-						<div class="store_info_title_line">
-							<div class="store_name">${list.store_name }</div>
-							<div class="store_score_box">
-								<img class="store_star_icon" src="/svg/star_icon.svg" />
-								<div class="store_star_point">${reviewPoint[list.store_idx]==0.0?0:reviewPoint[list.store_idx] }</div>
-								<div class="store_review_cnt">(${reviewCount[list.store_idx] })</div>
+			<c:if test="${!empty storeList }">
+				<c:forEach var="list" items="${storeList }">
+					<input type="hidden" class="locationParam"
+						value="${location[list.store_name].lat },${location[list.store_name].lng},${list.store_name },${reviewPoint[list.store_idx]},${reviewCount[list.store_idx]}">
+					<div class="store_group"
+						onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
+						<div class="store_info_top">
+							<div class="store_ingo_img_box">
+								<img class="store_info_img" src="${list.store_img }" />
 							</div>
-						</div>
-						<div class="store_addr_box">
-							<img class="store_location_icon" src="/svg/location_icon.svg" />
-							<div class="store_addr">${list.store_addr }</div>
-						</div>
-						<div class="store_time_box">
-							<div class="store_last_time_box">
-								<div class="store_last_time_text">영업시간</div>
-								<div class="store_last_time_time">${list.stime_start }</div>
-								<div class="store_last_time_text">-</div>
-								<div class="store_last_time_time">${list.stime_end }</div>
-							</div>
-							<div class="store_break_time_box">
-								<div class="store_break_time_text">브레이크 타임</div>
-								<div class="store_break_time_time">${list.stime_break }</div>
+							<div class="store_info_title">
+								<div class="store_info_title_line">
+									<div class="store_name">${list.store_name }</div>
+								</div>
+								<div class="store_score_box">
+									<img class="store_star_icon" src="/svg/star_icon.svg" />
+									<div class="store_star_point">${reviewPoint[list.store_idx]==0.0?0:reviewPoint[list.store_idx] }</div>
+									<div class="store_review_cnt">(${reviewCount[list.store_idx] })</div>
+								</div>
+								<div class="store_addr_box">
+									<img class="store_location_icon" src="/svg/location_icon.svg" />
+									<div class="store_addr">${list.store_addr }</div>
+								</div>
+								<div class="store_time_box">
+									<div class="store_last_time_box">
+										<div class="store_last_time_text">영업시간</div>
+										<div class="store_last_time_time">${list.stime_start }</div>
+										<div class="store_last_time_text">-</div>
+										<div class="store_last_time_time">${list.stime_end }</div>
+									</div>
+									<c:if test="${!empty list.stime_break }">
+										<div class="store_break_time_box">
+											<div class="store_break_time_text">브레이크 타임</div>
+											<div class="store_break_time_time">${list.stime_break }</div>
+										</div>
+									</c:if>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			</c:forEach>
+				</c:forEach>
 			</c:if>
 			<c:if test="${empty storeList }">
-			<div class="no_store">검색된 식당이 없습니다.</div>
+				<div class="no_store">검색된 식당이 없습니다.</div>
 			</c:if>
 		</div>
 

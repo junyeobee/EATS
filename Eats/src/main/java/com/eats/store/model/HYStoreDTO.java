@@ -20,6 +20,10 @@ public class HYStoreDTO {
 	private String stime_end;
 	private String stime_break;
 	private int avg_price;
+	private String store_img;
+	
+	private int jcnt;
+	private double point;
 	
 	public HYStoreDTO() {
 		
@@ -58,11 +62,10 @@ public class HYStoreDTO {
 		this.area_name = area_name;
 	}
 
-	
 
 	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
 			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
-			String stime_start, String stime_end, String stime_break, int avg_price) {
+			String stime_start, String stime_end, String stime_break, int avg_price, String store_img) {
 		super();
 		this.store_idx = store_idx;
 		this.store_name = store_name;
@@ -78,6 +81,26 @@ public class HYStoreDTO {
 		this.stime_end = stime_end;
 		this.stime_break = stime_break;
 		this.avg_price = avg_price;
+		this.store_img = store_img;
+	}
+
+	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
+			String store_img, int jcnt, double point) {
+		super();
+		this.store_idx = store_idx;
+		this.store_name = store_name;
+		this.store_area = store_area;
+		this.store_addr = store_addr;
+		this.store_daddr = store_daddr;
+		this.store_tel = store_tel;
+		this.store_biznum = store_biznum;
+		this.store_state = store_state;
+		this.store_lat = store_lat;
+		this.store_lng = store_lng;
+		this.store_img = store_img;
+		this.jcnt = jcnt;
+		this.point = point;
 	}
 
 	public int getStore_idx() {
@@ -207,6 +230,32 @@ public class HYStoreDTO {
 	public void setAvg_price(int avg_price) {
 		this.avg_price = avg_price;
 	}
+
+	public String getStore_img() {
+		return store_img;
+	}
+
+	public void setStore_img(String store_img) {
+		this.store_img = store_img;
+	}
+
+	public int getJcnt() {
+		return jcnt;
+	}
+
+	public void setJcnt(int jcnt) {
+		this.jcnt = jcnt;
+	}
+
+	public double getPoint() {
+		return point;
+	}
+
+	public void setPoint(double point) {
+		this.point = point;
+	}
+
+
 	
 	
 }
