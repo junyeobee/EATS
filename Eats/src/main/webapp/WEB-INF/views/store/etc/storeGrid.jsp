@@ -216,7 +216,7 @@
 		</div>
 		<div class="mainCont">	
 			<div class="mainCon_1400">
-				<input type="hidden" name="store_idx" id="store_idx" value="1">
+				<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 				<input type="hidden" name="sg_idx" id="sg_idx" value="${baseData.sg_idx}">
 				
 				<c:set var="v_idx" value="" /> <!-- v_idx 초기화 -->
@@ -239,7 +239,6 @@
 				
 				<input type="hidden" name="" id="v_idx" value="${v_idx }" class="">
 				<input type="hidden" name="" id="v_name" value="${v_name }" class="">
-				
 				
 				<c:forEach var="viewDetail" items="${gridDetail}">
 					<c:set var="sts_location" value="${viewDetail.sts_location}" />

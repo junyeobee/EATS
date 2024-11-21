@@ -5,7 +5,7 @@
 <%@include file="/WEB-INF/views/admin/common/header.jsp"%>
 
 <div class="mainCon_1400">
-	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
+	<input type="text" name="admin_idx" id="" value="${admin_idx }">
 	
 	
 	<form id="reviewDeleteForm" method="post" >
@@ -16,6 +16,9 @@
 	
 	<div class="mc_left tableList mb60">
 		<h2>입점신청</h2>
+		<div class="btnBox_top">
+			<span class="pageChange" onclick="location.href='/admin/storeEntryOkList'">이동</span>
+		</div>
 		<table>
 			<thead>
 				<tr>
@@ -53,6 +56,9 @@
 	
 	<div class="mc_right tableList mb60">
 		<h2>리뷰삭제신청</h2>
+		<div class="btnBox_top">
+			<span class="pageChange" onclick="location.href='/admin/reviewDelOkList'">이동</span>
+		</div>
 		<table>
 			<thead>
 				<tr>

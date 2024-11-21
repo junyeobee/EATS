@@ -22,6 +22,9 @@ import com.eats.store.model.StoreGridDetailDTO;
 import com.eats.store.model.StoreInfoUpdateDTO;
 import com.eats.store.service.StoreEtcService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class EtcController {
 
@@ -30,18 +33,31 @@ public class EtcController {
     //private StoreInfoUpdateReqService service;
     
     @GetMapping("/store/storeInfoUpdateReq")
-    public ModelAndView storeInfoUpdateReq(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	//정보수정신청 페이지 접속시 로그인한 매장의 매장데이터 불러옴
+    public ModelAndView storeInfoUpdateReq(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
         
-        // store_idx가 null이면 기본값을 1로 설정
-        if (store_idx == null) {
-            store_idx = 1;  // 기본값 설정
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+        
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
         }
 
         StoreDTO data = service.storeData(store_idx);
         
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data);
+        mav.addObject("store_idx", store_idx);
         //System.out.println(data.toString());
         mav.setViewName("store/etc/storeInfoUpdateReq");
 
@@ -65,11 +81,24 @@ public class EtcController {
     }
 	
     @GetMapping("/store/storeGrid")
-    public ModelAndView storeGrid(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
+    public ModelAndView storeGrid(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
         
-        // store_idx가 null이면 기본값을 1로 설정
-        if (store_idx == null) {
-            store_idx = 1;  // 기본값 설정
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 1111;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
         }
 
         List<StoreCateDTO> lists = service.storeCate(store_idx);
@@ -97,6 +126,7 @@ public class EtcController {
         mav.addObject("lists", lists);   	//로그인한 매장의 선택할수있는 좌석타입? 불러옴, category테이블에 매장기본키, 카테고리대메뉴키, 카테고리소메뉴키, category기본키값 존재
         mav.addObject("baseData", baseData);    //로그인한매장의 저장된 그리드base 행X열
         mav.addObject("gridDetail", gridDetail);
+        mav.addObject("store_idx", store_idx);
         mav.setViewName("store/etc/storeGrid");
 
         return mav;

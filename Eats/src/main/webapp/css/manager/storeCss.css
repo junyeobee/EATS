@@ -49,8 +49,8 @@
 	
 	
 	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
-	.mainCont .btnBox_top {float:right; }
-	.mainCont .btnBox_top > * {margin-top:-40px; margin-left:10px;}
+	.btnBox_top {float:right; }
+	.btnBox_top > * {margin-top:-40px; margin-left:10px;}
 	
 	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
 	
@@ -104,6 +104,15 @@
 	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
 	
+	.pageChange {
+		margin-right:20px; cursor:pointer;
+		text-decoration: none; /* 기본 상태에서는 밑줄 제거 */
+		transition: text-decoration 0.3s ease; /* 부드럽게 밑줄이 생기도록 애니메이션 추가 */
+	}
+	
+	.pageChange:hover {
+	    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+	}
 	
 	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
 	
@@ -123,6 +132,8 @@
 	
 	/* 소식등록 textarea */
 	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
+	
+	
 	
 	/* 이미지관리 - 상단컨텐츠 박스 */
 	.mb60 {margin-bottom:60px;}
