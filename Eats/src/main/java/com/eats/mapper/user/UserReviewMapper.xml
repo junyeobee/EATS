@@ -75,6 +75,24 @@
 		WHERE
 			RESERVE_IDX=#{reserve_idx}
 	</select>
+	<select id="getTagList" resultType="String">
+		SELECT
+			CATE_VALUE_NAME
+		FROM
+			CATE_VALUE
+		WHERE
+			CATE_KEY_IDX IN (
+                SELECT
+                    CATE_KEY_IDX
+                FROM
+                    CATE_KEY
+                WHERE
+                    CATE_KEY_LEVEL = 2
+                AND 
+                    CATE_KEY_IDX != 5
+            )
+		ORDER BY CATE_KEY_IDX, CATE_VALUE_IDX
+	</select>
 	<insert id="insertReview" parameterType="com.eats.user.model.ReviewDTO">
 		INSERT INTO
 			REVIEW
