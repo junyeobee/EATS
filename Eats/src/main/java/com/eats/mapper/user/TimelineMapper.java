@@ -18,6 +18,10 @@ public interface TimelineMapper {
 	public int userFollow(Map<String, Integer> map);
 	
 	public int unFollow(Map<String, Integer> map);
+
+	
+	public TimelineDTO timeLineProfile(int userIdx);
+	
 	
 	
 }

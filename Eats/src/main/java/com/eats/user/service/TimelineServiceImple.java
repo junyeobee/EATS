@@ -53,5 +53,14 @@ public class TimelineServiceImple implements TimelineService {
 		int result = mapper.unFollow(map);
 		return result;
 	}
+	
+	
+	@Override
+	public TimelineDTO timeLineProfile(int userIdx) {
+	
+		TimelineDTO dto = mapper.timeLineProfile(userIdx);
+		
+		return dto;
+	}
 
 }

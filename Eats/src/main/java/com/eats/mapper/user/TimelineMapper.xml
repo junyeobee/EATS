@@ -6,17 +6,20 @@
   <mapper namespace="com.eats.mapper.user.TimelineMapper">
   
   <select id="randomuser" resultType="com.eats.user.model.TimelineDTO">
- 	SELECT USER_NICKNAME, USER_IDX 
+  
+ 	SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
 	FROM (
-    SELECT USER_NICKNAME, USER_IDX 
+    SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE 
     FROM USER_PROFILE 
     ORDER BY DBMS_RANDOM.VALUE
 	) 
 	WHERE ROWNUM &lt;= 4
+	
   </select>
   
   
   <select id="selectReviewList" resultType="com.eats.user.model.TimelineDTO">
+  
 SELECT 
     r.RESERVE_IDX,
     r.USER_IDX,
@@ -47,6 +50,7 @@ STORE st ON r.STORE_IDX = st.STORE_IDX
 
 WHERE 
     r.RESERVE_STATE = 3
+    
   </select>
   
   
@@ -88,12 +92,14 @@ AND
   
   
   <insert id="userFollow" parameterType="Map">
+  
   	 insert into follow
   	 values(
   	 follow_idx_seq.nextval,
   	 #{user_idx},
   	 #{following_idx}
-  	 )  	 
+  	 )  	
+  	  
   </insert>
   
   
@@ -109,6 +115,23 @@ AND
   </delete>
   
   
+  
+  <select id="timeLineProfile" parameterType="int" resultType="com.eats.user.model.TimelineDTO">
+  
+  	SELECT 
+    COUNT(r.REV_IDX) AS total_reviews,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE FOLLOWING_IDX = #{user_idx}) AS follower_count,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE USER_IDX = #{user_idx}) AS following_count  
+	FROM EATS_USER u
+	LEFT JOIN REVIEW r ON u.USER_IDX = r.RESERVE_IDX  
+	WHERE u.USER_IDX = #{user_idx}
+	GROUP BY u.USER_IDX
+
+  </select>
   
   
   </mapper>

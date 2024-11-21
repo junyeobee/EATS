@@ -84,6 +84,17 @@ input[type="button"] {
     background-color: #349FFB;
     color: white;
 }
+.btn-delete{
+padding: 8px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 부모 요소의 색상 상속 */
+}
 </style>
 </head>
 
@@ -99,7 +110,7 @@ input[type="button"] {
 	<table>
 		<thead>
 			<tr>
-				<th>✅</th>
+				<th>□</th>
 				<th>번호</th>
 				<th>배너이미지</th>
 				<th>배너명</th>
@@ -132,7 +143,7 @@ input[type="button"] {
 			<td>사용안함</td>
 			</c:if>
 			
-			<td><input type="button" value="수정"></td>
+			<td><input type="button" value="수정" onclick="location.href='/bannerUpdate'"></td>
 			</tr>
 		</c:forEach>
 		

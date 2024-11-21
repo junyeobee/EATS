@@ -80,7 +80,7 @@ public class BannerController {
 
 		}
 		
-		mav.addObject("goUrl","/admin/banner");
+		mav.addObject("goUrl","/bannerList");
 		mav.setViewName("store/menu/menuMsg");
 		
 		return mav;
@@ -89,7 +89,16 @@ public class BannerController {
 	
 	
 	@PostMapping("/bannerDeleteOk")
-	public ModelAndView bannerDelete(@RequestParam(value="banner_idx", required= true) List<Integer> bannerIdx) {
+	public ModelAndView bannerDelete(@RequestParam(value="banner_idx", required= false) List<Integer> bannerIdx) {
+		ModelAndView mav = new ModelAndView();
+		
+		if (bannerIdx == null || bannerIdx.isEmpty()) {
+	        String msg = "삭제할 배너가 없습니다.";
+	        mav.addObject("msg", msg);
+	        mav.addObject("goUrl", "/bannerList");
+	        mav.setViewName("store/menu/menuMsg");
+	        return mav;
+	    }
 		
 		int result = service.deleteBanner(bannerIdx);
 		
@@ -97,7 +106,9 @@ public class BannerController {
 		
 		String msg = result>0?"배너가 삭제되었습니다.":"배너 삭제가 실패했습니다.";
 		
-		ModelAndView mav = new ModelAndView();
+		
+		
+		
 		mav.addObject("msg",msg);
 		mav.addObject("goUrl","/bannerList");
 		
@@ -105,6 +116,15 @@ public class BannerController {
 		
 		return mav;
 		
+	}
+	
+	
+	
+	@GetMapping("/bannerUpdate")
+	public String bannerUpdate() {
+		
+		
+		return "admin/banner/bannerUpdate";
 	}
 	
 	

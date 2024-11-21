@@ -16,20 +16,28 @@ import com.eats.user.model.EatsUserDTO;
 import com.eats.user.model.TimelineDTO;
 import com.eats.user.service.TimelineService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class TimeLineController {
 	@Autowired
 	TimelineService service;
 
 	@GetMapping("/timeLineMain")
-	public ModelAndView timelineMain() {
+	public ModelAndView timelineMain(Integer userIdx, HttpSession session) {
+		
+		int idx = (int) session.getAttribute("user_idx");
 		
 		List<TimelineDTO> lists= service.randomuser();
 		List<TimelineDTO> review= service.selectReviewList();
 		
+		TimelineDTO profile = service.timeLineProfile(idx);
+		
 		ModelAndView mav= new ModelAndView();
+		
 		mav.addObject("lists", lists);
 		mav.addObject("review",review);
+		mav.addObject("profile",profile);
 		mav.setViewName("user/timeLine/timeLine");
 
 		return mav;
@@ -48,7 +56,7 @@ public class TimeLineController {
 		
 		service.userFollow(map);
 		
-		List<TimelineDTO> lists_fw= service.selectFollowerReview(userIdx);
+		List<TimelineDTO> lists_fw= service.selectFollowerReview(followingIdx);
 		
 		return lists_fw;
 	}
@@ -74,6 +82,8 @@ public class TimeLineController {
 	    return response;
 		
 	}
+	
+	
 	
 	
 

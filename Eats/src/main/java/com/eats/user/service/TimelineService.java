@@ -17,7 +17,7 @@ public interface TimelineService {
 	
 	public int unFollow(Map<String, Integer> map);
 	
-	
+	public TimelineDTO timeLineProfile(int userIdx);
 	
 
 }
