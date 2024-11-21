@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
 	
 	var texts = document.getElementsByClassName('navi_small_cate_text');
 	for(var i=0; i<texts.length; i++) {
-		if(texts[i].getAttribute("href")==realpath){
+		if(texts[i].getAttribute("onclick").includes(realpath)){
 			texts[i].style.fontWeight='600';
 			texts[i].style.color='#F3553C';
 			texts[i].parentElement.parentElement.style.height = 'auto';
@@ -46,7 +46,7 @@ function selectThisMenu(t) {
         }
     }
 
-    function selectThisCate(t) {
+ /*   function selectThisCate(t) {
         var small_text_list = document.getElementsByClassName('navi_small_cate_text');
 
         if (t.firstElementChild.style.fontWeight != '600') {
@@ -60,4 +60,4 @@ function selectThisMenu(t) {
             t.firstElementChild.style.fontWeight = '400';
             t.firstElementChild.style.color = '#461002';
         }
-    }
+    }*/
