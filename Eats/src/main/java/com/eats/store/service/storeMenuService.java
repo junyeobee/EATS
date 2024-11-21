@@ -21,7 +21,7 @@ public interface storeMenuService {
 	
 	public int deleteMenu(List<Integer> menuIdx);
 	
-	public int updateMenu(MenuDTO dto,MultipartFile menuImg,String realpath, String oldFileName) throws IOException;
+	public int updateMenu(MenuDTO dto);
 	
 	public MenuDTO updateMenuInfo(Integer menuIdx);
 	

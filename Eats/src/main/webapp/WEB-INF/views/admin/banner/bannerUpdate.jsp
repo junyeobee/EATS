@@ -108,7 +108,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>배너 등록</h1>
+        <h1>배너 수정</h1>
         <form name="banenerInsertForm" action="bannerInsertOk" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label>배너명</label>
@@ -171,7 +171,7 @@
 
             <div class="button-group">
                 <button type="button" class="btn btn-cancel" onclick="location.href='/bannerList'">취소</button>
-                <button type="submit" class="btn btn-submit">등록</button>
+                <button type="submit" class="btn btn-submit">수정</button>
             </div>
         </form>
     </div>

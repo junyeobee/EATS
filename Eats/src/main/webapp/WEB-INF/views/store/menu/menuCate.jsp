@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ include file="../store_Header.jsp"%>
+<%@ include file="../nav.jsp"%>
 <title>Insert title here</title>
 <style>
 * {
@@ -14,9 +16,15 @@
 }
 
 body {
-	
 	padding: 20px;
 	background-color: #f5f5f5;
+}
+
+.dashboard-container {
+	margin-left: 240px;
+	margin-top: 64px;
+	padding: 32px;
+	background-color: #eff9ff;
 }
 
 .container {
@@ -93,7 +101,7 @@ h1 {
 
 .category-edit {
 	flex: 1;
-	widh:300px;
+	widh: 300px;
 }
 
 .input-group {
@@ -155,46 +163,52 @@ h1 {
 .btn-cancel:hover {
 	background-color: #e9ecef;
 }
-.cateInserForm{
-width:330px;
+
+.cateInserForm {
+	width: 330px;
 }
 </style>
 </head>
 <body>
-	<div class="container">
-		<h1>메뉴 카테고리 관리</h1>
-		<button class="add-category-btn" onclick="newCate();">새 카테고리</button>
+	<div class="dashboard-container">
+		<div class="container">
+			<h1>메뉴 카테고리 관리</h1>
 		
-		<div class="content-wrapper">
-			<form name="cateDel" action="deleteMenuCate" method="post">
+
+			<!-- 카테고리명 부분 -->
+			<div class="content-wrapper">
 				<div class="category-list">
-					<c:forEach var="dto" items="${lists }">
-						<div class="category-item">
-							${dto.m_cate_name} <input type="hidden" name="m_cate_name"
-								value="${dto.m_cate_name}"> <input type="submit"
-								class="delete-btn" value="x"></input>
-						</div>
+					<c:forEach var="dto" items="${lists}">
+						<form name="cateDel" action="deleteMenuCate" method="post" style="display: inline;">
+							<div class="category-item">
+								${dto.m_cate_name} <input type="hidden" name="m_cate_name"
+									value="${dto.m_cate_name}"> <input type="submit"
+									class="delete-btn" value="x">
+							</div>
+						</form>
 					</c:forEach>
 				</div>
-			</form>
 
-			<form name="insertMenuCateForm" action="insertMenuCate" method="post" class="cateInserForm">
-				<div class="category-edit">
-					<div class="input-group">
-						<label>카테고리 명</label> <input type="text"
-							placeholder="카테고리 이름을 지정해주세요." name="m_cate_name">
+
+				<form name="insertMenuCateForm" action="insertMenuCate"
+					method="post" class="cateInserForm">
+					<div class="category-edit">
+						<div class="input-group">
+							<label>메뉴 카테고리 추가하기</label> <input type="text" placeholder="카테고리 이름을 지정해주세요." name="m_cate_name">
+						</div>
+
+						<div class="button-group">
+							
+							
+							<input type="submit" class="btn btn-save" value="저장">
+						</div>
+
 					</div>
-
-					<div class="button-group">
-						<button class="btn btn-cancel">취소</button>
-						<input type="submit" class="btn btn-save" value="저장">
-					</div>
-
-				</div>
-			</form>
+				</form>
+		
+			</div>
 		</div>
 	</div>
-
 </body>
 
 
