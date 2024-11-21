@@ -52,6 +52,18 @@ $(document).ready(function(){
 			$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
 		}
 	});
+	
+	$('.openMap').on('click', function(e){
+		e.preventDefault();
+
+		if ($(this).hasClass('on')) {
+			$(this).removeClass('on');
+			$(this).closest('.acco-wrap').find('.acco-body').stop().slideUp(150);
+		} else {
+			$(this).addClass('on');
+			$(this).closest('.acco-wrap').find('.acco-body').stop().slideDown(150);
+		}
+	});
 
 	// 메뉴 탭
 	$('.tab-list li').on('click', function(e){
