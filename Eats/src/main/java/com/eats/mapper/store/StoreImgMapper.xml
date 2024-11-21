@@ -62,6 +62,7 @@
         	#{store_img5})
    	</insert>
    	
+   	<!-- 
    	<select id="storeImgBeforeData" resultType="com.eats.store.model.StoreImgBeforeDTO">
 		SELECT *
 		FROM (
@@ -71,6 +72,7 @@
 		)
 		WHERE ROWNUM = 1
 	</select>
+	 -->
 	
 	<update id="storeImgBeforeUpdate" parameterType="com.eats.store.model.StoreImgBeforeDTO">
 		update store_img set
