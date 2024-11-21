@@ -18,6 +18,13 @@ public interface AdminStoreMapper {
 	
 	public List<AdminStoreDTO> storeChartList();
 	public AdminStoreDTO adminStoreChartDetail(int st_idx);
+
+	public int storeTimeSave(StoreTimeDTO dto);
+	public int storeTimeUpdate(StoreTimeDTO dto);
+	public int storeTimeDelete(int stime_idx);
+
+	public String storeWorkData(int store_idx);
+	public int storeWorkSet(StoreDTO dto);
 	
 	//public int storeJoinUpdate(StoreDTO dto);
 	//public int storeInsert(StoreDTO dto);

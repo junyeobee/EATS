@@ -5,6 +5,10 @@
 	.contents {display: flex;}
 	.contents > * {float:left;}
 	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#DAF0FF;}
+	.contents .leftMenu > span {width:100%; display:inline-block;}
+	.contents .leftMenu > span.big_title {font-size:20px; font-weight:600;}
+	.contents .leftMenu > span.small_title {margin-left:20px;}
+	
 	.contents .mainCont {width:calc(100% - 200px); padding:20px 30px;}
 	
 	

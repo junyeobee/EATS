@@ -47,6 +47,40 @@ public class AdminStoreServiceImple implements AdminStoreService {
 		AdminStoreDTO data = mapper.adminStoreChartDetail(st_idx);
 		return data;
 	}
+
+	@Override
+	public int storeTimeSave(StoreTimeDTO dto) {
+		int count = mapper.storeTimeSave(dto);
+		return count;
+	}
+	
+	@Override
+	public int storeTimeUpdate(StoreTimeDTO dto) {
+		int count = mapper.storeTimeUpdate(dto);
+		return count;
+	}
+
+	@Override
+	public int storeTimeDelete(int stime_idx) {
+		int count = mapper.storeTimeDelete(stime_idx);
+		return count;
+	}
+	
+	
+	@Override
+	public String storeWorkData(int store_idx) {
+		String work_type = mapper.storeWorkData(store_idx);
+		return work_type;
+	}
+	
+	
+	@Override
+	public int storeWorkSet(StoreDTO dto) {
+		int count = mapper.storeWorkSet(dto);
+		return count;
+	}
+	
+	
 	
 	/*
 

@@ -68,5 +68,50 @@
 			WHERE 
 				st.store_idx = #{st_idx}
 	   </select>
+	   
+	   
+		<insert id="storeTimeSave" parameterType="com.eats.store.model.StoreTimeDTO">
+			insert into store_time
+			values(STIME_IDX_SEQ.nextval,
+			#{store_idx},
+			#{stime_day},
+			#{stime_start},
+			#{stime_end},
+			#{stime_break})
+		</insert>
+		
+		
+		<update id="storeTimeUpdate" parameterType="com.eats.store.model.StoreTimeDTO">
+			update store_time set
+		        stime_start=#{stime_start}, 
+		        stime_end=#{stime_end}, 
+		        stime_break=#{stime_break}
+			where 
+				stime_idx=#{stime_idx}
+		</update>
+		
+		
+		<delete id="storeTimeDelete" parameterType="int">
+	      delete from store_time  
+	      where stime_idx=#{stime_idx}
+		</delete>
+		
+		
+		
+	   <select id="storeWorkData" resultType="String">
+			select 
+				store_state
+			from 
+			     store 
+			WHERE 
+				store_idx = #{store_idx}
+	   </select>
+		
+		<update id="storeWorkSet" parameterType="com.eats.store.model.StoreDTO">
+			update store set
+		        store_state=#{store_state}
+			where 
+				store_idx=#{store_idx}
+		</update>
    
 	</mapper>
