@@ -85,7 +85,7 @@ public class StoreInfoController {
 	
 	@GetMapping("/user/getTimeList")
 	@ResponseBody
-	public List getTimeListWithYN(int store_idx, java.sql.Date reserve_date, int reserve_cnt) {
+	public List getTimeListWithYN(int store_idx, String reserve_date, int reserve_cnt) {
 		
 		List<Map> timeList=reserveService.getTimeListWithYN(store_idx, reserve_date, reserve_cnt);
 
@@ -94,7 +94,7 @@ public class StoreInfoController {
 	
 	@GetMapping("/user/getTableList")
 	@ResponseBody
-	public List getTableList(int store_idx, java.sql.Date reserve_date, int reserve_cnt, String reserve_time) {
+	public List getTableList(int store_idx, String reserve_date, int reserve_cnt, String reserve_time) {
 		List<Map> tableList=reserveService.getAvailableTable(store_idx, reserve_date, reserve_cnt, reserve_time);
 		
 		return tableList;
@@ -117,7 +117,7 @@ public class StoreInfoController {
 	}
 	
 	@GetMapping("/user/makeReserve")
-	public ModelAndView makeReserve(int store_idx, java.sql.Date reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
+	public ModelAndView makeReserve(int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
 			HttpSession session) {
 		
 		Integer user_idx = (Integer)session.getAttribute("user_idx");
@@ -126,7 +126,8 @@ public class StoreInfoController {
 		}
 		int minTableIdx=reserveService.getMinTableIdx(store_idx, reserve_date, reserve_count, reserve_time, reserve_table);
 		
-		ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date, reserve_time, reserve_count, minTableIdx, request, 0, null);
+		Date reserve_date_d = Date.valueOf(reserve_date);
+		ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
 		
 		int result=reserveService.makeReserve(reservationDTO);
 		ModelAndView mv=null;
