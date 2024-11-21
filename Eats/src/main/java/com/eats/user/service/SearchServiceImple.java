@@ -76,6 +76,7 @@ public class SearchServiceImple implements SearchService {
 		String selectedTime = (String) map.get("time");
 		String selectedDate = (String) map.get("date");
 		String selectedPrice = (String) map.get("price");
+		String word = (String)map.get("word");
 
 		String week = null;
 		if (selectedDate != null && !selectedDate.equals("")) {
@@ -152,6 +153,18 @@ public class SearchServiceImple implements SearchService {
 				}
 			}
 		}
+		
+//		if(storeList.size()>0) {
+//			String[] wordList = word.split(" ");
+//			
+//			for(int i=0; i<wordList.length; i++) {
+//				for(HYStoreDTO dto:storeList) {
+//					if(!dto.getStore_name().contains(wordList[i])
+//							&& !dto.getStore_addr().contains(wordList[i])
+//							&& !dto.get)
+//				}
+//			}
+//		}
 
 		return storeList;
 	}

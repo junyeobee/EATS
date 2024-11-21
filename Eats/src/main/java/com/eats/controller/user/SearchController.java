@@ -40,9 +40,12 @@ public class SearchController {
 			@RequestParam(required = false) String word, @RequestParam(required = false) String areaWord,
 			@RequestParam(required = false) String selectedDate, @RequestParam(required = false) String selectedTime,
 			@RequestParam(required = false) String selectedPrice) {
-
+		
+		Map<String, Object> words = new HashMap<>();
+		
 		if (word != null && !word.equals("")) {
 			ss.addSearchWord(word);
+			words.put("word", word);
 		}
 		
 		LocalDate today = LocalDate.now();
@@ -88,7 +91,6 @@ public class SearchController {
 			}
 		}
 
-		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
 
 		if(areaWord!=null && !areaWord.equals("") && !areaWord.equals(" ")) {
