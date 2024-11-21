@@ -19,5 +19,5 @@ public interface StoreJoinMapper {
      * @param approvalId 승인 아이디
      * @return 아이디 중복 여부 (true: 중복됨, false: 사용 가능)
      */
-    boolean existsByApprovalId(String approvalId);
+    int existsByApprovalId(String approvalId);
 }
