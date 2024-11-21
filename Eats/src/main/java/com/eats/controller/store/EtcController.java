@@ -135,13 +135,6 @@ public class EtcController {
         return response;  // 클라이언트로 JSON 응답 반환
     }
 
-    // 실제 삭제 처리 메서드 (예시)
-    private boolean deleteStoreGridData(int storeIdx) {
-        // storeIdx를 사용해 데이터를 삭제하는 실제 로직을 구현
-        // 예시: 삭제가 성공하면 true, 실패하면 false 반환
-        return true; // 임시로 true 반환
-    }
-
     @PostMapping("/store/storeGridSave")
     @ResponseBody  // 이 애너테이션을 추가하여 JSON 응답을 바로 반환하도록 설정
     public Map<String, Object> saveGridData(@RequestBody StoreGridAllDTO requestData) {
