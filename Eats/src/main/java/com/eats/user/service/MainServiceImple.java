@@ -101,4 +101,10 @@ public class MainServiceImple implements MainService {
 		List<HYStoreDTO> list = mp.getStoreByStarPoint(map);
 		return list;
 	}
+	
+	@Override
+	public List<String> getStoreCategoryName(int store_idx) {
+		List<String> list = mp.getStoreCategoryName(store_idx);
+		return list;
+	}
 }

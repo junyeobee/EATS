@@ -28,4 +28,5 @@ public interface MainMapper {
 
 	public List<HYStoreDTO> getStoreByJjimCount(Map<String,Object> map);
 	public List<HYStoreDTO> getStoreByStarPoint(Map<String,Object> map);
+	public List<String> getStoreCategoryName(int store_idx);
 }

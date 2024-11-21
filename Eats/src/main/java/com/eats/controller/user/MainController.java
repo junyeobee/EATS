@@ -44,6 +44,16 @@ public class MainController {
 		List<HYStoreDTO> jcntList = ms.getStoreByJjimCount(forStore);
 		List<HYStoreDTO> pointList = ms.getStoreByStarPoint(forStore);
 		
+		Map<Integer, List<String>> jcntTags = new HashMap<>();
+		for(HYStoreDTO dto:jcntList) {
+			jcntTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
+		}
+		
+		Map<Integer, List<String>> pointTags = new HashMap<>();
+		for(HYStoreDTO dto:pointList) {
+			pointTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
+		}
+		
         ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
@@ -96,6 +106,8 @@ public class MainController {
 		mv.addObject("cityList", cityList);
 		mv.addObject("jcntList", jcntList);
 		mv.addObject("pointList", pointList);
+		mv.addObject("jcntTags", jcntTags);
+		mv.addObject("pointTags", pointTags);
 		mv.setViewName("index");
 
 		return mv;
@@ -134,4 +146,21 @@ public class MainController {
 		return "index";
 	}
 
+	@GetMapping("/resetArea")
+	public String resetArea(HttpServletResponse resp, HttpServletRequest req) {
+		Cookie cks[] = req.getCookies();
+		
+		for(Cookie temp:cks) {
+			System.out.println(temp.getName());
+			if (temp.getName().equals("cityCk")) {
+				temp.setMaxAge(0);
+			}
+			if (temp.getName().equals("unitCk")) {
+				temp.setMaxAge(0);
+			}
+			resp.addCookie(temp);
+		}
+		
+		return "index";
+	}
 }

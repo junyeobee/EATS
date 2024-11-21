@@ -494,7 +494,7 @@ section .main-top .content-wrap p{
 .review_store_box {
 	display: flex;
 	flex-direction: row;
-	justify-content:space-between;
+	justify-content: space-around;
 	align-items: center;
 	
 	padding: 10px 15px;
@@ -505,7 +505,7 @@ section .main-top .content-wrap p{
 }
 
 .review_store_name {
-	font-size:16px;
+	font-size: 18px;
 	font-weight: 600;
 }
 
@@ -568,13 +568,17 @@ section .main-top .content-wrap p{
 .reserve_container {
 	display: flex;
 	flex-direction: row;
-	column-gap: 40px;
+	column-gap: 35px;
 }
 
 .store_reserve {
-	width: 330px;
+	width: 230px;
 	display: flex;
 	flex-direction: row;
+}
+
+.store_reserve:hover {
+	cursor: pointer;
 }
 
 .store_reserve_box {
@@ -616,7 +620,6 @@ section .main-top .content-wrap p{
 .store_reserve_title {
 	font-size: 20px;
 	font-weight: 600;
-	width: 100px;
 }
 
 .store_star {
@@ -652,7 +655,7 @@ section .main-top .content-wrap p{
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .location_icon {
@@ -671,6 +674,8 @@ section .main-top .content-wrap p{
 	display: flex;
 	flex-direction: row;
 	column-gap: 8px;
+	row-gap: 5px;
+    flex-wrap: wrap;
 }
 
 .store_reserve_tag {
@@ -719,6 +724,7 @@ section .main-top .content-wrap p{
 	color: #461002;
 }
 
+/*
 .content_box {
 	width: 1240px;
 	display: flex;
@@ -777,7 +783,7 @@ section .main-top .content-wrap p{
 	font-size: 12px;
 	font-weight: 400;
 }
-
+*/
 .footer {
 	width: 1440px;
 	height: 225px;

@@ -84,6 +84,8 @@ menu, ol, ul {
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
 						<div class="area_big_value scrollCss">
+							<div class="area_big_value_text"
+									onclick="selectCity(0, this)">지역 선택 해제</div>
 							<c:forEach var="city" items="${cityList }">
 								<div class="area_big_value_text"
 									onclick="selectCity(${city.area_idx}, this)">${city.area_name }</div>
@@ -299,7 +301,7 @@ menu, ol, ul {
 
 				<div class="reserve_container">
 				<c:forEach var="jcnt" items="${jcntList }">
-					<div class="store_reserve">
+					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${jcnt.store_idx}';">
 						<div class="store_reserve_box">
 							<img class="reserve_img" src="${jcnt.store_img }" />
 
@@ -318,15 +320,13 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
+								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }">
 									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
+										<div class="store_reserve_tag_text">
+											${tag }
+										</div>
 									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
+								</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -348,7 +348,7 @@ menu, ol, ul {
 
 				<div class="reserve_container">
 				<c:forEach var="point" items="${pointList }">
-					<div class="store_reserve">
+					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${point.store_idx}';">
 						<div class="store_reserve_box">
 							<img class="reserve_img" src="${point.store_img }" />
 
@@ -367,15 +367,13 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
+								<c:forEach var="tag" items="${pointTags[point.store_idx] }">
 									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
+										<div class="store_reserve_tag_text">
+											${tag }
+										</div>
 									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
+								</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -384,7 +382,7 @@ menu, ol, ul {
 				</div>
 			</div>
 		</c:if>
-			<div class="content_box">
+			<!-- <div class="content_box">
 				<div class="content_text">
 					<div class="content_title">
 						주변<br />문화콘텐츠
@@ -401,44 +399,8 @@ menu, ol, ul {
 							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
 						</div>
 					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
 				</div>
-			</div>
+			</div> -->
 		</div><!-- category div (e) -->
 	</div> <!-- main div (e) -->
 	</section>
@@ -517,9 +479,13 @@ menu, ol, ul {
     }
     
     function selectCity(cityIdx, t){
-    	areaWord.value=t.innerText;
-    	var params = 'cityIdx='+cityIdx;
-    	sendRequest('selectUnit', params, showUnit, 'GET');
+    	if(cityIdx==0) {
+    		sendRequest('resetArea', null, showReset, 'GET');
+    	} else {
+    		areaWord.value=t.innerText;
+    		var params = 'cityIdx='+cityIdx;
+    		sendRequest('selectUnit', params, showUnit, 'GET');
+    	}
     }
     
     function showUnit(){
@@ -544,6 +510,14 @@ menu, ol, ul {
 				});
 				
 				unitbox.appendChild(svalue);
+    		}
+    	}
+    }
+    
+    function showReset() {
+    	if(XHR.readyState==4){
+    		if(XHR.status==200){
+    			location.href='/';
     		}
     	}
     }

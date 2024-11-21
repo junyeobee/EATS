@@ -95,7 +95,9 @@
 	</select>
 	
 	<select id="getStoreByJjimCount" parameterType="map" resultType="com.eats.store.model.HYStoreDTO">
-		select jcnt, c.* from
+		select * from
+		(select rownum rn, d.* from 
+		(select jcnt, c.* from
 		(select b.*, store_img from
 		(select a.* from
 		(select * from store where store_state=upper('true')
@@ -107,11 +109,14 @@
 		where b.store_idx=store_img.store_idx and img_order=1)c,
 		(select store_idx, count(*) jcnt from jjim group by store_idx)j
 		where c.store_idx=j.store_idx
-		order by jcnt desc
+		order by jcnt desc)d)
+		where rn between 1 and 4
 	</select>
 	
 	<select id="getStoreByStarPoint" parameterType="map" resultType="com.eats.store.model.HYStoreDTO">
-		select point, c.* from
+		select * from
+		(select rownum rn, d.* from 
+		(select point, c.* from
 		(select b.*, store_img from
 		(select a.* from 
 		(select * from store where store_state=upper('true')
@@ -125,6 +130,13 @@
 		where reservation.reserve_idx=review.reserve_idx
 		group by store_idx)p
 		where c.store_idx=p.store_idx
-		order by point desc
+		order by point desc)d)
+		where rn between 1 and 4
+	</select>
+	
+	<select id="getStoreCategoryName" parameterType="Integer" resultType="String">
+		select cate_value_name from category, cate_value
+		where store_idx=#{store_idx}
+		and category.cate_value_idx = cate_value.cate_value_idx
 	</select>
 </mapper>
