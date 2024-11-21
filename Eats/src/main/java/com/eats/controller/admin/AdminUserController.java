@@ -28,6 +28,9 @@ import com.eats.store.model.StoreImgDTO;
 import com.eats.store.model.StoreJoinDTO;
 import com.eats.store.model.StoreTimeDTO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class AdminUserController {
 
@@ -49,11 +52,31 @@ public class AdminUserController {
     */
 
 	@GetMapping("/admin/userList")
-    public ModelAndView userList() {
+    public ModelAndView userList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 
 		List<AdminUserDTO> lists = service.userList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/adminEtc/userList");
 		return mav;
@@ -78,12 +101,32 @@ public class AdminUserController {
     }
 	
 	@GetMapping("/admin/reviewDelOkList")
-    public ModelAndView reviewDelOkList() {
+    public ModelAndView reviewDelOkList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 		
 		List<ReviewDeleteDTO> review_lists = re_service.adminRevDelList();
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", review_lists);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/adminEtc/reviewDelOkList");
 		return mav;

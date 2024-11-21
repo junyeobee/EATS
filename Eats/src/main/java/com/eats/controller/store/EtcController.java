@@ -86,7 +86,7 @@ public class EtcController {
         HttpSession session = req.getSession();
         
         Integer storeidx = (Integer) session.getAttribute("storeIdx");
-        int store_idx = (storeidx != null) ? storeidx : 1111;
+        int store_idx = (storeidx != null) ? storeidx : 0;
         System.out.println("store_idx 값: " + store_idx);
 
         if(store_idx == 0) {

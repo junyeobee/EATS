@@ -17,6 +17,10 @@ import com.eats.admin.model.AdminStoreDTO;
 import com.eats.store.model.StoreJoinDTO;
 import com.eats.store.model.StoreNewsDTO;
 import com.eats.store.model.StoreTimeDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import com.eats.admin.model.AdminStoreInfoUpdateDTO;
 
 @Controller
@@ -32,11 +36,31 @@ public class StoreController {
     private AdminStoreService st_service;
 
 	@GetMapping("/admin/storeEntryOkList")
-    public ModelAndView storeEntry() {
+    public ModelAndView storeEntry(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 
 		List<StoreJoinDTO> lists = se_service.adminStoreEntryList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
+		mav.addObject("admin_idx", admin_idx);
 		//mav.addObject("pageStr", pageStr);
 		
 		mav.setViewName("admin/store/storeEntryOkList");
@@ -60,11 +84,31 @@ public class StoreController {
 
 
 	@GetMapping("/admin/storeInfoUpdateOkList")
-    public ModelAndView storeInfoUpdateOkList() {
+    public ModelAndView storeInfoUpdateOkList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 
 		List<AdminStoreInfoUpdateDTO> lists = si_service.adminStoreInfoList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
+		mav.addObject("admin_idx", admin_idx);
 		//mav.addObject("pageStr", pageStr);
 		
 		mav.setViewName("admin/store/storeInfoUpdateOkList");
@@ -113,11 +157,31 @@ public class StoreController {
     }
 
 	@GetMapping("/admin/storeChart")
-    public ModelAndView storeChart() {
+    public ModelAndView storeChart(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 
 		List<AdminStoreDTO> lists = st_service.storeChartList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/store/storeChart");
 		return mav;
@@ -139,11 +203,31 @@ public class StoreController {
     }
 
 	@GetMapping("/admin/storeList")
-    public ModelAndView storeList() {
+    public ModelAndView storeList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 
 		List<AdminStoreDTO> lists = st_service.storeList();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/store/storeList");
 		return mav;

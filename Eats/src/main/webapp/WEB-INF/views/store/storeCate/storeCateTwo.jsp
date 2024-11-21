@@ -5,9 +5,9 @@
 <%@include file="../common/header_cate.jsp"%>
 
 <div class="mainCon_400">
-	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return cate_two()">
+	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return tag_count()">
 	
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		<input type="hidden" name="cate_level" value=2>
 			
 		<h2>특징관리</h2>
@@ -68,7 +68,7 @@
 	        </c:forEach>    
 		</c:if>
 		
-
+		<!-- 
 		<div class="cateBox">
 			<div class="cb_top">
 				<span>&lt; 찾아오시는 길 &gt;</span>
@@ -77,9 +77,7 @@
 				<textarea name="store_road"></textarea>
 			</div>
 		</div>
-		
-		
-
+		 -->
 	</form>
 </div>
    
