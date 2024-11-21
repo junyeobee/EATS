@@ -97,7 +97,7 @@
         }
 
         .btn-submit {
-            background: #349FFB;
+            background: #F3553C;
             color: white;
         }
 
@@ -170,7 +170,7 @@
          
 
             <div class="button-group">
-                <button type="button" class="btn btn-cancel">취소</button>
+                <button type="button" class="btn btn-cancel" onclick="location.href='/bannerList'">취소</button>
                 <button type="submit" class="btn btn-submit">등록</button>
             </div>
         </form>

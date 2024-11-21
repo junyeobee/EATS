@@ -315,8 +315,9 @@ img {
 				<div class="profile-container">
 					<div class="profile-image">
 					
-					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기 -->
-						<img src="/img/user/d.jpg" alt="Profile Image">
+					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
+						<img src="/img/user/profile/d.jpg" alt="Profile Image">
+					
 					</div>
 					
 					<div class="profile-info">
@@ -360,7 +361,7 @@ img {
 				<c:forEach var="dto" items="${lists }">
 
 					<div class="user-card">
-						<div class="user-profile"><img src="/img/user/${dto.profile_image }"></div>
+						<div class="user-profile"><img src="/img/user/profile/${dto.profile_image }"></div>
 						<span>${dto.user_nickname }</span>
 						<button class="follow-btn" data-idx="${dto.user_idx}"
 							id="${dto.user_idx}">팔로우</button>
