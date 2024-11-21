@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.admin.NoticeMapper">
+
+   <!-- 공지사항 목록 조회 (페이징 적용) -->
+   <select id="selectNoticeListWithPaging" resultType="com.eats.admin.model.NoticeDTO">
+       SELECT *
+       FROM (
+           SELECT ROWNUM AS rn, a.*
+           FROM (
+               SELECT ntc_idx, ntc_title, ntc_content, ntc_wdate, ntc_stat
+               FROM NOTICE
+               ORDER BY ntc_wdate DESC
+           ) a
+           WHERE ROWNUM &lt;= #{endRow}
+       )
+       WHERE rn &gt;= #{startRow}
+   </select>
+   
+   <!-- 총 레코드 수 조회 -->
+   <select id="selectNoticeTotalCount" resultType="int">
+       SELECT COUNT(*) FROM NOTICE
+   </select>
+
+
+    <!-- 공지사항 상세 조회 -->
+    <select id="selectNoticeDetail" parameterType="int" resultType="com.eats.admin.model.NoticeDTO">
+        SELECT ntc_idx, ntc_title, ntc_content, ntc_wdate, ntc_stat
+        FROM NOTICE
+        WHERE ntc_idx = #{ntc_idx}
+    </select>
+
+    <!-- 공지사항 저장 -->
+    <insert id="insertNotice" parameterType="com.eats.admin.model.NoticeDTO">
+        INSERT INTO NOTICE (ntc_idx, ntc_title, ntc_content, ntc_wdate, ntc_stat)
+        VALUES (NOTICE_IDX_SEQ.NEXTVAL, #{ntc_title}, #{ntc_content}, SYSDATE, #{ntc_stat})
+    </insert>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice" parameterType="com.eats.admin.model.NoticeDTO">
+        UPDATE NOTICE
+        SET ntc_title = #{ntc_title},
+            ntc_content = #{ntc_content},
+            ntc_stat = #{ntc_stat},
+            ntc_wdate = SYSDATE
+        WHERE ntc_idx = #{ntc_idx}
+    </update>
+
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteNotice" parameterType="int">
+        DELETE FROM NOTICE
+        WHERE ntc_idx = #{ntc_idx}
+    </delete>
+
+</mapper>

@@ -1,0 +1,88 @@
+@charset "UTF-8";
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 60%;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #ff9800;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555555;
+}
+
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #fffaf0;
+    font-size: 1em;
+    color: #333333;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+.content-box {
+    padding: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #fffaf0;
+    font-size: 1em;
+    color: #333333;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button, .btn_save, .btn_cancel {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn_save:hover, .btn_cancel:hover {
+    background-color: #e68a00;
+}
+
+.btn_cancel {
+    margin-left: 10px;
+    background-color: #cccccc;
+    color: #333333;
+}
+
+.btn_cancel:hover {
+    background-color: #aaaaaa;
+}

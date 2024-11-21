@@ -3,16 +3,16 @@ package com.eats.admin.model;
 import java.util.Date;
 
 public class NoticeDTO {
-    private int ntc_idx;         // 공지사항 고유 번호
-    private String ntc_title;    // 공지사항 제목
-    private String ntc_content;  // 공지사항 내용
-    private Date ntc_wdate;      // 공지사항 작성 날짜
-    private int ntc_stat;        // 공지사항 상태 (1: 활성, 0: 비활성)
+    private int ntc_idx;          // 공지사항 번호 (Primary Key)
+    private String ntc_title;     // 공지사항 제목
+    private String ntc_content;   // 공지사항 내용
+    private Date ntc_wdate;       // 공지사항 작성일
+    private int ntc_stat;         // 공지사항 상태
 
     // 기본 생성자
     public NoticeDTO() {}
 
-    // 모든 필드를 포함한 생성자
+    // 전체 필드를 포함한 생성자
     public NoticeDTO(int ntc_idx, String ntc_title, String ntc_content, Date ntc_wdate, int ntc_stat) {
         this.ntc_idx = ntc_idx;
         this.ntc_title = ntc_title;
@@ -62,6 +62,7 @@ public class NoticeDTO {
         this.ntc_stat = ntc_stat;
     }
 
+    // toString() 메서드 (디버깅 및 로그 용도)
     @Override
     public String toString() {
         return "NoticeDTO{" +
