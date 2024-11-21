@@ -1,7 +1,10 @@
 package com.eats.mapper.user;
 
 import java.util.List;
+import java.util.Map;
 
+import com.eats.admin.model.BannerDTO;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -24,4 +27,9 @@ public interface MainMapper {
 	public String getTag(int tag_idx);
 	public Integer getReviewCountByStoreIdx(int store_idx);
 
+	public List<HYStoreDTO> getStoreByJjimCount(Map<String,Object> map);
+	public List<HYStoreDTO> getStoreByStarPoint(Map<String,Object> map);
+	public List<String> getStoreCategoryName(int store_idx);
+	
+	public List<BannerDTO> getBannerForSwiper(String todate);
 }

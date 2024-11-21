@@ -15,13 +15,15 @@
 	    const vidx_arr = v_idx.split(',');
 	    const vname_arr = v_name.split(',');
 	
-	    var table_type = "<option value=''>테이블타입</option>"; 
+	    //var table_type = "<option value=''>테이블타입</option>";
+	    var table_type = "";
 	    for(var i = 0; i < vidx_arr.length; i++) {
 	        table_type += "<option value='" + vidx_arr[i] + "'>" + vname_arr[i] + "</option>";
 	    }
 	
 	    // 테이블 정원 select box 시작
-	    var table_seat = "<option value=''>인원</option>"; 
+	    //var table_seat = "<option value=''>인원</option>"; 
+	    var table_seat = "";
 	    for(var i = 1; i <= 10; i++) {
 	        table_seat += "<option value='" + i + "'>" + i + "</option>";
 	    }
@@ -31,6 +33,8 @@
 	    
 	    var grid = "";
 	    grid += "<table class='gridTable'>";
+	    
+	    var table_name = 0;
 	
 	    for (var i = 1; i <= tr; i++) {
 	        grid += "<tr>";
@@ -38,7 +42,9 @@
 	        for (var j = 1; j <= td; j++) {
 	            grid += "<td onclick='grid_part("+i+", "+j+")'>";
 	            
-	            grid += "<input type='number' name='sts["+i+","+j+"][tname]' class='mt10 mb10 a_center' value='' placeholder='테이블번호(숫자만입력가능)'>";
+	            table_name = table_name + 1;
+	            
+	            grid += "<input type='number' name='sts["+i+","+j+"][tname]' class='mt10 mb10 a_center' value='"+table_name+"' placeholder='테이블번호(숫자만입력가능)' readonly>";
 	            grid += "<br>";
 	            grid += "<select name='sts["+i+","+j+"][type]' class='ws100'>";
 	            grid += table_type;
@@ -183,6 +189,30 @@
 	</div>
 	<div class="contents">
 		<div class="leftMenu">
+			<span class="big_title">
+				<a href="#">매장관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeImage">이미지관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeCateOne">태그관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeInfoUpdateReq">정보수정신청</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeTime">영업시간수정</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeCateTwo">특징관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeGrid">매장그리드</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeNewsList">소식관리</a>
+			</span>
 		</div>
 		<div class="mainCont">	
 			<div class="mainCon_1400">
@@ -257,6 +287,7 @@
 					
 					
 					<c:set var="for_num" value="0" />
+					<c:set var="table_name" value="1" />
 					
 					<table class="gridTable">
 						<c:forEach begin="${tr_start}" end="${tr_end}" var="tr" varStatus="tr_sta">
@@ -283,13 +314,17 @@
 												</c:if>
 												
 												<!-- input 필드에 tableNum을 value로 설정 -->
+												<!-- 
 												<input type="number" name="sts[${tr},${td}][tname]" class="mt10 mb10 a_center ws95p" value="${tableNum}" placeholder="테이블번호(숫자만입력가능)">
+												 -->
+												<input type="number" name="sts[${tr},${td}][tname]" class="mt10 mb10 a_center ws95p" value="${table_name}" readonly>
 												<br>
 									            
 												<!-- 테이블 타입 select 박스 생성 -->
 												<select id="table_type" name="sts[${tr},${td}][type]" class='ws100'>
+													<!-- 
 													<option value="">테이블타입</option>
-												    
+													 -->
 													<c:forEach var="dto" items="${lists}">														
 														<option value="${dto.cate_idx}"
 															<c:if test="${dto.cate_idx == gridDetail[for_num].sts_type_idx}">
@@ -303,7 +338,7 @@
 												
 												<!-- 테이블 정원 select 박스 생성 -->
 												<select id="table_seat" name="sts[${tr},${td}][cnt]" class='ws60'>
-												    <option value=''>인원</option>
+												    <!-- <option value=''>인원</option> -->
 												    <c:forEach var="i" begin="1" end="10">
 												        <option value="${i}"
 															<c:if test="${i == gridDetail[for_num].sts_num}">
@@ -322,6 +357,7 @@
 									    
 									</c:if>
                 					<c:set var="for_num" value="${for_num + 1}" />
+                					<c:set var="table_name" value="${table_name + 1}" />
 								</c:forEach>
 							</tr>
 						</c:forEach>

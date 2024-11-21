@@ -6,23 +6,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%@ include file="../store_Header.jsp"%>
+		<%@ include file="../nav.jsp"%>
 <title>메뉴 수정</title>
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
 	rel="stylesheet">
 <style>
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Noto Sans KR', sans-serif;
-}
+
 
 body {
+	margin: 0;
+	padding: 0;
 	background-color: #f8f9fa;
 	padding: 2rem;
 }
+
+	.dashboard-container {
+			margin-left: 240px;
+			margin-top: 64px;
+			padding: 32px;
+			background-color: #eff9ff;
+		}
 
 .menu-header {
 	margin-bottom: 2rem;
@@ -180,10 +186,11 @@ font-size:12px;
 </head>
 
 <body>
-
+<div class="dashboard-container">
 	<!-- 카테고리 출력 -->
 	<p style='color:gray;' ><c:out value="${sessionScope.storeName }"></c:out></p>
 	<div class="menu-header category-tabs">
+	
 		<h1 class="menu-title">메뉴 관리</h1>
 		<c:if test="${empty lists }">
 			<div class="tab-group">
@@ -194,8 +201,7 @@ font-size:12px;
 		 <div class="tab-group">
         <button class="tab active" onclick="loadMenu('0')">전체</button>
         <c:forEach var="dto" items="${lists}">
-            <button class="tab" id="${dto.m_cate_idx}" 
-                onclick="loadMenu('${dto.m_cate_idx}')">${dto.m_cate_name}</button>
+            <button class="tab" id="${dto.m_cate_idx}" onclick="loadMenu('${dto.m_cate_idx}')">${dto.m_cate_name}</button>
         </c:forEach>
     </div>
 	</div>
@@ -215,10 +221,9 @@ font-size:12px;
 			<c:forEach var="menu" items="${menu}">
 				<div class="menu-item" data-menu-idx="${menu.menu_idx}"
 					onclick="toggleMenuSelection(this.dataset.menuIdx);">
-					<img src="../img/${menu.menu_img}" alt="메뉴" class="menu-image">
+					<img src="../img/menu/${menu.menu_img}" alt="메뉴" class="menu-image">
 
-					<input type="button" class="edit-button" value="수정"
-						onclick="location.href='/menuUpdatePage/${menu.menu_idx}'">
+					<input type="button" class="edit-button" value="수정" onclick="location.href='/menuUpdatePage/${menu.menu_idx}'">
 					<div class="menu-info">
 						<c:if test="${menu.menu_preorder == 2}">
 							<p>선주문</p>
@@ -234,14 +239,15 @@ font-size:12px;
 				<input type="hidden" name="menu_idx" value="${menu.menu_idx }">
 			</c:forEach>
 		</div>
-		<input type="button" value="등록하기" class="add-button"
-			onclick="location.href='StoreMenuInsert'"> <input
-			type="button" value="선택삭제" class="delete-button"
+		
+		
+		<input type="button" value="등록하기" class="add-button" onclick="location.href='StoreMenuInsert'"> <input type="button" value="선택삭제" class="delete-button"
 			onclick="submitSelectedMenus();">
 	</form>
 
 
 	<div class="pagination"></div>
+	</div>
 </body>
 
 <script type="text/javascript" src="js/httpRequest.js"></script>
@@ -272,7 +278,7 @@ function showSendResult(){
 			            };
 	
 			            var img = document.createElement('img');
-			            img.src = '../img/'+menu.menu_img;
+			            img.src = '../img/menu/'+menu.menu_img;
 			            img.alt = '메뉴';
 			            img.className = 'menu-image';
 
@@ -298,9 +304,7 @@ function showSendResult(){
 			            
 			            menuInfoDiv.innerHTML += "<div class='menu-name'>" + menu.menu_name + "</div><div class='menu-description'>" + menu.menu_info + "</div><div class='menu-price'>" + menu.menu_price + "</div>";
 
-			            
-			         
-			         
+
 			            // 메뉴 아이템에 요소 추가
 			            menuItemDiv.appendChild(img);
 			            menuItemDiv.appendChild(editButton);

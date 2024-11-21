@@ -17,6 +17,12 @@
 	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script type="text/javascript" src="../js/httpRequest.js"></script>
+	
+	<!-- 지도를 위한 카카오맵 라이브러리 -->
+	<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
+	
+	
 <title>EATS - STORE INFOMATION</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
@@ -64,30 +70,19 @@
 				<div class="bg-box">
 					<div class="inner">
 						<div class="acco-wrap">
-							<div class="acco-head">
-								<a href="#" class="btn-acco">
+							<div class="acco-head" onclick="relayoutMap();">
+								<a href="#" class="openMap">
 									<i class="map"></i>
 									<span>${stInfo.storeDTO.store_addr }</span>
+									<span class="open-map-span">지도로 보기</span>
 								</a>
 							</div>
 							<div class="acco-body">
-								<ul class="addr-list">
-									<!-- 후에 수정 필요 (s) -->
-									<li>
-										<span class="item">도로명</span>
-										<span class="val" id="street_addr">서울 용산구 이태원로55가길 45</span>
-										<span class="val">&nbsp;&nbsp;<a href="javascript:copyText();" class="copy-link">복사</a></span>
-									</li>
-									<li>
-										<span class="item">지번</span>
-										<span class="val">한남동 738-11</span>
-									</li>
-									<li>
-										<span class="item">우편번호</span>
-										<span class="val">04348</span>
-									</li>
-									<!-- 후에 수정 필요 (e) -->
-								</ul>
+							<input type="hidden" id="getMapPos" value="${stInfo.storeDTO.store_lat},${stInfo.storeDTO.store_lng}">
+								<!-- 지도 들어갈 영역 (s) -->
+								<div class="map-area" id="map">								
+								</div>
+								<!-- 지도 영역 (e) -->
 							</div>
 						</div>
 					</div>
@@ -357,7 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 날짜나 인원 변경 시 체크
     function checkChanges() {
         const currentReserveDate = document.getElementById('reserve_date').value;
-        alert(currentReserveDate);
         const currentReserveCnt = document.getElementById('reserve_cnt').value;
         
         // 날짜와 인원이 모두 선택되어 있고, 둘 중 하나라도 변경된 경우
@@ -575,6 +569,43 @@ function showJjimResult(){
 			alert(msg);
 		}
 	}
+}
+
+//지도 스크립트
+var map;
+var getMapPos = document.getElementById('getMapPos').value.split(',');
+var lat = getMapPos[0];
+var lng = getMapPos[1];
+
+window.addEventListener('load', function(){
+	var mapContainer = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var mapOptions = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+		level: 3,
+		//지도의 레벨(확대, 축소 정도)
+	};
+
+	map = new kakao.maps.Map(mapContainer, mapOptions); //지도 생성 및 객체 리턴
+	var mapImageSrc = '/svg/gps_icon.svg',
+		mapImageSize = new kakao.maps.Size(55, 59),
+		mapImageOption = { offset: new kakao.maps.Point(27, 69) };
+	
+	var markerImage = new kakao.maps.MarkerImage(mapImageSrc, mapImageSize, mapImageOption),
+    markerPosition = new kakao.maps.LatLng(lat, lng);
+	
+	var marker = new kakao.maps.Marker({
+	    position: markerPosition, 
+	    image: markerImage
+	});
+
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+})
+
+function relayoutMap(){
+	map.relayout();
+	
+	map.panTo(new kakao.maps.LatLng(lat,lng));
 }
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>

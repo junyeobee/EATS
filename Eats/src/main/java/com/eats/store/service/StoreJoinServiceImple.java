@@ -38,7 +38,8 @@ public class StoreJoinServiceImple implements StoreJoinService {
     @Override
     public boolean isDuplicateId(String approvalId) {
         try {
-            return storeJoinMapper.existsByApprovalId(approvalId); // 중복 여부 반환
+        	boolean result = storeJoinMapper.existsByApprovalId(approvalId)>0?true:false;
+            return result; // 중복 여부 반환
         } catch (Exception e) {
             e.printStackTrace(); // 에러 로그 출력
             return true; // 예외 발생 시 기본적으로 중복된 것으로 간주

@@ -1,15 +1,10 @@
 @charset "UTF-8";
 
-	body {margin:0; padding:0; font-size:12px;}
-	.header {width:100%; height:80px; background:#FFEDD0;}
-	.contents {display: flex;}
-	.contents > * {float:left;}
-	.contents .leftMenu {width:200px; height: calc(100vh - 80px); background:#FFEDD0;}
-	.contents .mainCont {width:calc(100% - 200px); padding:20px 30px;}
-	
-	
+	.my_contents {margin-left:20px;}
 	/* 매장-정보수정신청승인 리스트박스 */
+	/*
 	.contents .mainCont .mainCon_1400 {width:1400px;}
+	*/
 	.mainCon_1400 .tableList {}
 	.mainCon_1400 .tableList table {width:100%;}
 	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
@@ -22,6 +17,9 @@
 	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
 	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
 	*/
+	
+	.mainCon_1400 > .mc_left {float:left; width:49%;}
+	.mainCon_1400 > .mc_right {float:right; width:49%;}
 	
 	/* <버튼> */	
 	/* 매장-정보수정신청승인 버튼 */
@@ -51,13 +49,14 @@
 	
 	
 	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
-	.mainCont .btnBox_top > * {float:right; margin-top:-40px;}
+	.mainCont .btnBox_top {float:right; }
+	.mainCont .btnBox_top > * {margin-top:-40px; margin-left:10px;}
 	
 	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
 	
 	
 	/* 이미지관리-이미지등록 테이블박스 */
-	.contents .mainCont .mainCon_400 {width:400px;}
+	.mainCon_400 {width:400px;}
 	.mainCon_400 .tableWrite_2 {}
 	.mainCon_400 .tableWrite_2 table {width:100%;}
 	.mainCon_400 .tableWrite_2 table tr {height:40px; }
@@ -68,7 +67,7 @@
 	
 	
 	/* 소식관리-소식등록, 수정, 상세보기 테이블박스 */
-	.contents .mainCont .mainCon_800 {width:800px;}
+	.mainCon_800 {width:800px;}
 	.mainCon_800 .tableWrite_2 {}
 	.mainCon_800 .tableWrite_2 table {width:100%;}
 	.mainCon_800 .tableWrite_2 table tr {height:40px; }
@@ -95,7 +94,7 @@
 	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
 	
 	/* 정보수정신청 테이블박스 */
-	.contents .mainCont .mainCon_800 {width:800px;}
+	.mainCon_800 {width:800px;}
 	.mainCon_800 .tableWrite_4 {}
 	.mainCon_800 .tableWrite_4 table {width:100%;}
 	.mainCon_800 .tableWrite_4 table tr {height:60px;}
@@ -129,6 +128,9 @@
 	.mb60 {margin-bottom:60px;}
 	
 	/* 정보수정신청 주소input */
+	.ws100 {width:100px;}
+	.ws200 {width:200px;}
+	.ws300 {width:300px;}
 	.ws400 {width:400px;}
 	.ws800 {width:800px;}
 	

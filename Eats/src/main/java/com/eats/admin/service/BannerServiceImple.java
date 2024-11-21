@@ -53,6 +53,12 @@ public class BannerServiceImple implements BannerService {
 		return mapper.bannerInsert(dto);
 	
 	}
+	
+	@Override
+	public int deleteBanner(List<Integer> bannerIdx) {
+		int result = mapper.deleteBanner(bannerIdx);
+		return result;
+	}
 
 
 }

@@ -1,5 +1,8 @@
 package com.eats.controller.user;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.admin.model.BannerDTO;
+import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -29,7 +34,34 @@ public class MainController {
 	@GetMapping("/")
 	public ModelAndView mainPage(@CookieValue(value = "cityCk", required = false) String cityWord,
 			@CookieValue(value = "unitCk", required = false) String unitWord) {
-		ModelAndView mv = new ModelAndView();
+		Map<String, Object> forStore = new HashMap<>();
+		
+		LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        String[] koreanDays = {"일", "월", "화", "수", "목", "금", "토"};
+		forStore.put("week", koreanDays[dayOfWeek.getValue() % 7]);
+		forStore.put("cityWord", cityWord);
+		forStore.put("unitWord", unitWord);
+		
+		List<HYStoreDTO> jcntList = ms.getStoreByJjimCount(forStore);
+		List<HYStoreDTO> pointList = ms.getStoreByStarPoint(forStore);
+		
+		Map<Integer, List<String>> jcntTags = new HashMap<>();
+		for(HYStoreDTO dto:jcntList) {
+			jcntTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
+		}
+		
+		Map<Integer, List<String>> pointTags = new HashMap<>();
+		for(HYStoreDTO dto:pointList) {
+			pointTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+		
+        List<BannerDTO> bannerList = ms.getBannerForSwiper(formattedDate);
+        
+        ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
 		Map<String, List<CateValueDTO>> valueList = new HashMap<>();
@@ -54,26 +86,17 @@ public class MainController {
 			List<Double> storePoint = new ArrayList<>();
 			List<Integer> followCount = new ArrayList<>();
 			
-			String tagIdx_s[] = new String[2];
-			int tagIdx[] = new int[2];
-			List<List<String>> tags = new ArrayList<>();
+			List<String> tags = new ArrayList<>();
 
 			for (ReviewDTO rev_dto : reviewData) {
 				if(rev_dto!=null) {
 					storePoint.add(ms.getStorePoint(rev_dto.getStore_idx()));
 					followCount.add(ms.getFollowerCount(rev_dto.getUser_idx()));
 	
-					tagIdx_s = rev_dto.getRev_tag().split(",");
-	
-					tagIdx[0] = Integer.parseInt(tagIdx_s[0]);
-					tagIdx[1] = Integer.parseInt(tagIdx_s[1]);
-	
-					List<String> box = new ArrayList<>();
-	
-					box.add(ms.getTag(tagIdx[0]));
-					box.add(ms.getTag(tagIdx[1]));
-	
-					tags.add(box);
+					String[] tag_arr = rev_dto.getRev_tag().split(",");
+					for(String str:tag_arr) {
+						tags.add(str);
+					}
 				}
 				
 				mv.addObject("reviewData", reviewData);
@@ -81,7 +104,6 @@ public class MainController {
 				mv.addObject("likeCount", likeCount);
 				mv.addObject("followCount", followCount);
 				mv.addObject("tags", tags);
-				
 			}
 		}
 
@@ -89,6 +111,11 @@ public class MainController {
 		mv.addObject("idxList", idxList);
 		mv.addObject("valueList", valueList);
 		mv.addObject("cityList", cityList);
+		mv.addObject("jcntList", jcntList);
+		mv.addObject("pointList", pointList);
+		mv.addObject("jcntTags", jcntTags);
+		mv.addObject("pointTags", pointTags);
+		mv.addObject("bannerList", bannerList);
 		mv.setViewName("index");
 
 		return mv;
@@ -127,4 +154,21 @@ public class MainController {
 		return "index";
 	}
 
+	@GetMapping("/resetArea")
+	public String resetArea(HttpServletResponse resp, HttpServletRequest req) {
+		Cookie cks[] = req.getCookies();
+		
+		for(Cookie temp:cks) {
+			System.out.println(temp.getName());
+			if (temp.getName().equals("cityCk")) {
+				temp.setMaxAge(0);
+			}
+			if (temp.getName().equals("unitCk")) {
+				temp.setMaxAge(0);
+			}
+			resp.addCookie(temp);
+		}
+		
+		return "index";
+	}
 }

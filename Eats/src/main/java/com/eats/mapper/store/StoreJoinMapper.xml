@@ -17,8 +17,8 @@
     </insert>
 
     <!-- 아이디 중복 확인 -->
-    <select id="existsByApprovalId" parameterType="string" resultType="boolean">
-        SELECT COUNT(*) > 0
+    <select id="existsByApprovalId" parameterType="string" resultType="Integer">
+        SELECT COUNT(*)
         FROM STORE_JOIN
         WHERE SJ_ID = #{approvalId}
     </select>
