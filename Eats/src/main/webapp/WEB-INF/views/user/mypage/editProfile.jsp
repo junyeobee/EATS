@@ -39,11 +39,11 @@
             </div>
 
             <!-- 프로필 이미지 경로 -->
-            <div class="form-group">
-                <label for="profile_image">프로필 이미지 경로</label>
-                <input type="text" id="profile_image" name="profile_image" value="${userProfile.profile_image}" placeholder="이미지 파일 경로를 입력하세요">
-                <button type="button" onclick="uploadFile()">이미지 업로드</button>
-            </div>
+<div class="form-group">
+    <label for="profile_image">프로필 이미지 경로</label>
+    <input type="text" id="profile_image" name="profile_image" value="/img/user/profile/${userProfile.profile_image}" placeholder="이미지 파일 경로를 입력하세요">
+    <button type="button" onclick="uploadFile()">이미지 업로드</button>
+</div>
 
             <!-- 저장하기 버튼 -->
             <div class="button-group">
@@ -55,41 +55,47 @@
 
     <!-- 파일 업로드 스크립트 -->
     <script>
-    function uploadFile() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
+        function uploadFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
 
-        input.onchange = async function () {
-            const file = input.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append("file", file);
+            input.onchange = async function () {
+                const file = input.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append("file", file);
 
-                try {
-                    const response = await fetch('/file/upload', {
-                        method: 'POST',
-                        body: formData
-                    });
+                    try {
+                        const response = await fetch('/file/upload', { // 서버로 파일 전송
+                            method: 'POST',
+                            body: formData
+                        });
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        document.getElementById('profile_image').value = data.filePath;
-                        alert('이미지 업로드 성공!');
-                    } else {
-                        alert('이미지 업로드 실패!');
+                        if (response.ok) {
+                            const data = await response.json();
+
+                            // 디버깅: 서버에서 받은 데이터를 콘솔에 출력
+                            console.log("서버 응답 데이터:", data);
+
+                            if (data.filePath) {
+                                document.getElementById('profile_image').value = data.filePath;
+                                alert('이미지 업로드 성공!');
+                            } else {
+                                alert('파일 경로를 반환받지 못했습니다. 서버 응답 확인 필요.');
+                            }
+                        } else {
+                            alert('이미지 업로드 실패! 서버 응답 오류.');
+                        }
+                    } catch (error) {
+                        console.error('파일 업로드 에러:', error);
+                        alert('이미지 업로드 중 오류가 발생했습니다.');
                     }
-                } catch (error) {
-                    console.error('파일 업로드 에러:', error);
-                    alert('이미지 업로드 중 오류가 발생했습니다.');
                 }
-            }
-        };
+            };
 
-        input.click(); // 파일 선택 창 열기
-    }
-
-
+            input.click(); // 파일 선택 창 열기
+        }
     </script>
 </body>
 </html>
