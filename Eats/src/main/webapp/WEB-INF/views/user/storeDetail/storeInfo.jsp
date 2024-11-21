@@ -17,6 +17,12 @@
 	<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script type="text/javascript" src="../js/httpRequest.js"></script>
+	
+	<!-- 지도를 위한 카카오맵 라이브러리 -->
+	<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
+	
+	
 <title>EATS - STORE INFOMATION</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
@@ -64,7 +70,7 @@
 				<div class="bg-box">
 					<div class="inner">
 						<div class="acco-wrap">
-							<div class="acco-head">
+							<div class="acco-head" onclick="relayoutMap();">
 								<a href="#" class="openMap">
 									<i class="map"></i>
 									<span>${stInfo.storeDTO.store_addr }</span>
@@ -72,9 +78,9 @@
 								</a>
 							</div>
 							<div class="acco-body">
+							<input type="hidden" id="getMapPos" value="${stInfo.storeDTO.store_lat},${stInfo.storeDTO.store_lng}">
 								<!-- 지도 들어갈 영역 (s) -->
-								<div class="map-area">
-								지도
+								<div class="map-area" id="map">								
 								</div>
 								<!-- 지도 영역 (e) -->
 							</div>
@@ -563,6 +569,43 @@ function showJjimResult(){
 			alert(msg);
 		}
 	}
+}
+
+//지도 스크립트
+var map;
+var getMapPos = document.getElementById('getMapPos').value.split(',');
+var lat = getMapPos[0];
+var lng = getMapPos[1];
+
+window.addEventListener('load', function(){
+	var mapContainer = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var mapOptions = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+		level: 3,
+		//지도의 레벨(확대, 축소 정도)
+	};
+
+	map = new kakao.maps.Map(mapContainer, mapOptions); //지도 생성 및 객체 리턴
+	var mapImageSrc = '/svg/gps_icon.svg',
+		mapImageSize = new kakao.maps.Size(55, 59),
+		mapImageOption = { offset: new kakao.maps.Point(27, 69) };
+	
+	var markerImage = new kakao.maps.MarkerImage(mapImageSrc, mapImageSize, mapImageOption),
+    markerPosition = new kakao.maps.LatLng(lat, lng);
+	
+	var marker = new kakao.maps.Marker({
+	    position: markerPosition, 
+	    image: markerImage
+	});
+
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+})
+
+function relayoutMap(){
+	map.relayout();
+	
+	map.panTo(new kakao.maps.LatLng(lat,lng));
 }
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
