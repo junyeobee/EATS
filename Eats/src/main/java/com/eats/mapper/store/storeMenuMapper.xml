@@ -36,11 +36,13 @@
 
 	
 	<delete id="deleteMenuCate" parameterType="String">
+	
 			delete 
 			from
 				MENU_CATE
 			where
 				m_cate_name=#{m_cate_name}	
+				
 	</delete>
 	
 	
@@ -76,6 +78,7 @@
 	
 	<!-- 메뉴 수정 -->
 	<update id="updateMenu" parameterType="com.eats.store.model.MenuDTO">
+	
 		update
 		MENU
 		set
@@ -90,6 +93,8 @@
 			
 	</update>
 	
+	
+	
 	<!-- 수정할 메뉴 정보 불러오기 -->
 	<select id="updateMenuInfo" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
 		select * from menu 
@@ -97,6 +102,8 @@
 		menu_idx=#{menu_idx}
 	</select>
 	
+	
+
 	
 </mapper>
 

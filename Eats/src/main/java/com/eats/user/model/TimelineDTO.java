@@ -47,6 +47,13 @@ public class TimelineDTO {
 	private String store_addr;
 	
 	
+	private int total_reviews;
+	private int follower_count;
+	private int following_count;
+	
+	private String profile_image;
+	
+	
 
 	
 	public TimelineDTO() {
@@ -56,10 +63,12 @@ public class TimelineDTO {
 
 
 
+
 	public TimelineDTO(int reserve_idx, int user_idx, int store_idx, Date reserve_date, String reserve_time,
 			int reserve_count, int reserve_state, int rev_idx, int rev_score, String rev_content, Date rev_writedate,
 			int rev_state, String rev_img, String rev_menu, String rev_tag, String user_id, String user_name,
-			String user_nickname, String store_name, String store_addr) {
+			String user_nickname, String store_name, String store_addr, int total_reviews, int follower_count,
+			int following_count, String profile_image) {
 		super();
 		this.reserve_idx = reserve_idx;
 		this.user_idx = user_idx;
@@ -81,7 +90,28 @@ public class TimelineDTO {
 		this.user_nickname = user_nickname;
 		this.store_name = store_name;
 		this.store_addr = store_addr;
+		this.total_reviews = total_reviews;
+		this.follower_count = follower_count;
+		this.following_count = following_count;
+		this.profile_image = profile_image;
 	}
+
+
+
+
+
+	public String getProfile_image() {
+		return profile_image;
+	}
+
+
+
+
+
+	public void setProfile_image(String profile_image) {
+		this.profile_image = profile_image;
+	}
+
 
 
 
@@ -93,9 +123,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setReserve_idx(int reserve_idx) {
 		this.reserve_idx = reserve_idx;
 	}
+
 
 
 
@@ -107,9 +139,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setUser_idx(int user_idx) {
 		this.user_idx = user_idx;
 	}
+
 
 
 
@@ -121,9 +155,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setStore_idx(int store_idx) {
 		this.store_idx = store_idx;
 	}
+
 
 
 
@@ -135,9 +171,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setReserve_date(Date reserve_date) {
 		this.reserve_date = reserve_date;
 	}
+
 
 
 
@@ -149,9 +187,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setReserve_time(String reserve_time) {
 		this.reserve_time = reserve_time;
 	}
+
 
 
 
@@ -163,9 +203,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setReserve_count(int reserve_count) {
 		this.reserve_count = reserve_count;
 	}
+
 
 
 
@@ -177,9 +219,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setReserve_state(int reserve_state) {
 		this.reserve_state = reserve_state;
 	}
+
 
 
 
@@ -191,9 +235,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_idx(int rev_idx) {
 		this.rev_idx = rev_idx;
 	}
+
 
 
 
@@ -205,9 +251,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_score(int rev_score) {
 		this.rev_score = rev_score;
 	}
+
 
 
 
@@ -219,9 +267,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_content(String rev_content) {
 		this.rev_content = rev_content;
 	}
+
 
 
 
@@ -233,9 +283,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_writedate(Date rev_writedate) {
 		this.rev_writedate = rev_writedate;
 	}
+
 
 
 
@@ -247,9 +299,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_state(int rev_state) {
 		this.rev_state = rev_state;
 	}
+
 
 
 
@@ -261,9 +315,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_img(String rev_img) {
 		this.rev_img = rev_img;
 	}
+
 
 
 
@@ -275,9 +331,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_menu(String rev_menu) {
 		this.rev_menu = rev_menu;
 	}
+
 
 
 
@@ -289,9 +347,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setRev_tag(String rev_tag) {
 		this.rev_tag = rev_tag;
 	}
+
 
 
 
@@ -303,9 +363,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+
 
 
 
@@ -317,9 +379,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
+
 
 
 
@@ -331,9 +395,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setUser_nickname(String user_nickname) {
 		this.user_nickname = user_nickname;
 	}
+
 
 
 
@@ -345,9 +411,11 @@ public class TimelineDTO {
 
 
 
+
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
 	}
+
 
 
 
@@ -359,6 +427,7 @@ public class TimelineDTO {
 
 
 
+
 	public void setStore_addr(String store_addr) {
 		this.store_addr = store_addr;
 	}
@@ -366,9 +435,55 @@ public class TimelineDTO {
 
 
 
+
+	public int getTotal_reviews() {
+		return total_reviews;
+	}
+
+
+
+
+
+	public void setTotal_reviews(int total_reviews) {
+		this.total_reviews = total_reviews;
+	}
+
+
+
+
+
+	public int getFollower_count() {
+		return follower_count;
+	}
+
+
+
+
+
+	public void setFollower_count(int follower_count) {
+		this.follower_count = follower_count;
+	}
+
+
+
+
+
+	public int getFollowing_count() {
+		return following_count;
+	}
+
+
+
+
+
+	public void setFollowing_count(int following_count) {
+		this.following_count = following_count;
+	}
+
+
+
+
 	
-
-
 
 
 

@@ -6,12 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@ include file="../store_Header.jsp"%>
+		<%@ include file="../nav.jsp"%>
 <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+        
         }
 
         body {
@@ -27,6 +29,13 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        .dashboard-container {
+     
+			margin-left: 240px;
+			margin-top: 64px;
+			padding: 32px;
+			background-color: #eff9ff;
+		}
 
         h1 {
             font-size: 24px;
@@ -145,6 +154,7 @@
     </style>
 </head>
 <body>
+<div class="dashboard-container">
     <div class="container">
         <h1>메뉴 등록</h1>
         <form name="StoreMenuInsertForm" action="StoreMenuInsertOk" method="post" enctype="multipart/form-data">
@@ -201,10 +211,11 @@
             </div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-cancel">취소</button>
+                <button type="button" class="btn btn-cancel"  onclick="window.location.href='/storeMenuList'">취소</button>
                 <button type="submit" class="btn btn-submit">등록</button>
             </div>
         </form>
+    </div>
     </div>
 </body>
 </html>
