@@ -2,6 +2,7 @@ package com.eats.controller.user;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.admin.model.BannerDTO;
 import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
@@ -54,6 +56,11 @@ public class MainController {
 			pointTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
 		}
 		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+		
+        List<BannerDTO> bannerList = ms.getBannerForSwiper(formattedDate);
+        
         ModelAndView mv = new ModelAndView();
 		
 		List<CateKeyDTO> keyList = ms.getCateKey();
@@ -108,6 +115,7 @@ public class MainController {
 		mv.addObject("pointList", pointList);
 		mv.addObject("jcntTags", jcntTags);
 		mv.addObject("pointTags", pointTags);
+		mv.addObject("bannerList", bannerList);
 		mv.setViewName("index");
 
 		return mv;

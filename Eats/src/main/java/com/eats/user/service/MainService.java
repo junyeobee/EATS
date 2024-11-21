@@ -3,6 +3,7 @@ package com.eats.user.service;
 import java.util.List;
 import java.util.Map;
 
+import com.eats.admin.model.BannerDTO;
 import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
@@ -29,4 +30,6 @@ public interface MainService {
 	public List<HYStoreDTO> getStoreByJjimCount(Map<String,Object> map);
 	public List<HYStoreDTO> getStoreByStarPoint(Map<String,Object> map);
 	public List<String> getStoreCategoryName(int store_idx);
+	
+	public List<BannerDTO> getBannerForSwiper(String todate);
 }

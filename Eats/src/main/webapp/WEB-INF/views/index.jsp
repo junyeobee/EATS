@@ -209,16 +209,11 @@ menu, ol, ul {
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
 						<!-- Slides -->
-						<div class="swiper-slide">
-							<img src="/img/banner_img.jpg">
-						</div>
-						<div class="swiper-slide">
-							<img src="/img/banner_img2.jpg">
-						</div>
-						<div class="swiper-slide">
-							<img src="/img/banner_img3.jpg">
-						</div>
-
+						<c:forEach var="banner" items="${bannerList }">
+							<div class="swiper-slide" onclick="location.href='${banner.banner_url}'">
+								<img src="${banner.banner_img }">
+							</div>
+						</c:forEach>
 					</div>
 					<!-- If we need pagination -->
 					<div class="swiper-pagination"></div>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eats.admin.model.BannerDTO;
 import com.eats.mapper.user.MainMapper;
 import com.eats.store.model.HYStoreDTO;
 import com.eats.user.model.AreaDTO;
@@ -105,6 +106,12 @@ public class MainServiceImple implements MainService {
 	@Override
 	public List<String> getStoreCategoryName(int store_idx) {
 		List<String> list = mp.getStoreCategoryName(store_idx);
+		return list;
+	}
+	
+	@Override
+	public List<BannerDTO> getBannerForSwiper(String todate) {
+		List<BannerDTO> list = mp.getBannerForSwiper(todate);
 		return list;
 	}
 }

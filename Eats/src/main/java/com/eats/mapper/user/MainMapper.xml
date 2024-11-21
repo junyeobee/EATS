@@ -139,4 +139,9 @@
 		where store_idx=#{store_idx}
 		and category.cate_value_idx = cate_value.cate_value_idx
 	</select>
+	
+	<select id="getBannerForSwiper" parameterType="String" resultType="com.eats.admin.model.BannerDTO">
+		select * from banner where banner_stat=1 and #{todate} between banner_sdate and banner_edate
+		order by banner_order asc
+	</select>
 </mapper>
