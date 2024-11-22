@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.store.ReserveMapper;
-import com.eats.store.model.reserve.StoreTimeDTO;
 import com.eats.store.model.reserve.ReserveListDTO;
+import com.eats.store.model.reserve.StoreTimeDTO;
 import com.eats.store.model.reserve.TableDTO;
 
 @Service
