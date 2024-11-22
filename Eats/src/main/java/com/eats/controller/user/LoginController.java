@@ -94,8 +94,8 @@ public class LoginController {
 		session.removeAttribute("user_nickname");
 		
 		String uri=request.getHeader("referer");
-		
-		if(uri==null) {
+		System.out.println(uri);
+		if(uri==null || uri.contains("/user/myPlate") || uri.contains("/timeLineMain") || uri.contains("mypage")) {
 			uri="/";
 		}else {
 			uri=uri.substring(uri.indexOf("9090")+4);
