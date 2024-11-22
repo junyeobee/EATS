@@ -90,7 +90,7 @@ public class UserLoginServiceImple implements UserLoginService {
 			if (userresult > 0) {
 		        profileDTO.setUser_idx(userDTO.getUser_idx());
 		        profileresult = mapper.insertprofile(profileDTO);
-			}
+			} 
 			
 			if (userresult > 0 && profileresult > 0) {
 	            return 1; 

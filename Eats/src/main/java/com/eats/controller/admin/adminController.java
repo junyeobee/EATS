@@ -36,11 +36,9 @@ public class adminController {
 		
 		if(result==3) {
 			int adminidx = adminservice.getAdmin(adminId);
-			// System.out.println(adminidx);
 			hs.setAttribute("admin_idx", adminidx);
 			mv.addObject("msg", "환영합니다!");
-			// 이부분 관리자 메인으로 수정하기!
-			mv.addObject("url", "/");
+			mv.addObject("url", "admin/main");
 			mv.setViewName("admin/login/adminMsg");
 		}else if(result==1) {
 			mv.addObject("msg", "고객센터로 문의해주세요.");
@@ -59,8 +57,7 @@ public class adminController {
 	public String adminLogout(HttpSession hs) {
 		hs.invalidate();
 		
-		// 이부분 관리자 메인으로 수정하기!
-		return "redirect:/";
+		return "redirect:/adminLogin";
 	}
 	
 }

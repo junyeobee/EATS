@@ -248,6 +248,15 @@
 	font-size: 10px; 
 	font-weight: 500;
 }
+.news-img-wrap{
+    overflow: hidden;
+    height: 300px;
+    display: flex;
+    align-items: center;
+}
+.news-img-wrap img{
+	height: 100%;
+}
 
 /* 리뷰 버튼 */
 .btn-review {
