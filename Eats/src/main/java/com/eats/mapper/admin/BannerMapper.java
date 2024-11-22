@@ -12,6 +12,8 @@ public interface BannerMapper {
 	
 	public int deleteBanner(List<Integer> bannerIdx);
 	
+	public int bannerUpdate(BannerDTO dto);
+	
 	
 	
 
