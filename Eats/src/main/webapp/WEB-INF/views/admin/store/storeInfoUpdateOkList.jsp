@@ -54,7 +54,7 @@
 </script>
 
 <div class="mainCon_1400">
-	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
+	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>정보수정신청승인</h2>
 	
 	<form id="infoUpdateSaveForm" method="post" >

@@ -29,7 +29,7 @@
 
 <div class="mainCon_400">
 	<form name="imgSave" id="imgSave" action="imgUpdate2" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		<input type="hidden" name="si_idx" id="si_idx">
 		
 		<h2>이미지 관리</h2>

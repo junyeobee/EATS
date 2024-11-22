@@ -4,7 +4,6 @@
 <%@include file="../common/header.jsp"%>
 
 <div class="mainCon_800">
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 		<input type="hidden" name="news_idx" value="${news_idx}">
 	
 	<h2>소식 상세보기</h2>
@@ -24,7 +23,12 @@
 					<th>이미지</th>
 					<td>
 						<span>
-							<img src="/img/storeNewsImg/${data.s_news_img}">
+							<c:if test="${not empty data.s_news_img}">
+								<img src="/img/storeNewsImg/${data.s_news_img}">
+							</c:if>
+							<c:if test="${empty data.s_news_img}">
+								저장된 이미지가 없습니다.
+							</c:if>
 						</span>
 					</td>
 				</tr>

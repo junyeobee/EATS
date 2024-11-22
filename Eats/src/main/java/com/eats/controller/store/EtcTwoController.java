@@ -20,6 +20,9 @@ import com.eats.store.model.StoreInfoUpdateDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.store.service.StoreEtcService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class EtcTwoController {
 
@@ -27,12 +30,24 @@ public class EtcTwoController {
     private AdminStoreService service;
 
 	@GetMapping("/store/storeTime")
-    public ModelAndView storeTime(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	//정보수정신청 페이지 접속시 로그인한 매장의 매장데이터 불러옴
+    public ModelAndView storeTime(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
         
-        // store_idx가 null이면 기본값을 1로 설정
-        if (store_idx == null) {
-            store_idx = 1;  // 기본값 설정
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
         }
 
         //StoreDTO data = service.storeData(store_idx);
@@ -83,7 +98,8 @@ public class EtcTwoController {
         String work_type = service.storeWorkData(store_idx);        
         System.out.println(work_type);
         mav.addObject("work_type", work_type);
-        
+
+        mav.addObject("store_idx", store_idx);
         
         //System.out.println(data.toString());
         mav.setViewName("store/etc/storeTime");
@@ -272,17 +288,31 @@ public class EtcTwoController {
     
 
 	@GetMapping("/store/storeWork")
-    public ModelAndView storeWork(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
+    public ModelAndView storeWork(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
         
-        // store_idx가 null이면 기본값을 1로 설정
-        if (store_idx == null) {
-            store_idx = 1;  // 기본값 설정
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
         }
 
         String data = service.storeWorkData(store_idx);
         
         ModelAndView mav = new ModelAndView();
         mav.addObject("data", data);
+        mav.addObject("store_idx", store_idx);
         //System.out.println(data.toString());
         mav.setViewName("store/etc/storeWork");
 
