@@ -285,7 +285,7 @@
                     <c:forEach var="table" items="${dto.tables}">
                         <div class="table-card ${table.stat == 1 ? 'none' : 'available'}" 
                              data-table-num="${table.table_num}">
-                            <div class="table-num">${table.table_num}번<span class="table-type">(${table.tableType})</span></div>
+                            <div class="table-num">${table.table_num}번<span class="table-type">(${table.tableType==null?'기본':table.tableType})</span></div>
                             <div class="table-info">
                                 <span class="capacity">${table.cnt}인석</span>
                             </div>
@@ -301,6 +301,9 @@
             <div class="reservation-list">
                 <div class="list-header">
                     <h3>예약 현황</h3>
+                    <div>
+
+                    </div>
                 </div>
                 <div class="list-content">
                     <c:forEach var="rsv" items="${dto.lists}">
@@ -324,12 +327,13 @@
     </div>
 </body>
 <script>
-document.getElementById('reserveDate').addEventListener('change', selectDate(event));
+document.getElementById('reserveDate').addEventListener('change', selectDate);
 document.getElementById('reserveTime').addEventListener('change', updateReservations);
-function selectDate(e) {
+//일자 선택, 일자 선택하면 해당 날짜의 예약 가능한 시간대들이 들어감
+function selectDate() {
     let date = document.getElementById('reserveDate').value;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', '/store/reserveDateInTime?date=' + date);
+    xhr.open('GET', '/reserveDateInTime?date=' + date);
     xhr.onload = function() {
         if (xhr.status === 200) {
             let data = JSON.parse(xhr.responseText);
@@ -341,61 +345,101 @@ function selectDate(e) {
                 option.innerText = time;
                 timeSelect.appendChild(option);
             });
-            updateReservations();
+        } else {
+            console.error(xhr.status);
         }
     };
-}
-function updateReservations() {
-    var date = document.getElementById('reserveDate').value;
-    var time = document.getElementById('reserveTime').value;
-    
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/store/reservations?date=' + date + '&time=' + time);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            updateTableLayout(data.tables);
-            updateReservationList(data.reservations);
-        }
+    xhr.onerror = function() {
+        console.error('집가고싶다..');
     };
     xhr.send();
 }
 
-function showReservationDetail(element) {
-    var reserveIdx = element.getAttribute('data-reserve-idx');
-}
-
-function updateTableLayout(tables) {
-    var grid = document.querySelector('.table-grid');
-    var html = '';
+//날짜,시간 선택시 예약정보를 불러오는 메소드
+function updateReservations() {
+    let date = document.getElementById('reserveDate').value;
+    let time = document.getElementById('reserveTime').value;
     
-    tables.forEach(function(table) {
-        html += '<div class="table-item ' + 
-                (table.stat == 1 ? 'none' : 'available') + 
-                '" data-table-num="' + table.tableNum + 
-                '" data-capacity="' + table.cnt + 
-                '" data-type="' + table.tableType + '">' +
-                '<span class="table-num">T' + table.tableNum + '</span>' +
-                '<span class="capacity">' + table.cnt + '인석</span>' +
-                '</div>';
-    });
-    
-    grid.innerHTML = html;
-}
-
-function quickAssign(reserveIdx, guestCount) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/store/quickAssign');
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/reservations?date=' + date + '&time=' + time);
     xhr.onload = function() {
         if (xhr.status === 200) {
-            updateReservations();
+            const data = JSON.parse(xhr.responseText);
+            const tables = data.tables;
+            const lists = data.lists;
+            updateReservationList(tables, lists);
+        }
+        else if(xhr.status == 400){
+            alert('예약 정보를 불러오는데 실패했습니다.');
+        }
+        else if(xhr.status == 404){
+            alert('잘못된 요청입니다.');
         }
     };
-    xhr.send(JSON.stringify({
-        reserveIdx: reserveIdx,
-        guestCount: guestCount
-    }));
+    xhr.send();
+}
+//모달창오픈, 예약신청자 정보 받아옴(예약 신청자 div를 클릭 시 오픈, 해당 예약자의 정보 출력)
+function showReservationDetail(element) {
+    let reserveIdx = element.getAttribute('data-reserve-idx');
+    
+}
+//예약 정보를 불러오는 메소드, 시간대까지 선택했다면, 해당 시간대의 예약요청목록 출력
+function updateReservationList(tables, lists) {
+    let grid = document.querySelector('.list-content');
+    let html = '';
+    let tableGrid = document.querySelector('.table-grid');
+    lists.forEach(function(list) {
+        if(list.reserve_state === 0){
+            html += `
+                <div class="reservation-card">
+                    <div class="guest-info">
+                        <span class="name">`+list.user_name+`</span>
+                        <span class="count">(`+list.reserve_count+`인)</span>
+                    </div>
+                    <div class="reservation-info">
+                        <span class="time">`+list.reserve_time+`</span>
+                        <span class="tel">`+list.user_tel+`</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="quick-assign" onclick="quickAssign("`+list.reserve_idx+`","`+list.reserve_count+`">빠른배치</button>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    grid.innerHTML = html;
+    html = '';
+    tables.forEach(function(table) {
+        let status = (table.stat === -1 || table.stat === 0) ? '예약가능' : '예약됨';
+        let cardClass = (table.stat === -1 || table.stat === 0) ? 'available' : 'none';
+        let type = table.tableType === null? '기본' : table.tableType;
+        html += `
+            <div class="table-card `+cardClass+`" data-table-num="`+table.table_num+`">
+                <div class="table-num">`+table.table_num+`번<span class="table-type">(`+type+`)</span></div>
+                <div class="table-info">
+                    <span class="capacity">`+table.cnt+`인석</span>
+                </div>
+                <div>
+                    <span class="status">`+status+`</span>
+                </div>
+            </div>
+        `;
+    });
+    tableGrid.innerHTML = html;
+    
+}
+//테이블 선택 메소드
+function selectTable(reserveIdx, guestCount){
+    //예약자를 테이블에 배치하는 메소드. 드롭다운 or 선택해서 넣기
+    //요청사항에 테이블타입이 있다면, 해당 테이블이 하이라이트 등 표시가됨.
+    //없다면 기본 테이블타입이 활성화
+}
+//예약자 빠른 배치 메소드.
+function quickAssign(reserveIdx, guestCount) {
+    //체크박스가 체크된 목록들(예약자)를 빠른배치하는 기능
+    //요청사항에 테이블타입이 있다면, 해당 테이블로 자동배치(최대인원이 맞는 테이블).
+    //없다면 기본테이블부터 배치(최대인원이 맞는 테이블)
+    
 }
 </script>
 </html>

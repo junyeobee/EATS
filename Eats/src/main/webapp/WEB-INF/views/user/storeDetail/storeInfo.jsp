@@ -58,7 +58,7 @@
 				<div class="swiper swp-store">
 					<div class="swiper-wrapper">
 						<c:forEach var="img" items="${stInfo.storeImgList }">
-						<div class="swiper-slide"><img src="${img.store_img }" alt="가게사진${img.img_order }"/></div>
+						<div class="swiper-slide"><img src="/img/storeUploadImg/${img.store_img }" alt="가게사진${img.img_order }"/></div>
 						</c:forEach>
 					</div>
 					<div class="swiper-button-next"></div>
@@ -156,10 +156,17 @@
 							<c:forEach var="news" items="${stInfo.storeNewsList }">
 							<div class="swiper-slide">
 								<div class="inner txt">
+									<c:if test="${!empty news.s_news_img }">
+									<div class="news-img-wrap">
+										<img src="/img/storeNewsImg/${news.s_news_img }">
+									</div>
+									</c:if>
 									<strong class="tit">${news.s_news_title }</strong>
-									<p class="desc">${news.s_news_content }</p>
 									<div class="btn-area">
 										<button type="button" class="btn-more">더보기</button>
+									</div>
+									<div class="inner-content">
+										<p class="desc">${news.s_news_content }</p>
 									</div>
 								</div>
 							</div>
@@ -172,7 +179,7 @@
 				<!-- 공지사항 (e) -->
 			
 				<!-- 리뷰 버튼 (s) -->
-				<a href="#" class="btn-review">리뷰 보러 가기</a>
+				<!-- <a href="#" class="btn-review">리뷰 보러 가기</a> -->
 				<!-- 리뷰 버튼 (e) -->
 
 				<!-- 메뉴 리스트 (s) -->
@@ -204,7 +211,7 @@
 									<c:if test="${mcate.m_cate_idx eq menu.m_cate_idx }">
 									<li>
 										<div class="menu-img-wrap">
-											<img src="${menu.menu_img }" alt="${mcate.m_cate_name }_${menu.menu_idx}"/>
+											<img src="../img/menu/${menu.menu_img }" alt="${mcate.m_cate_name }_${menu.menu_idx}"/>
 										</div>
 										<div class="txt-area">
 											<div>
@@ -468,7 +475,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         	if (!user_idx || user_idx === 'null' || user_idx === '') {
         	    alert('로그인 후 이용해주세요');
-        	    //var callback='?callback=/user/storeInfo'+reserveParam;
         	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
         	} else {
         	    location.href = '/user/reserveConfirm' + reserveParam;
@@ -551,17 +557,14 @@ function showJjimDltResult(){
 }
 
 function showJjimResult(){
-	//alert('aaaa='+XHR.readyState+'/'+XHR.status);
 	if(XHR.readyState===4){
 		if(XHR.status===200){
-			//alert('tttt');
 			var data=XHR.responseText;
 			var msg='';
 			if(data!==-1){
 				document.getElementById('jjim_t').textContent=data;
 				document.getElementById('jjim_t').classList.replace('recommend-non', 'recommend');
 				document.getElementById('jjim_t').setAttribute('onclick', 'sssshow(0)');
-				//document.getElementById('jjim_false').setAttribute('id', 'jjim_true');
 				msg='콕! 완료';
 			}else{
 				msg='콕! 실패';

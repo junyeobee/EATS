@@ -26,12 +26,12 @@ public class TimeLineController {
 	@GetMapping("/timeLineMain")
 	public ModelAndView timelineMain(Integer userIdx, HttpSession session) {
 		
-		int idx = (int) session.getAttribute("user_idx");
+		userIdx = (int) session.getAttribute("user_idx");
 		
 		List<TimelineDTO> lists= service.randomuser();
 		List<TimelineDTO> review= service.selectReviewList();
 		
-		TimelineDTO profile = service.timeLineProfile(idx);
+		TimelineDTO profile = service.timeLineProfile(userIdx);
 		
 		ModelAndView mav= new ModelAndView();
 		

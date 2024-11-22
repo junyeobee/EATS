@@ -168,11 +168,9 @@ a {
 
 						<c:forEach var="dto" items="${lists }">
 							<tr>
-								<td><input type="checkbox" name="banner_idx"
-									value="${dto.banner_idx }"></td>
-								<td>${dto.banner_idx }</td>
-								<td><img src="../img/${dto.banner_img }"
-									style='width: 60px; height: 60px;'></td>
+								<td><input type="checkbox" name="banner_idx" value="${dto.banner_idx}"></td>
+								<td>${dto.banner_idx}</td>
+								<td><img src="../img/${dto.banner_img}" style='width: 60px; height: 60px;'></td>
 								<td>${dto.banner_name }</td>
 								<td>${dto.banner_url }</td>
 
@@ -183,8 +181,10 @@ a {
 									<td>사용안함</td>
 								</c:if>
 
-								<td><input type="button" value="수정"
-									onclick="location.href='/bannerUpdate'"></td>
+								<td>
+								<input type="hidden" value="${dto.banner_idx}" name="banner_idx">
+								<input type="button" value="수정" onclick="location.href='/bannerUpdate/${dto.banner_idx}'"></td>
+								
 							</tr>
 						</c:forEach>
 

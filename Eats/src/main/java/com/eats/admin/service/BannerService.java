@@ -14,4 +14,8 @@ public interface BannerService {
 	
 	public int deleteBanner(List<Integer> bannerIdx);
 	
+	public int bannerUpdate(BannerDTO dto);
+	
+	
+	
 }

@@ -26,6 +26,7 @@ import com.eats.user.service.ReservationService;
 
 import ch.qos.logback.classic.joran.ModelClassToModelHandlerLinker;
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -118,25 +119,34 @@ public class StoreInfoController {
 	
 	@GetMapping("/user/makeReserve")
 	public ModelAndView makeReserve(int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
-			HttpSession session) {
+			HttpSession session, HttpServletRequest req) {
+		
+		String callback=req.getHeader("Referer");
 		
 		Integer user_idx = (Integer)session.getAttribute("user_idx");
-		if(user_idx == null) {
-		    user_idx = 0;
-		}
-		int minTableIdx=reserveService.getMinTableIdx(store_idx, reserve_date, reserve_count, reserve_time, reserve_table);
 		
-		Date reserve_date_d = Date.valueOf(reserve_date);
-		ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
-		
-		int result=reserveService.makeReserve(reservationDTO);
 		ModelAndView mv=null;
-		if(result>0) {
-			//예약 삽입 성공 로직 (매장에 문자 보내기)
-			mv=new ModelAndView("redirect:/");
+		
+		if(user_idx != null) {
+			int minTableIdx=reserveService.getMinTableIdx(store_idx, reserve_date, reserve_count, reserve_time, reserve_table);
+			
+			Date reserve_date_d = Date.valueOf(reserve_date);
+			ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
+			
+			int result=reserveService.makeReserve(reservationDTO);
+			
+			if(result>0) {
+				//예약 삽입 성공 로직 (매장에 문자 보내기)
+				mv=new ModelAndView("redirect:/");
+			}else {
+				//예약 삽입 실패 로직 -> 에러 메시지
+				mv=new ModelAndView("redirect:/"+callback);
+			}
 		}else {
-			//예약 삽입 실패 로직 -> 에러 메시지
-			mv=new ModelAndView("redirect:/");
+			mv=new ModelAndView();
+			mv.addObject("errorMsg", "잘못된 접근입니다.");
+			mv.addObject("goTo", callback);
+			mv.setViewName("user/myplate/error");
 		}
 		
 		return mv;
