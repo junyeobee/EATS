@@ -7,8 +7,8 @@
 <div class="mainCon_800">
 	<form name="infoUpdateReq" action="storeInfoUpdateReqSave" method="post">
 	
+		<input type="hidden" name="store_idx" value="${store_idx }">
 		<c:if test="${not empty data}">	
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
 			
 			<input type="hidden" name="su_state" id="" class="ws400" value="대기" placeholder="">
 			<input type="hidden" name="su_reason" id="" class="ws400" value="" placeholder="">

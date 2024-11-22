@@ -40,8 +40,6 @@
 
 <div class="mainCon_1000">
 	
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
-		
 		<h2>
 			영업시간 설정
 		</h2>
@@ -181,7 +179,7 @@
 			<div class="btnBox_top">
 				<input type="submit" class="btn_black" value="설정">
 			</div>
-			<input type="hidden" name="store_idx" value="<%= storeIdx %>">	
+			<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 				
 			<input type="hidden" name="radio_val" id="radio_up0" class="ws100" value="${work_val_0 }">			
 			<input type="hidden" name="radio_val" id="radio_up1" class="ws100" value="${work_val_1 }">
@@ -396,7 +394,7 @@
 					<c:forEach begin="${day_start}" end="${day_end}" var="day_num" varStatus="day_add">
 						<tr>
 							<th>
-								<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+								<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 								
 					    		<c:if test="${day_add.index == 0}">
 					    			일
@@ -576,7 +574,7 @@
 	<hr class="view_line">
 	
 	<form name="storeWorkForm" action="storeWorkSet" method="post">
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		<h2>운영설정</h2>
 		<div>
 			<!-- 

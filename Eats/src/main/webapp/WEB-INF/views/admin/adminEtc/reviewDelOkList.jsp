@@ -33,7 +33,7 @@
 </script>
 
 <div class="mainCon_1400">
-	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
+	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>리뷰삭제신청승인</h2>
 	
 	
@@ -58,8 +58,8 @@
 			<tbody>
 				<c:if test="${empty lists }">
 					<tr>
-						<td colspan="5" align="center">
-							정보수정신청이 없습니다.
+						<td colspan="6" align="center">
+							리뷰삭제 신청건이 없습니다.
 						</td>
 					</tr>
 				</c:if>

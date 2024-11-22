@@ -18,6 +18,9 @@ import com.eats.store.service.StoreCateService;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class StoreCateController {
 
@@ -26,11 +29,25 @@ public class StoreCateController {
     private StoreCateService service;
     
     @GetMapping("/store/storeCateOne")
-    public ModelAndView storeCateOne(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	// store_idx가 null이면 기본값을 1로 설정
-    	if (store_idx == null) {
-    	    store_idx = 1;  // 기본값 설정
-    	}
+    public ModelAndView storeCateOne(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
+        }
 
     	//페이지로드시 로그인한 매장의 store_idx로 category테이블에 데이터 있는지 확인
     	//int store_cate_check = service.storeTagCheck(store_idx);
@@ -60,6 +77,7 @@ public class StoreCateController {
     	mav.addObject("cateBigTitle", cateBigTitle);  // 대메뉴
     	mav.addObject("cateSmallData", cateSmallData);  // 소메뉴
     	//관리자가 등록해놓은 카테고리와 태그값 가져오는 부분 마침
+    	mav.addObject("store_idx", store_idx);
 
     	mav.setViewName("store/storeCate/storeCateOne"); 
     	return mav;
@@ -67,11 +85,25 @@ public class StoreCateController {
 
     
     @GetMapping("/store/storeCateTwo")
-    public ModelAndView storeCateTwo(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	// store_idx가 null이면 기본값을 1로 설정
-    	if (store_idx == null) {
-    	    store_idx = 1;  // 기본값 설정
-    	}
+    public ModelAndView storeCateTwo(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
+        }
 
     	ModelAndView mav = new ModelAndView();
     	
@@ -98,6 +130,7 @@ public class StoreCateController {
     	mav.addObject("cateBigTitle", cateBigTitle);  // 대메뉴
     	mav.addObject("cateSmallData", cateSmallData);  // 소메뉴
     	//관리자가 등록해놓은 카테고리와 태그값 가져오는 부분 마침
+    	mav.addObject("store_idx", store_idx);
 
     	mav.setViewName("store/storeCate/storeCateTwo"); 
     	return mav;

@@ -20,12 +20,17 @@
 			select 
 				rv.rev_idx, rv.rev_content, rv.rev_writedate, 
 				rd.req_date, rd.del_state, rd.del_reason, rd.check_date, 
-				rs.store_idx, rs.user_idx, st.store_name
+				rs.store_idx, rs.user_idx, 
+                sa.store_id, us.user_id 
                 
 			from rev_del rd 
 			left join review rv on rv.rev_idx = rd.rev_idx 
 			left join reservation rs on rv.reserve_idx = rs.reserve_idx 
 			left join store st on rs.store_idx = st.store_idx 
+            left join store_account sa on rs.store_idx = sa.store_idx
+            left join eats_user us on rs.user_idx = us.user_idx 
+		    order by 
+		        rev_idx desc
 		</select>
 		
 		<update id="review_stateChange" parameterType="com.eats.admin.model.ReviewDeleteDTO">

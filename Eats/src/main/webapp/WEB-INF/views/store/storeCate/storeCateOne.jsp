@@ -7,7 +7,7 @@
 <div class="mainCon_400">
 	<form name="tagForm" id="tagForm" action="storeTagSave" method="post" onsubmit="return tag_count()">
 	
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		<input type="hidden" name="cate_level" value=1>
 			
 		<h2>태그관리</h2>
