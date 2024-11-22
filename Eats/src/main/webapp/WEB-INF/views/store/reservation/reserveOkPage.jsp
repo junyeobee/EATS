@@ -255,7 +255,8 @@
             flex-direction: column;
         }
     }
-    </style>
+
+</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -381,7 +382,7 @@ function updateReservations() {
 //모달창오픈, 예약신청자 정보 받아옴(예약 신청자 div를 클릭 시 오픈, 해당 예약자의 정보 출력)
 function showReservationDetail(element) {
     let reserveIdx = element.getAttribute('data-reserve-idx');
-    
+    //모달오픈로직
 }
 //예약 정보를 불러오는 메소드, 시간대까지 선택했다면, 해당 시간대의 예약요청목록 출력
 function updateReservationList(tables, lists) {
@@ -428,18 +429,189 @@ function updateReservationList(tables, lists) {
     tableGrid.innerHTML = html;
     
 }
-//테이블 선택 메소드
-function selectTable(reserveIdx, guestCount){
-    //예약자를 테이블에 배치하는 메소드. 드롭다운 or 선택해서 넣기
-    //요청사항에 테이블타입이 있다면, 해당 테이블이 하이라이트 등 표시가됨.
-    //없다면 기본 테이블타입이 활성화
+// 드래그 앤 드롭 초기화를 위한 함수
+function initTableAssignment() {
+    // 예약 카드에 드래그 기능 추가
+    document.querySelectorAll('.reservation-card').forEach(card => {
+        card.setAttribute('draggable', true);
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragend', handleDragEnd);
+    });
+
+    // 테이블에 드롭 기능 추가
+    document.querySelectorAll('.table-card.available').forEach(table => {
+        table.addEventListener('dragover', handleDragOver);
+        table.addEventListener('drop', handleDrop);
+        table.addEventListener('click', handleTableClick);
+    });
 }
-//예약자 빠른 배치 메소드.
-function quickAssign(reserveIdx, guestCount) {
-    //체크박스가 체크된 목록들(예약자)를 빠른배치하는 기능
-    //요청사항에 테이블타입이 있다면, 해당 테이블로 자동배치(최대인원이 맞는 테이블).
-    //없다면 기본테이블부터 배치(최대인원이 맞는 테이블)
+
+// 드래그 시작 시 예약 정보 저장
+function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    // 드래그 중인 예약 정보 저장
+    const reserveData = {
+        reserveIdx: e.target.dataset.reserveIdx,
+        guestCount: parseInt(e.target.dataset.guestCount)
+    };
+    e.dataTransfer.setData('application/json', JSON.stringify(reserveData));
+}
+
+function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+    removeAllHighlights();
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    highlightValidTables(e);
+}
+
+// 테이블에 드롭했을 때 처리
+function handleDrop(e) {
+    e.preventDefault();
+    const data = JSON.parse(e.dataTransfer.getData('application/json'));
+    const tableElement = e.target.closest('.table-card');
     
+    if (isValidTable(tableElement, data.guestCount)) {
+        processTableAssignment(data.reserveIdx, tableElement.dataset.tableNum);
+    }
+}
+
+// 테이블 클릭 이벤트 처리
+function handleTableClick(e) {
+    const selectedReservation = document.querySelector('.reservation-card.selected');
+    if (!selectedReservation) return;
+
+    const tableElement = e.target.closest('.table-card');
+    const reserveIdx = selectedReservation.dataset.reserveIdx;
+    const guestCount = parseInt(selectedReservation.dataset.guestCount);
+
+    if (isValidTable(tableElement, guestCount)) {
+        processTableAssignment(reserveIdx, tableElement.dataset.tableNum);
+    }
+}
+
+// 테이블 배치 처리 통합 함수
+function assignTable(reserveIdx, guestCount, mode = 'manual') {
+    removeAllHighlights(); // 기존 하이라이트 제거
+
+    // 현재 예약 정보 찾기
+    const reservation = lists.find(r => r.reserve_idx === parseInt(reserveIdx));
+    if (!reservation) return;
+
+    // 테이블 타입 확인 (요청사항에서)
+    const requestedType = reservation.request?.includes('일식') ? '일식' : 
+                         reservation.request?.includes('아늑한') ? '아늑한' : null;
+
+    // 자동 배치 모드
+    if (mode === 'auto') {
+        const bestTable = findBestTable(guestCount, requestedType);
+        if (bestTable) {
+            if (confirm('최적의 테이블로 자동 배치하시겠습니까?')) {
+                processTableAssignment(reserveIdx, bestTable);
+            }
+        } else {
+            alert('적합한 테이블이 없습니다.');
+        }
+        return;
+    }
+
+    // 수동 배치 모드
+    highlightValidTables({guestCount, requestedType});
+}
+
+// 최적의 테이블 찾기
+function findBestTable(guestCount, requestedType) {
+    let bestTable = null;
+    let minCapacityDiff = Infinity;
+
+    document.querySelectorAll('.table-card.available').forEach(table => {
+        const tableNum = parseInt(table.dataset.tableNum);
+        const capacity = parseInt(table.querySelector('.capacity').textContent);
+        const type = table.querySelector('.table-type').textContent.replace(/[()]/g, '');
+
+        if (capacity >= guestCount) {
+            const capacityDiff = capacity - guestCount;
+            if ((requestedType && type === requestedType && capacityDiff < minCapacityDiff) ||
+                (!requestedType && type === '기본' && capacityDiff < minCapacityDiff)) {
+                bestTable = tableNum;
+                minCapacityDiff = capacityDiff;
+            }
+        }
+    });
+
+    return bestTable;
+}
+
+// 유효한 테이블 하이라이트
+function highlightValidTables({guestCount, requestedType}) {
+    document.querySelectorAll('.table-card.available').forEach(table => {
+        const capacity = parseInt(table.querySelector('.capacity').textContent);
+        const type = table.querySelector('.table-type').textContent.replace(/[()]/g, '');
+
+        if (capacity >= guestCount) {
+            if ((requestedType && type === requestedType) ||
+                (!requestedType && type === '기본')) {
+                table.classList.add('highlighted');
+            }
+        }
+    });
+}
+
+// 테이블이 유효한지 확인
+function isValidTable(tableElement, guestCount) {
+    if (!tableElement || !tableElement.classList.contains('available')) return false;
+
+    const capacity = parseInt(tableElement.querySelector('.capacity').textContent);
+    return capacity >= guestCount;
+}
+
+// 실제 테이블 배정 처리
+function processTableAssignment(reserveIdx, tableNum) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/reservation/assign');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            alert('테이블이 배정되었습니다.');
+            updateReservations();
+            removeAllHighlights();
+        } else {
+            alert('테이블 배정 중 오류가 발생했습니다.');
+        }
+    };
+    
+    xhr.onerror = function() {
+        alert('서버와의 통신 중 오류가 발생했습니다.');
+    };
+    
+    xhr.send(JSON.stringify({
+        reserveIdx: reserveIdx,
+        tableNum: tableNum
+    }));
+}
+
+// 하이라이트 제거
+function removeAllHighlights() {
+    document.querySelectorAll('.table-card').forEach(table => {
+        table.classList.remove('highlighted', 'selected');
+    });
+}
+
+// 사용 예시:
+// 1. 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', initTableAssignment);
+
+// 2. 빠른 배치 버튼 클릭 시
+function quickAssign(reserveIdx, guestCount) {
+    assignTable(reserveIdx, guestCount, 'auto');
+}
+
+// 3. 수동 배치 시작
+function startManualAssign(reserveIdx, guestCount) {
+    assignTable(reserveIdx, guestCount, 'manual');
 }
 </script>
 </html>
