@@ -15,6 +15,10 @@ public class ReservationDTO {
 	private int reserve_state;
 	private java.sql.Date reserve_applydate;
 	
+	/*추가*/
+	private String store_name;
+	private String store_img;
+	
 	public ReservationDTO() {
 		
 	}
@@ -32,6 +36,24 @@ public class ReservationDTO {
 		this.request = request;
 		this.reserve_state = reserve_state;
 		this.reserve_applydate = reserve_applydate;
+	}
+
+	public ReservationDTO(int reserve_idx, int user_idx, int store_idx, Date reserve_date, String reserve_time,
+			int reserve_count, int reserve_table_idx, String request, int reserve_state, Date reserve_applydate,
+			String store_name, String store_img) {
+		super();
+		this.reserve_idx = reserve_idx;
+		this.user_idx = user_idx;
+		this.store_idx = store_idx;
+		this.reserve_date = reserve_date;
+		this.reserve_time = reserve_time;
+		this.reserve_count = reserve_count;
+		this.reserve_table_idx = reserve_table_idx;
+		this.request = request;
+		this.reserve_state = reserve_state;
+		this.reserve_applydate = reserve_applydate;
+		this.store_name = store_name;
+		this.store_img = store_img;
 	}
 
 	public int getReserve_idx() {
@@ -112,5 +134,21 @@ public class ReservationDTO {
 
 	public void setReserve_applydate(java.sql.Date reserve_applydate) {
 		this.reserve_applydate = reserve_applydate;
+	}
+
+	public String getStore_name() {
+		return store_name;
+	}
+
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
+
+	public String getStore_img() {
+		return store_img;
+	}
+
+	public void setStore_img(String store_img) {
+		this.store_img = store_img;
 	}
 }
