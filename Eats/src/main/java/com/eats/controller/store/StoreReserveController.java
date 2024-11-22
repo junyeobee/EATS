@@ -8,7 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.ReserveOkListDTO;
@@ -24,6 +26,7 @@ public class StoreReserveController {
 	public ModelAndView reserveOkListPage(int store_idx,
 			@RequestParam(required=false) String selectedDate,
 			@RequestParam(required=false) String searching) {
+		
 		LocalDate today = LocalDate.now();
 		String todayDate="";
 		if(selectedDate==null || selectedDate.equals("")) {
@@ -51,5 +54,16 @@ public class StoreReserveController {
 		mv.setViewName("/store/reservation/reserveOkListPage");
 		
 		return mv;
+	}
+	
+	@PostMapping("/store/selectThisList")
+	@ResponseBody
+	public Map<String, Object> seleteThisList(int reserve_idx){
+		Map<String, Object> map = new HashMap<>();
+		
+		List<ReserveOkListDTO> list = srs.getStoreReserveOkListDetail(reserve_idx);
+		map.put("dList", list);
+		
+		return map;
 	}
 }

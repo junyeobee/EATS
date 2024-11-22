@@ -20,4 +20,10 @@ public class StoreReserveServiceImple implements StoreReserveService {
 		List<ReserveOkListDTO> list = sr.getStoreReserveOkList(map);
 		return list;
 	}
+	
+	@Override
+	public List<ReserveOkListDTO> getStoreReserveOkListDetail(int reserve_idx) {
+		List<ReserveOkListDTO> list = sr.getStoreReserveOkListDetail(reserve_idx);
+		return list;
+	}
 }

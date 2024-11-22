@@ -58,7 +58,7 @@ $(document).ready(function() {
 
       //   opener.location.href = "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');";
          //window.opener.goInsertOrder('${requestScope.price}');
-         opener.location.href = "javascript:goInsertOrder('${requestScope.price}');";
+         opener.location.href = "javascript:goInsertOrder();";
       //  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');");
 
           self.close();

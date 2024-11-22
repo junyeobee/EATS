@@ -167,7 +167,7 @@
 
         <div class="main-content">
             <section class="section">
-                <h2>예약 정보</h2>
+                <h2>방문 목적</h2>
                 <div class="product">
                     <img src="/api/placeholder/80/80" alt="Daily Facial Soap">
                     <div>
@@ -179,7 +179,7 @@
             </section>
 
             <section class="section">
-                <h2>방문 목적</h2>
+                <h2>예약 정보</h2>
                 <div class="user-info">
                     <div class="field">
                         <label>이름</label>
@@ -189,93 +189,50 @@
                         <label>연락처</label>
                         <input type="text" value="01012345678">
                     </div>
-                    <div class="field">
-                        <label>이메일</label>
-                        <input type="text" value="user@imweb.me">
-                    </div>
+            
                 </div>
             </section>
 
-   <!--          <section class="section">
-                <h2>배송 정보</h2>
-                <div class="delivery-info">
-                    <div class="field">
-                        <label>받는 분</label>
-                        <input type="text" value="홍길동">
-                    </div>
-                    <div class="field">
-                        <label>연락처</label>
-                        <input type="text" value="01012345678">
-                    </div>
-                    <div class="field">
-                        <label>주소</label>
-                        <input type="text" value="서울특별시 서대문구 성산로7길 89-8 (연희동)">
-                    </div>
-                    <div class="field">
-                        <label>배송 메모</label>
-                        <select>
-                            <option>배송메모를 선택해 주세요.</option>
-                        </select>
-                    </div>
-                </div>
-            </section> -->
+ 
 
             <section class="section">
-                <h2>쿠폰/포인트</h2>
+                <h2>레스토랑 주의사항</h2>
                 <div class="field">
-                    <label>쿠폰</label>
+                   
                     <div class="point-input">
-                        <input type="text" placeholder="쿠폰 번호 입력">
-                        <button>번호확인</button>
+                       
+                        <button>2일 전 취소: 100% 환불</button>
                     </div>
                 </div>
-                <div class="field">
-                    <label>포인트</label>
-                    <div class="point-input">
-                        <input type="text" placeholder="0">
-                        <button>전액사용</button>
-                    </div>
-                    <p>보유 포인트: 2,300</p>
-                </div>
+            
             </section>
         </div>
+
+
 
         <div class="summary">
             <h2>최종 결제금액</h2>
             <div class="price-row">
-                <span>상품금액</span>
+                <span>금액</span>
                 <span>18,000원</span>
             </div>
             <div class="price-row">
-                <span>쿠폰 할인</span>
+                <span>할인</span>
                 <span>-1,000원</span>
             </div>
-            <div class="price-row">
-                <span>포인트 사용</span>
-                <span>-0원</span>
-            </div>
-            <div class="price-row">
-                <span>배송비</span>
-                <span>+2,500원</span>
-            </div>
+      
+           
             <div class="price-row total-price">
                 <span>총 결제금액</span>
                 <span>19,500원</span>
             </div>
-
+            
+            
             <div class="payment-methods">
                 <label class="payment-method">
-                    <input type="radio" name="payment">
-                    <span>신용카드</span>
+                  
                 </label>
-                <label class="payment-method">
-                    <input type="radio" name="payment" checked>
-                    <span>무통장 입금</span>
-                </label>
-                <label class="payment-method">
-                    <input type="radio" name="payment">
-                    <span>카카오페이</span>
-                </label>
+                
             </div>
 
             <div class="agreement">
@@ -285,8 +242,34 @@
                 </label>
             </div>
 
-            <button class="submit-button">결제하기</button>
+            <button class="submit-button" onclick="goPay();">결제하기</button>
         </div>
     </div>
 </body>
+
+<script>
+
+function goPay(){
+	
+	//const price = ${reserve_count} * 10000;
+	
+	
+	
+    const url ='Payment';
+    //?user_id_pk="+price; 
+    // 견적서번호 넘기기 
+    
+    //int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
+    
+    window.open(url, "goPay",  "left=350px, top=100px, width=1000px height=600px");
+	
+}
+
+
+function goInsertOrder() {
+	
+	location.href='/user/makeReserve';
+}
+
+</script>
 </html>
