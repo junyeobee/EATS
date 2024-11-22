@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 public class EtcTwoController {
 
     @Autowired
-    private AdminStoreService service;
+    private AdminStoreService service;	//관리자에서 가입매장데이터 뿌릴때 시간도 보여주고 있는 걸 먼저 작업해서 admin에 서비스 만듦
 
 	@GetMapping("/store/storeTime")
     public ModelAndView storeTime(HttpServletRequest req) {

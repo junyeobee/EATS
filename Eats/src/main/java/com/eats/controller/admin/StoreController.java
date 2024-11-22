@@ -81,6 +81,75 @@ public class StoreController {
 
         return mav;
     }
+	
+
+    @PostMapping("/admin/entryAction")
+    public ModelAndView entryAction(
+    		@RequestParam("sj_idx") int sj_idx,
+    		@RequestParam("entry_value") String entry_value
+    		) {
+    	
+    	String entry_val = "";
+    	if("Y".equals(entry_value)) {
+    		entry_val = "승인";
+    		
+    		/*
+    		승인 클릭시
+    		0. store_join 테이블 update
+    			> SJ_STAT 필드에 1값 넣기 (승인) / 0은 대기로 들어가있음
+    			> SJ_RES_DATE 필드에 sysdate 승인 날짜 넣기
+
+    		1. store 테이블에 insert
+    		 	> store_name 매장명
+    		 	> store_area
+    		 		> addr 데이터가져와서 공백을 기준으로 잘라서 시를 먼저 검색하기
+    		 		> 자른 시를 기준으로 area 테이블 검색 ( =말고 포함하고 있는걸로)
+    		 		> area 테이블에서 lev 2와 나온 키값으로 where 걸어서 검색
+    		 		> 나온 데이터로 키 값 넣기
+    			> store_state 영업상태값 0
+    			> 
+    		2. store_account테이블에 insert
+    		3. 이메일 전송
+    		4. 매장로그인
+    		5. 매장로그인 후 처리
+    			> store 테이블의 STORE_STATE
+    			> 민주가 TRUE만 사용함    			
+    			> 이미지, 특징, 태그, 영업시간 4가지 저장필요
+    			> READY 입점승인만 된 상태, 하나도 저장안함
+    			> ING (이미지, 특징, 태그, 영업시간 4가지 등록진행중, 4가지 테이블 SELECT 하여 확인하기
+    			> TRUE > 4가지 다 저장완료 / "입점되었습니다" alert처리
+    		*/
+    		
+    	}else {
+    		entry_val = "반려";
+    		
+    		/*
+    		반려 클릭시    		
+    		0. store_join 테이블 update
+    			> SJ_STAT 필드에 2값 넣기 (반려) / 0(대기값) 들어가있음
+    			> SJ_REASON 반려한 경우 사유
+    			> SJ_RES_DATE 필드에 sysdate 반려 날짜 넣기
+    			
+    		1. 이메일 전송
+    		*/
+    		
+    	}
+    	
+    	
+    	//int result = 0;
+        //String msg = result > 5 ? "정보수정신청이 되었습니다." : "정보수정신청이 처리 되지 않았습니다. 다시 진행해주세요.";
+    	String msg = entry_val+"//";
+        String goPage = "storeEntryDetail?sj_idx="+sj_idx;
+    
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("msg", msg);
+        mav.addObject("goPage", goPage);
+        mav.setViewName("admin/common/basicMsg");
+        
+
+        return mav;
+    	
+    }
 
 
 	@GetMapping("/admin/storeInfoUpdateOkList")

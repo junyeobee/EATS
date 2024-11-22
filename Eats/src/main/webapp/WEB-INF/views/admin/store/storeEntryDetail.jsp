@@ -4,16 +4,33 @@
 
 <%@include file="../common/header.jsp"%>
 
+<script>
+	function entryACT(ea_val){
+		alert(ea_val);
+		
+
+		var form = document.getElementById('entryAction');
+		form.entry_value.value = ea_val;
+		//document.getElementById('su_idx').value = su_idx;
+		//document.getElementById('su_state').value = su_state;
+		
+		form.action = "entryAction";
+		form.submit();
+		
+	}
+</script>
+
 <div class="mainCon_800">
-	<form name="" action="" method="post">	
-			<input type="hidden" name="sj_idx" value="${sj_idx}">
+	<form name="" id="entryAction" action="" method="post">	
+		<input type="hidden" name="sj_idx" value="${sj_idx}">
+		<input type="text" name="entry_value" id="entry_value" value="${entry_value}">
 	
-	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
+		<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 		<c:if test="${not empty data}">	
 			<h2>입점신청정보</h2>
 			<div class="btnBox_top">
-				<input type="button" class="btn_black" value="승인">
-				<input type="button" class="btn_gray" value="반려">
+				<input type="button" class="btn_black" value="승인" onclick="entryACT('Y')">
+				<input type="button" class="btn_gray" value="반려" onclick="entryACT('N')">
 			</div>
 			<div class="tableWrite_4 mb60">
 				<table>

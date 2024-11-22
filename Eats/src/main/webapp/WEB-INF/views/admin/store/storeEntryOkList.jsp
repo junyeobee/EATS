@@ -8,7 +8,6 @@
 	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>입점신청승인</h2>
 	
-	
 	<form id="infoUpdateSaveForm" method="post" >
 		<input type="hidden" name="su_idx" id="su_idx" value="">
 		<input type="hidden" name="su_state" id="su_state" value="">

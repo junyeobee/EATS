@@ -580,9 +580,9 @@
 			<!-- 
 			${work_type }
 			 -->
-			<input type="radio" name="s_work" id="ws1" value="Y" ${work_type == 'Y' ? 'checked' : ''} ><label for="ws1">운영</label>
-			<input type="radio" name="s_work" id="ws2" value="R" ${work_type == 'R' ? 'checked' : ''}><label for="ws2">휴업</label>
-			<input type="radio" name="s_work" id="ws3" value="N" ${work_type == 'N' ? 'checked' : ''}><label for="ws3">폐업</label>
+			<input type="radio" name="s_work" id="ws1" value="TRUE" ${work_type == 'TRUE' ? 'checked' : ''} ><label for="ws1">운영</label>
+			<input type="radio" name="s_work" id="ws2" value="REST" ${work_type == 'REST' ? 'checked' : ''}><label for="ws2">휴업</label>
+			<input type="radio" name="s_work" id="ws3" value="FALSE" ${work_type == 'FALSE' ? 'checked' : ''}><label for="ws3">폐업</label>
 		</div>
 		<input type="submit" class="btn_black mt10 ml200" value="설정">
 	</form>
