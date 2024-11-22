@@ -152,7 +152,7 @@ public class AdminUserController {
 		result += re_service.revDel_stateChange(dto);
 
 
-        String msg = result > 0 ? "승인되었습니다." : "반려되었습니다.";
+        String msg = result > 0 ? "처리되었습니다." : "처리 되지 않았습니다. 다시 실행하세요.";
         String goPage = "reviewDelOkList";
     
         ModelAndView mav = new ModelAndView();

@@ -5,7 +5,7 @@
 <%@include file="/WEB-INF/views/admin/common/header.jsp"%>
 
 <div class="mainCon_1400">
-	<input type="text" name="admin_idx" id="" value="${admin_idx }">
+	<input type="hidden" name="admin_idx" id="" value="${admin_idx }">
 	
 	
 	<form id="reviewDeleteForm" method="post" >

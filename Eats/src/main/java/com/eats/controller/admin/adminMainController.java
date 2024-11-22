@@ -61,6 +61,8 @@ public class adminMainController {
 			store_lists = store_lists.subList(0, 10);  // 10개로 제한
 		}
 		
+		
+		
 		List<ReviewDeleteDTO> review_lists = re_service.adminMainReviewList();
 		if (review_lists.size() > 10) {
 			review_lists = review_lists.subList(0, 10);  // 10개로 제한
