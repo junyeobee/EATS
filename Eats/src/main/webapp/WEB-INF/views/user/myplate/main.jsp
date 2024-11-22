@@ -400,7 +400,7 @@ td:empty {
 							</div>
 							<div class="info-bottom" data-idx="${r.RESERVE_IDX }">
 								<div class="store-img-wrap">
-									<img src="${r.STORE_IMG }">
+									<img src="../img/storeUploadImg/${r.STORE_IMG }">
 								</div>
 								<div class="text-area">
 									<ul>
@@ -435,7 +435,7 @@ td:empty {
 						<li class="list-item">
 							<div class="info-bottom" data-idx="${r.RESERVE_IDX }">
 								<div class="store-img-wrap">
-									<img src="${r.STORE_IMG }">
+									<img src="../img/storeUploadImg/${r.STORE_IMG }">
 								</div>
 								<div class="text-area">
 									<ul>
@@ -481,7 +481,7 @@ td:empty {
 							</div>
 							<div class="info-bottom" data-idx="${r.RESERVE_IDX }">
 								<div class="store-img-wrap">
-									<img src="${r.STORE_IMG }">
+									<img src="../img/storeUploadImg/${r.STORE_IMG }">
 								</div>
 								<div class="text-area">
 									<ul>

@@ -63,7 +63,7 @@
 	<c:set var="r" value="${reserveDTO }"></c:set>
 	<div class="reserve-info">
 		<div class="store-img-wrap">
-			<img src="${r.store_img }">
+			<img src="../img/storeUploadImg/${r.store_img }">
 		</div>
 		<div class="text-area">
 			<ul>
