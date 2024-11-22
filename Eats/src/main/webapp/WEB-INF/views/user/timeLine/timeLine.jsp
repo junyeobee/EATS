@@ -26,6 +26,21 @@ body {
 	padding: 20px;
 }
 
+.user-profile {
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 0 auto 5px;
+
+}
+
+.user-profile img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+
+}
 .profile-container {
 	width: 100%;
 	position: relative;
@@ -316,7 +331,7 @@ img {
 					<div class="profile-image">
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
-						<img src="/img/user/profile/d.jpg" alt="Profile Image">
+						<img src="${pf.profile_image}" alt="Profile Image">
 					
 					</div>
 					
@@ -361,7 +376,7 @@ img {
 				<c:forEach var="dto" items="${lists }">
 
 					<div class="user-card">
-						<div class="user-profile"><img src="/img/user/profile/${dto.profile_image }"></div>
+						<div class="user-profile"><img src="${dto.profile_image }"></div>
 						<span>${dto.user_nickname }</span>
 						<button class="follow-btn" data-idx="${dto.user_idx}"
 							id="${dto.user_idx}">팔로우</button>

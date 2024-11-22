@@ -72,9 +72,10 @@ public class StoreMenuController {
 		return "store/menu/menuInsert";
 	}
 
+	
 	@GetMapping("/menuUpdatePage/{menu_idx}")
 	public ModelAndView menuUpdatePage(@PathVariable("menu_idx") Integer menuIdx) {
-
+		
 		List<MenuDTO> lists = service.storeCateList();
 		MenuDTO info = service.updateMenuInfo(menuIdx);
 		ModelAndView mav = new ModelAndView();
@@ -85,6 +86,7 @@ public class StoreMenuController {
 		mav.setViewName("store/menu/menuUpdate");
 
 		return mav;
+		
 	}
 
 	

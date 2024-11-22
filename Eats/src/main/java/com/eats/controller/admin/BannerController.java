@@ -1,11 +1,13 @@
 package com.eats.controller.admin;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.admin.model.BannerDTO;
 import com.eats.admin.service.BannerService;
+import com.eats.store.model.MenuDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -105,10 +108,7 @@ public class BannerController {
 		System.out.println(result);
 		
 		String msg = result>0?"배너가 삭제되었습니다.":"배너 삭제가 실패했습니다.";
-		
-		
-		
-		
+
 		mav.addObject("msg",msg);
 		mav.addObject("goUrl","/bannerList");
 		
@@ -120,12 +120,107 @@ public class BannerController {
 	
 	
 	
-	@GetMapping("/bannerUpdate")
-	public String bannerUpdate() {
-		
+	@GetMapping("/bannerUpdate/{banner_idx}")
+	public String bannerUpdate(@PathVariable("banner_idx") Integer bannerIdx) {
 		
 		return "admin/banner/bannerUpdate";
+		
 	}
+	
+	
+	
+	
+	@PostMapping("/bannerUpdateOk")
+	public ModelAndView bannerUpdateOk(
+			@RequestParam("banner_idx") Integer banner_idx,
+			@RequestParam("banner_img") MultipartFile banner_img,
+			@RequestParam("banner_order") int banner_order, @RequestParam("banner_name") String banner_name,
+			@RequestParam("banner_url") String banner_url, @RequestParam("banner_stat") int banner_stat, 
+			@RequestParam("banner_sdate") Date banner_sdate, @RequestParam("banner_edate") Date banner_edate,
+			@RequestParam(value="oldName")String oldFileName, 
+			HttpServletRequest req) {
+
+		String realpath = req.getServletContext().getRealPath("/"); 
+		
+		 BannerDTO BannerDTO = new BannerDTO();
+		 ModelAndView mav = new ModelAndView();
+		 
+		 
+		 
+		 try {
+		      
+		        if (banner_img != null && !banner_img.isEmpty()) {
+		          
+		        	
+		            String fileName = System.currentTimeMillis() + "_" + banner_img.getOriginalFilename();
+		            File directory = new File(realpath);
+		            if (!directory.exists()) {
+		                directory.mkdirs(); 
+		            }
+
+		            // 기존 이미지 삭제
+		            if (oldFileName != null && !oldFileName.isEmpty()) {
+		                File oldFile = new File(realpath + "img/menu/" + oldFileName);
+		                if (oldFile.exists()) {
+		                    oldFile.delete();
+		                }
+		            }
+		            
+		            String filePath = realpath + "img/menu/" + fileName;
+
+		            
+		            banner_img.transferTo(new File(filePath)); 
+
+		            BannerDTO.setBanner_img(realpath);
+		        
+		            
+		        } else {
+		        
+		        	BannerDTO.setBanner_img(oldFileName);
+		           
+		        }
+		        
+		        
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    	mav.addObject("msg", "메뉴 수정 중 오류가 발생했습니다.");
+		    }
+		
+		
+		
+		 BannerDTO.setBanner_idx(banner_idx); 
+		 BannerDTO.setBanner_order(banner_order);
+		 BannerDTO.setBanner_name(banner_name);
+		 BannerDTO.setBanner_url(banner_url);
+		 BannerDTO.setBanner_stat(banner_stat);
+		 BannerDTO.setBanner_sdate(banner_sdate);
+		 BannerDTO.setBanner_edate(banner_edate);
+
+		oldFileName = BannerDTO.getBanner_img();
+		
+		System.out.println(oldFileName);
+
+
+		try {
+			
+			int result = service.bannerUpdate(BannerDTO);
+			if (result > 0) {
+				mav.addObject("msg", "메뉴가 수정되었습니다.");
+			} else {
+				mav.addObject("msg", "메뉴 수정에 실패했습니다.");
+			}
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+			mav.addObject("msg", "메뉴 수정 중 오류가 발생했습니다.");
+		}
+
+		mav.addObject("goUrl", "storeMenuList"); 
+		mav.setViewName("store/menu/menuMsg"); 
+		return mav;
+		
+	}
+	
 	
 	
 	

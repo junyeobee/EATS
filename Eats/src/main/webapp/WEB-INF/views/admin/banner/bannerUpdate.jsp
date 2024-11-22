@@ -109,10 +109,12 @@
 <body>
     <div class="container">
         <h1>배너 수정</h1>
-        <form name="banenerInsertForm" action="bannerInsertOk" method="post" enctype="multipart/form-data">
+        <form name="banenerUpdateForm" action="/bannerUpdateOk" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label>배너명</label>
                 <input type="text" name="banner_name" id="banner_name" class="form-control" required>
+                
+                 <input type="hidden" name="menu_idx" value="${info.menu_idx }">
                
             </div>
 

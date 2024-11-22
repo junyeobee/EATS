@@ -40,7 +40,6 @@ public class storeMenuServiceImple implements storeMenuService {
 	
 	
 	//메뉴등록 +이미지 
-	
 	@Override
 	public int insertMenu(MenuDTO menuDTO, MultipartFile menuImg,String realpath) {
        try {
@@ -48,9 +47,11 @@ public class storeMenuServiceImple implements storeMenuService {
         	
             String fileName = System.currentTimeMillis() + "_" + menuImg.getOriginalFilename();
             File directory = new File(realpath);
+            
             if (!directory.exists()) {
                 directory.mkdirs(); // 디렉토리가 존재하지 않으면 생성
             }
+            
             String filePath = realpath + "img/menu/" +fileName;
             System.out.println(filePath);
             menuImg.transferTo(new File(filePath)); 
@@ -61,10 +62,10 @@ public class storeMenuServiceImple implements storeMenuService {
     	   e.printStackTrace();
        }
 
-      
         return mapper.insertMenu(menuDTO);
     }
 		
+	
 	
 	@Override
 	public int deleteMenuCate(String cateName) {
