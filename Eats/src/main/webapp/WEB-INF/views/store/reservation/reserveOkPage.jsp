@@ -355,6 +355,7 @@ function selectDate() {
     xhr.send();
 }
 
+//날짜,시간 선택시 예약정보를 불러오는 메소드
 function updateReservations() {
     let date = document.getElementById('reserveDate').value;
     let time = document.getElementById('reserveTime').value;
@@ -377,7 +378,7 @@ function updateReservations() {
     };
     xhr.send();
 }
-//모달창오픈, 예약신청자 정보 받아옴(예약 신청자 div를 클릭 시 오픈)
+//모달창오픈, 예약신청자 정보 받아옴(예약 신청자 div를 클릭 시 오픈, 해당 예약자의 정보 출력)
 function showReservationDetail(element) {
     let reserveIdx = element.getAttribute('data-reserve-idx');
     
@@ -436,8 +437,8 @@ function selectTable(reserveIdx, guestCount){
 //예약자 빠른 배치 메소드.
 function quickAssign(reserveIdx, guestCount) {
     //체크박스가 체크된 목록들(예약자)를 빠른배치하는 기능
-    //요청사항에 테이블타입이 있다면, 해당 테이블로 자동배치.
-    //없다면 기본테이블부터 채움
+    //요청사항에 테이블타입이 있다면, 해당 테이블로 자동배치(최대인원이 맞는 테이블).
+    //없다면 기본테이블부터 배치(최대인원이 맞는 테이블)
     
 }
 </script>
