@@ -107,10 +107,10 @@ pageEncoding="UTF-8"%>
             </span>
             <ul class="nav-sub-items">
                 <li class="nav-item">
-                    <a href="/reservation/list">예약 현황</a>
+                    <a href="/suminbabo">예약 승인</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/reservation/settings">예약 설정</a>
+                    <a href="/reservation/settings">예약 목록</a>
                 </li>
             </ul>
         </div>
