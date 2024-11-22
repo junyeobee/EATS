@@ -80,4 +80,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		WHERE r.RESERVE_IDX = #{reserveIdx}
 	</update>
+
+    <select id="selectBinTables" parameterType="map" resultType="com.eats.store.model.reserve.BinTables">
+        SELECT sts.STS_IDX, sts.STS_NUM, sts.TABLE_NUM
+		FROM STORE_TABLE_SET sts
+		JOIN STORE_GRID sg ON sts.SG_IDX = sg.SG_IDX
+		WHERE sg.STORE_IDX = #{storeIdx}
+		AND sts.STS_IDX IN (
+			SELECT RESERVE_TABLE_IDX
+			FROM RESERVATION
+			WHERE STORE_IDX = #{storeIdx}
+			AND RESERVE_DATE = #{date}
+			AND RESERVE_TIME = #{time}
+			AND RESERVE_STATE = 2
+		)
+    </select>
+    
+    <select id="selectAlarms" parameterType="map" resultType="com.eats.store.model.reserve.AlarmDTO">
+        SELECT 
+            a.USER_IDX as user_idx,
+            u.USER_NAME as user_name,
+            u.USER_EMAIL as user_email,
+            a.S_ALARM_DATE as alarm_date,
+            a.S_ALARM_TIME as alarm_time,
+            a.S_ALARM_COUNT as alarm_count
+        FROM S_ALARM a
+        JOIN EATS_USER u ON a.USER_IDX = u.USER_IDX
+        WHERE a.STORE_IDX = #{storeIdx}
+          AND a.S_ALARM_DATE = #{date}
+          AND a.S_ALARM_TIME = #{time}
+    </select>
 </mapper>

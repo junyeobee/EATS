@@ -141,6 +141,25 @@
             background: var(--primary-blue);
             border-radius: 4px;
         }
+		.requests-container {
+			height: 240px;
+			overflow-y: auto;
+			padding: 10px;
+		}
+		.request-item {
+			display: flex;
+			align-items: center;
+			padding: 10px;
+			border-bottom: 1px solid var(--gray-200);
+		}
+		.request-time, .request-count {
+			color: var(--gray-600);
+			font-size: 14px;
+		}
+		.request-text {
+			color: var(--dark-blue);
+			font-size: 14px;
+		}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src = "../js/Chart.js"></script>
@@ -152,7 +171,7 @@
 				labels: ['남성', '여성'],
 				datasets: [{
 					data: [genderData.male, genderData.female],
-					backgroundColor: [ChartManager.colors.primary[0], ChartManager.colors.primary[2]],
+					backgroundColor: [ChartManager.colors.primary[0], '#F3553C'],
 					borderWidth: 0
 				}]
 			}, {
@@ -165,7 +184,7 @@
 							label: function(context) {
 								const total = genderData.male + genderData.female;
 								const percentage = Math.round((context.raw / total) * 100);
-								return ${context.label}+':' ${percentage}+'%';
+								return percentage +'%' + ' (' + context.raw + '명)';
 							}
 						}
 					}
@@ -508,9 +527,9 @@
 						</c:if>
 						<c:forEach items="${dash.reserveReq}" var="req">
 							<div class="request-item">
-								<div class="request-time">${req.reservetime}</div>
-								<div class="request-count">${req.reservecnt}명</div>
-								<div class="request-text">${req.request}</div>
+								<div class="request-time" style="flex: 1;">${req.reservetime}</div>
+								<div class="request-count" style="flex: 1;">${req.reservecnt}명</div>
+								<div class="request-text" style="flex: 2;">${req.request}</div>
 							</div>
 						</c:forEach>
 					</div>
@@ -528,7 +547,7 @@
                 male: ${dash.gendercnt[0].visitorcnt},
                 female: ${dash.gendercnt[1].visitorcnt}
             };
-
+			
             const weeklyData = {
                 labels: [${weeklyLabels}],
                 data: [${weeklyAmount}]

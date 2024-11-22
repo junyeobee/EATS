@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
     .reservation-container {
         padding: 20px;
@@ -199,6 +200,9 @@
     .list-header {
         padding: 20px;
         border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .list-content {
@@ -222,6 +226,8 @@
     
     .guest-info {
         margin-bottom: 5px;
+        display: flex;
+        align-items: center;
     }
     
     .guest-info .name {
@@ -234,8 +240,10 @@
     }
     
     .reservation-info {
-        color: #666;
-        font-size: 0.9em;
+        display: flex;
+        align-items: center;
+        color: #757575;
+        font-size: 14px;
     }
 
     .action-buttons {
@@ -301,14 +309,12 @@
         border-color: #ff0000 !important;
     }
 
-    /* 테이블 카드 호버 효과 개선 */
     .table-card.available:hover {
         transform: scale(1.02);
         transition: all 0.2s ease;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    /* 빠른 배치 버튼 스타일 개선 */
     .quick-assign {
         padding: 6px 12px;
         background-color: #2196F3;
@@ -385,17 +391,20 @@
         display: flex;
         margin-bottom: 10px;
         padding: 5px 0;
+        align-items: center;
     }
 
     .info-label {
         flex: 0 0 100px;
         font-weight: bold;
-        color: #666;
+        color: #757575;
+        display: flex;
+        align-items: center;
     }
 
     .info-value {
         flex: 1;
-        color: #333;
+        color: #121212;
     }
     .reservation-card.assigned {
         background-color: #E3F2FD;
@@ -409,6 +418,32 @@
         border-radius: 4px;
         font-size: 12px;
     }
+    .reload{
+        padding: 6px 12px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+    }
+    .time{
+        display: flex;
+        align-items: center;
+    }
+    .tel{
+        display: flex;
+        align-items: center;
+    }
+    .name{
+        display: flex;
+        align-items: center;
+    }
+    .count{
+        display: flex;
+        align-items: center;
+    }
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -416,6 +451,12 @@
 <body>
     <%@ include file="../store_Header.jsp"%>
     <%@ include file="../nav.jsp"%>
+    <!--<c:if test = "${empty sessionScope.storeIdx}">
+        <script>
+            alert('로그인이 필요합니다.');
+            location.href = '/storeLogin';
+        </script>
+    </c:if>-->
 	<div class="reservation-container">
         <div class="date-time-select">
             <div class="date-select">
@@ -456,7 +497,7 @@
                 <div class="list-header">
                     <h3>예약 현황</h3>
                     <div>
-                        <button onclick="updateReservations()">새로고침</button>
+                        <button class = "reload" onclick="updateReservations()">새로고침</button>
                     </div>
                 </div>
                 <div class="list-content">
@@ -501,26 +542,26 @@
                 <div class="detail-section">
                     <h4>예약자 정보</h4>
                     <div class="info-row">
-                        <div class="info-label">예약자명</div>
+                        <div class="info-label"><span class="material-icons">person</span>&nbsp;예약자명</div>&nbsp;
                         <div class="info-value" id="modalUserName"></div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">연락처</div>
+                        <div class="info-label"><span class="material-icons">phone</span>&nbsp;연락처</div>&nbsp;
                         <div class="info-value" id="modalUserTel"></div>
                     </div>
                 </div>
                 <div class="detail-section">
                     <h4>예약 정보</h4>
                     <div class="info-row">
-                        <div class="info-label">예약 시간</div>
+                        <div class="info-label"><span class="material-icons">schedule</span>&nbsp;예약 시간</div>&nbsp;
                         <div class="info-value" id="modalReserveTime"></div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">인원</div>
+                        <div class="info-label"><span class="material-icons">group</span>&nbsp;인원</div>&nbsp;
                         <div class="info-value" id="modalGuestCount"></div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">요청사항</div>
+                        <div class="info-label"><span class="material-icons">list</span>&nbsp;요청사항</div>&nbsp;
                         <div class="info-value" id="modalRequest"></div>
                     </div>
                 </div>
@@ -529,6 +570,9 @@
     </div>
 </body>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    updateReservations();
+});
 document.getElementById('reserveDate').addEventListener('change', selectDate);
 document.getElementById('reserveTime').addEventListener('change', updateReservations);
 document.querySelector('.close-modal').onclick = function() {
@@ -601,12 +645,14 @@ function updateReservationList(tables, lists) {
             'data-reserve-time="' + list.reserve_time + '" ' +
             'data-request="' + (list.request || '') + '">' +
             '<div class="guest-info">' +
-                '<span class="name">' + list.user_name + '</span>' +
+                '<span class="name">' + list.user_name + '</span>&nbsp;' +
                 '<span class="count">(' + list.reserve_count + '인)</span>' +
             '</div>' +
             '<div class="reservation-info">' +
-                '<span class="time">' + list.reserve_time + '</span>' +
-                '<span class="tel">' + list.user_tel + '</span>' +
+                '<span class="time"><span class="material-icons">schedule</span>&nbsp;' + list.reserve_time + '</span>' +
+            '</div>' +
+            '<div class="reservation-info">'+
+                '<span class="tel"><span class="material-icons">phone</span>&nbsp;' + list.user_tel + '</span>' +
             '</div>' +
             '<div class="action-buttons">' + buttonHtml + '</div>' +
             '</div>';

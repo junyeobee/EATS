@@ -4,7 +4,7 @@
 const ChartManager = {
     colors: {
         primary: ['#2570eb', '#3b82f6', '#609afa', '#93bbfd', '#bfd7fe'],
-        secondary: ['#64748b', '#94a3b8', '#cbd5e1', '#e2e8f0', '#f1f5f9']
+        secondary: ['#64748b', '#94a3b8', '#cbd5e1', '#e2e8f0', '#f1f5f9','#F3553C']
     },
     //레전드만들기
     createLegend(chart, id) {
