@@ -10,12 +10,22 @@
 	.user_join_wrap {
 		position: sticky;
 		width: 700px;
-		height: 2000px;
+		height: 1800px;
 		margin: 0 auto;
+	}
+	
+	.logo-wrapper img{
+		width:100px;
+		padding-left: 300px;
+	}
+	
+	hr {
+		border: 1.5px solid #ccc;
 	}
 	
 	.user_join_title {
 		width: 100%;
+		padding-top: 10px;
 	}
 	
 	.user_join_title p {
@@ -24,14 +34,14 @@
 		font-family: 'Noto Sans KR';
 		font-style: normal;
 		font-weight: 700;
-		font-size: 30px;
+		font-size: 28px;
 		line-height: 20px;
 		color: #000000;
 	}
 	
 	.user_join_box1 {
 		width: 100%;
-		height: 18%;
+		height: 370px;
 		padding-top: 10px;
 		margin-top: 50px;
 		background: #FFF8EB;
@@ -39,15 +49,17 @@
 	
 	.user_join_box2 {
 		width: 100%;
-		height: 18%;
-		
+		height: 370px;
+		padding-top: 10px;
+		margin-top: 50px;
 		background: #FFF8EB;
 	}
 	
 	.user_join_box3 {
 		width: 100%;
-		height: 11%;
-
+		height: 230px;
+		padding-top: 10px;
+		margin-top: 50px;
 		background: #FFF8EB;
 	}
 	
@@ -62,12 +74,15 @@
 	
 	.join_middle {
 		flex: 300px;
+		margin-top:5px;
 		text-align: center;
 	}
 	
 	.join_right {
 		flex: 190px;
-		text-align: center;
+		text-align: left;
+		margin-top:5px;
+		margin-left: 20px;
 	}
 	
 	.join_bot {
@@ -118,7 +133,7 @@
 		font-family: 'Noto Sans KR';
 		font-style: normal;
 		font-weight: 700;
-		font-size: 16px;
+		font-size: 14px;
 		background: #FFB53C;
 		border: none;
 		border-radius: 10px;
@@ -130,7 +145,7 @@
 	
 	.user_noti_box {
 		width: 100%;
-		height: 15%;
+		height: 300px;
 		padding-top: 60px;
 		padding-bottom: 40px;
 		font-family: 'Noto Sans KR';
@@ -144,11 +159,13 @@
 	
 	.user_allnoti_btn {
 		padding-bottom: 10px;
+		margin-left: 10px;
 	}
 	
 	.user_noti_section {
 		padding-top: 10px;
 		padding-bottom: 10px;
+		padding-left: 10px;
 		background: rgba(175, 175, 175, 0.29);
 	}
 	
@@ -159,14 +176,13 @@
 	.user_join_btn input[type=button] {
 		font-family: 'Noto Sans KR';
 		font-style: normal;
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 20px;
 		background: #FFB53C;
 		border: none;
 		border-radius: 10px;
 		width: 160px;
 		height: 60px;
-		text-align: center;
 		letter-spacing: 0.1px;
 	}
 	
@@ -422,6 +438,10 @@
 <body>
 <form id="user_join_form" name="user_join_form" action="userJoin" method="post">
 <div class="user_join_wrap">
+	<div class="logo-wrapper">
+		<a href="/"><img src="/img/eats_logo.png"></a>
+		<hr>
+	</div>
 	<div class="user_join_title"><p>회 원 가 입</p></div>
 	<div class="user_join_box1">
 		<div class="join_set">
@@ -554,14 +574,14 @@
 	</div>
 	<div class="user_noti_box">
 		<div class="user_allnoti_btn">
-			<input type="checkbox" id="check_all" onclick="noti_check();"><span>전체동의</span>
+			<input type="checkbox" id="check_all" onclick="noti_check();"><span> 전체동의</span>
 		</div>
 		<div class="user_noti_section">
-			<p><input type="checkbox" id="check_1" onclick="noti_indicheck();">[필수] 만 14세 이상입니다.</p>
-			<p><input type="checkbox" id="check_2" onclick="noti_indicheck();">[필수] Eat's 이용 약관 동의</p>
-			<p><input type="checkbox" id="check_3" onclick="noti_indicheck();">[필수] 개인정보 수집 및 이용 약관 동의</p>
-			<p><input type="checkbox" id="check_4" onclick="noti_indicheck();">[필수] 개인정보 제 3자 제공 동의</p>
-			<p><input type="checkbox" id="check_5" onclick="noti_indicheck();">[선택] 마케팅 이용 동의</p>
+			<p><input type="checkbox" id="check_1" onclick="noti_indicheck();"> [필수] 만 14세 이상입니다.</p>
+			<p><input type="checkbox" id="check_2" onclick="noti_indicheck();"> [필수] Eat's 이용 약관 동의</p>
+			<p><input type="checkbox" id="check_3" onclick="noti_indicheck();"> [필수] 개인정보 수집 및 이용 약관 동의</p>
+			<p><input type="checkbox" id="check_4" onclick="noti_indicheck();"> [필수] 개인정보 제 3자 제공 동의</p>
+			<p><input type="checkbox" id="check_5" onclick="noti_indicheck();"> [선택] 마케팅 이용 동의</p>
 		</div>
 	</div>
 	<div class="user_join_btn">
