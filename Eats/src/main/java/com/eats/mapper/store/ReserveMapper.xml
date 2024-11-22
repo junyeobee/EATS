@@ -62,4 +62,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			store_idx = #{storeIdx}
 			AND stime_day = #{stimeDay}
 	</select>
+	<update id="assignTable" parameterType="map">
+		UPDATE RESERVATION r
+		SET 
+			RESERVE_STATE = 1,
+			RESERVE_TABLE_IDX = (
+				SELECT sts.STS_IDX
+				FROM STORE_TABLE_SET sts
+				WHERE sts.TABLE_NUM = #{tableNum}
+				AND sts.STS_IDX IN (
+					SELECT sts2.STS_IDX 
+					FROM STORE_TABLE_SET sts2
+					INNER JOIN STORE_GRID sg ON sts2.SG_IDX = sg.SG_IDX
+					WHERE sg.STORE_IDX = #{storeIdx}
+				)
+				AND ROWNUM = 1
+			)
+		WHERE r.RESERVE_IDX = #{reserveIdx}
+	</update>
 </mapper>

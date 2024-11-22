@@ -163,4 +163,21 @@ public class ReserveController {
 		dto.setLists(lists);
 		return dto;
 	}
+
+	@GetMapping("/assign")
+	@ResponseBody
+	public Map<String, Integer> assignTable(HttpServletRequest req, int tableNum, int reserveIdx) {
+		HttpSession session = req.getSession();
+		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		Map<String, Object> map = new HashMap<>();
+		map.put("storeIdx", storeIdx);
+		map.put("reserveIdx", reserveIdx);
+		map.put("tableNum", tableNum);
+		int result = service.assignTable(map);
+		System.out.println(result);
+		Map<String, Integer> response = new HashMap<>();
+    	response.put("result", result);
+		return response;
+	}
+
 }

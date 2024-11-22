@@ -18,19 +18,26 @@ public class ReserveServiceImple implements ReserveService {
 	private ReserveMapper mapper;
 	
 	@Override
-	public List<TableDTO> tables(Map map) {
+	public List<TableDTO> tables(Map<String, Object> map) {
 		List<TableDTO> result = mapper.tables(map);
 		return result;
 	}
 	
 	@Override
-	public List<ReserveListDTO> reserveList(Map map) {
+	public List<ReserveListDTO> reserveList(Map<String, Object> map) {
 		List<ReserveListDTO> result = mapper.reserveList(map);
 		return result;
 	}
 
-	public StoreTimeDTO storeTime(Map map){
+	public StoreTimeDTO storeTime(Map<String, Object> map){
 		StoreTimeDTO result = mapper.storeTime(map);
+		return result;
+	}
+	@Override
+	public int assignTable(Map<String, Object> map) {
+		System.out.println(map.get("tableNum"));
+		int result = mapper.assignTable(map);
+		
 		return result;
 	}
 }

@@ -8,7 +8,8 @@ import com.eats.store.model.reserve.StoreTimeDTO;
 import com.eats.store.model.reserve.TableDTO;
 
 public interface ReserveMapper {
-	public List<TableDTO> tables(Map map);
-	public List<ReserveListDTO> reserveList(Map map);
-	public StoreTimeDTO storeTime(Map map);
+	public List<TableDTO> tables(Map<String, Object> map);
+	public List<ReserveListDTO> reserveList(Map<String, Object> map);
+	public StoreTimeDTO storeTime(Map<String, Object> map);
+	public int assignTable(Map<String, Object> map);
 }
