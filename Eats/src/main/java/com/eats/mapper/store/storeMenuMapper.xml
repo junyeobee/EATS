@@ -97,9 +97,11 @@
 	
 	<!-- 수정할 메뉴 정보 불러오기 -->
 	<select id="updateMenuInfo" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
+		
 		select * from menu 
 		where
 		menu_idx=#{menu_idx}
+		
 	</select>
 	
 	
