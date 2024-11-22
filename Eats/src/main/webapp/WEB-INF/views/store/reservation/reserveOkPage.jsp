@@ -324,14 +324,31 @@
     </div>
 </body>
 <script>
-document.getElementById('reserveDate').addEventListener('change', updateReservations);
+document.getElementById('reserveDate').addEventListener('change', selectDate(event));
 document.getElementById('reserveTime').addEventListener('change', updateReservations);
-
+function selectDate(e) {
+    let date = document.getElementById('reserveDate').value;
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/store/reserveDateInTime?date=' + date);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+            let timeSelect = document.getElementById('reserveTime');
+            timeSelect.innerHTML = '';
+            data.forEach(function(time) {
+                let option = document.createElement('option');
+                option.value = time;
+                option.innerText = time;
+                timeSelect.appendChild(option);
+            });
+            updateReservations();
+        }
+    };
+}
 function updateReservations() {
     var date = document.getElementById('reserveDate').value;
     var time = document.getElementById('reserveTime').value;
     
-    // AJAX 호출로 새로운 데이터 요청
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/store/reservations?date=' + date + '&time=' + time);
     xhr.onload = function() {
@@ -346,7 +363,6 @@ function updateReservations() {
 
 function showReservationDetail(element) {
     var reserveIdx = element.getAttribute('data-reserve-idx');
-    // 예약 상세 정보 표시 로직
 }
 
 function updateTableLayout(tables) {
@@ -368,13 +384,11 @@ function updateTableLayout(tables) {
 }
 
 function quickAssign(reserveIdx, guestCount) {
-    // AJAX 처리 필요: 해당 예약에 맞는 테이블 자동 배정
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/store/quickAssign');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
         if (xhr.status === 200) {
-            // 성공시 테이블 현황과 예약 목록 갱신
             updateReservations();
         }
     };
