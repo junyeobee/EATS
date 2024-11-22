@@ -40,10 +40,21 @@ public class SearchController {
 			@RequestParam(required = false) String word, @RequestParam(required = false) String areaWord,
 			@RequestParam(required = false) String selectedDate, @RequestParam(required = false) String selectedTime,
 			@RequestParam(required = false) String selectedPrice) {
-
+		
+		Map<String, Object> words = new HashMap<>();
+		
 		if (word != null && !word.equals("")) {
 			ss.addSearchWord(word);
+			words.put("word", word);
 		}
+		
+		LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        
+        if(selectedDate==null || selectedDate.equals("")) {
+        	selectedDate = formattedDate;
+        }
 
 		List<CateKeyDTO> keyDTOList = ms.getCateKey();
 		Map<String, List<CateValueDTO>> mainValueList = new HashMap<>();
@@ -80,10 +91,9 @@ public class SearchController {
 			}
 		}
 
-		Map<String, Object> words = new HashMap<>();
 		words.put("tag", tagList);
 
-		if(areaWord!=null && !areaWord.equals("")) {
+		if(areaWord!=null && !areaWord.equals("") && !areaWord.equals(" ")) {
 			words.put("city", areaWord.split(" ")[0]);
 			words.put("unit", areaWord.split(" ")[1]);
 		} else {

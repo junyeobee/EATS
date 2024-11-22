@@ -43,8 +43,15 @@
 				<c:if test="${empty lists }">
 					<c:set var="img_num" value="1" />
 					<c:forEach begin="1" end="5" var="tr" varStatus="tr_sta">
+						
+						<c:if test="${img_num == 1 }">
+							<c:set var="img_title" value="메인이미지" />
+						</c:if>
+						<c:if test="${img_num != 1 }">
+							<c:set var="img_title" value="이미지 ${img_num}" />
+						</c:if>
 						<tr>
-							<th>이미지 ${img_num}</th>
+							<th>${img_title}</th>
 							<td>
 								<input type="file" name="store_imgs" id="" value="">
 								<input type="hidden" name="store_img_db" id="" value="">
@@ -60,8 +67,16 @@
 				    
 				    <!-- img_order에 맞춰서 출력 -->
 				    <c:forEach var="i" begin="1" end="5">
+				    
+						<c:if test="${i == 1 }">
+							<c:set var="img_title" value="메인이미지" />
+						</c:if>
+						<c:if test="${i != 1 }">
+							<c:set var="img_title" value="이미지 ${i}" />
+						</c:if>
+						
 				        <tr>
-				            <th>이미지 ${i}</th>
+				            <th>${img_title}</th>
 				            <td>
 				                <input type="file" name="store_imgs" id="" value="">
 				

@@ -159,21 +159,31 @@ public class MypageController {
     public Map<String, Object> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, Object> response = new HashMap<>();
         try {
-            // 업로드 디렉토리 설정
-            String uploadDir = "C:/uploads/";
+            // 업로드 디렉토리 경로를 동적으로 가져오기
+            String uploadDir = System.getProperty("user.dir") + "/src/main/webapp/img/user/profile/";
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             File destFile = new File(uploadDir + fileName);
-            file.transferTo(destFile); // 파일 저장
 
-            // 파일 경로 반환
+            // 디렉토리가 존재하지 않으면 생성
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // 파일 저장
+            file.transferTo(destFile);
+
+            // 반환 경로 설정
             response.put("success", true);
-            response.put("filePath", "/uploads/" + fileName); // JSP에서 사용될 파일 경로
+            response.put("filePath", "/img/user/profile/" + fileName); // JSP에서 사용할 경로
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
+
 
     @GetMapping("/uploads/{filename}")
     public ResponseEntity<FileSystemResource> getImage(@PathVariable String filename) {

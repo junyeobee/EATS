@@ -84,6 +84,8 @@ menu, ol, ul {
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
 						<div class="area_big_value scrollCss">
+							<div class="area_big_value_text"
+									onclick="selectCity(0, this)">지역 선택 해제</div>
 							<c:forEach var="city" items="${cityList }">
 								<div class="area_big_value_text"
 									onclick="selectCity(${city.area_idx}, this)">${city.area_name }</div>
@@ -207,16 +209,11 @@ menu, ol, ul {
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
 						<!-- Slides -->
-						<div class="swiper-slide">
-							<img src="/img/banner_img.jpg">
-						</div>
-						<div class="swiper-slide">
-							<img src="/img/banner_img2.jpg">
-						</div>
-						<div class="swiper-slide">
-							<img src="/img/banner_img3.jpg">
-						</div>
-
+						<c:forEach var="banner" items="${bannerList }">
+							<div class="swiper-slide" onclick="location.href='${banner.banner_url}'">
+								<img src="${banner.banner_img }">
+							</div>
+						</c:forEach>
 					</div>
 					<!-- If we need pagination -->
 					<div class="swiper-pagination"></div>
@@ -235,10 +232,11 @@ menu, ol, ul {
 				
 				<c:forEach var="reviews" items="${reviewData }" varStatus="cnt">
 				<c:if test="${!empty reviews }">
-					<div class="user_review">
+					<div class="user_review" onclick="location.href='/user/storeInfo?store_idx=${reviews.store_idx}';">
 						<div class="user_info">
-							<img src="/svg/profile_icon.svg">
-							<div class="user_pro">
+						<div class="user_info_img">
+							<img src="${reviews.profile_image==null||reviews.profile_image==''?'/svg/profile_icon.svg':reviews.profile_image }">
+						</div>	<div class="user_pro">
 								<div class="user_id_info">
 									<div class="user_id">${reviews.user_nickname }</div>
 									<div class="user_follow">팔로워 ${followCount.get(cnt.index) }</div>
@@ -285,165 +283,101 @@ menu, ol, ul {
 			</div>
 			</c:if>
 
+		<c:if test="${jcntList.size()>0 }">
 			<div class="reserve_box">
 				<div class="reserve_text">
 					<div class="reserve_title">
-						빠른 예약<br />가능 식당
+						찜 순
 					</div>
 					<div class="reserve_sub">
-						바로 예약 가능한<br />식당이 알고 싶다면?
+						가장 많이 찜한<br />식당이 알고 싶다면?
 					</div>
 				</div>
 
 				<div class="reserve_container">
-					<div class="store_reserve">
+				<c:forEach var="jcnt" items="${jcntList }">
+					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${jcnt.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
+							<img class="reserve_img" src="${jcnt.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
+									<div class="store_reserve_title">${jcnt.store_name }</div>
 									<div class="store_reserve_sub">
 										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
+											<img class="star_icon" src="/svg/fork_icon.svg" />
+											<div class="star_point">${jcnt.jcnt }</div>
 										</div>
 										<div class="store_location">
 											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
+											<div class="location_text">${jcnt.store_addr }</div>
 										</div>
 									</div>
 								</div>
-
 								<div class="store_reserve_tag_box">
+								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }">
 									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
+										<div class="store_reserve_tag_text">
+											${tag }
+										</div>
 									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
+								</c:forEach>
 								</div>
-							</div>
-						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
 							</div>
 						</div>
 					</div>
-					<div class="store_reserve">
-						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
-
-							<div class="store_reserve_info">
-								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-									<div class="store_reserve_sub">
-										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
-										</div>
-										<div class="store_location">
-											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="store_reserve_tag_box">
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
-							</div>
-						</div>
-					</div>
-					<div class="store_reserve">
-						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/reserve_img.png" />
-
-							<div class="store_reserve_info">
-								<div class="store_reserve_info_box">
-									<div class="store_reserve_title">트러플 머쉬룸 오일리스터</div>
-									<div class="store_reserve_sub">
-										<div class="store_star">
-											<img class="star_icon" src="/svg/star_icon.svg" />
-											<div class="star_point">4.7</div>
-											<div class="review_count">(131)</div>
-										</div>
-										<div class="store_location">
-											<img class="location_icon" src="/svg/location_icon.svg" />
-											<div class="location_text">대전시 성심당</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="store_reserve_tag_box">
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">대화</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">야채</div>
-									</div>
-									<div class="store_reserve_tag">
-										<div class="store_reserve_tag_text">양식</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="reserve_time_box">
-							<div class="reserve_time">
-								<div class="reserve_time_text">12:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">13:30</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">16:00</div>
-							</div>
-							<div class="reserve_time">
-								<div class="reserve_time_text">19:30</div>
-							</div>
-						</div>
-					</div>
+				</c:forEach>
 				</div>
 			</div>
+		</c:if>
+		<c:if test="${pointList.size()>0 }">
+			<div class="reserve_box">
+				<div class="reserve_text">
+					<div class="reserve_title">
+						별점 순
+					</div>
+					<div class="reserve_sub">
+						리뷰 별점이 높은<br />식당이 알고 싶다면?
+					</div>
+				</div>
 
-			<div class="content_box">
+				<div class="reserve_container">
+				<c:forEach var="point" items="${pointList }">
+					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${point.store_idx}';">
+						<div class="store_reserve_box">
+							<img class="reserve_img" src="${point.store_img }" />
+
+							<div class="store_reserve_info">
+								<div class="store_reserve_info_box">
+									<div class="store_reserve_title">${point.store_name }</div>
+									<div class="store_reserve_sub">
+										<div class="store_star">
+											<img class="star_icon" src="/svg/star_icon.svg" />
+											<div class="star_point">${point.point }</div>
+										</div>
+										<div class="store_location">
+											<img class="location_icon" src="/svg/location_icon.svg" />
+											<div class="location_text">${point.store_addr }</div>
+										</div>
+									</div>
+								</div>
+								<div class="store_reserve_tag_box">
+								<c:forEach var="tag" items="${pointTags[point.store_idx] }">
+									<div class="store_reserve_tag">
+										<div class="store_reserve_tag_text">
+											${tag }
+										</div>
+									</div>
+								</c:forEach>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+				</div>
+			</div>
+		</c:if>
+			<!-- <div class="content_box">
 				<div class="content_text">
 					<div class="content_title">
 						주변<br />문화콘텐츠
@@ -460,44 +394,8 @@ menu, ol, ul {
 							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
 						</div>
 					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
 				</div>
-			</div>
+			</div> -->
 		</div><!-- category div (e) -->
 	</div> <!-- main div (e) -->
 	</section>
@@ -576,9 +474,13 @@ menu, ol, ul {
     }
     
     function selectCity(cityIdx, t){
-    	areaWord.value=t.innerText;
-    	var params = 'cityIdx='+cityIdx;
-    	sendRequest('selectUnit', params, showUnit, 'GET');
+    	if(cityIdx==0) {
+    		sendRequest('resetArea', null, showReset, 'GET');
+    	} else {
+    		areaWord.value=t.innerText;
+    		var params = 'cityIdx='+cityIdx;
+    		sendRequest('selectUnit', params, showUnit, 'GET');
+    	}
     }
     
     function showUnit(){
@@ -603,6 +505,14 @@ menu, ol, ul {
 				});
 				
 				unitbox.appendChild(svalue);
+    		}
+    	}
+    }
+    
+    function showReset() {
+    	if(XHR.readyState==4){
+    		if(XHR.status==200){
+    			location.href='/';
     		}
     	}
     }

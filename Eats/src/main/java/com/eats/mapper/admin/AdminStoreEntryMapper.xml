@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminStoreEntryMapper">		 
+		<select id="adminMainEntryList" resultType="com.eats.store.model.StoreJoinDTO">
+		    select 
+	            sj_idx, sj_name, biz_num, owner_name, owner_tel, sj_email, 
+	            sj_addr, sj_daddr, sj_id, sj_pwd, sj_stat, sj_reason, 
+	            sj_req_date, sj_res_date 
+	        from 
+	            store_join 
+	        order by 
+	            sj_idx desc
+		</select>
+		
+		
+		
+		<select id="adminStoreEntryList" resultType="com.eats.store.model.StoreJoinDTO">
+			select 
+				sj_idx, sj_name, biz_num, owner_name, owner_tel, sj_email, 
+				sj_addr, sj_daddr, sj_id, sj_pwd, sj_stat, sj_reason, TO_CHAR(sj_req_date, 'yyyy-MM-dd') sj_req_date, TO_CHAR(sj_res_date, 'yyyy-MM-dd') sj_res_date 
+			from 
+				 store_join 
+		</select>
+		
+	   <select id="adminStoreEntryDetail" resultType="com.eats.store.model.StoreJoinDTO">
+			SELECT * 
+			FROM store_join 
+			WHERE sj_idx = #{sj_idx}
+	   </select>
+   
+   
+   
+		<update id="storeJoinUpdate" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+			update store_join set
+				sj_stat=#{sj_stat},
+				sj_reason=#{sj_reason},
+				sj_res_date=#{sj_res_date}
+				where sj_idx=#{sj_idx}
+		</update>
+	   	<insert id="StoreInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+	        insert into STORE (
+			    store_idx,
+			    store_name,
+			    store_area,
+			    store_addr,
+			    store_daddr,
+			    store_tel,
+			    store_biznum,
+			    store_state,
+			    store_lat,
+			    store_lng
+			) 
+			VALUES (STORE_IDX_SEQ.nextval,
+			        #{store_name},
+			        #{store_area},
+			        #{store_addr},
+			        #{store_daddr},
+			        #{store_tel},
+			        #{store_biznum},
+			        #{store_state},
+			        #{store_lat},
+			        #{store_lng}
+			)
+	   	</insert>
+	   	<insert id="StoreAccountInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+	        insert into STORE_ACCOUNT (
+			    store_idx,
+			    store_id,
+			    store_pwd,
+			    store_email,
+			    store_ceo
+			) 
+			VALUES (#{store_idx},
+			        #{store_id},
+			        #{store_pwd},
+			        #{store_email},
+			        #{store_ceo}
+			)
+	   	</insert>
+	</mapper>

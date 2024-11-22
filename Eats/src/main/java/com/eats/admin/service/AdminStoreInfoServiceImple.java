@@ -14,7 +14,6 @@ public class AdminStoreInfoServiceImple implements AdminStoreInfoService {
 	@Autowired
 	private AdminStoreInfoMapper mapper;
 
-
 	@Override
 	public List<AdminStoreInfoUpdateDTO> adminStoreInfoList() {
 		
@@ -22,13 +21,11 @@ public class AdminStoreInfoServiceImple implements AdminStoreInfoService {
 		return lists;
 	}
 
-
 	@Override
 	public int infoUpdateAction(AdminStoreInfoUpdateDTO dto) {
 		int count = mapper.infoUpdateAction(dto);
 		return count;
 	}
-
 
 	@Override
 	public int storeInfoUpdate(AdminStoreInfoUpdateDTO dto) {
@@ -36,11 +33,9 @@ public class AdminStoreInfoServiceImple implements AdminStoreInfoService {
 		return count;
 	}
 
-
 	@Override
 	public int storeInfoUpdateCeo(AdminStoreInfoUpdateDTO dto) {
 		int count = mapper.storeInfoUpdateCeo(dto);
 		return count;
 	}
-
 }

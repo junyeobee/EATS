@@ -5,38 +5,7 @@ let priceFrom = document.querySelector(".price-from");
 let priceTo = document.querySelector(".price-to");
 var selectedMinPrice = document.getElementById('selectedMinPrice');
 var selectedMaxPrice = document.getElementById('selectedMaxPrice');
-/*
-	function setLeftValue() {
-		let _this = inputLeft,
-			min = parseInt(_this.min),
-			max = parseInt(_this.max);
-
-		_this.value = Math.min(
-			parseInt(_this.value),
-			parseInt(inputRight.value) - 50
-		);
-		priceFrom.textContent = `${_this.value * 10} 원`;
-	
-		let percent = ((_this.value - min) / (max - min)) * 100;
-
-		range.style.left = percent + "%";
-	}*/
-
-
-/*
-	function setRightValue() {
-		let _this = inputRight,
-			min = parseInt(_this.min),
-			max = parseInt(_this.max);
-
-		_this.value = Math.max(parseInt(_this.value), parseInt(inputLeft.value) + 50);
-		priceTo.textContent = `${_this.value * 100} 원`;
-
-		let percent = ((_this.value - min) / (max - min)) * 100;
-
-		range.style.right = 100 - percent + "%";
-	}*/
-
+var parameters = document.getElementById('parameters');
 
 function setLeftValue() {
 	let _this = inputLeft,
@@ -127,3 +96,13 @@ function selectThisRange(minPrice, maxPrice) {
 	setLeftValue();
 	setRightValue();
 }
+
+window.addEventListener('load', function(){
+	var thisPrice = parameters.value.split('selectedPrice=')[1].split(',');
+
+	inputLeft.value=thisPrice[0];
+	inputRight.value=thisPrice[1];
+	
+	setLeftValue();
+		setRightValue();
+})
