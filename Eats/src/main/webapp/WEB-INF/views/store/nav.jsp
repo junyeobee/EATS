@@ -110,7 +110,10 @@ pageEncoding="UTF-8"%>
                     <a href="/suminbabo">예약 승인</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/reservation/settings">예약 목록</a>
+                    <a href="/store/reserveOkListPage">예약 목록</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/binTablesView">빈자리 알림</a>
                 </li>
             </ul>
         </div>
@@ -155,13 +158,13 @@ pageEncoding="UTF-8"%>
             </ul>
         </div>
         <div class="nav-item single-item">
-            <span onclick="window.location.href='/reportLoad'">
+            <span onclick="window.location.href='/storeMenuList'">
                 <i class="icon-people"></i>
                 <a href="/storeMenuList">메뉴관리</a>
             </span>
         </div>
         <div class="nav-item single-item">
-            <span onclick="window.location.href='/reportLoad'">
+            <span onclick="window.location.href='/store/review'">
                 <i class="icon-people"></i>
                 <a href="/store/review">리뷰관리</a>
             </span>
