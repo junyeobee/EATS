@@ -3,6 +3,7 @@ package com.eats.controller.user;
 import java.io.File;
 import java.io.IOException;
 import java.lang.module.ModuleDescriptor.Requires;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.eats.store.model.HYMenuCateDTO;
 import com.eats.store.model.HYMenuDTO;
 import com.eats.user.model.ReservationDTO;
 import com.eats.user.model.ReviewDTO;
+import com.eats.user.service.MyplateService;
 import com.eats.user.service.UserReviewService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,9 @@ public class MyPlateController {
 	
 	@Autowired
 	private UserReviewService reviewService;
+	
+	@Autowired
+	private MyplateService myplateService;
 		
 	@Value("${review.upload.path}")
 	private String uploadPath;
@@ -79,10 +84,9 @@ public class MyPlateController {
 		
 		String projectPath=System.getProperty("user.dir");
 		List<String> imgNameList = new ArrayList<String>();
-		String redirectUri="";
 		
-		if( images!=null && !images.isEmpty() && images.size()!=0 ) {
-			
+		if( images!=null && !images.isEmpty() && images.size()>1 ) {
+			System.out.println("images not null");
 			File uploadDir = new File(uploadPath);
 	        if (!uploadDir.exists()) {
 	            uploadDir.mkdirs();
@@ -93,15 +97,15 @@ public class MyPlateController {
 	            String originalFilename = image.getOriginalFilename();
 	            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 	            
-	            // 새 파일명 생성: reserve_idx_순번.확장자
+	            // 새 파일명 생성하기 (reserve_idx_순번.확장자)
 	            String newFileName = reserve_idx + "_" + (i + 1) + extension;
 	            
 	            try {
-	                // 파일 저장
+	                //파일 저장
 	                File newFile = new File(projectPath + uploadPath + newFileName);
 	                image.transferTo(newFile);
 	                
-	                // 파일명 리스트에 추가
+	                //리스트에 새로운 파일 이름 추가
 	                imgNameList.add(newFileName);
 	                
 	                
@@ -116,14 +120,16 @@ public class MyPlateController {
 		
 		String dbSave="";
 		
-		for(int i=0; i<imgNameList.size(); i++) {
-			if(i==0) {
-				dbSave+=imgNameList.get(i);
-			}else {
-				dbSave+=","+imgNameList.get(i);
+		if(imgNameList.size()!=0 || imgNameList!=null) {
+			System.out.println("imgNameList null");
+			for(int i=0; i<imgNameList.size(); i++) {
+				if(i==0) {
+					dbSave+=imgNameList.get(i);
+				}else {
+					dbSave+=","+imgNameList.get(i);
+				}
 			}
 		}
-		
 		ReviewDTO dto=new ReviewDTO(0, reserve_idx, rev_score, rev_content, null, 1, dbSave, rev_menu, rev_tag);
 		int result=reviewService.insertReview(dto);
 		
@@ -139,7 +145,73 @@ public class MyPlateController {
 	}
 	
 	@GetMapping("/user/myPlate")
-	public String goMyPlate() {
-		return "user/myplate/main";
+	public ModelAndView goMyPlate(
+			HttpSession session) {
+		Integer user_idx = (Integer)session.getAttribute("user_idx");
+		List<Map<String, BigDecimal>> cntList = myplateService.getReserveCntByState(user_idx);
+		
+		//방문예정, 방문완료, 취소노쇼의 총 예약 개수
+		int readyCnt=cntList.get(0).get("COUNT").intValue()+cntList.get(1).get("COUNT").intValue();//방문전
+		int finCnt=cntList.get(3).get("COUNT").intValue(); //방문완료
+		int cancledCnt=cntList.get(2).get("COUNT").intValue()+cntList.get(4).get("COUNT").intValue(); //취소노쇼
+		
+		
+		//방문예정 예약 건의 D-day
+		//List<Map<String, Integer>> dDayList=myplateService.getDdayList(user_idx);
+		
+		//예약정보들
+		List<Map> reserveList = myplateService.getReserveInfoList(user_idx);
+		
+		for(int i=0; i<reserveList.size(); i++) {
+			BigDecimal reserve_idx_bd=(BigDecimal)reserveList.get(i).get("RESERVE_IDX");
+			int reserve_idx=reserve_idx_bd.intValue();
+			BigDecimal reserve_st_bd=(BigDecimal)reserveList.get(i).get("RESERVE_STATE");
+			int reserve_state=reserve_st_bd.intValue();
+			if(reserve_state==3) {
+				boolean revExist=myplateService.checkReviewExist(reserve_idx);
+				reserveList.get(i).put("REV_EXIST", revExist);
+			}else if(reserve_state==0 || reserve_state==1) {
+				int dDay=myplateService.getDday(reserve_idx);
+				reserveList.get(i).put("D_DAY", dDay);
+			}
+		}
+		
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("readyCnt", readyCnt);
+		mv.addObject("finCnt", finCnt);
+		mv.addObject("cancledCnt", cancledCnt);
+		//mv.addObject("dDayList", dDayList);
+		mv.addObject("reserveList",  reserveList);
+		
+		mv.setViewName("user/myplate/main");
+		return mv;
+	}
+	
+	@GetMapping("/user/reserveInfo")
+	public ModelAndView reserveInfo(int reserve_idx) {
+		ModelAndView mv=new ModelAndView();
+		
+		ReservationDTO reservation = myplateService.getReserveInfo(reserve_idx);
+		int reserve_state=reservation.getReserve_state();
+		
+		String state="";
+		switch (reserve_state) {
+			case 0:
+			case 1:
+				state="방문예정";
+				
+				break;
+			case 2:state="취소";break;
+			case 3:state="방문완료";break;
+			case 4:state="노쇼";break;
+			default:break;
+		}
+		
+		
+		mv.addObject("reserveDTO", reservation);
+		mv.addObject("state", state);
+		mv.setViewName("user/myplate/reserveInfo");
+		return mv;
 	}
 }

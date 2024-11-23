@@ -7,7 +7,7 @@
 
 	<c:if test="${empty data}">
 		<form name="storeNewsSave" action="storeNewsSave" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+			<input type="hidden" name="store_idx" id="store_idx" value="${sessionScope.storeIdx}">
 			<input type="hidden" name="s_news_del" id="" value="N">
 		
 			<h2>소식 글쓰기</h2>
@@ -68,7 +68,7 @@
 					<tr>
 						<th>현재이미지</th>
 						<td>
-							<img src="${data.s_news_img}">
+							<img src="/img/storeNewsImg/${data.s_news_img}">
 						</td>
 					</tr>
 					<tr>

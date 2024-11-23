@@ -720,11 +720,6 @@ function handleDrop(e) {
     });
 }
 
-// 클릭으로도 파일 선택 가능하게
-dropZone.addEventListener('click', () => {
-    document.getElementById('imageInput').click();
-});
-
 
         
 document.getElementById('imageInput').addEventListener('change', function(e) {
@@ -801,8 +796,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
     
     // 제출
     this.submit();
-    
-    
+    alert(selectedImgs.length());
 });
 /************************************img upload (e)*******************************************/
 

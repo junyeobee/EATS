@@ -12,8 +12,7 @@
 	</div>
 	
 	<form>
-			
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		<div class="tableList mb60">
 			<table>
 				<thead>
