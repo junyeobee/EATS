@@ -16,6 +16,7 @@ import com.eats.store.model.report.ReservReportDTO;
 import com.eats.store.model.report.StoreAnalysisResultDTO;
 import com.eats.store.service.StoreReportService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -25,7 +26,13 @@ public class StoreReportController {
 	private StoreReportService storeReportService;
 	
 	@GetMapping("/reportLoad")
-	public String report() {
+	public String report(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int store_idx = (int)session.getAttribute("storeIdx");
+		int result = storeReportService.isGudoked(store_idx);
+		if(result == -1){
+			return "store/storeReport/storeReportLanding";
+		}
 		return "store/storeReport/storeReport";
 	}
 	

@@ -157,11 +157,19 @@ pageEncoding="UTF-8"%>
                 </li>
             </ul>
         </div>
-        <div class="nav-item single-item">
-            <span onclick="window.location.href='/storeMenuList'">
+        <div class="nav-item" data-menu="member">
+            <span>
                 <i class="icon-people"></i>
-                <a href="/storeMenuList">메뉴관리</a>
+                메뉴관리
             </span>
+            <ul class="nav-sub-items">
+                <li class="nav-item">
+                    <a href="/storeMenuList">매뉴 관리</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/storeMenuCate">매뉴 카테고리 관리</a>
+                </li>
+            </ul>
         </div>
         <div class="nav-item single-item">
             <span onclick="window.location.href='/store/review'">
