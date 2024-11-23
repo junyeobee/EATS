@@ -10,7 +10,7 @@
 	
 		<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
 		<c:if test="${not empty data}">	
-			<h2>[파브리]매장정보</h2>
+			<h2>[${data.store_name}]매장정보</h2>
 			<div class="tableWrite_4 mb60">
 				<table>
 					<tr>

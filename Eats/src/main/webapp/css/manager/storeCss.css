@@ -5,7 +5,7 @@
 	/*
 	.contents .mainCont .mainCon_1400 {width:1400px;}
 	*/
-	.mainCon_1400 .tableList {}
+	.mainCon_1400 .tableList {height:300px; border:0px solid red;}
 	.mainCon_1400 .tableList table {width:100%;}
 	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
 	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
@@ -13,10 +13,8 @@
 	.mainCon_1400 .tableList table tbody tr td span.afterText {color:darkred; font-weight:600; }
 	.mainCon_1400 .tableList table tbody tr td div.cancel_box {display:none; height:30px; margin:3px;}
 	
-	/*
-	.mainCon_1400 .tableList .listPaging {width:100%; margin-top:20px; text-align:center;}
-	.mainCon_1400 .tableList .listPaging > * {display:inline-block; cursor:pointer; margin-left:20px;}
-	*/
+	.mainCon_1400 .listPaging {width:100%; margin-top:20px; text-align:center;}
+	.mainCon_1400 .listPaging > * {display:inline-block; cursor:pointer;}
 	
 	.mainCon_1400 > .mc_left {float:left; width:49%;}
 	.mainCon_1400 > .mc_right {float:right; width:49%;}
@@ -104,6 +102,8 @@
 	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
 	
+	
+	
 	.pageChange {
 		margin-right:20px; cursor:pointer;
 		text-decoration: none; /* 기본 상태에서는 밑줄 제거 */
@@ -113,6 +113,10 @@
 	.pageChange:hover {
 	    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
 	}
+	
+	
+	/* 현재 페이지 표시 */
+	.paging_check {color:red; font-weight:600;}
 	
 	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
 	
@@ -134,6 +138,7 @@
 	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
 	
 	
+	.mt20 {margin-top:20px;}
 	
 	/* 이미지관리 - 상단컨텐츠 박스 */
 	.mb60 {margin-bottom:60px;}

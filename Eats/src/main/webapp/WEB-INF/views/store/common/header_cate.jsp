@@ -12,8 +12,36 @@
 <title>eats</title>
 
 <script>
-	function smallTagAdd(thisCon){
+	function smallTagAdd(thisCon, click_id){
+		
 
+        // 선택된 option의 value
+        var this_small_cate_key = thisCon.value;
+
+		
+		//중복태그 들어가지 않도록 시작
+	    var container = document.getElementById('cateBox');
+	    var exists = false;
+	    var inputs = container.querySelectorAll('input[name="small_cate_key"]');
+
+	    inputs.forEach(function(input) {
+	        if (input.value === this_small_cate_key) {
+	            exists = true; // 동일한 값이 있으면 exists를 true로 설정
+	        }
+	    });
+	    
+		if (exists) {
+	        alert("동일한 값을 가진 태그가 이미 존재합니다.");
+           	document.querySelector("[id='"+click_id+"']").selectedIndex = 0;
+	        document.querySelector("[id='"+click_id+"']").focus();
+	        return false;
+	    }
+		//중복태그 들어가지 않도록 마침
+	    
+		
+		
+		
+		
         // 선택된 option의 value
         var this_small_cate_key = thisCon.value;
 
@@ -29,27 +57,27 @@
         
         // 추가할 span 요소
         var newSpan = "";
-        newSpan += "<span class='mr10 small_tag_span_99_"+this_big_cate_key+"'>";
+        newSpan += "<span class='mr10 small_tag_span_99_"+this_big_cate_key+"_"+this_small_cate_key+"'>";
         newSpan += "	<span>"+this_small_cate_value +"</span>";
         newSpan += "	<input type='hidden' name='store_cate_idx' id='' class='ws80' value=''>";
         newSpan += "	<input type='hidden' name='big_cate_key' id='' class='ws80' value='"+this_big_cate_key+"'>";
         newSpan += "	<input type='hidden' name='small_cate_key' id='' class='ws80' value='"+this_small_cate_key+"'>";
-        newSpan += "    <span class='ml10 cspi' onclick=\"small_cate_del('" + this_small_cate_value + "', '99_" + this_big_cate_key + "')\">X</span>";
+        newSpan += "    <span class='ml10 cspi' onclick=\"small_cate_del('" + this_small_cate_value + "', '99_" + this_big_cate_key +"_"+this_small_cate_key+ "')\">X</span>";
         newSpan += "</span>";
 
         // .dddd 클래스가 있는 요소에 newSpan을 추가
         $('.cbb_'+this_big_cate_key).append(newSpan);
 	}
 	
-	function small_cate_del(small_cate_name, store_cate_key) {
-	    alert("'" + small_cate_name + "'" + " 태그가 삭제됩니다.");
+	function small_cate_del(small_cate_name, cate_key_value) {
+	    alert("'" + small_cate_name + "'////" +cate_key_value +" 태그가 삭제됩니다.");
 	    
 	    // 해당 클래스의 span 요소 삭제
-	    $(".small_tag_span_" + store_cate_key).remove();
+	    $(".small_tag_span_" + cate_key_value).remove();
 
-	    // store_cate_key가 비어있지 않고 99_(db에 있는 값 아니고 화면에서 추가한 경우 99_ 앞에 붙여서 처리해놓음)값이 없는경우
-	    //if (store_cate_key != "" && !store_cate_key.includes("99_")) {
-	    if (store_cate_key !== "" && !store_cate_key.toString().includes("99_")) {
+	    // cate_key_value가 비어있지 않고 99_(db에 있는 값 아니고 화면에서 추가한 경우 99_ 앞에 붙여서 처리해놓음)값이 없는경우
+	    //if (cate_key_value != "" && !cate_key_value.includes("99_")) {
+	    if (cate_key_value !== "" && !cate_key_value.toString().includes("99_")) {
 	        // AJAX 요청 보내기
 	        $.ajax({
 	            url: "/store/storeTagDel",  // 서버에서 처리할 URL

@@ -8,11 +8,18 @@
 	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>가입회원조회</h2>
 	
-	<form id="reviewDeleteForm" method="post" >
-		<input type="hidden" name="rv_idx" id="rv_idx" value="">
-		<input type="hidden" name="rev_state" id="rev_state" value="">
-		<input type="hidden" name="del_state" id="del_state" value="">
+	<!-- 
+	<form id="" method="get" action="/admin/userList">
+		
+		<select name="search_key">
+			<option value="user_id">아이디</option>
+			<option value="user_name">이름</option>
+		</select>
+		<input type="text" name="search_value" id="" value="">
+		<input type="submit" value="검색">
+		
 	</form>
+	 -->
 	
 	<div class="tableList mb60">
 		<table>
@@ -83,26 +90,20 @@
 					</c:forEach>
 				</c:if>
 			</tbody>
+			<!-- 
 			<tfoot>
 				<tr>
-					<td colspan="5" align="center">
-						${pageStr }
+					<td colspan="8" align="center">
+						<div class="mt20">${pageStr }</div>
 					</td>
 				</tr>
 			</tfoot>
+			 -->
 		</table>
-		<!-- 
-		<div class="listPaging">
-			<span> ◀ </span>
-			<span>1</span>
-			<span>2</span>
-			<span>3</span>
-			<span>4</span>
-			<span>5</span>
-			<span> ▶ </span>
-		</div>
-		 -->
 	</div>
+		<div class="listPaging">
+			${pageStr }
+		</div>
 </div>
    
 <%@include file="/WEB-INF/views/admin/common/footer.jsp"%>

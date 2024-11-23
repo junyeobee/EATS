@@ -21,7 +21,7 @@
 		
 		<c:if test="${!empty cateBigTitle}">
 		
-            <div class="cateBox">
+            <div class="cateBox" id="cateBox">
 			    <!-- 대메뉴 출력 -->
 		        <c:forEach var="cateBigTitle" items="${cateBigTitle}">
 		            <!-- 대메뉴의 cate_key_idx를 추출 -->
@@ -34,7 +34,7 @@
 		                    <span>&lt; ${cate_big_name} &gt;</span>
 		
 		                    <!-- 소메뉴를 위한 select 박스 -->
-		                    <select name="subcate_${cate_big_idx}" id="subcate_${cate_big_idx}" class="ml20" onchange="smallTagAdd(this)">
+		                    <select name="subcate_${cate_big_idx}" id="subcate_${cate_big_idx}" class="ml20" onchange="smallTagAdd(this, 'subcate_${cate_big_idx}')">
 		                        <option value="">태그선택</option>
 		                        <!-- list_option에서 각 대메뉴에 해당하는 소메뉴 목록을 가져옴 -->
 		                        <c:forEach var="small_tag" items="${cateSmallData[cate_big_idx]}">
