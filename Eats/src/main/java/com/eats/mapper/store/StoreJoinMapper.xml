@@ -18,9 +18,9 @@
 
     <!-- 아이디 중복 확인 -->
     <select id="existsByApprovalId" parameterType="string" resultType="Integer">
-        SELECT COUNT(*)
-        FROM STORE_JOIN
-        WHERE SJ_ID = #{approvalId}
+        select count(*)
+        from store_account, store_join
+		where #{approvalId} in (sj_id,store_id)
     </select>
 
 </mapper>

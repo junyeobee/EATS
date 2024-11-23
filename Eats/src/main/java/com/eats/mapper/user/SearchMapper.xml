@@ -38,6 +38,9 @@
 		<if test="city!=null and city!='' and unit!=null and unit!='' ">
 			store_addr like #{city}||'%'||#{unit}||'%' and 
 		</if>
+		<if test="word!=null and word!=''">
+			store_name like '%'||#{word}||'%' and
+		</if>
 		store_state='TRUE')a, store_time
 		<if test="week !=null and week!='' ">
 			where stime_day=#{week} and a.store_idx=store_time.store_idx

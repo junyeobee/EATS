@@ -100,9 +100,14 @@ function selectThisRange(minPrice, maxPrice) {
 window.addEventListener('load', function(){
 	var thisPrice = parameters.value.split('selectedPrice=')[1].split(',');
 
-	inputLeft.value=thisPrice[0];
-	inputRight.value=thisPrice[1];
+	if(thisPrice.length>1) {
+		inputLeft.value=thisPrice[0];
+		inputRight.value=thisPrice[1];
+	} else {
+		inputLeft.value='30000';
+		inputRight.value='100000';
+	}
 	
 	setLeftValue();
-		setRightValue();
+	setRightValue();
 })

@@ -61,7 +61,12 @@ public class TagController {
 	@ResponseBody
 	@PostMapping("deleteTag")
 	public Map<String,String> deleteTag(CateValueDTO dto) {
-		ts.deleteFromStoreTagByCateValue(dto);
+		int result = ts.getCateValueExist(dto);
+		System.out.println("d");
+		if(result>0) {
+			ts.deleteFromStoreTagByCateValue(dto);
+		}
+
 		ts.deleteCateValue(dto);
 		
 		Map<String,String> map = new HashMap<>();
