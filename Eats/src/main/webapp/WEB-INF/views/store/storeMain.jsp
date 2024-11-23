@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="timeSlotLabels" value="" />
 <c:set var="timeSlotData" value="" />
-
 <c:forEach items="${dash.reserveTimeSlotWithToday}" var="slot" varStatus="status">
     <c:set var="timeSlotLabels" value="${timeSlotLabels}'${slot.timeslot}'${!status.last ? ',' : ''}" />
     <c:set var="timeSlotData" value="${timeSlotData}${slot.reservationcount}${!status.last ? ',' : ''}" />
@@ -457,14 +456,7 @@
 				</div>
 				<div class="stat-card">
 					<div class="stat-label">방문율</div>
-					<c:choose>
-						<c:when test ="${empty dash.reserveNoshowOrCancel.visitRate}">
-							<div class="stat-value">정보가 없습니다.</div>
-						</c:when>
-						<c:otherwise>
-							<div class="stat-value">${dash.reserveNoshowOrCancel.visitRate}%</div>
-						</c:otherwise>
-					</c:choose>
+					<div class ="stat-value" id = "visitRate"></div>
 				</div>
 			</div>
 
@@ -538,6 +530,14 @@
 		</div>
 		<script>
         document.addEventListener('DOMContentLoaded', () => {
+			let no = ${dash.reserveNoshowOrCancel.statecnt};
+			let d = ${dash.dailyReserve};
+			if(d != null && d != 0){
+				let rate = 100 - ((no / d) * 100);
+				document.getElementById('visitRate').innerText = rate.toFixed(2) + '%';
+			}else{
+				document.getElementById('visitRate').innerText = '정보가 없습니다';
+			}
             const monthlyData = {
                 labels: [${monthlyLabels}],
                 data: [${monthlyData}]
