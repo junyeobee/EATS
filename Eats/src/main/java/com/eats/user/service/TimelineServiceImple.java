@@ -19,9 +19,9 @@ public class TimelineServiceImple implements TimelineService {
 	
 	//유저 랜덤 추천
 	@Override
-	public List<TimelineDTO> randomuser() {
+	public List<TimelineDTO> randomuser(Integer userIdx) {
 		
-		List<TimelineDTO> lists= mapper.randomuser();
+		List<TimelineDTO> lists= mapper.randomuser(userIdx);
 		
 		return lists;
 	}
@@ -63,4 +63,12 @@ public class TimelineServiceImple implements TimelineService {
 		return dto;
 	}
 
+	
+	@Override
+	public List<TimelineDTO> followerList(Integer userIdx) {
+		
+		List<TimelineDTO> dto= mapper.followerList(userIdx);
+		
+		return dto;
+	}
 }

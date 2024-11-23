@@ -16,6 +16,8 @@ public interface BannerService {
 	
 	public int bannerUpdate(BannerDTO dto);
 	
+	public BannerDTO bannerInfo(Integer bannerIdx);
+	
 	
 	
 }

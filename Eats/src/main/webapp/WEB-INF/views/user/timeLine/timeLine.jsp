@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="./css/user/userHeader.css"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <title>Insert title here</title>
 <script type="text/javascript" src="js/httpRequest.js"></script>
 <style>
@@ -12,6 +14,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 body {
@@ -42,15 +45,19 @@ body {
 
 }
 .profile-container {
-	width: 100%;
+	
 	position: relative;
 	top: 0px;
 	right: 3px;
-	height: fit-content;
+	height: 250PX;
 	background: white;
-	border-radius: 8px;
+	border-radius: 8px 8px 0 0;
 	padding: 20px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	max-width: 905px;
+	margin: 0 auto;
+	background: white;
+	margin-top:60px;
 }
 
 .content-container {
@@ -150,6 +157,7 @@ body {
 	max-width: 900px;
 	margin: 0 auto;
 	background: white;
+
 }
 
 .recommended-users {
@@ -296,6 +304,41 @@ img {
 .next {
 	right: 10px; /* 오른쪽 버튼 위치 */
 }
+
+/*모달팝업 */
+  .modal {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
 </style>
 
 
@@ -303,13 +346,9 @@ img {
 
 </head>
 <body>
+<%@include file="../../userHeader.jsp"%>
 
-	<div class="container">
-		<!-- 추천 유저 섹션 -->
-
-
-
-		<!-- 세션 idx값 받아오기 -->
+<!-- 세션 idx값 받아오기 -->
 		<c:if test="${empty sessionScope.user_idx}">
 
 			<p>로그인이 필요한 서비스입니다.🍽️</p>
@@ -349,9 +388,9 @@ img {
 								<span class="stat-number">${pf.follower_count}</span> <span
 									class="stat-label">팔로워</span>
 							</div>
-							<div class="stat-item">
+							<div class="stat-item" onclick="show();">
 								<span class="stat-number">${pf.following_count }</span> <span
-									class="stat-label">팔로우</span>
+									class="stat-label" >팔로우</span>
 							</div>
 						</div>
 
@@ -359,10 +398,32 @@ img {
 				</div>
 
 
+<!-- 모달 팝업 -->
+
+
+<%-- <div id="myModal" class="modal">
+
+    <div class="modal-content">
+    <c:if test="${empty follow }">
+		<p>팔로워가 없습니다.</p>
+	</c:if>
+	
+	<c:if test="${!empty follow }">
+        <span class="close" onclick="closeModal();">&times;</span>
+        <p>${follow.following_idx }</p>
+    </c:if>
+    </div>
+</div>
+ --%>
 			</c:if>
+	
+	
+	
+	
+		<div class="container">
+		<!-- 추천 유저 섹션 -->
+
 			<!-- sticky 프로필 컨테이너 -->
-
-
 
 			<div class="recommended-users">
 
@@ -371,15 +432,13 @@ img {
 				</c:if>
 
 
-
 				<!-- 유저 랜덤 추천 반복문 -->
 				<c:forEach var="dto" items="${lists }">
 
 					<div class="user-card">
 						<div class="user-profile"><img src="${dto.profile_image }"></div>
 						<span>${dto.user_nickname }</span>
-						<button class="follow-btn" data-idx="${dto.user_idx}"
-							id="${dto.user_idx}">팔로우</button>
+						<button class="follow-btn" data-idx="${dto.user_idx}" id="${dto.user_idx}">팔로우</button>
 					</div>
 				</c:forEach>
 
@@ -528,7 +587,7 @@ function showSendResult() {
                         var slideDiv = document.createElement('div');
                         slideDiv.className = 'slide';
                         var imgElement = document.createElement('img');
-                        imgElement.src = ''; 
+                        imgElement.src = `/img/review/${dto.review_img}`;  //리뷰이미지 수정한 부분
                         imgElement.alt = '음식 사진 ' + (i + 1);
                         slideDiv.appendChild(imgElement);
                         sliderContainerDiv.appendChild(slideDiv);
@@ -592,6 +651,23 @@ function unFollowRequest() {
             var jsondata = JSON.parse(data);
             // 추가적인 처리 로직 필요 시 여기에 작성
         }
+    }
+}
+
+
+function show() {
+    document.getElementById("myModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+}
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+        closeModal();
     }
 }
 

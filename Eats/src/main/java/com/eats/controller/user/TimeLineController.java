@@ -26,18 +26,25 @@ public class TimeLineController {
 	@GetMapping("/timeLineMain")
 	public ModelAndView timelineMain(Integer userIdx, HttpSession session) {
 		
-		userIdx = (int) session.getAttribute("user_idx");
+		userIdx = (int) session.getAttribute("user_idx"); 
 		
-		List<TimelineDTO> lists= service.randomuser();
+	
+		List<TimelineDTO> lists= service.randomuser(userIdx);
+		
 		List<TimelineDTO> review= service.selectReviewList();
 		
 		TimelineDTO profile = service.timeLineProfile(userIdx);
+		
+		/* List<TimelineDTO> follow=service.followerList(userIdx); */
+	
 		
 		ModelAndView mav= new ModelAndView();
 		
 		mav.addObject("lists", lists);
 		mav.addObject("review",review);
 		mav.addObject("profile",profile);
+		/* mav.addObject("follow",follow); */
+		
 		mav.setViewName("user/timeLine/timeLine");
 
 		return mav;
@@ -82,6 +89,8 @@ public class TimeLineController {
 	    return response;
 		
 	}
+	
+	
 	
 	
 	

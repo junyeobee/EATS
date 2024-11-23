@@ -70,6 +70,14 @@ public class BannerServiceImple implements BannerService {
 		return result;
 	}
 
+	
+	@Override
+	public BannerDTO bannerInfo(Integer bannerIdx) {
+		
+		BannerDTO dto= mapper.bannerInfo(bannerIdx);
+		
+		return dto;
+	}
 
 }
 
