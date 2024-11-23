@@ -17,4 +17,7 @@ public interface UserReviewMapper {
 	public ReservationDTO getReviewInfoByReserve(int reserve_idx);
 	public int insertReview(ReviewDTO dto);
 	public List<String> getTagList();
+	public int givePoint(int user_idx);
+	public int getCurPoint(int user_idx);
+	public int pointLog(Map<String, Integer> param);
 }

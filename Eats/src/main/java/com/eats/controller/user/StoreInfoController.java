@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.store.model.HYMenuDTO;
 import com.eats.store.model.HYStoreInfoDTO;
+import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.JjimDTO;
 import com.eats.user.model.ReservationDTO;
+import com.eats.user.model.ReviewDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.store.service.StoreInfoService;
 import com.eats.user.service.ReservationService;
@@ -117,6 +121,45 @@ public class StoreInfoController {
 		return mv;
 	}
 	
+	@GetMapping("/user/sendAlarmRequest")
+	public ModelAndView sendAlarmRequest(int store_idx, String s_alarm_date, int s_alarm_count, String s_alarm_time, HttpSession session, HttpServletRequest req) {
+		
+		String callback=req.getHeader("Referer");
+		
+		Integer user_idx=(Integer)session.getAttribute("user_idx");
+		
+		ModelAndView mv=new ModelAndView();
+		
+		if(user_idx != null) {
+			AlarmDTO alarmDTO=new AlarmDTO(0, user_idx, store_idx, s_alarm_date, s_alarm_time, s_alarm_count);
+			
+			boolean alarmExist = reserveService.checkAlarmExist(alarmDTO)>0?true:false;
+			
+			if(alarmExist) {
+				//이미 알림 신청 내역이 있음
+				mv.addObject("msg", "이미 알림신청 내역이 있습니다!");
+				mv.addObject("goTo", callback);
+			}else {
+				//알림 신청 내역 없음 -> 알림 신청 정상 실행
+				
+				int reqResult=reserveService.sendAlarmRequest(alarmDTO);
+				
+				if(reqResult<0) {
+					//알림신청 성공
+					mv.addObject("msg", "알림 신청이 완료되었습니다.");
+					mv.addObject("goTo", "/");
+				}else {
+					//알림신청 실패
+					mv.addObject("msg", "알림 신청이 완료되었습니다.");
+					mv.addObject("goTo", callback);
+				}
+			}
+			
+		}
+		mv.setViewName("user/myplate/msg");
+		return mv;
+	}
+	
 	@GetMapping("/user/makeReserve")
 	public ModelAndView makeReserve(int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
 			HttpSession session, HttpServletRequest req) {
@@ -140,7 +183,7 @@ public class StoreInfoController {
 				mv=new ModelAndView("redirect:/");
 			}else {
 				//예약 삽입 실패 로직 -> 에러 메시지
-				mv=new ModelAndView("redirect:/"+callback);
+				mv=new ModelAndView("redirect:"+callback);
 			}
 		}else {
 			mv=new ModelAndView();
@@ -151,6 +194,7 @@ public class StoreInfoController {
 		
 		return mv;
 	}
+	
 	
 	@PostMapping("/user/insertJjim")
 	@ResponseBody
@@ -177,8 +221,34 @@ public class StoreInfoController {
 		}
 	}
 	
-	@GetMapping("/goHeader")
-	public String header() {
-		return "userHeader";
+	@GetMapping("/user/storeInfo/reviewList")
+	public ModelAndView reviewList(int store_idx) {
+		
+		ModelAndView mv=new ModelAndView();
+		
+		Map map=service.getStoreBriefInfo(store_idx);
+		
+		//System.out.println(""+map.get("STORE_IDX")+"/"+map.get("STORE_NAME"));
+		
+		List<Map<String, Object>> revList=service.getReviewList(store_idx);
+		
+		
+		for(int i=0; i<revList.size(); i++) {
+			String menuStr=(String)revList.get(i).get("REV_MENU");
+			//문자열로 반환받은 메뉴 idx를 list로 변환
+			List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+			
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList);
+			revList.get(i).put("revMenuList", revMenuList);
+		}
+		
+		mv.addObject("store", map);
+		mv.addObject("reviewList", revList);
+		mv.setViewName("user/storeDetail/reviewList");
+		
+		return mv;
 	}
 }

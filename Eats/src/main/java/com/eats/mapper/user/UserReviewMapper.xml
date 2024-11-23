@@ -108,4 +108,32 @@
 			, #{rev_tag}
 		)
 	</insert>
+	<!-- 리뷰 작성시 포인트 지급 -->
+	<update id="givePoint" parameterType="int">
+		UPDATE 
+			USER_PROFILE
+		SET 
+			USER_POINT=USER_POINT+1000
+		WHERE
+			USER_IDX = #{user_idx}
+	</update>
+	<select id="getCurPoint" parameterType="int" resultType="int">
+		SELECT
+			USER_POINT
+		FROM
+			USER_PROFILE
+		WHERE
+			USER_IDX = #{user_idx}
+	</select>
+	<insert id="pointLog" parameterType="map">
+		INSERT INTO
+			POINT
+		VALUES(
+			POINT_IDX_SEQ.NEXTVAL
+			, #{user_idx}
+			, #{update_point}
+			, 1000
+			, null
+		)
+	</insert>
 </mapper>

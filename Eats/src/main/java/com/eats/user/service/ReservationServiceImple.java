@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.eats.controller.store.SellController;
 import com.eats.mapper.user.ReservationMapper;
+import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.ReservationDTO;
 
 @Service
@@ -81,5 +82,19 @@ public class ReservationServiceImple implements ReservationService {
 		int minTableIdx = mapper.getMinTableIdx(param);
 		
 		return minTableIdx;
+	}
+	
+	@Override
+	public int sendAlarmRequest(AlarmDTO alarmDTO) {
+		
+		int result=mapper.sendAlarmRequest(alarmDTO);
+		return result;
+	}
+	
+	@Override
+	public int checkAlarmExist(AlarmDTO alarmDTO) {
+		
+		int s_alarm_idx=mapper.checkAlarmExist(alarmDTO);
+		return s_alarm_idx;
 	}
 }

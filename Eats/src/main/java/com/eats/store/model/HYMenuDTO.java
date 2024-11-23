@@ -8,13 +8,14 @@ public class HYMenuDTO {
 	private int menu_price;
 	private String menu_info;
 	private String menu_img;
+	private int menu_preorder;
 	
 	public HYMenuDTO() {
 		
 	}
 
 	public HYMenuDTO(int menu_idx, int m_cate_idx, String menu_name, int menu_price, String menu_info,
-			String menu_img) {
+			String menu_img, int menu_preorder) {
 		super();
 		this.menu_idx = menu_idx;
 		this.m_cate_idx = m_cate_idx;
@@ -22,6 +23,7 @@ public class HYMenuDTO {
 		this.menu_price = menu_price;
 		this.menu_info = menu_info;
 		this.menu_img = menu_img;
+		this.menu_preorder = menu_preorder;
 	}
 
 	public int getMenu_idx() {
@@ -70,5 +72,13 @@ public class HYMenuDTO {
 
 	public void setMenu_img(String menu_img) {
 		this.menu_img = menu_img;
+	}
+
+	public int getMenu_preorder() {
+		return menu_preorder;
+	}
+
+	public void setMenu_preorder(int menu_preorder) {
+		this.menu_preorder = menu_preorder;
 	}
 }

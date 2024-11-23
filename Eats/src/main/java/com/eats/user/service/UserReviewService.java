@@ -16,4 +16,7 @@ public interface UserReviewService {
 	public List<HYMenuDTO> getMenuListByReserveIdx(int reserve_idx);
 	public List<String> tagList();
 	public int insertReview(ReviewDTO dto);
+	public int givePoint(int user_idx);
+	public int getCurPoint(int user_idx);
+	public int pointLog(Map<String, Integer> param);
 }
