@@ -15,6 +15,11 @@ var overlayInfo = [];
 var olArr=[];
 var points=[];
 var bounds = new kakao.maps.LatLngBounds();
+
+var fm = document.getElementById('form');
+var searchIcon = document.getElementById('search_icon');
+var searchInput = document.getElementById('search_input');
+var word = document.getElementById('word');
 	
 window.addEventListener('load', function() {
 	var tags = document.getElementsByClassName('filter_tag');
@@ -147,7 +152,11 @@ function openAreaSelectBox() {
 	modal.style.display = 'flex';
 	var main = document.getElementById("main");
 	var header = document.getElementById('userHeader');
+	var newH = window.innerHeight;
 	var h = main.scrollHeight + header.scrollHeight;
+	if(h<newH){
+		h=newH;
+	}
 	modal.style.height = h + 'px';
 
 	var area = modal.firstElementChild;
@@ -160,6 +169,11 @@ exitbtn.addEventListener('click', function() {
 	modal.style.display = 'none';
 });
 
+modal.addEventListener('click', function(e){
+	if(e.target.id=='modal') {
+		modal.style.display='none';
+	}
+})
 
 function selectCity(cityIdx, t) {
 	areaText.innerText = t.innerText;
@@ -404,3 +418,17 @@ function panTo(lat, lng) {
 
 	map.panTo(moveLatLon);
 }     
+
+searchIcon.addEventListener('click', function(){
+   checkParams(parameters.value, 'word', searchInput.value);
+})
+
+searchInput.addEventListener('keyup', function(e){
+   if(e.keyCode == 13 && this.value != '') {
+		checkParams(parameters.value, 'word', searchInput.value);
+   }
+})
+
+function doNotCitySelect() {
+	checkParams(parameters.value, 'areaWord', '');
+}

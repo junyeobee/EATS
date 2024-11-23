@@ -64,8 +64,6 @@ section .main-top .content-wrap p{
 	text-align: left;
 	flex-grow: 14;
 	position: relative;
-
-	
 }
 .search_input_box:before{
 	content: '';
