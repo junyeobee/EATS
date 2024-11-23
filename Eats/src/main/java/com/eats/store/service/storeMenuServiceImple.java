@@ -68,14 +68,14 @@ public class storeMenuServiceImple implements storeMenuService {
 	
 	
 	@Override
-	public int deleteMenuCate(String cateName) {
-		int result = mapper.deleteMenuCate(cateName);
+	public int deleteMenuCate(int idx) {
+		int result = mapper.deleteMenuCate(idx);
 		return result;
 	}
 
 	@Override
-	public int insertCate(String cateName) {
-		int result = mapper.insertCate(cateName);
+	public int insertCate(int storeIdx, String cateName, String mCateInfo) {
+		int result = mapper.insertCate(storeIdx, cateName, mCateInfo);
 		return result;
 	}
 

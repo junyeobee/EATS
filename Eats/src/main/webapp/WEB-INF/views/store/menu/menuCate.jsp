@@ -176,25 +176,27 @@ h1 {
 		
 
 			<!-- 카테고리명 부분 -->
-			<div class="content-wrapper">
+			<div class="content-wrapper">				
 				<div class="category-list">
 					<c:forEach var="dto" items="${lists}">
 						<form name="cateDel" action="deleteMenuCate" method="post" style="display: inline;">
+							
 							<div class="category-item">
-								${dto.m_cate_name} <input type="hidden" name="m_cate_name"
-									value="${dto.m_cate_name}"> <input type="submit"
-									class="delete-btn" value="x">
+								${dto.m_cate_name} 
+								<input type="hidden" name="m_cate_idx" value="${dto.m_cate_idx}"> 
+								<input type="submit" class="delete-btn" value="x">
 							</div>
 						</form>
 					</c:forEach>
 				</div>
 
 
-				<form name="insertMenuCateForm" action="insertMenuCate"
-					method="post" class="cateInserForm">
+				<form name="insertMenuCateForm" action="insertMenuCate" method="post" class="cateInserForm">
 					<div class="category-edit">
 						<div class="input-group">
-							<label>메뉴 카테고리 추가하기</label> <input type="text" placeholder="카테고리 이름을 지정해주세요." name="m_cate_name">
+							<label>메뉴 카테고리 추가하기</label> 
+							<input type="text" placeholder="카테고리 이름을 지정해주세요." name="m_cate_name">
+							<input type="text" placeholder="카레고리 설명을 적어주세요." name="m_cate_info">
 						</div>
 
 						<div class="button-group">

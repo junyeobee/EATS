@@ -15,9 +15,9 @@ public interface storeMenuService {
 	
 	public int insertMenu(MenuDTO dto,MultipartFile menuImg,String realpath) throws IOException;
 	
-	public int deleteMenuCate(String cateName);
+	public int deleteMenuCate(int idx);
 	
-	public int insertCate(String cateName);
+	public int insertCate(int storeIdx, String cateName, String mCateInfo);
 	
 	public int deleteMenu(List<Integer> menuIdx);
 	

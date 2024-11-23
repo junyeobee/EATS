@@ -35,28 +35,31 @@
 	</insert>	
 
 	
-	<delete id="deleteMenuCate" parameterType="String">
-	
+	<delete id="deleteMenuCate" parameterType="int">
 			delete 
 			from
 				MENU_CATE
 			where
-				m_cate_name=#{m_cate_name}	
-				
+				m_cate_idx=#{m_cate_idx}	
 	</delete>
 	
 	
 	<!-- 카테고리 등록 -->
-	<insert id="insertCate" parameterType="String">
+	<insert id="insertCate" parameterType="com.eats.store.model.MenuDTO">
 	
-	 insert into 
-	 MENU_CATE
-	 values(
-	 M_CATE_IDX_SEQ.NEXTVAL, 
-	 STORE_IDX_SEQ.NEXTVAL,
-	 #{m_cate_name},
-	 #{m_cate_info}
-	 )
+	INSERT INTO MENU_CATE (
+    	M_CATE_IDX,
+    	STORE_IDX,
+    	M_CATE_NAME,
+    	M_CATE_INFO
+	) VALUES (
+    	M_CATE_IDX_SEQ.NEXTVAL, 
+    	#{storeIdx},      
+   	 	#{cateName},    
+    	#{mCateInfo}     
+	);
+
+	 
 	</insert>
 	
 	
