@@ -73,6 +73,7 @@
 
 
 	<select id="selectFollowerReview" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
+		
 		SELECT
 		r.RESERVE_IDX,
 		r.USER_IDX,
@@ -102,8 +103,9 @@
 		STORE st ON r.STORE_IDX = st.STORE_IDX
 		WHERE
 		r.RESERVE_STATE = 3
-		AND
+		AND 
 		r.USER_IDX=#{user_idx}
+		
 	</select>
 
 
@@ -135,7 +137,7 @@
 
 	<select id="timeLineProfile" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
 
-	SELECT 
+<!-- 	SELECT 
     COUNT(r.REV_IDX) AS total_reviews,  
     (SELECT COUNT(*) 
      FROM FOLLOW 
@@ -148,10 +150,27 @@
 	LEFT JOIN REVIEW r ON u.USER_IDX = r.RESERVE_IDX  
 	LEFT JOIN USER_PROFILE up ON u.USER_IDX = up.USER_IDX
 	WHERE u.USER_IDX = #{userIdx}
-	GROUP BY u.USER_IDX, up.PROFILE_IMAGE
-
+	GROUP BY u.USER_IDX, up.PROFILE_IMAGE -->
+	
+	SELECT 
+    COUNT(r.REV_IDX) AS total_reviews,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE FOLLOWING_IDX = #{userIdx}) AS follower_count,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE USER_IDX = #{userIdx}) AS following_count,
+    up.PROFILE_IMAGE,
+    up.USER_NICKNAME  
+	FROM EATS_USER u
+	LEFT JOIN REVIEW r ON u.USER_IDX = r.RESERVE_IDX  
+	LEFT JOIN USER_PROFILE up ON u.USER_IDX = up.USER_IDX
+	WHERE u.USER_IDX = #{userIdx}
+	GROUP BY u.USER_IDX, up.PROFILE_IMAGE, up.USER_NICKNAME
+	
 
 	</select>
+	
 	
 	<select id="followerList" parameterType="Integer" resultType="java.util.List">
 	
@@ -159,7 +178,6 @@
 		FROM FOLLOW F
 		JOIN USER_PROFILE UP ON F.FOLLOWING_IDX = UP.USER_IDX
 		WHERE F.USER_IDX = #{userIdx}
-
 		
 	</select>
 
