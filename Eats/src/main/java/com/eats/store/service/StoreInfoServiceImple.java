@@ -19,6 +19,7 @@ import com.eats.store.model.HYStoreInfoDTO;
 import com.eats.store.model.HYStoreNewsDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.ReviewDTO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -52,8 +53,8 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		int jjimCnt=mapper.getJjimCnt(store_idx);
 		int revCount=mapper.getRevCount(store_idx);
 		double avgRevScore=mapper.getAvgRevScore(store_idx);
-		
-		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt, avgRevScore, revCount);
+		String foodType=mapper.getFoodType(store_idx);
+		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt, avgRevScore, revCount, foodType);
 		
 		return storeTotalInfo;
 	}
@@ -86,5 +87,36 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		
 		int jjimCnt=mapper.getJjimCnt(store_idx);
 		return jjimCnt;
+	}
+	
+	@Override
+	public Map getStoreBriefInfo(int store_idx) {
+		
+		Map map=mapper.getStoreBriefInfo(store_idx);
+		return map;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getReviewList(int store_idx) {
+		List<Map<String, Object>> revDto = mapper.getReviewList(store_idx);
+		return revDto;
+	}
+	
+	@Override
+	public List<HYMenuDTO> getRevMenuList(List<Integer> list) {
+		List<HYMenuDTO> revMenuList=mapper.getRevMenuList(list);
+		return revMenuList;
+	}
+	
+	@Override
+	public double getAvgRevScore(int store_idx) {
+		double avg = mapper.getAvgRevScore(store_idx);
+		return avg;
+	}
+	
+	@Override
+	public int getRevCount(int store_idx) {
+		int revCnt = mapper.getRevCount(store_idx);
+		return revCnt;
 	}
 }

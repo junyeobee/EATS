@@ -57,6 +57,12 @@
 	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>정보수정신청승인</h2>
 	
+	<div class="btnBox_top" style="margin-top:-30px;">
+		<span style="border-bottom:1px solid #ccc; background:#eee; cursor:pointer;" onclick="location.href='/admin/storeInfoUpdateOkList'">대기매장확인</span>
+		<span style="border-bottom:1px solid #ccc; background:#eee; cursor:pointer;" onclick="location.href='/admin/storeInfoUpdateOkList?storeCheck=in'">승인매장확인</span>
+		<span style="border-bottom:1px solid #ccc; background:#eee; cursor:pointer;" onclick="location.href='/admin/storeInfoUpdateOkList?storeCheck=out'">반려매장확인</span>
+	</div>
+	
 	<form id="infoUpdateSaveForm" method="post" >
 		<input type="hidden" name="su_idx" id="su_idx" value="">
 		<input type="hidden" name="su_state" id="su_state" value="">
@@ -68,6 +74,7 @@
 		<input type="hidden" name="su_addr" id="su_addr" value="">
 		<input type="hidden" name="su_daddr" id="su_daddr" value="">
 		<input type="hidden" name="su_ceo" id="su_ceo" value="">
+		
 	</form>
 	
 	<div class="tableList mb60">
@@ -86,12 +93,41 @@
 				<c:if test="${empty lists }">
 					<tr>
 						<td colspan="5" align="center">
-							정보수정신청이 없습니다.
+							<c:if test="${empty storeCheck}">
+								정보수정신청이 존재하지 않습니다.
+							</c:if>
+							<c:if test="${storeCheck == 'in'}">
+								승인된 정보수정건이 존재하지 않습니다.
+							</c:if>
+							<c:if test="${storeCheck == 'out'}">
+								반려된 정보수정건이 존재하지 않습니다.
+							</c:if>
 						</td>
 					</tr>
 				</c:if>
+				
+				<!-- storeCheck 값이 null이거나 빈 값일 때만 출력 -->
+				<!-- 
+				<c:if test="${empty storeCheck}">
+				    <p>storeCheck 값이 없습니다.</p>
+				</c:if>
+				 -->
+				
+				<!-- storeCheck 값이 있을 때 처리 -->
+				<!-- 
+				<c:if test="${not empty storeCheck}">
+				    <p>storeCheck 값: ${storeCheck}</p>
+				</c:if>
+				 -->
+				
+				
 				<c:if test="${!empty lists }">
 					<c:forEach var="dto" items="${lists }">
+					
+					
+					
+						<!-- 대기중인 정보수정건 시작 -->
+						<c:if test="${empty storeCheck || storeCheck == 'waiting'}">
 						<tr>
 							<td class="a_center">
 								${dto.su_idx }
@@ -174,6 +210,66 @@
 								</c:if>
 							</td>
 						</tr>
+						</c:if>
+						<!-- 대기중인 정보수정건 마침 -->
+						
+						
+						
+						<!-- 승인된 정보수정건 시작 -->
+						<c:if test="${storeCheck == 'in'}">
+						<tr>
+							<td class="a_center">
+								${dto.su_idx }
+							</td>
+							<td class="a_left">
+								${dto.su_name }
+							</td>
+							<td class="a_left">
+								${dto.su_tel }
+							</td>
+							<td class="a_left">
+								${dto.su_addr }${dto.su_daddr }
+							</td>
+							<td class="a_left">
+								${dto.su_ceo }
+							</td>
+							
+							<td class="a_center">
+								승인
+							</td>
+						</tr>
+						</c:if>
+						<!-- 승인된 정보수정건 마침 -->
+						
+						
+						<!-- 반려된 정보수정건 시작 -->
+						<c:if test="${storeCheck == 'out'}">
+						<tr>
+							<td class="a_center">
+								${dto.su_idx }
+							</td>
+							<td class="a_left">
+								${dto.su_name }
+							</td>
+							<td class="a_left">
+								${dto.su_tel }
+							</td>
+							<td class="a_left">
+								${dto.su_addr }${dto.su_daddr }
+							</td>
+							<td class="a_left">
+								${dto.su_ceo }
+							</td>
+							
+							<td class="a_center">
+								반려
+							</td>
+						</tr>
+						</c:if>
+						<!-- 승인된 정보수정건 마침 -->
+						
+						
+						
 					</c:forEach>
 				</c:if>
 			</tbody>

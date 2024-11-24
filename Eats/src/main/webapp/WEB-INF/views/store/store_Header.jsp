@@ -42,12 +42,21 @@ pageEncoding="UTF-8"%>
     border-radius: 8px;
     background-color: #f8fafc;
 }
+#logout{
+    cursor: pointer;
+    font-size: 13px;
+    color: #757575;
+}
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
     let homebtn = document.getElementById('homeLogo');
     homebtn.addEventListener('click', function() {
         location.href = '/storeMain';
+    });
+    let logoutbtn = document.getElementById('logout');
+    logoutbtn.addEventListener('click', function() {
+        location.href = '/logout';
     });
 });
 </script>
@@ -61,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
         <div class="user-profile">
             <img src="" alt="profile" width="32" height="32">
-            <span>파브리키친-용산점</span>
+            <span>${sessionScope.storeName}</span>
+            <span id ="logout">로그아웃</span>
         </div>
     </div>
 </header>

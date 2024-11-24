@@ -110,21 +110,36 @@ pageEncoding="UTF-8"%>
                     <a href="/suminbabo">예약 승인</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/reservation/settings">예약 목록</a>
+                    <a href="/store/reserveOkListPage">예약 목록</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/binTablesView">빈자리 알림</a>
                 </li>
             </ul>
         </div>
         <div class="nav-item" data-menu="member">
             <span>
                 <i class="icon-people"></i>
-                회원관리
+                매장관리
             </span>
             <ul class="nav-sub-items">
                 <li class="nav-item">
-                    <a href="/member/list">회원 목록</a>
+                    <a href="/store/storeImage">이미지관리</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/member/register">회원 등록</a>
+                    <a href="/store/storeCateOne">태그관리</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/store/storeTime">영업시간수정</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/store/storeCateTwo">특징관리</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/store/storeGrid">매장그리드</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/store/storeNewsList">소식관리</a>
                 </li>
             </ul>
         </div>
@@ -141,6 +156,18 @@ pageEncoding="UTF-8"%>
                     <a href="/sellDetail">매출 통계</a>
                 </li>
             </ul>
+        </div>
+        <div class="nav-item single-item">
+            <span onclick="window.location.href='/storeMenuList'">
+                <i class="icon-people"></i>
+                <a href="/storeMenuList">메뉴관리</a>
+            </span>
+        </div>
+        <div class="nav-item single-item">
+            <span onclick="window.location.href='/store/review'">
+                <i class="icon-people"></i>
+                <a href="/store/review">리뷰관리</a>
+            </span>
         </div>
         <div class="nav-item single-item">
             <span onclick="window.location.href='/reportLoad'">
@@ -160,18 +187,18 @@ pageEncoding="UTF-8"%>
         
         mainItems.forEach(mainItem => {
             const menuSpan = mainItem.querySelector('span');
-            // 메인 메뉴 클릭 이벤트
+            //메인 메뉴 클릭 이벤트
             menuSpan.addEventListener('click', (event) => {
                 event.stopPropagation();
                 const isExpanded = mainItem.classList.contains('expanded');
                 
-                // 다른 모든 메뉴 접기 및 배경색 제거
+                //다른 모든 메뉴 접기 및 배경색 제거
                 mainItems.forEach(item => {
                     item.classList.remove('expanded');
                     item.style.backgroundColor = '';
                 });
                 
-                // 현재 메뉴 토글
+                //현재 메뉴 토글
                 if (!isExpanded) {
                     mainItem.classList.add('expanded');
                     mainItem.style.backgroundColor = '#90D7FF';
@@ -179,18 +206,18 @@ pageEncoding="UTF-8"%>
             });
         });
 
-        // 서브 메뉴 아이템과 단일 메뉴 아이템
+        //서브 메뉴 아이템과 단일 메뉴 아이템
         const allMenuItems = document.querySelectorAll('.nav-sub-items .nav-item, .nav-item > span > a');
         allMenuItems.forEach(item => {
             const link = item.tagName === 'A' ? item : item.querySelector('a');
             
-            // 현재 페이지 메뉴 활성화
+            //현재 페이지 메뉴 활성화
             if (link.getAttribute('href') === currentPath) {
                 if (item.tagName === 'A') {
-                    // 단일 메뉴 아이템인 경우
+                    //단일 메뉴 아이템인 경우
                     item.closest('.nav-item').classList.add('active');
                 } else {
-                    // 서브메뉴 아이템인 경우
+                    //서브메뉴 아이템인 경우
                     item.classList.add('active');
                     const parentMenu = item.closest('.nav-item[data-menu]');
                     if (parentMenu) {

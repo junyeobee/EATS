@@ -77,15 +77,13 @@
 					</c:forEach>
 				</c:if>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="5" align="center">
-						${pageStr }
-					</td>
-				</tr>
-			</tfoot>
+			
 		</table>
 	</div>
+	
+		<div class="listPaging">
+			${pageStr }
+		</div>
 </div>
 </div>
    

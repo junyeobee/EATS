@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -7,8 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제 내역</title>
     <link rel="stylesheet" href="/css/user/myPaymentCss.css">
+    <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
+    <!-- 헤더 포함 -->
+    <%@include file="/WEB-INF/views/userHeader.jsp" %>
+
     <div class="container">
         <h1>결제 내역</h1>
         <div class="payment-header">
@@ -34,10 +38,9 @@
                 <p class="no-payment">결제 내역이 없습니다.</p>
             </c:otherwise>
         </c:choose>
-<div class="button-container">
-    <a href="javascript:history.back()" class="back-btn">돌아가기</a>
-</div>
-
+        <div class="button-container">
+            <a href="javascript:history.back()" class="back-btn">돌아가기</a>
+        </div>
     </div>
 </body>
 </html>

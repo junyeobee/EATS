@@ -166,7 +166,7 @@ function makeReserve(){
 	if(store_idx && reserve_date && reserve_time && reserve_count && reserve_table && request){
 		var param='?store_idx='+store_idx+'&reserve_date='+reserve_date+'&reserve_time='+reserve_time+'&reserve_count='+reserve_count+'&reserve_table='+reserve_table+'&request='+request;
 		//alert(param);
-		location.href='resPayment'+param;
+		location.href='/resPayment'+param;
 	}
 }
 </script>

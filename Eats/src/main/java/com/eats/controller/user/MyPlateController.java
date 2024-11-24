@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.lang.module.ModuleDescriptor.Requires;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.HYMenuCateDTO;
 import com.eats.store.model.HYMenuDTO;
+import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.ReservationDTO;
 import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MyplateService;
@@ -41,17 +44,39 @@ public class MyPlateController {
 	@Value("${review.upload.path}")
 	private String uploadPath;
 
+	//리뷰 작성 페이지
 	@GetMapping("/user/writeReview")
 	public ModelAndView goWriteReview(
-			@RequestParam(value="reserve_idx", required=true)int reserve_idx) {
+			@RequestParam(value="reserve_idx", required=true)int reserve_idx, HttpSession session, HttpServletRequest req) {
+		
+		ModelAndView mv=new ModelAndView();
+		
+		Integer user_idx = (Integer)session.getAttribute("user_idx");
+		boolean revExist=myplateService.checkReviewExist(reserve_idx);
+		int writer_idx=myplateService.checkWriter(reserve_idx);
+		
+		if(user_idx == null) {
+			mv.addObject("msg", "로그인이 필요한 서비스입니다.");
+			mv.addObject("goTo", "/user/login");
+			mv.setViewName("user/myplate/msg");
+			return mv;
+		}else if(revExist) {
+			mv.addObject("msg", "이미 리뷰가 작성되었습니다.");
+			mv.addObject("goTo", "/user/myPlate");
+			mv.setViewName("user/myplate/msg");
+			return mv;
+		}else if(user_idx != writer_idx) {
+			mv.addObject("msg", "작성 권한이 없습니다.");
+			mv.addObject("goTo", "/user/myPlate");
+			mv.setViewName("user/myplate/msg");
+			return mv;
+		}
 		
 		Map storeInfo = reviewService.getStoreInfoByReserveIdx(reserve_idx);
 		ReservationDTO reserveDTO = reviewService.getReserveInfo(reserve_idx);
 		List<HYMenuCateDTO> menuCateList = reviewService.getMenuCateListByReserveIdx(reserve_idx);
 		List<HYMenuDTO> menuList = reviewService.getMenuListByReserveIdx(reserve_idx);
 		List<String> tagList = reviewService.tagList();
-		
-		ModelAndView mv=new ModelAndView();
 		
 		if(storeInfo==null || storeInfo.size()==0 || reserveDTO==null || menuCateList==null || menuCateList.size()==0 
 				|| menuList==null || menuList.size()==0 || tagList==null || tagList.size()==0 ) {
@@ -69,8 +94,10 @@ public class MyPlateController {
 		return mv;
 	}
 	
+	//작성한 리뷰 제출
 	@PostMapping("/user/insertReview")
-	public String reviewSubmit(
+	@Transactional
+	public ModelAndView reviewSubmit(
 			@RequestParam("reserve_idx")int reserve_idx, 
 			@RequestParam("rev_score")int rev_score, 
 			@RequestParam("rev_content") String rev_content,  
@@ -80,13 +107,12 @@ public class MyPlateController {
 			Model model, HttpServletRequest req,
 			HttpSession session) {
 		
-		String failedCallback=req.getHeader("Referer");
+		String failedCallback=req.getHeader("Referer"); //실패 시 돌아갈 페이지 가져오기
 		
 		String projectPath=System.getProperty("user.dir");
 		List<String> imgNameList = new ArrayList<String>();
 		
 		if( images!=null && !images.isEmpty() && images.size()>1 ) {
-			System.out.println("images not null");
 			File uploadDir = new File(uploadPath);
 	        if (!uploadDir.exists()) {
 	            uploadDir.mkdirs();
@@ -97,7 +123,7 @@ public class MyPlateController {
 	            String originalFilename = image.getOriginalFilename();
 	            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 	            
-	            // 새 파일명 생성하기 (reserve_idx_순번.확장자)
+	            // 새 파일명 생성 (reserve_idx_순번.확장자)
 	            String newFileName = reserve_idx + "_" + (i + 1) + extension;
 	            
 	            try {
@@ -111,17 +137,15 @@ public class MyPlateController {
 	                
 	            } catch (IOException e) {
 	                e.printStackTrace();
-	                
 	            }
 	        }
 		}else {
 			System.out.println("images is null");
 		}
 		
-		String dbSave="";
+		String dbSave="";	//db에 저장할 이미지명
 		
 		if(imgNameList.size()!=0 || imgNameList!=null) {
-			System.out.println("imgNameList null");
 			for(int i=0; i<imgNameList.size(); i++) {
 				if(i==0) {
 					dbSave+=imgNameList.get(i);
@@ -130,20 +154,38 @@ public class MyPlateController {
 				}
 			}
 		}
+		
 		ReviewDTO dto=new ReviewDTO(0, reserve_idx, rev_score, rev_content, null, 1, dbSave, rev_menu, rev_tag);
 		int result=reviewService.insertReview(dto);
+		System.out.println(rev_content);
+		ModelAndView mv=new ModelAndView();
 		
 		if(result>0) {
-			model.addAttribute("msg", "리뷰 등록 성공!");
-			model.addAttribute("goTo", "/");
+			//포인트지급
+			Integer user_idx=(Integer)session.getAttribute("user_idx");
+			int crPoint=reviewService.getCurPoint(user_idx);
+			
+			Map<String, Integer> pointParam=new HashMap<String, Integer>();
+			pointParam.put("user_idx", user_idx);
+			pointParam.put("update_point", crPoint+1000);
+			int log_result=reviewService.pointLog(pointParam);
+			if(log_result>0) {
+				int pointResult=reviewService.givePoint(user_idx);
+				if(pointResult>0) {
+					mv.addObject("msg", "리뷰 등록 성공!\n1000p 지급완료!");
+					mv.addObject("goTo", "/");
+				}
+			}
 		}else {
-			model.addAttribute("msg", "리뷰 등록 실패");
-			model.addAttribute("goTo", failedCallback);
+			mv.addObject("msg", "리뷰 등록 실패");
+			mv.addObject("goTo", failedCallback);
 		}
 		
-		return "user/myplate/msg";
+		mv.setViewName("user/myplate/msg");
+		return mv;
 	}
 	
+	//마이플레이트
 	@GetMapping("/user/myPlate")
 	public ModelAndView goMyPlate(
 			HttpSession session) {
@@ -155,10 +197,6 @@ public class MyPlateController {
 		int finCnt=cntList.get(3).get("COUNT").intValue(); //방문완료
 		int cancledCnt=cntList.get(2).get("COUNT").intValue()+cntList.get(4).get("COUNT").intValue(); //취소노쇼
 		
-		
-		//방문예정 예약 건의 D-day
-		//List<Map<String, Integer>> dDayList=myplateService.getDdayList(user_idx);
-		
 		//예약정보들
 		List<Map> reserveList = myplateService.getReserveInfoList(user_idx);
 		
@@ -168,26 +206,32 @@ public class MyPlateController {
 			BigDecimal reserve_st_bd=(BigDecimal)reserveList.get(i).get("RESERVE_STATE");
 			int reserve_state=reserve_st_bd.intValue();
 			if(reserve_state==3) {
+				//예약완료건의 경우 작성된 리뷰가 있는지 확인하여 저장
 				boolean revExist=myplateService.checkReviewExist(reserve_idx);
 				reserveList.get(i).put("REV_EXIST", revExist);
 			}else if(reserve_state==0 || reserve_state==1) {
+				//방문예정인 경우 방문 며칠 전인지 저장
 				int dDay=myplateService.getDday(reserve_idx);
 				reserveList.get(i).put("D_DAY", dDay);
 			}
 		}
 		
+		//알림신청 목록
+		List<AlarmDTO> alarmList = myplateService.getAlarmList(user_idx);
+		
 		ModelAndView mv=new ModelAndView();
 		
-		mv.addObject("readyCnt", readyCnt);
-		mv.addObject("finCnt", finCnt);
-		mv.addObject("cancledCnt", cancledCnt);
-		//mv.addObject("dDayList", dDayList);
-		mv.addObject("reserveList",  reserveList);
+		mv.addObject("readyCnt", readyCnt);	//방문 예정 개수
+		mv.addObject("finCnt", finCnt); //방문 완료 개수
+		mv.addObject("cancledCnt", cancledCnt); //취소, 노쇼 개수
+		mv.addObject("reserveList",  reserveList);	//예약 목록
+		mv.addObject("alarmList", alarmList); //알림신청 목록
 		
 		mv.setViewName("user/myplate/main");
 		return mv;
 	}
 	
+	//예약 상세정보 페이지
 	@GetMapping("/user/reserveInfo")
 	public ModelAndView reserveInfo(int reserve_idx) {
 		ModelAndView mv=new ModelAndView();

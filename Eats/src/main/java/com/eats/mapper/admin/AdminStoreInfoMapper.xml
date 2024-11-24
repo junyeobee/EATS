@@ -7,11 +7,28 @@
 			FROM STORE_INFO_UPDATE siu
 			LEFT JOIN STORE s ON siu.store_idx = s.store_idx
 			LEFT JOIN STORE_ACCOUNT ac ON s.store_idx = ac.store_idx
-			where siu.su_name != s.store_name OR siu.su_name != '' OR 
+			where (siu.su_name != s.store_name OR siu.su_name != '' OR 
 			        siu.su_tel != s.store_tel OR siu.su_tel != '' OR  
 			        siu.su_addr != s.store_addr OR siu.su_addr != '' OR 
 			        siu.su_daddr != s.store_daddr OR siu.su_daddr != '' OR 
-			        siu.su_ceo != ac.store_ceo OR siu.su_ceo != ''
+			        siu.su_ceo != ac.store_ceo OR siu.su_ceo != '') and
+			        siu.su_state = '대기'
+		</select>
+		
+		<select id="adminStoreInfoListIn" resultType="com.eats.admin.model.AdminStoreInfoUpdateDTO">
+			SELECT siu.*, s.*, ac.store_ceo
+			FROM STORE_INFO_UPDATE siu
+			LEFT JOIN STORE s ON siu.store_idx = s.store_idx
+			LEFT JOIN STORE_ACCOUNT ac ON s.store_idx = ac.store_idx
+			where siu.su_state = '승인'
+		</select>
+		
+		<select id="adminStoreInfoListOut" resultType="com.eats.admin.model.AdminStoreInfoUpdateDTO">
+			SELECT siu.*, s.*, ac.store_ceo
+			FROM STORE_INFO_UPDATE siu
+			LEFT JOIN STORE s ON siu.store_idx = s.store_idx
+			LEFT JOIN STORE_ACCOUNT ac ON s.store_idx = ac.store_idx
+			where siu.su_state = '반려'
 		</select>
 		
 		<update id="infoUpdateAction" parameterType="com.eats.mapper.admin.AdminStoreInfoMapper">

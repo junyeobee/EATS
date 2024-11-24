@@ -402,15 +402,18 @@ ul {
 	padding: 0 18px 18px 18px; 
 	border: 1px solid #000; 
 	font-size: 0;
-	height: 180px;
+	min-height: 170px;
+	height: fit-content;
 	width: 100%;
+	display: flex;
+    flex-wrap: wrap;
 }
 .img-box .rev-img {
 	position: relative;
-    width: 150px;
+    width: 169px;
     height: 150px;
 	display: inline-block;  
-	margin: 18px 18px 0 0; 
+	margin: 15px 10px; 
 	/* overflow: hidden; */
 }
 .img-box.dragover {
@@ -530,7 +533,7 @@ ul {
 				</div>
 			</div>
 			<div class="info-box">
-				<div class="img"><img src="${storeInfo.STORE_IMG }" alt="가게 이미지"/></div>
+				<div class="img"><img src="/img/storeUploadImg/${storeInfo.STORE_IMG }" alt="가게 이미지"/></div>
 				<div class="info">
 					<strong class="tit">${storeInfo.STORE_NAME }</strong>
 					<ul>
@@ -566,11 +569,10 @@ ul {
 		<section>
 			<label for="file-upload" class="label-file" onclick="document.getElementById('imageInput').click()">
 				<span class="btn-upload">사진 첨부하기</span> <!-- 클릭 시 사진 첨부 가능 -->
-				
 			</label>
 			<!-- 첨부한 이미지를 보여줄 영역 -->
 			<div class="img-box" id="img_box">
-				<!-- <div class="rev-img"><img src="../img/user/review/review01.png"></div> -->
+				<span>첨부할 사진을 마우스로 끌어와 보세요!</span>
 			</div>
 			<!--  -->
 		</section>
@@ -658,20 +660,8 @@ ul {
 				<input type="hidden" id="rev_tag" name="rev_tag">
 				<input type="submit" value="리뷰 등록하기" class="btn-submit">
 			</form>
-			
 		</div>
-		
-		<!-- img upload test (s) -->
-<!-- 		<form id="reviewForm" method="post" enctype="multipart/form-data">
-        	다른 리뷰 입력 필드들
-	        <input type="file" id="imageInput" multiple accept="image/*" style="display: none">
-	        <button type="button" onclick="document.getElementById('imageInput').click()">이미지 선택</button>
-	        <div id="imagePreviewContainer" class="image-preview-container"></div>
-	        <button type="submit">리뷰 등록</button>
-    	</form> -->
-    	<!-- img upload test (e) -->
 	</section>
-</body>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="../js/myplate/reviewWrite.js"></script>
 <script>
@@ -796,7 +786,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
     
     // 제출
     this.submit();
-    alert(selectedImgs.length());
+    alert(document.getElementById('rev_content').value);
 });
 /************************************img upload (e)*******************************************/
 
@@ -945,7 +935,6 @@ $(document).ready(function(){
 		});
 	}
 })
-
-
 </script>
+</body>
 </html>

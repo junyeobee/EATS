@@ -42,6 +42,7 @@
 
 .store-wrap .info {
 	font-size: 15px;
+	cursor: pointer;
 }
 .store-wrap .info > span {
 	display: inline-block;
@@ -485,6 +486,10 @@
 .reservation .time-wrapper .time-list-y:hover{
 	background-color:#FECBC3;
 }
+.reservation .time-wrapper .time-list-y.on{
+	background-color: #f3553c;
+	color:#fefefe;
+}
 .reservation .time-wrapper .time-list-n{
 	border: 3px solid #ffb53c;
 	color:#ffb53c;
@@ -492,6 +497,10 @@
 }
 .reservation .time-wrapper .time-list-n:hover{
 	background-color: #FFE9C5;
+}
+.reservation .time-wrapper .time-list-n.on{
+	background-color: #ffb53c;
+	color:#fefefe;
 }
 .reservation .table-wrapper{
     height: 0px;
@@ -510,6 +519,10 @@
 	font-size: 12px;
 	cursor: pointer;
 }
+.reservation .table-wrapper .table-list.on{
+	background-color: #f3553c;
+	color: #fefefe;
+}
 .reservation .btn-wrapper{
 	height:fit-content;
 	background-color: unset;
@@ -517,6 +530,15 @@
 }
 .reservation .btn-wrapper .reserve-btn{
     background-color: #f3553c;
+    border: 0;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    color: #fefefe;
+    font-size: 20px;
+}
+.reservation .btn-wrapper .alarm-btn{
+    background-color: #FFB53C;
     border: 0;
     border-radius: 10px;
     width: 100%;

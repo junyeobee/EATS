@@ -24,12 +24,14 @@ public class KakaoLoginController {
 	@Autowired
 	private KakaoLoginService kLoginService;
 
+	//카카오로그인 
 	@GetMapping("/user/kakaoLogin")
 	public void goKakaoLogin(HttpServletResponse response) throws IOException {
 		String url=kakaoService.getKakaoLoginUrl();
 		response.sendRedirect(url);
 	}
 	
+	//카카오 로그인 성공 후 돌아오기
 	@GetMapping("/user/kakao/callback")
 	public String kakaoCallback(String code, HttpSession session) {
 		String accessToken = "";

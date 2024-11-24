@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
     .reservation-container {
         padding: 20px;
@@ -80,7 +81,14 @@
     #reserveTime:hover {
         border-color: #111;
     }
-
+    #reserveTime input[type='select']:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    }
+    #reserveTime input[type="date"]:hover {
+        border-color: #4CAF50;
+    }
     .date-select input[type="date"]:focus {
         outline: none;
         border-color: #4CAF50;
@@ -192,6 +200,9 @@
     .list-header {
         padding: 20px;
         border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     
     .list-content {
@@ -215,6 +226,8 @@
     
     .guest-info {
         margin-bottom: 5px;
+        display: flex;
+        align-items: center;
     }
     
     .guest-info .name {
@@ -227,8 +240,10 @@
     }
     
     .reservation-info {
-        color: #666;
-        font-size: 0.9em;
+        display: flex;
+        align-items: center;
+        color: #757575;
+        font-size: 14px;
     }
 
     .action-buttons {
@@ -255,13 +270,193 @@
             flex-direction: column;
         }
     }
-    </style>
+
+    /* 드래그 중인 예약 카드 스타일 */
+    .dragging {
+        opacity: 0.5;
+        background-color: #f0f0f0;
+        border: 2px dashed #666;
+    }
+
+    /* 테이블 선택/하이라이트 스타일 */
+    .table-card.highlighted {
+        border: 3px solid #2196F3 !important;
+        box-shadow: 0 0 10px rgba(2, 235, 138, 0.856);
+    }
+
+    .table-card.selected {
+        background-color: #E3F2FD !important;
+        border: 3px solid #1976D2 !important;
+        transform: scale(1.02);
+    }
+
+    .table-card.available.dragover {
+        background-color: #E8F5E9;
+        border-color: #4CAF50;
+    }
+
+    .reservation-card.selected {
+        background-color: #E3F2FD;
+        border: 2px solid #2196F3;
+        transform: translateX(5px);
+        transition: all 0.2s ease;
+    }
+
+    /* 유효하지 않은 테이블 표시 */
+    .table-card.invalid {
+        opacity: 0.5;
+        cursor: not-allowed;
+        border-color: #ff0000 !important;
+    }
+
+    .table-card.available:hover {
+        transform: scale(1.02);
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .quick-assign {
+        padding: 6px 12px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+    }
+
+    .quick-assign:hover {
+        background-color: #1976D2;
+        transform: translateY(-1px);
+    }
+
+    .quick-assign:active {
+        transform: translateY(1px);
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .close-modal {
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .close-modal:hover {
+        color: #333;
+    }
+
+    .detail-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+    }
+
+    .detail-section h4 {
+        margin-bottom: 15px;
+        color: #2196F3;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 10px;
+        padding: 5px 0;
+        align-items: center;
+    }
+
+    .info-label {
+        flex: 0 0 100px;
+        font-weight: bold;
+        color: #757575;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-value {
+        flex: 1;
+        color: #121212;
+    }
+    .reservation-card.assigned {
+        background-color: #E3F2FD;
+        border: 1px solid #90CAF9;
+    }
+
+    .assigned-tag {
+        padding: 4px 8px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+    .reload{
+        padding: 6px 12px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s ease;
+    }
+    .time{
+        display: flex;
+        align-items: center;
+    }
+    .tel{
+        display: flex;
+        align-items: center;
+    }
+    .name{
+        display: flex;
+        align-items: center;
+    }
+    .count{
+        display: flex;
+        align-items: center;
+    }
+</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
     <%@ include file="../store_Header.jsp"%>
     <%@ include file="../nav.jsp"%>
+    <!--<c:if test = "${empty sessionScope.storeIdx}">
+        <script>
+            alert('로그인이 필요합니다.');
+            location.href = '/storeLogin';
+        </script>
+    </c:if>-->
 	<div class="reservation-container">
         <div class="date-time-select">
             <div class="date-select">
@@ -302,12 +497,19 @@
                 <div class="list-header">
                     <h3>예약 현황</h3>
                     <div>
-
+                        <button class = "reload" onclick="updateReservations()">새로고침</button>
                     </div>
                 </div>
                 <div class="list-content">
                     <c:forEach var="rsv" items="${dto.lists}">
-                        <div class="reservation-card">
+                        <div class="reservation-card ${rsv.reserve_state == 1 ? 'assigned' : ''}"
+                            onclick="showReservationDetail(this)"
+                            data-reserve-idx="${rsv.reserve_idx}"
+                            data-guest-count="${rsv.reserve_count}"
+                            data-user-name="${rsv.user_name}"
+                            data-user-tel="${rsv.user_tel}"
+                            data-reserve-time="${rsv.reserve_time}"
+                            data-request="${rsv.request}">
                             <div class="guest-info">
                                 <span class="name">${rsv.user_name}</span>
                                 <span class="count">(${rsv.reserve_count}인)</span>
@@ -317,7 +519,12 @@
                                 <span class="tel">${rsv.user_tel}</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="quick-assign" onclick="quickAssign(${rsv.reserve_idx}, ${rsv.reserve_count})">빠른배치</button>
+                                <c:if test="${rsv.reserve_state == 0}">
+                                    <button class="quick-assign" onclick="quickAssign(${rsv.reserve_idx}, ${rsv.reserve_count})">빠른배치</button>
+                                </c:if>
+                                <c:if test="${rsv.reserve_state == 1}">
+                                    <span class="assigned-tag">배정완료</span>
+                                </c:if>
                             </div>
                         </div>
                     </c:forEach>
@@ -325,121 +532,284 @@
             </div>
         </div>
     </div>
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>예약 상세 정보</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <h4>예약자 정보</h4>
+                    <div class="info-row">
+                        <div class="info-label"><span class="material-icons">person</span>&nbsp;예약자명</div>&nbsp;
+                        <div class="info-value" id="modalUserName"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label"><span class="material-icons">phone</span>&nbsp;연락처</div>&nbsp;
+                        <div class="info-value" id="modalUserTel"></div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h4>예약 정보</h4>
+                    <div class="info-row">
+                        <div class="info-label"><span class="material-icons">schedule</span>&nbsp;예약 시간</div>&nbsp;
+                        <div class="info-value" id="modalReserveTime"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label"><span class="material-icons">group</span>&nbsp;인원</div>&nbsp;
+                        <div class="info-value" id="modalGuestCount"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label"><span class="material-icons">list</span>&nbsp;요청사항</div>&nbsp;
+                        <div class="info-value" id="modalRequest"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    updateReservations();
+});
 document.getElementById('reserveDate').addEventListener('change', selectDate);
 document.getElementById('reserveTime').addEventListener('change', updateReservations);
-//일자 선택, 일자 선택하면 해당 날짜의 예약 가능한 시간대들이 들어감
+document.querySelector('.close-modal').onclick = function() {
+    document.getElementById('reservationModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    var modal = document.getElementById('reservationModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
 function selectDate() {
-    let date = document.getElementById('reserveDate').value;
-    let xhr = new XMLHttpRequest();
+    var date = document.getElementById('reserveDate').value;
+    var xhr = new XMLHttpRequest();
     xhr.open('GET', '/reserveDateInTime?date=' + date);
+    
     xhr.onload = function() {
         if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            let timeSelect = document.getElementById('reserveTime');
+            var data = JSON.parse(xhr.responseText);
+            var timeSelect = document.getElementById('reserveTime');
             timeSelect.innerHTML = '';
             data.forEach(function(time) {
-                let option = document.createElement('option');
+                var option = document.createElement('option');
                 option.value = time;
-                option.innerText = time;
+                option.textContent = time;
                 timeSelect.appendChild(option);
             });
-        } else {
-            console.error(xhr.status);
+            updateReservations();
         }
-    };
-    xhr.onerror = function() {
-        console.error('집가고싶다..');
     };
     xhr.send();
 }
 
-//날짜,시간 선택시 예약정보를 불러오는 메소드
 function updateReservations() {
-    let date = document.getElementById('reserveDate').value;
-    let time = document.getElementById('reserveTime').value;
+    var date = document.getElementById('reserveDate').value;
+    var time = document.getElementById('reserveTime').value;
     
-    let xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     xhr.open('GET', '/reservations?date=' + date + '&time=' + time);
+    
     xhr.onload = function() {
         if (xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
-            const tables = data.tables;
-            const lists = data.lists;
-            updateReservationList(tables, lists);
-        }
-        else if(xhr.status == 400){
-            alert('예약 정보를 불러오는데 실패했습니다.');
-        }
-        else if(xhr.status == 404){
-            alert('잘못된 요청입니다.');
+            var data = JSON.parse(xhr.responseText);
+            console.log(data.lists);
+            updateReservationList(data.tables, data.lists);
+            initTableAssignment();
         }
     };
     xhr.send();
 }
-//모달창오픈, 예약신청자 정보 받아옴(예약 신청자 div를 클릭 시 오픈, 해당 예약자의 정보 출력)
-function showReservationDetail(element) {
-    let reserveIdx = element.getAttribute('data-reserve-idx');
-    
-}
-//예약 정보를 불러오는 메소드, 시간대까지 선택했다면, 해당 시간대의 예약요청목록 출력
+
 function updateReservationList(tables, lists) {
-    let grid = document.querySelector('.list-content');
-    let html = '';
-    let tableGrid = document.querySelector('.table-grid');
+    var grid = document.querySelector('.list-content');
+    var reservationHtml = '';
+    
     lists.forEach(function(list) {
-        if(list.reserve_state === 0){
-            html += `
-                <div class="reservation-card">
-                    <div class="guest-info">
-                        <span class="name">`+list.user_name+`</span>
-                        <span class="count">(`+list.reserve_count+`인)</span>
-                    </div>
-                    <div class="reservation-info">
-                        <span class="time">`+list.reserve_time+`</span>
-                        <span class="tel">`+list.user_tel+`</span>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="quick-assign" onclick="quickAssign("`+list.reserve_idx+`","`+list.reserve_count+`">빠른배치</button>
-                    </div>
-                </div>
-            `;
+        console.log(list.reserve_stat);
+        var buttonHtml = list.reserve_state === 0 
+        ? '<button onclick="event.stopPropagation(); quickAssign(' + list.reserve_idx + ',' + list.reserve_count + ')" class="quick-assign">빠른배치</button>'
+        : '<span class="assigned-tag">배정완료</span>';
+
+        reservationHtml += '<div class="reservation-card ' + (list.reserve_state === 1 ? 'assigned' : '') + '" ' +
+            'onclick="showReservationDetail(this)" ' +
+            'data-reserve-idx="' + list.reserve_idx + '" ' +
+            'data-guest-count="' + list.reserve_count + '" ' +
+            'data-user-name="' + list.user_name + '" ' +
+            'data-user-tel="' + list.user_tel + '" ' +
+            'data-reserve-time="' + list.reserve_time + '" ' +
+            'data-request="' + (list.request || '') + '">' +
+            '<div class="guest-info">' +
+                '<span class="name">' + list.user_name + '</span>&nbsp;' +
+                '<span class="count">(' + list.reserve_count + '인)</span>' +
+            '</div>' +
+            '<div class="reservation-info">' +
+                '<span class="time"><span class="material-icons">schedule</span>&nbsp;' + list.reserve_time + '</span>' +
+            '</div>' +
+            '<div class="reservation-info">'+
+                '<span class="tel"><span class="material-icons">phone</span>&nbsp;' + list.user_tel + '</span>' +
+            '</div>' +
+            '<div class="action-buttons">' + buttonHtml + '</div>' +
+            '</div>';
+    });
+    grid.innerHTML = reservationHtml;
+
+    var tableGrid = document.querySelector('.table-grid');
+    var tableHtml = '';
+    
+    tables.forEach(function(table) {
+        var isAvailable = (table.stat === -1 || table.stat === 0);
+        tableHtml += '<div class="table-card ' + (isAvailable ? 'available' : 'none') + '" ' +
+            'data-table-num="' + table.table_num + '" ' +
+            'data-capacity="' + table.cnt + '" ' +
+            'data-type="' + (table.tableType || '기본') + '">' +
+            '<div class="table-num">' + table.table_num + '번' +
+            '<span class="table-type">(' + (table.tableType || '기본') + ')</span></div>' +
+            '<div class="table-info">' +
+            '<span class="capacity">' + table.cnt + '인석</span>' +
+            '</div>' +
+            '<div><span class="status">' + (isAvailable ? '예약가능' : '예약됨') + '</span></div>' +
+            '</div>';
+    });
+    tableGrid.innerHTML = tableHtml;
+}
+function showReservationDetail(element) {
+    var modal = document.getElementById('reservationModal');
+    document.getElementById('modalUserName').textContent = element.dataset.userName;
+    document.getElementById('modalUserTel').textContent = element.dataset.userTel;
+    document.getElementById('modalReserveTime').textContent = element.dataset.reserveTime;
+    document.getElementById('modalGuestCount').textContent = element.dataset.guestCount + '인';
+    document.getElementById('modalRequest').textContent = element.dataset.request || '없음';
+    
+    modal.style.display = 'block';
+}
+function handleDragOver(e) {
+    e.preventDefault();
+    var tableElement = e.currentTarget;
+    var draggingCard = document.querySelector('.dragging');
+    
+    if (!draggingCard) return;
+    
+    var guestCount = parseInt(draggingCard.dataset.guestCount);
+
+    removeAllHighlights();
+
+    if (isValidTable(tableElement, guestCount)) {
+        tableElement.classList.add('highlighted');
+    } else {
+        tableElement.classList.add('invalid');
+    }
+}
+
+function removeAllHighlights() {
+    document.querySelectorAll('.table-card').forEach(function(table) {
+        table.classList.remove('highlighted', 'invalid');
+    });
+}
+
+function initTableAssignment() {
+    var reservationCards = document.querySelectorAll('.reservation-card');
+    var availableTables = document.querySelectorAll('.table-card.available');
+    
+    reservationCards.forEach(function(card) {
+        card.setAttribute('draggable', true);
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragend', handleDragEnd);
+    });
+    
+    availableTables.forEach(function(table) {
+        table.addEventListener('dragover', handleDragOver);
+        table.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            table.classList.remove('highlighted', 'invalid');
+        });
+        table.addEventListener('drop', handleDrop);
+    });
+}
+
+function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('reserveIdx', e.target.dataset.reserveIdx);
+    e.dataTransfer.setData('guestCount', e.target.dataset.guestCount);
+}
+
+function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    var tableElement = e.target.closest('.table-card');
+    var reserveIdx = e.dataTransfer.getData('reserveIdx');
+    var guestCount = parseInt(e.dataTransfer.getData('guestCount'));
+    
+    if (isValidTable(tableElement, guestCount)) {
+        assignTable(reserveIdx, tableElement.dataset.tableNum);
+    } else {
+        alert('해당 테이블에는 배치할 수 없습니다.');
+    }
+    removeAllHighlights();
+}
+
+function quickAssign(reserveIdx, guestCount) {
+    var bestTable = findBestTable(guestCount);
+    if (bestTable) {
+        if (confirm('테이블 ' + bestTable + '번에 배치하시겠습니까?')) {
+            assignTable(reserveIdx, bestTable);
+        }
+    } else {
+        alert('적합한 테이블이 없습니다.');
+    }
+}
+
+function findBestTable(guestCount) {
+    var bestTable = null;
+    var minCapacityDiff = Infinity;
+    
+    document.querySelectorAll('.table-card.available').forEach(function(table) {
+        var capacity = parseInt(table.dataset.capacity);
+        if (capacity >= guestCount) {
+            var diff = capacity - guestCount;
+            if (diff < minCapacityDiff) {
+                minCapacityDiff = diff;
+                bestTable = table.dataset.tableNum;
+            }
         }
     });
-    grid.innerHTML = html;
-    html = '';
-    tables.forEach(function(table) {
-        let status = (table.stat === -1 || table.stat === 0) ? '예약가능' : '예약됨';
-        let cardClass = (table.stat === -1 || table.stat === 0) ? 'available' : 'none';
-        let type = table.tableType === null? '기본' : table.tableType;
-        html += `
-            <div class="table-card `+cardClass+`" data-table-num="`+table.table_num+`">
-                <div class="table-num">`+table.table_num+`번<span class="table-type">(`+type+`)</span></div>
-                <div class="table-info">
-                    <span class="capacity">`+table.cnt+`인석</span>
-                </div>
-                <div>
-                    <span class="status">`+status+`</span>
-                </div>
-            </div>
-        `;
-    });
-    tableGrid.innerHTML = html;
     
+    return bestTable;
 }
-//테이블 선택 메소드
-function selectTable(reserveIdx, guestCount){
-    //예약자를 테이블에 배치하는 메소드. 드롭다운 or 선택해서 넣기
-    //요청사항에 테이블타입이 있다면, 해당 테이블이 하이라이트 등 표시가됨.
-    //없다면 기본 테이블타입이 활성화
+
+function isValidTable(tableElement, guestCount) {
+    if (!tableElement || !tableElement.classList.contains('available')) return false;
+    return parseInt(tableElement.dataset.capacity) >= guestCount;
 }
-//예약자 빠른 배치 메소드.
-function quickAssign(reserveIdx, guestCount) {
-    //체크박스가 체크된 목록들(예약자)를 빠른배치하는 기능
-    //요청사항에 테이블타입이 있다면, 해당 테이블로 자동배치(최대인원이 맞는 테이블).
-    //없다면 기본테이블부터 배치(최대인원이 맞는 테이블)
+
+function assignTable(reserveIdx, tableNum) {
+    console.log('Assigning table ' + tableNum + ' to reservation ' + reserveIdx);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/assign?reserveIdx=' + reserveIdx + '&tableNum=' + tableNum);
     
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.result === 1) {
+                alert('테이블이 배정되었습니다.');
+                updateReservations();
+            } else {
+                alert('테이블 배정에 실패했습니다.');
+            }
+        } else {
+            alert('서버 오류가 발생했습니다.');
+        }
+    };
+    removeAllHighlights();
+    xhr.send();
 }
 </script>
 </html>

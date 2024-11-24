@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>EATS - MY PLATE</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
+<link rel="stylesheet" href="/css/user/userFooter.css">
 <style>
 body{
 	position: relative;
@@ -365,6 +366,7 @@ td:empty {
 		</div>
 	</div>
 </section>
+<hr>
 <section class="myplate-wrapper" id="my-reserve">
 	<div class="reserve-wrapper">
 		<div class="tab-wrap">
@@ -511,9 +513,11 @@ td:empty {
 		</div>
 	</div>
 </section>
+<hr>
 <section class="" id="my-alarm">
 
 </section>
+<%@include file="/WEB-INF/views/userFooter.jsp" %>
 </body>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -591,6 +595,6 @@ var reserveItems=document.querySelectorAll('.info-bottom');
 		});
 	});
 </script>
+<script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="/js/myplate/myplateCal.js"></script>
-<script type="text/javascript" src="/js/userHeader.js"></script>
 </html>

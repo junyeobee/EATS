@@ -76,7 +76,6 @@ textarea {
 .upload-btn  {
 	overflow: hidden;
 	border: 0;
-	background-color:black;
 
 }
 
@@ -146,6 +145,7 @@ textarea {
 </style>
 </head>
 <body>
+
 <div class="dashboard-container">
 	<c:if test="${not empty info}">
 		<div class="container">
@@ -156,9 +156,10 @@ textarea {
 				<div class="form-group">
 					<label for="category">카테고리</label> <select id="category" name="m_cate_idx">
 						<option value="">카테고리 선택</option>
+						
 						<c:forEach var="dto" items="${lists}">
 						 
-							<option value="${dto.m_cate_idx}">${dto.m_cate_name}</option>
+							<option value="${dto.m_cate_idx}"<c:if test="${info.m_cate_idx == dto.m_cate_idx}">selected</c:if>>${dto.m_cate_name}</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -177,7 +178,7 @@ textarea {
 					<label>이미지 등록</label>
 					<div class="image-upload">
 						<input type="file" class="upload-btn" id="menu_img" name="menu_img" />
-						<p>등록된 사진 :${info.menu_img }</p>
+						<p>기존 이미지 :${info.menu_img }</p>
 						<input type="hidden" value="${info.menu_img }" name="oldName">
 						<p class="image-notice">• 권장크기 이미지 사용 (1440px X 1440px / 1080px X 1080px 권장)</p>
 						<p class="image-notice">• JPG, JPEG, PNG 확장자만 등록</p>
