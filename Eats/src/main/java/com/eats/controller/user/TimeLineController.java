@@ -1,6 +1,7 @@
 package com.eats.controller.user;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,12 +32,14 @@ public class TimeLineController {
 	
 		List<TimelineDTO> lists= service.randomuser(userIdx);
 		
-		List<TimelineDTO> review= service.selectReviewList();
 		
+		List<TimelineDTO> review= service.selectReviewList();
+				
 		TimelineDTO profile = service.timeLineProfile(userIdx);
 		
-		/* List<TimelineDTO> follow=service.followerList(userIdx); */
-	
+		/*
+		 * List<TimelineDTO> follow=service.followerList(userIdx);
+		 */
 		
 		ModelAndView mav= new ModelAndView();
 		
