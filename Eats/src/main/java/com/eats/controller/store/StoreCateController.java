@@ -217,6 +217,7 @@ public class StoreCateController {
     	@RequestParam(value = "store_cate_key") int store_cate_key) {
     	
     	//태그관리, 특징관리에서 같이 사용
+    	System.out.println("store_cate_key"+store_cate_key);
     	
         CategoryDTO cate_dto = new CategoryDTO();
         cate_dto.setCate_idx(store_cate_key);

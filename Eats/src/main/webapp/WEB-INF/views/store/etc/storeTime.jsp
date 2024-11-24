@@ -338,7 +338,7 @@
 				            <c:set var="endMinute" value="${endTimeParts[1]}" />
 				            
 				            
-				            <c:set var="RestOneSlice" value="${fn:split(dto.stime_break, '~')}" />
+				            <c:set var="RestOneSlice" value="${fn:split(dto.stime_break, '-')}" />
 				            <c:set var="RestStart" value="${RestOneSlice[0]}" />
 				            <c:set var="RestEnd" value="${RestOneSlice[1]}" />
 				
@@ -419,7 +419,7 @@
 									    </c:forEach>
 									    
 									</select>
-									~
+									-
 									<select name="rest_ehour" id="rest_ehour_${t_list_num}" class="" onchange="timeCheck('rest_ehour_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
 									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == rest_ehour ? 'selected' : ''}>
@@ -572,7 +572,7 @@
 									    </c:forEach>
 									    
 									</select>
-									~
+									-
 									<select name="rest_shour" id="" class="">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
 									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == restEHour ? 'selected' : ''}>

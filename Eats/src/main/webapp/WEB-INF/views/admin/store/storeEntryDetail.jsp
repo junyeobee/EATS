@@ -5,25 +5,15 @@
 <%@include file="../common/header.jsp"%>
 
 <script>
-
 	function entryACT_cancel(){
-
-
 		var open_box = document.getElementById("reason_box");
 		open_box.style.display = "block";
 		
 		var btn_cancel = document.getElementById("btn_cancel");
 		btn_cancel.style.display = "none";
-		
-		
-		
 	}
 	
 	function entryACT(ea_val){
-		alert(ea_val);
-		
-		alert("여기서 위도 경도 구해서 form에 담아 넘겨서 저장시켜야함!!!!!!!!!!!!!!!!!!!");
-		
 		
 		var form = document.getElementById('entryAction');
 		form.entry_value.value = ea_val;
@@ -41,12 +31,8 @@
 
 		form.action = "entryAction";
 		form.submit();
-		
-		
 	}
 </script>
-
-
 
 
 <div class="mainCon_800">
@@ -112,7 +98,7 @@
 						<th>주소</th>
 						<td colspan="3">
 							${data.sj_addr} 
-							<input type="text" name="addr_number" value="${data.sj_addr} ">
+							<input type="hidden" name="addr_number" id="my_addr" value="${data.sj_addr} ">
 							<br />
 							${data.sj_daddr}
 						</td>
@@ -120,7 +106,37 @@
 				</table>
 			</div>
 		</c:if>
+		
+		<input type="text" name="w_do" id="w_do" value="">
+		<input type="text" name="k_do" id="k_do" value="">
 	</form>
 </div>
    
+      <script type="text/javascript"
+   src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
+   <script>
+//주소-좌표 변환 객체 생성
+var geocoder = new kakao.maps.services.Geocoder();
+//주소 입력받는 input 가져오기
+var input_addr = document.getElementById('my_addr');
+window.addEventListener('load', getAddrFor());
+   function getAddrFor() { //버튼 클릭 시 실행되는 함수
+   //좌표 변환 실행, input_addr.value->좌표로 변환할 주소
+      geocoder.addressSearch(input_addr.value, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+         if (status === kakao.maps.services.Status.OK) {
+
+            var lat = result[0].y; //위도
+            var lng = result[0].x; //경도
+            console.log(lng);
+            
+
+            document.getElementById('w_do').value = lat;
+            document.getElementById('k_do').value = lng;
+         }
+      });
+   
+   }
+   </script>
 <%@include file="../common/footer.jsp"%>
