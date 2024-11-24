@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/js/reserveOkList.js"></script>
+<script src="/js/ajaxJs.js"></script>
 <title>예약 관리</title>
 <style>
 * {
@@ -119,6 +121,11 @@ body {
 	padding: 12px;
 	background-color: #f8fafc;
 	border-radius: 6px;
+	display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .button {
@@ -179,6 +186,7 @@ body {
 	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
+	height: 800px;
 }
 
 .table-grid {
@@ -186,6 +194,10 @@ body {
 	/* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
 	gap: 20px;
 	padding: 15px;
+}
+
+.reservation-details {
+	height: 800px;
 }
 </style>
 </head>
@@ -206,173 +218,30 @@ body {
 		</section>
 
 		<div class="content-wrapper">
-		<div class="table-grid-container">
-			<div class="reservation-list table-grid">
-				<c:forEach var="list" items="${rList }">
-					<div class="reservation-item active ">
-						<div class="item-header">
-							<span>${list.user_name }</span> <span
-								class="status-tag status-Ok">승인됨</span>
-						</div>
-						<div>
-							<span class="description">${list.reserve_date } </span> <span
-								class="description">${list.reserve_time }</span> <span
-								class="description">${list.reserve_count }명 </span> <span
-								class="description">|</span> <span class="description">${list.table_num }번
-								테이블</span>
-						</div>
-					</div>
-				</c:forEach>
-				<div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-                
-                <div class="reservation-item">
-                    <div class="item-header">
-                        <span>장준원</span>
-                        <span class="status-tag status-Ok">승인됨</span>
-                    </div>
-                    <div>
-                        <span class ="description">2024. 11. 02 </span> 
-                        <span class ="description">18:00</span>
-                        <span class ="description">2명 </span>
-                        <span class ="description">|</span> 
-                        <span class ="description">2번 테이블</span>
-                    </div>
-                </div>
-			</div></div>
-			<c:forEach var="list" items="${rList }">
-				<div class="reservation-details">
-					<div class="detail-section">
-						<h3>고객 정보</h3>
-						<div class="detail-grid">
-							<div class="detail-item">
-								<span class="description">성함</span> <span>${list.user_name }</span>
-							</div>
-							<div class="detail-item">
-								<span class="description">연락처</span> <span id="reserve-Tel">${list.user_tel }</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="detail-section">
-						<h3>예약 정보</h3>
-						<div class="detail-grid">
-							<div class="detail-item">
-								<span class="description">날짜/시간</span> <span id="time-text">${list.reserve_date }
-									${list.reserve_time }</span>
-							</div>
-							<div class="detail-item">
-								<span class="description">인원</span> <span id="totalCnt">${list.reserve_count }명</span>
-							</div>
-							<div class="detail-item">
-								<span class="description">상태</span> <span
+			<div class="table-grid-container">
+				<div class="reservation-list table-grid">
+					<c:forEach var="list" items="${rList }">
+						<div class="reservation-item active"
+							onclick="selectThisList(${list.reserve_idx})">
+							<div class="item-header">
+								<span>${list.user_name }</span> <span
 									class="status-tag status-Ok">승인됨</span>
 							</div>
-							<div class="detail-item">
-								<span class="description">테이블</span> <span id="tableNum">${list.table_num }번
-									테이블<span id="tableType">(${list.cate_value_name })</span>
-								</span>
+							<div>
+								<span class="description">${list.reserve_date } </span> <span
+									class="description">${list.reserve_time }</span> <span
+									class="description">${list.reserve_count }명 </span> <span
+									class="description">|</span> <span class="description">${list.table_num }번
+									테이블</span>
 							</div>
 						</div>
-						<div class="detail-section">
-							<h4>요청 사항</h4>
-							<div class="request-section">
-								<span id="request-text">${list.request==null||list.request==""?"요청사항 없음":list.request }</span>
-							</div>
-						</div>
-					</div>
-
-					<div class="detail-section">
-						<h3>결제 정보</h3>
-						<div class="detail-grid">
-							<div class="detail-item">
-								<span id="card-info" class="description">KB국민카드</span> <span
-									id="card-info-detail">1234-****-1234-1234</span>
-							</div>
-							<div class="detail-item">
-								<span class="description">결제금액</span> <span
-									id="reserveCount-text">50,000원</span>
-							</div>
-						</div>
-					</div>
+					</c:forEach>
+					
 				</div>
-			</c:forEach>
+			</div>
+			<div class="reservation-details" id="reserve_details">
+				
+			</div>
 		</div>
 	</div>
 </body>

@@ -14,6 +14,8 @@ public interface BannerMapper {
 	
 	public int bannerUpdate(BannerDTO dto);
 	
+	public BannerDTO bannerInfo(Integer bannerIdx);
+	
 	
 	
 

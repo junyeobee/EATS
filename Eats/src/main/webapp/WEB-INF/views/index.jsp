@@ -128,7 +128,7 @@ menu, ol, ul {
 	
 				<div class="search_input_box">
 					<form name="searchForm" id="form" action="searchStore" method="GET">
-						<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
+						<input type="text" class="search_input" id="search_input" placeholder="찾으시는 식당 이름을 검색해보세요.">
 						<input type="hidden" id="word" name="word">
 						<input type="hidden" id="areaWord" name="areaWord" value="${cookie.cityCk.value } ${cookie.unitCk.value }">
 					</form>
@@ -211,7 +211,7 @@ menu, ol, ul {
 						<!-- Slides -->
 						<c:forEach var="banner" items="${bannerList }">
 							<div class="swiper-slide" onclick="location.href='${banner.banner_url}'">
-								<img src="${banner.banner_img }">
+								<img src="../img/${banner.banner_img }">
 							</div>
 						</c:forEach>
 					</div>

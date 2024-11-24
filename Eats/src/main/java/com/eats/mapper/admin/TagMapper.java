@@ -18,4 +18,5 @@ public interface TagMapper {
 	public int getCateIdxByName(String cate_key_name);
 	public int deleteFromStoreTagByCateKey(int cate_key_idx);
 	public int deleteFromStoreTagByCateValue(CateValueDTO dto);
+	public int getCateValueExist(CateValueDTO dto);
 }

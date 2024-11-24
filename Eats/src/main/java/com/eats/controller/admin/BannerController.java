@@ -121,9 +121,17 @@ public class BannerController {
 	
 	
 	@GetMapping("/bannerUpdate/{banner_idx}")
-	public String bannerUpdate(@PathVariable("banner_idx") Integer bannerIdx) {
+	public ModelAndView bannerUpdate(@PathVariable("banner_idx") Integer bannerIdx) {
 		
-		return "admin/banner/bannerUpdate";
+		BannerDTO dto= service.bannerInfo(bannerIdx);
+		
+		System.out.println("dddd"+dto);
+		
+		ModelAndView mav= new ModelAndView();
+		mav.addObject("dto",dto);
+		mav.setViewName("admin/banner/bannerUpdate");
+		
+		return mav;
 		
 	}
 	
@@ -134,9 +142,12 @@ public class BannerController {
 	public ModelAndView bannerUpdateOk(
 			@RequestParam("banner_idx") Integer banner_idx,
 			@RequestParam("banner_img") MultipartFile banner_img,
-			@RequestParam("banner_order") int banner_order, @RequestParam("banner_name") String banner_name,
-			@RequestParam("banner_url") String banner_url, @RequestParam("banner_stat") int banner_stat, 
-			@RequestParam("banner_sdate") Date banner_sdate, @RequestParam("banner_edate") Date banner_edate,
+			@RequestParam("banner_order") int banner_order, 
+			@RequestParam("banner_name") String banner_name,
+			@RequestParam("banner_url") String banner_url, 
+			@RequestParam("banner_stat") int banner_stat, 
+			@RequestParam("banner_sdate") Date banner_sdate, 
+			@RequestParam("banner_edate") Date banner_edate,
 			@RequestParam(value="oldName")String oldFileName, 
 			HttpServletRequest req) {
 
@@ -183,7 +194,7 @@ public class BannerController {
 		        
 		    } catch (Exception e) {
 		        e.printStackTrace();
-		    	mav.addObject("msg", "메뉴 수정 중 오류가 발생했습니다.");
+		    	mav.addObject("msg", "배너 수정 중 오류가 발생했습니다.");
 		    }
 		
 		
@@ -205,17 +216,17 @@ public class BannerController {
 			
 			int result = service.bannerUpdate(BannerDTO);
 			if (result > 0) {
-				mav.addObject("msg", "메뉴가 수정되었습니다.");
+				mav.addObject("msg", "배너가 수정되었습니다.");
 			} else {
-				mav.addObject("msg", "메뉴 수정에 실패했습니다.");
+				mav.addObject("msg", "배너 수정에 실패했습니다.");
 			}
 		} catch (Exception e) {
 		
 			e.printStackTrace();
-			mav.addObject("msg", "메뉴 수정 중 오류가 발생했습니다.");
+			mav.addObject("msg", "배너 수정 중 오류가 발생했습니다.");
 		}
 
-		mav.addObject("goUrl", "storeMenuList"); 
+		mav.addObject("goUrl", "bannerList"); 
 		mav.setViewName("store/menu/menuMsg"); 
 		return mav;
 		

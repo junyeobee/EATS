@@ -32,6 +32,7 @@ import com.eats.user.model.EatsUserProfileDTO;
 import com.eats.user.model.JjimDTO;
 import com.eats.user.model.PaymentDTO;
 import com.eats.user.model.ReviewDTO;
+import com.eats.user.model.UserQnaDTO;
 import com.eats.user.service.MypageService;
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
@@ -139,6 +140,12 @@ public class MypageController {
             }
 
             userProfile.setUser_idx(user_idx);
+            
+            // 전화번호 유효성 검사
+            String phoneRegex = "^(01[016789])-([0-9]{3,4})-([0-9]{4})$";
+            if (!userProfile.getUser_tel().matches(phoneRegex)) {
+                return "redirect:/user/mypage/editProfile?error=invalidPhone";
+            }
 
             // 프로필 업데이트
             boolean isUpdated = mypageService.updateUserProfile(userProfile);
@@ -185,6 +192,7 @@ public class MypageController {
     }
 
 
+
     @GetMapping("/uploads/{filename}")
     public ResponseEntity<FileSystemResource> getImage(@PathVariable String filename) {
         try {
@@ -227,14 +235,13 @@ public class MypageController {
 //        return null;
 //    }
 //    // 찜 목록
-    // 찜 목록
     @GetMapping("/user/mypage/myJjim")
     public String myJjim(HttpSession session, Model model,
                          @RequestParam(value = "page", defaultValue = "1") int page) {
         Integer user_idx = convertToInteger(session.getAttribute("user_idx"));
 
         if (user_idx == null) {
-            return "redirect:/user/login";
+            return "redirect:/user/login";  // 로그인 하지 않은 경우 리다이렉트
         }
 
         int pageSize = 10;
@@ -249,17 +256,18 @@ public class MypageController {
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
         List<JjimDTO> jjimList = mypageService.getJjimList(user_idx, page, pageSize);
-        if (jjimList == null) {
-            jjimList = new ArrayList<>(); // 빈 리스트로 초기화
+        if (jjimList == null || jjimList.isEmpty()) {
+            model.addAttribute("jjim", null); // 찜 리스트가 없음을 명시
+        } else {
+            model.addAttribute("jjimList", jjimList); // 전체 찜 리스트 전달
         }
 
-        model.addAttribute("jjim", jjimList.get(0));
-        System.out.println("jjimList" + jjimList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("_csrf", session.getAttribute("_csrf"));
-        return "user/mypage/myJjim";
+
+        return "user/mypage/myJjim";  // 반환 타입을 String으로 수정, 뷰 이름 반환
     }
+
 
     // 찜 삭제
     @PostMapping("/user/mypage/deleteJjim")
@@ -289,7 +297,7 @@ public class MypageController {
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
         List<ReviewDTO> reviewList = mypageService.getReviewList(user_idx, page, pageSize);
 
-        model.addAttribute("review", reviewList);
+        model.addAttribute("reviewList", reviewList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 
@@ -311,7 +319,7 @@ public class MypageController {
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
         List<PaymentDTO> paymentList = mypageService.getPaymentList(user_idx, page, pageSize);
 
-        model.addAttribute("payment", paymentList);
+        model.addAttribute("paymentList", paymentList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 
@@ -343,6 +351,103 @@ public class MypageController {
         } else {
             return null; // 변환 불가능할 경우 null 반환
         }
+    }
+
+    // 나의 1:1 문의 화면
+    @GetMapping("/user/mypage/myQna")
+    public String getMyQnaList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "status", required = false) String status,
+            HttpSession session,
+            Model model) {
+
+        // 로그인 확인
+        Integer user_idx = extractUserIdx(session);
+        if (user_idx == null) {
+            return "redirect:/user/login";
+        }
+
+        // 페이지네이션 설정
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
+
+        // 검색 조건 처리
+        List<UserQnaDTO> qnaList = mypageService.searchUserQnaList(user_idx, keyword, status, offset, pageSize);
+        int totalItems = mypageService.getTotalQnaCount(user_idx, keyword, status);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        // JSP에 데이터 전달
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("status", status);
+        return "user/mypage/myQna";
+    }
+
+    
+    // 1:1 문의 글쓰기 화면
+    @GetMapping("/user/mypage/writeQna")
+    public String writeQnaPage(HttpSession session, Model model) {
+        // 로그인 여부 확인
+        Integer user_idx = extractUserIdx(session);
+        if (user_idx == null) {
+            return "redirect:/user/login";
+        }
+
+        // 빈 DTO 객체 전달 (JSP에서 폼 데이터 바인딩)
+        model.addAttribute("qna", new UserQnaDTO());
+        return "user/mypage/writeQna"; // 글쓰기 화면 JSP
+    }
+
+    // 1:1 문의 데이터 저장
+    @PostMapping("/user/mypage/writeQna")
+    public String submitQna(@ModelAttribute("qna") UserQnaDTO qna, HttpSession session) {
+        // 로그인 여부 확인
+        Integer user_idx = extractUserIdx(session);
+        if (user_idx == null) {
+            return "redirect:/user/login";
+        }
+
+        // 사용자 ID 설정
+        qna.setUSER_IDX(user_idx);
+
+        // 데이터 저장
+        boolean isSaved = mypageService.saveUserQna(qna);
+        if (!isSaved) {
+            // 저장 실패 시 에러 처리 (필요시)
+            return "redirect:/user/mypage/writeQna?error=true";
+        }
+
+        // 저장 성공 후 목록으로 이동
+        return "redirect:/user/mypage/myQna";
+    }
+    
+    @GetMapping("/user/mypage/qnaDetail/{uqnaIdx}")
+    public ModelAndView qnaDetail(@PathVariable("uqnaIdx") int uqnaIdx, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+
+        // 로그인 여부 확인
+        Integer user_idx = extractUserIdx(session);
+        if (user_idx == null) {
+            mav.setViewName("redirect:/user/login");
+            return mav;
+        }
+
+        // 문의 상세 정보 가져오기
+        UserQnaDTO qnaDetail = mypageService.getQnaDetail(uqnaIdx);
+
+        // 요청한 문의가 로그인한 사용자 소유인지 확인
+        if (qnaDetail == null || qnaDetail.getUSER_IDX() != user_idx) {
+            mav.setViewName("error");
+            mav.addObject("message", "해당 문의에 접근할 수 없습니다.");
+            return mav;
+        }
+
+        mav.addObject("qnaDetail", qnaDetail);
+        mav.setViewName("user/mypage/qnaDetail"); // JSP 경로
+        return mav;
     }
 
 }

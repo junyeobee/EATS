@@ -5,7 +5,7 @@
 
 <mapper namespace="com.eats.mapper.user.TimelineMapper">
 
-	<select id="randomuser"
+<!-- 	<select id="randomuser"
 		resultType="com.eats.user.model.TimelineDTO">
 
 		SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
@@ -16,6 +16,22 @@
 		)
 		WHERE ROWNUM &lt;= 4
 
+	</select> -->
+
+
+	<select id="randomuser" resultType="com.eats.user.model.TimelineDTO" parameterType="Integer">
+    SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+    FROM (
+        SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+        FROM USER_PROFILE
+        WHERE USER_IDX NOT IN (
+            SELECT FOLLOWING_IDX
+            FROM FOLLOW
+            WHERE USER_IDX = #{userIdx} 
+        )
+        ORDER BY DBMS_RANDOM.VALUE
+    )
+    WHERE ROWNUM &lt;= 4
 	</select>
 
 
@@ -135,6 +151,16 @@
 	GROUP BY u.USER_IDX, up.PROFILE_IMAGE
 
 
+	</select>
+	
+	<select id="followerList" parameterType="Integer" resultType="java.util.List">
+	
+		SELECT UP.USER_NICKNAME, F.*
+		FROM FOLLOW F
+		JOIN USER_PROFILE UP ON F.FOLLOWING_IDX = UP.USER_IDX
+		WHERE F.USER_IDX = #{userIdx}
+
+		
 	</select>
 
 
