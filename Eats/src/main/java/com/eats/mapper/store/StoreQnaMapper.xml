@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.StoreQnaMapper">
+
+    <!-- 매장 문의 목록 조회 -->
+    <select id="searchStoreQnaList" parameterType="map" resultType="com.eats.store.model.StoreQnaDTO">
+        SELECT * 
+        FROM (
+            SELECT 
+                ROWNUM AS RNUM, 
+                DATA.*
+            FROM (
+                SELECT 
+                    SQNA_IDX,
+                    STORE_IDX,
+                    SQNA_TITLE,
+                    SQNA_CONTENT,
+                    TO_CHAR(SQNA_WDATE, 'YYYY-MM-DD') AS SQNA_WDATE,
+                    SQNA_STAT,
+                    SQNA_TYPE,
+                    SQNA_ANSWER
+                FROM STORE_QNA
+                WHERE STORE_IDX = #{store_idx}
+                <if test="keyword != null and keyword != ''">
+                    AND SQNA_TITLE LIKE '%' || #{keyword} || '%'
+                </if>
+                <if test="status != null and status != ''">
+                    AND SQNA_STAT = #{status}
+                </if>
+                ORDER BY SQNA_WDATE DESC
+            ) DATA
+            WHERE ROWNUM &lt;= #{offset} + #{pageSize}
+        )
+        WHERE RNUM &gt; #{offset}
+    </select>
+
+    <!-- QnA 총 개수 조회 -->
+    <select id="getTotalStoreQnaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM STORE_QNA
+        WHERE STORE_IDX = #{store_idx}
+        <if test="keyword != null and keyword != ''">
+            AND SQNA_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="status != null and status != ''">
+            AND SQNA_STAT = #{status}
+        </if>
+    </select>
+
+    <!-- QnA 상세 조회 -->
+    <select id="getStoreQnaDetail" parameterType="int" resultType="com.eats.store.model.StoreQnaDTO">
+        SELECT 
+            SQNA_IDX,
+            STORE_IDX,
+            SQNA_TITLE,
+            SQNA_CONTENT,
+            TO_CHAR(SQNA_WDATE, 'YYYY-MM-DD') AS SQNA_WDATE,
+            SQNA_STAT,
+            SQNA_TYPE,
+            SQNA_ANSWER
+        FROM STORE_QNA
+        WHERE SQNA_IDX = #{sqna_idx}
+    </select>
+
+    <!-- QnA 등록 -->
+    <insert id="insertStoreQna" parameterType="com.eats.store.model.StoreQnaDTO">
+        INSERT INTO STORE_QNA (
+            SQNA_IDX, STORE_IDX, SQNA_TITLE, SQNA_CONTENT, SQNA_WDATE, SQNA_STAT, SQNA_TYPE
+        ) VALUES (
+            STORE_QNA_SEQ.NEXTVAL, #{store_idx}, #{sqna_title}, #{sqna_content}, SYSDATE, 0, #{sqna_type}
+        )
+    </insert>
+</mapper>
