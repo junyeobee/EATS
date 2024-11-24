@@ -15,10 +15,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.reserve.StoreTimeDTO;
+import com.eats.store.model.reserve.AlarmDTO;
+import com.eats.store.model.reserve.BinTables;
 import com.eats.store.model.reserve.ReservOkViewDTO;
 import com.eats.store.model.reserve.ReserveListDTO;
 import com.eats.store.model.reserve.TableDTO;
@@ -105,8 +110,8 @@ public class ReserveController {
 		String[] breakTimes = breakTime.split("-");
 		LocalTime break1 = LocalTime.parse(breakTimes[0]);
 		LocalTime break2 = LocalTime.parse(breakTimes[1]);
-		break2 = break2.plusMinutes(-30); //브레이크 타임 끝 시간부터
-		end = end.plusHours(-1); //마감 1시간전까지
+		break2 = break2.plusMinutes(-30);
+		end = end.plusHours(-1);
 		while (!time.isAfter(end)) {
 			if (time.isBefore(break1) || time.isAfter(break2)) {
 				timeList.add(time.format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -139,7 +144,7 @@ public class ReserveController {
 		StoreTimeDTO timeInfo = service.storeTime(map);
 		if(timeInfo == null) {
 			List<String> emptyList = new ArrayList<>();
-			emptyList.add("휴업일이거나 설정되지 않았습니다.");
+			emptyList.add("영업시간이 설정되지 않았습니다.");
 			return emptyList;
 		}
 		List<String> timeList = generateTimeList(timeInfo.getStime_start(),timeInfo.getStime_end(),timeInfo.getStime_break());
@@ -162,5 +167,77 @@ public class ReserveController {
 		dto.setTables(tables);
 		dto.setLists(lists);
 		return dto;
+	}
+	
+	@GetMapping("/assign")
+	@ResponseBody
+	public Map<String, Integer> assignTable(HttpServletRequest req, int tableNum, int reserveIdx) {
+		HttpSession session = req.getSession();
+		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		Map<String, Object> map = new HashMap<>();
+		map.put("storeIdx", storeIdx);
+		map.put("reserveIdx", reserveIdx);
+		map.put("tableNum", tableNum);
+		int result = service.assignTable(map);
+		System.out.println(result);
+		Map<String, Integer> response = new HashMap<>();
+    	response.put("result", result);
+		return response;
+	}
+
+	@GetMapping("/binTablesView")
+	public String getEmptyTables() {
+		return "store/reservation/reserveBinjari";
+	}
+
+	@ResponseBody
+    @GetMapping("/binTables")
+    public List<BinTables> getEmptyTables(String date, String time, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+        int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("storeIdx", storeIdx);
+        map.put("date", date);
+        map.put("time", time);
+        
+        return service.getBinTables(map);
+    }
+
+	@ResponseBody
+	@GetMapping("/alarms")
+	public List<AlarmDTO> getAlarms(String date, String time, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("storeIdx", storeIdx);
+		map.put("date", date);
+		map.put("time", time);
+		
+		return service.getAlarmRequests(map);
+	}
+
+	@PostMapping("/sendAlarms")
+	@ResponseBody
+	public Map<String, Object> sendVacancyAlarms(@RequestBody Map<String, Object> data, HttpServletRequest req) {
+	    HttpSession session = req.getSession();
+		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		
+		data.put("storeIdx", storeIdx);
+		List<String> userEmails = (List<String>)data.get("userEmails");
+		String content = (String)data.get("content");
+		
+		int successCount = 0;
+		for(String email : userEmails) {
+			int result = service.sendAlarm(email, content);
+			if(result > 0) successCount++;
+		}
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", successCount > 0);
+		response.put("totalSent", successCount);
+		response.put("totalTargets", userEmails.size());
+		return response;
 	}
 }

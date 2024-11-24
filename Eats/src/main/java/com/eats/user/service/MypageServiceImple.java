@@ -13,6 +13,7 @@ import com.eats.user.model.EatsUserProfileDTO;
 import com.eats.user.model.JjimDTO;
 import com.eats.user.model.PaymentDTO;
 import com.eats.user.model.ReviewDTO;
+import com.eats.user.model.UserQnaDTO;
 
 @Service
 public class MypageServiceImple implements MypageService {
@@ -98,5 +99,34 @@ public class MypageServiceImple implements MypageService {
 		return mypageMapper.getUserProfile1(user_idx);
 	}
 
+	@Override
+	public List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize) {
+	    return mypageMapper.selectUserQnaList(user_idx, keyword, status, offset, pageSize);
+	}
+
+	@Override
+	public int getTotalQnaCount(int user_idx, String keyword, String status) {
+	    return mypageMapper.getTotalQnaCount(user_idx, keyword, status);
+	}
+
+
+    @Override
+    
+    public boolean saveUserQna(UserQnaDTO userQna) {
+        // Mapper 호출하여 데이터 저장
+        int result = mypageMapper.insertUserQna(userQna);
+        return result > 0; // 성공 여부 반환
+    }
+    
+    @Override
+    public UserQnaDTO getQnaDetail(int uqnaIdx) {
+        return mypageMapper.selectQnaDetail(uqnaIdx);
+    }
+
+	@Override
+	public List<UserQnaDTO> getUserQnaList(Integer userIdx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

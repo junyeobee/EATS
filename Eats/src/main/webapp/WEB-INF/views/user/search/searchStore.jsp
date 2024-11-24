@@ -55,6 +55,9 @@ menu, ol, ul {
 					<div class="area_big">
 						<div class="area_big_key">시/도 선택</div>
 						<div class="area_big_value scrollCss">
+							<div class="area_big_value_text" onclick="doNotCitySelect()">
+								지역 선택 해제
+							</div>
 							<c:forEach var="city" items="${cityList }">
 								<div class="area_big_value_text"
 									onclick="selectCity(${city.area_idx}, this)">${city.area_name }</div>
@@ -82,12 +85,22 @@ menu, ol, ul {
 		<div class="filter_box">
 			<div class="filter_reset" onclick="resetThisTag('all')">전체 필터
 				초기화</div>
+			<div class="filter_search_word">
+				<div class="search_input_box">
+					<div id="form">
+						<input type="text" class="search_input" id="search_input" value="${word }"
+							placeholder="식당 이름을 검색해보세요.">
+					</div>
+				</div>
+				<img class="fe-search" src="/svg/search_icon.svg" id="search_icon" />
+			</div>
+
 			<div class="pick_group">
 				<div class="pick_box pick_box_location"
 					onclick="openAreaSelectBox()">
 					<img class="pick_location_icon"
-						src="/svg/location_icon${areaWord==null||areaWord==''?'':'_tomato_line' }.svg" />
-					<div class="pick_area" id="pick_area">${areaWord==null||areaWord==''?"지역을 선택해주세요.":areaWord }</div>
+						src="/svg/location_icon${areaWord==null||areaWord==' '||areaWord==''?'':'_tomato_line' }.svg" />
+					<div class="pick_area" id="pick_area">${areaWord==null||areaWord==' '||areaWord==''?"지역을 선택해주세요.":areaWord }</div>
 					<input type="hidden" id="areaText">
 				</div>
 				<div class="pick_box">

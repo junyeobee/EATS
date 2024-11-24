@@ -58,5 +58,22 @@ public class UserReviewServiceImple implements UserReviewService {
 		int result=reviewMapper.insertReview(dto);
 		return result;
 	}
-
+	
+	@Override
+	public int givePoint(int user_idx) {
+		int give_p_result=reviewMapper.givePoint(user_idx);
+		return give_p_result;
+	}
+	
+	@Override
+	public int getCurPoint(int user_idx) {
+		int cur_point = reviewMapper.getCurPoint(user_idx);
+		return cur_point;
+	}
+	
+	@Override
+	public int pointLog(Map<String, Integer> param) {
+		int log_result = reviewMapper.pointLog(param);
+		return log_result;
+	}
 }

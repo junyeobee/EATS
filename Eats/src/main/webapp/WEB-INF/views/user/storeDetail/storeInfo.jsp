@@ -25,6 +25,7 @@
 	
 <title>EATS - STORE INFOMATION</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
+<link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
 <%@include file="/WEB-INF/views/userHeader.jsp" %>
@@ -38,7 +39,7 @@
 						<strong class="tit">${stInfo.storeDTO.store_name }</strong>
 						<span class="cate">
 							<span>${stInfo.storeDTO.parent_area_name }&nbsp;${stInfo.storeDTO.area_name }</span>
-							<span>이탈리안</span>
+							<span>${stInfo.foodType }</span>
 						</span>
 					</div>
 					<div class="info">
@@ -302,10 +303,12 @@
 			<!-- 오른쪽 예약 영역 (e) -->
 		</section>
 	</div>
+<%@include file="/WEB-INF/views/userFooter.jsp" %>
 </body>
 <script>
 const store_idx=${storeTotalInfo.storeDTO.store_idx};
 var maxCnt=parseInt(${max_people_cnt});
+const user_idx = '${sessionScope.user_idx}';  // 서버에서 세션값 가져오기
 
 function sssshow(sw){
 	if(sw==0){
@@ -451,13 +454,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 시간 선택 클릭 이벤트
     document.addEventListener('click', function(e) {
+    	var ytimeList=document.querySelectorAll('.time-list-y');
+    	var ntimeList=document.querySelectorAll('.time-list-n');
         if (e.target.classList.contains('time-list-y')) {
             // 선택한 시간 저장
             const selectedTime = e.target.textContent;
             document.getElementById('reserve_time').value = selectedTime;
+            ytimeList.forEach(time=>time.classList.remove('on'));
+            ntimeList.forEach(time=>time.classList.remove('on'));
+           	e.target.classList.add('on');
             
             getTableList();
+        }else if(e.target.classList.contains('time-list-n')){
+        	const alarmTime=e.target.textContent;
+        	//선택한 시간 저장
+        	document.getElementById('reserve_time').value = alarmTime;
+        	ytimeList.forEach(time=>time.classList.remove('on'));
+            ntimeList.forEach(time=>time.classList.remove('on'));
+        	e.target.classList.add('on');
+        	
+        	resetTableList();
+        	
+        	var aramBtnHtml='<input type="button" value="알림신청" id="alarm_btn" class="alarm-btn">';
+        	document.getElementById('btn_wrapper').style.heigth='fit-content';
+        	document.getElementById('btn_wrapper').style.padding='10px';
+        	document.getElementById('btn_wrapper').innerHTML=aramBtnHtml;
+        	
         }else if (e.target.classList.contains('table-list')){
+        	const tableList=document.querySelectorAll('.table-list');
+        	tableList.forEach(table=>table.classList.remove('on'));
+        	e.target.classList.add('on');
         	const selectedTable=e.target.textContent;
         	document.getElementById('reserve_table').value=selectedTable;
         	
@@ -471,13 +497,23 @@ document.addEventListener('DOMContentLoaded', function() {
         	
         	var reserveParam='?store_idx='+store_idx+'&reserve_date='+reserve_date.value+'&reserve_cnt='+reserve_cnt.value+'&reserve_time='+reserve_time.value+'&reserve_table='+reserve_table.value;
         	
-        	var user_idx = '${sessionScope.user_idx}';  // 서버에서 세션값 가져오기
+        	
 
         	if (!user_idx || user_idx === 'null' || user_idx === '') {
         	    alert('로그인 후 이용해주세요');
         	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
         	} else {
         	    location.href = '/user/reserveConfirm' + reserveParam;
+        	}
+        }else if(e.target.classList.contains('alarm-btn')){
+        	var alarmParam='?store_idx='+store_idx+'&s_alarm_date='+reserve_date.value+'&s_alarm_count='+reserve_cnt.value+'&s_alarm_time='+reserve_time.value;
+        	
+        	if (!user_idx || user_idx === 'null' || user_idx === '') {
+        	    alert('로그인 후 이용해주세요');
+        	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
+        	} else {
+        		//alert(alarmParam);
+        	    location.href = '/user/sendAlarmRequest' + alarmParam;
         	}
         }
     });
@@ -573,6 +609,13 @@ function showJjimResult(){
 		}
 	}
 }
+
+const reviewLink=document.querySelector('.info');
+
+reviewLink.addEventListener('click', function(){
+	
+	location.href='/user/storeInfo/reviewList?store_idx='+store_idx;
+});
 
 //지도 스크립트
 var map;

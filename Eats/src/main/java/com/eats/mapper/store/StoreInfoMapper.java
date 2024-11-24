@@ -11,6 +11,7 @@ import com.eats.store.model.HYStoreImgDTO;
 import com.eats.store.model.HYStoreNewsDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.ReviewDTO;
 
 public interface StoreInfoMapper {
 
@@ -28,4 +29,8 @@ public interface StoreInfoMapper {
 	public int checkJjim(JjimDTO dto);
 	public int insertJjim(JjimDTO dto);
 	public int deleteJjim(JjimDTO dto);
+	public Map getStoreBriefInfo(int store_idx);
+	public List<Map<String, Object>> getReviewList(int store_idx);
+	public String getFoodType(int store_idx);
+	public List<HYMenuDTO> getRevMenuList(List<Integer> list);
 }

@@ -45,7 +45,7 @@ public class SellController {
 		try {
 			int processedCount = service.sellInsert(file, storeIdx);
 			response.put("success", true);
-			response.put("message", processedCount + "건의 매출이 성공적으로 등록되었습니다.");
+			response.put("message", processedCount + "건의 매출이 등록되었습니다.");
 			response.put("processedCount", processedCount);
     
 		} catch (Exception e) {

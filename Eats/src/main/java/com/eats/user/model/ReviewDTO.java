@@ -1,6 +1,7 @@
 package com.eats.user.model;
 
 import java.sql.Date;
+import java.util.List;
 
 public class ReviewDTO {
 
@@ -23,6 +24,8 @@ public class ReviewDTO {
 	private String store_addr;
 	private String profile_image;
 	
+	private List<Integer> revMenuList;
+	
 	public ReviewDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,7 +44,22 @@ public class ReviewDTO {
 		this.rev_tag = rev_tag;
 	}
 
-
+	//리뷰리스트
+	public ReviewDTO(int rev_idx, int reserve_idx, int rev_score, String rev_content, Date rev_writedate, int rev_state,
+			String rev_img, String rev_menu, String rev_tag, String user_nickname, String profile_image) {
+		super();
+		this.rev_idx = rev_idx;
+		this.reserve_idx = reserve_idx;
+		this.rev_score = rev_score;
+		this.rev_content = rev_content;
+		this.rev_writedate = rev_writedate;
+		this.rev_state = rev_state;
+		this.rev_img = rev_img;
+		this.rev_menu = rev_menu;
+		this.rev_tag = rev_tag;
+		this.user_nickname = user_nickname;
+		this.profile_image = profile_image;
+	}
 
 	public ReviewDTO(int rev_idx, int reserve_idx, int rev_score, String rev_content, Date rev_writedate, int rev_state,
 			String rev_img, String rev_menu, String rev_tag, Date reserve_date, int user_idx, String user_nickname,

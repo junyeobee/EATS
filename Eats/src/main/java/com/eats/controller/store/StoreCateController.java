@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.page.EntryService;
 import com.eats.store.model.CategoryDTO;
 import com.eats.store.service.StoreCateService;
 import com.eats.user.model.CateKeyDTO;
@@ -27,6 +28,9 @@ public class StoreCateController {
 
     @Autowired
     private StoreCateService service;
+    
+    @Autowired
+    private EntryService en_service;
     
     @GetMapping("/store/storeCateOne")
     public ModelAndView storeCateOne(HttpServletRequest req) {
@@ -167,6 +171,11 @@ public class StoreCateController {
             //category 테이블에서 가져온 값이 아니고 select box 선택한 경우는 cate_key(즉 store_cate_key)존재안함
             if(cate_key.get(i) == null) {
                 result += service.storeTagInsert(cate_dto);
+                
+
+            	//store_state를 바꾸기 위해 체크 후 변경
+            	int test = en_service.entryCheck(store_idx);
+            	System.out.println("testddd"+test);
                 
             //아무것도 처리 안했어도 잘 넘어가지게
             }else {

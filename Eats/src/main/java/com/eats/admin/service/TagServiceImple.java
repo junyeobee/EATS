@@ -74,4 +74,9 @@ public class TagServiceImple implements TagService {
 		int count = tm.deleteFromStoreTagByCateValue(dto);
 		return count;
 	}
+	@Override
+	public int getCateValueExist(CateValueDTO dto) {
+		int count = tm.getCateValueExist(dto);
+		return count;
+	}
 }

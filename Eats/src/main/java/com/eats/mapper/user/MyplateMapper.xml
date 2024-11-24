@@ -44,7 +44,8 @@
 			SI.IMG_ORDER = 1
 		AND
 			S.STORE_IDX = SI.STORE_IDX
-		ORDER BY R.RESERVE_DATE DESC
+		ORDER BY 
+			R.RESERVE_DATE DESC
 	</select>
 	<!-- 해당 예약 건에 리뷰가 있는지 학인 0이면 없는 거 -->
 	<select id="checkReviewExist" parameterType="int" resultType="int">
@@ -64,6 +65,7 @@
 		WHERE
 		    RESERVE_IDX = #{reserve_idx}
 	</select>
+	<!-- 예약 상세 페이지에 필요한 예약 정보 가져오기 -->
 	<select id="getReserveInfoByreserve" parameterType="int" resultType="com.eats.user.model.ReservationDTO">
 		SELECT 
 			R.*, S.STORE_NAME, SI.STORE_IMG
@@ -77,5 +79,33 @@
 			R.RESERVE_IDX = #{reserve_idx}
 		AND 
 			SI.IMG_ORDER = 1
+	</select>
+	<!-- 나의 알림 신청 목록: 날짜가 지난 것은 노출하지 않음 -->
+	<select id="getAlarmList" parameterType="int" resultType="com.eats.user.model.AlarmDTO">
+		SELECT
+			A.*, S.STORE_NAME, SI.STORE_IMG, S_ALARM_DATE - SYSDATE AS D_DAY
+		FROM
+			S_ALARM A
+		INNER JOIN 
+			STORE S ON A.STORE_IDX = S.STORE_IDX
+		INNER JOIN 
+			STORE_IMG SI ON A.STORE_IDX = S.STORE_IDX
+		WHERE
+			USER_IDX=#{user_idx}
+		AND 
+			SI.IMG_ORDER = 1
+		AND 
+			S_ALARM_DATE-SYSDATE > 0
+		ORDER BY 
+			S_ALARM_DATE DESC, S_ALARM_TIME DESC
+	</select>
+	<!-- 리뷰 작성자와 로그인한 사람의 일치 여부 확인 -->
+	<select id="checkWriter" parameterType="int" resultType="int">
+		SELECT
+			USER_IDX
+		FROM
+			RESERVATION
+		WHERE
+			RESERVE_IDX=#{reserve_idx}
 	</select>
 </mapper>

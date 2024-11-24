@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eats.mapper.user.MyplateMapper;
+import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.ReservationDTO;
 
 @Service
@@ -21,13 +22,6 @@ public class MyplateServiceImple implements MyplateService {
 		List<Map<String, BigDecimal>> reserveCnt = mapper.getTotalReserveCntByState(user_idx);
 		return reserveCnt;
 	}
-
-//	@Override
-//	public List<Map<String, Integer>> getDdayList(int user_idx) {
-//		
-//		List<Map<String, Integer>> getDday = mapper.getDday(user_idx);
-//		return getDday;
-//	}
 
 	@Override
 	public List<Map> getReserveInfoList(int user_idx) {
@@ -55,5 +49,18 @@ public class MyplateServiceImple implements MyplateService {
 		
 		ReservationDTO dto=mapper.getReserveInfoByreserve(reserve_idx);
 		return dto;
+	}
+	
+	@Override
+	public List<AlarmDTO> getAlarmList(int user_idx) {
+		
+		List<AlarmDTO> alarmList = mapper.getAlarmList(user_idx);
+		return alarmList;
+	}
+	
+	@Override
+	public int checkWriter(int reserve_idx) {
+		int user_idx=mapper.checkWriter(reserve_idx);
+		return user_idx;
 	}
 }

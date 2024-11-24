@@ -26,6 +26,25 @@ public class ReserveOkListDTO {
 	
 	public ReserveOkListDTO(String user_name, int reserve_idx, int user_idx, int store_idx, Date reserve_date,
 			String reserve_time, int reserve_count, int reserve_table_idx, String request, int reserve_state,
+			Date reserve_applydate, int table_num, String user_tel) {
+		super();
+		this.user_name = user_name;
+		this.reserve_idx = reserve_idx;
+		this.user_idx = user_idx;
+		this.store_idx = store_idx;
+		this.reserve_date = reserve_date;
+		this.reserve_time = reserve_time;
+		this.reserve_count = reserve_count;
+		this.reserve_table_idx = reserve_table_idx;
+		this.request = request;
+		this.reserve_state = reserve_state;
+		this.reserve_applydate = reserve_applydate;
+		this.table_num = table_num;
+		this.user_tel = user_tel;
+	}
+
+	public ReserveOkListDTO(String user_name, int reserve_idx, int user_idx, int store_idx, Date reserve_date,
+			String reserve_time, int reserve_count, int reserve_table_idx, String request, int reserve_state,
 			Date reserve_applydate, int table_num, int sts_type_idx, String cate_value_name, String user_tel) {
 		super();
 		this.user_name = user_name;
