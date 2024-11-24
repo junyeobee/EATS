@@ -111,6 +111,7 @@ public class StoreInfoController {
 				
 				if(rhour - nowhour <1) {
 					timeList.remove(i);
+					i--;
 				}
 			}
 			//System.out.println("h:"+nowhour+"m:"+nowmin);
@@ -270,6 +271,7 @@ public class StoreInfoController {
 						.map(String::trim)
 						.collect(Collectors.toList());
 				
+				//리스트에 저장한 이미지 리스트를 맵에 imgList 키값으로 저장
 				revList.get(i).put("imgList", imgList);
 			}
 			
@@ -277,7 +279,8 @@ public class StoreInfoController {
 					.map(String::trim)
 					.collect(Collectors.toList());
 			
-			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList);
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); //이건 언니 필요없음
+			
 			revList.get(i).put("revMenuList", revMenuList);
 			revList.get(i).put("tagList", tagList);
 		}
@@ -286,7 +289,7 @@ public class StoreInfoController {
 		int revCnt = service.getRevCount(store_idx);
 		
 		mv.addObject("store", map);
-		mv.addObject("reviewList", revList);
+		mv.addObject("reviewList", revList);	//이 리뷰리스트 안에 있는 멥에 아까 변환해서 저장한 이미지 리스트도 들어 있는 것
 		mv.addObject("avgScore", avgScore);
 		mv.addObject("revCnt", revCnt);
 		mv.setViewName("user/storeDetail/reviewList");
