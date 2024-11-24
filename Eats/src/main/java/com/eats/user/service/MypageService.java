@@ -7,6 +7,7 @@ import com.eats.user.model.EatsUserProfileDTO;
 import com.eats.user.model.JjimDTO;
 import com.eats.user.model.PaymentDTO;
 import com.eats.user.model.ReviewDTO;
+import com.eats.user.model.UserQnaDTO;
 
 public interface MypageService {
     // 마이페이지 메인 화면 정보 가져오기
@@ -43,4 +44,21 @@ public interface MypageService {
     int getTotalPaymentCount(int user_idx);
 
 	EatsUserProfileDTO getUserProfile1(Integer user_idx);
+	
+	// 1:1 문의 검색 목록 가져오기
+	
+	List<UserQnaDTO> getUserQnaList(Integer userIdx);
+
+	// 검색 조건에 따른 문의 총 개수
+	int getTotalQnaCount(int user_idx, String keyword, String status);
+
+	
+    // 1:1 문의 저장
+    boolean saveUserQna(UserQnaDTO userQna);
+    
+    UserQnaDTO getQnaDetail(int uqnaIdx);
+
+	List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize);
+
+
 }

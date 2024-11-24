@@ -7,13 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 정보</title>
     <link rel="stylesheet" href="/css/user/myProfileCss.css">
+    <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>
 <body>
+    <!-- 헤더 포함 -->
+    <%@include file="/WEB-INF/views/userHeader.jsp" %>
+
     <div class="container">
         <!-- 프로필 섹션 -->
         <div class="profile">
-<img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/myPageImg/default-icon.png'}" 
-     alt="프로필 이미지" class="profile-img">
+            <img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/myPageImg/default-icon.png'}" 
+                 alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile.user_nickname}</div>
             <div class="profile-points">${userProfile.user_point} 포인트</div>
         </div>

@@ -40,4 +40,26 @@ public interface MypageMapper {
 
     // 추가 메서드
     EatsUserProfileDTO getUserProfile1(Integer user_idx);
+    
+    // 사용자 문의 목록 조회 (검색 및 필터링 포함)
+    List<UserQnaDTO> selectUserQnaList(
+        @Param("userIdx") int userIdx,
+        @Param("keyword") String keyword,
+        @Param("status") String status,
+        @Param("offset") int offset,
+        @Param("pageSize") int pageSize
+    );
+
+    // 사용자 문의 총 개수 (검색 및 필터링 포함)
+    int getTotalQnaCount(
+        @Param("userIdx") int userIdx,
+        @Param("keyword") String keyword,
+        @Param("status") String status
+    );
+    // 1:1 문의 저장
+
+	int insertUserQna(UserQnaDTO userQna);
+	
+	UserQnaDTO selectQnaDetail(int uqnaIdx);
+
 }
