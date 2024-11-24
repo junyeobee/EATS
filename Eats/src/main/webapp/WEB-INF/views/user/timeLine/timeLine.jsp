@@ -371,6 +371,8 @@ img {
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
 						<img src="${pf.profile_image}" alt="Profile Image">
+						<p> ${pf.user_nickname}</p>	
+						
 					
 					</div>
 					
@@ -401,7 +403,7 @@ img {
 <!-- 모달 팝업 -->
 
 
-<%-- <div id="myModal" class="modal">
+<div id="myModal" class="modal">
 
     <div class="modal-content">
     <c:if test="${empty follow }">
@@ -414,7 +416,7 @@ img {
     </c:if>
     </div>
 </div>
- --%>
+
 			</c:if>
 	
 	
@@ -467,20 +469,13 @@ img {
 						<div class="image-slider">
 							<button class="slider-button prev"><</button>
 							<button class="slider-button next">></button>
+							
 							<div class="slider-container">
+								<c:forEach var="rimg" items='${dto.rev_img.split(",")}'>
 								<div class="slide">
-									<img src="/img/user/a.jpg" alt="Image A">
+									<img src="/img/user/review/${rimg }" alt="Image">
 								</div>
-								<div class="slide">
-									<img src="/img/user/b.jpg" alt="Image B">
-								</div>
-								<div class="slide">
-									<img src="/img/user/c.jpg" alt="Image C">
-								</div>
-								<div class="slide">
-									<img src="/img/user/d.jpg" alt="Image D">
-								</div>
-
+								</c:forEach>
 							</div>
 						</div>
 						<div class="rating">⭐${dto.rev_score }</div>

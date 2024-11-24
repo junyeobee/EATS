@@ -54,7 +54,7 @@ label {
 	font-size: 14px;
 }
 
-select, input[type="text"], textarea {
+select, input[type="text"],input[type="number"], textarea {
 	width: 100%;
 	padding: 10px;
 	border: 1px solid #ddd;
@@ -189,7 +189,7 @@ textarea {
 				<div class="form-group">
 					<label for="price">가격</label>
 					<div class="price-input">
-						<input type="text" id="menu_price" name="menu_price" value="${info.menu_price }" required>
+						<input type="number" id="menu_price" name="menu_price" value="${info.menu_price }" required>
 					</div>
 				</div>
 

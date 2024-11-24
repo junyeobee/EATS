@@ -22,8 +22,8 @@ body {
 }
 
 .container {
-	margin-left: 240px; /* 네비게이션 바 너비 */
-	margin-top: 80px; /* 헤더 높이 */
+	margin-left: 240px;
+	margin-top: 80px;
 	padding: 24px;
 	min-height: calc(100vh - 80px);
 }
