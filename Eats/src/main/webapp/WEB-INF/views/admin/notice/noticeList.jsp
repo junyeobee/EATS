@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 관리</title>
-    <link rel="stylesheet" href="./css/manager/headerCss.css"> <!-- 헤더 CSS -->
-    <link rel="stylesheet" href="./css/manager/navigationCss.css"> <!-- 네비게이션 CSS -->
+    <link rel="stylesheet" href="../css/manager/headerCss.css"> <!-- 헤더 CSS -->
+    <link rel="stylesheet" href="../css/manager/navigationCss.css"> <!-- 네비게이션 CSS -->
     <link rel="stylesheet" href="/css/manager/noticeCss.css"> <!-- 공지사항 CSS -->
 </head>
 <body>
@@ -95,6 +95,6 @@
         </div>
     </div>
 
-    <script src="./js/adminScript.js"></script> <!-- 스크립트 추가 -->
+    <script src="../js/adminScript.js"></script> <!-- 스크립트 추가 -->
 </body>
 </html>
