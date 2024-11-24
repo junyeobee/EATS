@@ -166,4 +166,61 @@
 		AND
 			STORE_IDX=#{store_idx}
 	</delete>
+	<select id="getStoreBriefInfo" parameterType="int" resultType="map">
+		SELECT
+			STORE_IDX, STORE_NAME
+		FROM
+			STORE
+		WHERE
+			STORE_IDX = #{store_idx}
+	</select>
+	<select id="getReviewList" parameterType="int" resultType="map">
+		SELECT
+			R.*, U.USER_NICKNAME, U.PROFILE_IMAGE
+		FROM
+			REVIEW R
+		INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+		ORDER BY
+			R.REV_WRITEDATE DESC
+	</select>
+	<select id="getRevMenuList" parameterType="java.util.List" resultType="map">
+		SELECT 
+			*
+	    FROM 
+	    	MENU
+	    WHERE 
+	    	MENU_IDX IN
+	    <foreach collection="list" item="menuIdx" open="(" separator="," close=")">
+	        #{menuIdx}
+	    </foreach>
+	</select>
+	<select id="getFoodType" parameterType="int" resultType="String">
+		SELECT 
+			CATE_VALUE_NAME
+		FROM 
+			CATE_VALUE
+		WHERE 
+			CATE_VALUE_IDX = (
+			    SELECT 
+			    	CATE_VALUE_IDX 
+			    FROM 
+			    	CATEGORY 
+			    WHERE 
+			    	STORE_IDX = #{store_idx}
+			    AND 
+			    	CATE_KEY_IDX = (
+			        	SELECT 
+			        		CATE_KEY_IDX
+				        FROM 
+				        	CATE_KEY
+				        WHERE 
+				        	CATE_KEY_NAME='음식 종류' 
+			    	)
+			) 
+	</select>
 </mapper>

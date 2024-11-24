@@ -224,4 +224,32 @@
 			, SYSDATE
 		)
 	</insert>
+	
+	<insert id="sendAlarmRequest" parameterType="com.eats.user.model.AlarmDTO">
+		INSERT INTO
+			S_ALARM
+		VALUES(
+			S_ALARM_IDX_SEQ.nextval
+			, #{user_idx}
+			, #{store_idx}
+			, TO_DATE(#{s_alarm_date}, 'YYYY-MM-DD')
+			, #{s_alarm_time}
+			, #{s_alarm_count}
+		)
+	</insert>
+	<!-- 알림신청 했는지 여부 확인 -->
+	<select id="checkAlarmExist" parameterType="com.eats.user.model.AlarmDTO" resultType="int">
+		SELECT
+			S_ALARM_IDX
+		FROM
+			S_ALARM
+		WHERE
+			USER_IDX=#{user_idx}
+		AND 
+			S_ALARM_DATE = TO_DATE(#{s_alarm_date}, 'YYYY-MM-DD')
+		AND
+			S_ALARM_TIME = #{s_alarm_time}
+		AND
+			S_ALARM_COUNT = #{s_alarm_count}
+	</select>
 </mapper>
