@@ -5,14 +5,20 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9fb;
     margin: 0;
-    padding: 20px;
     color: #333;
     line-height: 1.6;
 }
 
+.layout {
+	display: flex;
+	flex-direction: row;
+	width: 1440px;
+	margin: 0 auto;
+}
+
 .main-content{
-	
 	width:1000px;
+	margin: 50px auto;
 }
 
 h1, h2 {
