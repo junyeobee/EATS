@@ -3,6 +3,7 @@ package com.eats.controller.user;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,7 +94,27 @@ public class StoreInfoController {
 	public List getTimeListWithYN(int store_idx, String reserve_date, int reserve_cnt) {
 		
 		List<Map> timeList=reserveService.getTimeListWithYN(store_idx, reserve_date, reserve_cnt);
-
+		
+		LocalDate nowdate = LocalDate.now();
+		String today = nowdate.toString();
+		if(today.equals(reserve_date)) {
+			LocalTime nowtime = LocalTime.now();
+			int untilHourIdx=nowtime.toString().indexOf(":");
+			int untilMinIdx=nowtime.toString().lastIndexOf(":");
+			int nowhour=Integer.parseInt(nowtime.toString().substring(0, untilHourIdx));
+			int nowmin=Integer.parseInt(nowtime.toString().substring(untilHourIdx+1, untilMinIdx));
+			
+			for(int i=0; i<timeList.size(); i++) {
+				String hours = (String)timeList.get(i).get("RESERVE_HOUR");
+				int rhour=Integer.parseInt(hours.substring(0, hours.indexOf(":")));
+				int rmin=Integer.parseInt(hours.substring(hours.indexOf(":")+1));
+				
+				if(rhour - nowhour <1) {
+					timeList.remove(i);
+				}
+			}
+			//System.out.println("h:"+nowhour+"m:"+nowmin);
+		}
 		return timeList;
 	}
 	
@@ -233,20 +254,41 @@ public class StoreInfoController {
 		List<Map<String, Object>> revList=service.getReviewList(store_idx);
 		
 		
+		//문자열로 저장한 img, menu, tag를 리스트로 변환해서 저장
 		for(int i=0; i<revList.size(); i++) {
 			String menuStr=(String)revList.get(i).get("REV_MENU");
-			//문자열로 반환받은 메뉴 idx를 list로 변환
+			String imgStr=(String)revList.get(i).get("REV_IMG");
+			String tagStr=(String)revList.get(i).get("REV_TAG");
+			
 			List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
                     .map(String::trim)
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
 			
+			if(imgStr != null && imgStr != "") {
+				List<String> imgList = Arrays.stream(imgStr.split(","))
+						.map(String::trim)
+						.collect(Collectors.toList());
+				
+				revList.get(i).put("imgList", imgList);
+			}
+			
+			List<String> tagList = Arrays.stream(tagStr.split(","))
+					.map(String::trim)
+					.collect(Collectors.toList());
+			
 			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList);
 			revList.get(i).put("revMenuList", revMenuList);
+			revList.get(i).put("tagList", tagList);
 		}
+		
+		double avgScore = service.getAvgRevScore(store_idx);
+		int revCnt = service.getRevCount(store_idx);
 		
 		mv.addObject("store", map);
 		mv.addObject("reviewList", revList);
+		mv.addObject("avgScore", avgScore);
+		mv.addObject("revCnt", revCnt);
 		mv.setViewName("user/storeDetail/reviewList");
 		
 		return mv;

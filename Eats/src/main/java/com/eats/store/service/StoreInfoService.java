@@ -18,4 +18,6 @@ public interface StoreInfoService {
 	public Map getStoreBriefInfo(int store_idx);
 	public List<Map<String, Object>> getReviewList(int store_idx);
 	public List<HYMenuDTO> getRevMenuList(List<Integer> list);
+	public double getAvgRevScore(int store_idx);
+	public int getRevCount(int store_idx);
 }

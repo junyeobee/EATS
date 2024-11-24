@@ -107,4 +107,16 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		List<HYMenuDTO> revMenuList=mapper.getRevMenuList(list);
 		return revMenuList;
 	}
+	
+	@Override
+	public double getAvgRevScore(int store_idx) {
+		double avg = mapper.getAvgRevScore(store_idx);
+		return avg;
+	}
+	
+	@Override
+	public int getRevCount(int store_idx) {
+		int revCnt = mapper.getRevCount(store_idx);
+		return revCnt;
+	}
 }
