@@ -26,9 +26,7 @@ public class PaymentController {
 		
 
 		ModelAndView mav = new ModelAndView();
-		
-	
-		
+
 		 mav.addObject("store_idx",store_idx);
 		 mav.addObject("reserve_date",reserve_date);
 		 mav.addObject("reserve_time",reserve_time);
