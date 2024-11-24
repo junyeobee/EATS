@@ -7,7 +7,7 @@ import com.eats.user.model.TimelineDTO;
 
 public interface TimelineService {
 	
-	public List<TimelineDTO> randomuser();
+	public List<TimelineDTO> randomuser(Integer userIdx);
 	
 	public List<TimelineDTO> selectReviewList();
 	
@@ -18,6 +18,8 @@ public interface TimelineService {
 	public int unFollow(Map<String, Integer> map);
 	
 	public TimelineDTO timeLineProfile(int userIdx);
+	
+	public List<TimelineDTO> followerList(Integer userIdx);
 	
 
 }

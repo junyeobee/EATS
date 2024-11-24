@@ -66,6 +66,17 @@
 	</update>
 
 
+	<select id="bannerInfo"  parameterType="Integer" resultType="com.eats.admin.model.BannerDTO">
+	  select * from 
+	  banner
+	  where
+	  banner_idx=#{bannerIdx}
+	
+	</select>
+	
+		
+	
+
 
 </mapper>
 

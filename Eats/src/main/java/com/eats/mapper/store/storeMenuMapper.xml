@@ -21,15 +21,15 @@
 	<insert id="insertMenu" parameterType="com.eats.store.model.MenuDTO">
 	    
         INSERT INTO 
-        MENU (MENU_IDX, M_CATE_IDX, MENU_NAME, MENU_PRICE, MENU_INFO, MENU_PREORDER, MENU_IMG)
+        MENU <!-- (MENU_IDX, M_CATE_IDX, MENU_NAME, MENU_PRICE, MENU_INFO, MENU_PREORDER, MENU_IMG) -->
         VALUES (
             MENU_IDX_SEQ.NEXTVAL, 
             #{m_cate_idx},  
             #{menu_name},  
             #{menu_price}, 
             #{menu_info},  
-            #{menu_preorder}, 
-            #{menu_img}   
+            #{menu_img},
+             #{menu_preorder}
         )
  
 	</insert>	
@@ -57,9 +57,8 @@
     	#{storeIdx},      
    	 	#{cateName},    
     	#{mCateInfo}     
-	);
+	)
 
-	 
 	</insert>
 	
 	
@@ -89,8 +88,8 @@
 		menu_name=#{menu_name},
 		menu_price=#{menu_price},
 		menu_info=#{menu_info},
-		menu_preorder=#{menu_preorder},
-		menu_img=#{menu_img}
+		menu_img=#{menu_img},
+		menu_preorder=#{menu_preorder}
 		where
 		menu_idx=#{menu_idx}	
 			

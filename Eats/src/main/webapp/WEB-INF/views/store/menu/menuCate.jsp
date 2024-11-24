@@ -59,7 +59,7 @@ h1 {
 
 .content-wrapper {
 	display: flex;
-	gap: 100px;
+	gap: 70px;
 }
 
 .category-list {
@@ -165,7 +165,7 @@ h1 {
 }
 
 .cateInserForm {
-	width: 330px;
+	width: 390px;
 }
 </style>
 </head>
@@ -195,7 +195,8 @@ h1 {
 					<div class="category-edit">
 						<div class="input-group">
 							<label>메뉴 카테고리 추가하기</label> 
-							<input type="text" placeholder="카테고리 이름을 지정해주세요." name="m_cate_name">
+							<input type="text" placeholder="* 카테고리 이름을 지정해주세요." name="m_cate_name" required>
+							<br><br>
 							<input type="text" placeholder="카레고리 설명을 적어주세요." name="m_cate_info">
 						</div>
 

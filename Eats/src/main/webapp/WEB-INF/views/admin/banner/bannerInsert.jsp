@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
 <head>
+<link rel="stylesheet" href="/css/manager/headerCss.css">
+<link rel="stylesheet" href="/css/manager/navigationCss.css">
     <style>
         * {
             margin: 0;
@@ -12,13 +15,21 @@
         }
 
         .container {
-            max-width: 800px;
+            width: 800px;
             margin: 20px auto;
             padding: 20px;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        
+        .body_box {
+		width: 1440px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: row;
+		padding-bottom: 100px;
+	}
 
         h1 {
             font-size: 24px;
@@ -27,7 +38,7 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 35px;
         }
 
         .form-group label {
@@ -107,6 +118,9 @@
     </style>
 </head>
 <body>
+<%@ include file="/layout_component/header.jsp"%>
+<div class="body_box" id="body_box">
+	<%@ include file="/layout_component/navigation.jsp"%>
     <div class="container">
         <h1>배너 등록</h1>
         <form name="banenerInsertForm" action="bannerInsertOk" method="post" enctype="multipart/form-data">
@@ -149,9 +163,10 @@
             <div class="form-group">
                 <label>반영 기간</label>
                 <div class="date-group">
-                    <input type="date" name="banner_sdate" id="banner_sdate" class="form-control date-input">
-                    <span>~</span>
-                    <input type="date" name="banner_edate" id="banner_edate" class="form-control date-input">
+                <input type="date" name="banner_sdate" id="banner_sdate" class="form-control date-input" value="${dto.banner_sdate }" onchange="updateEndDate()">
+				<span>~</span>
+				<input type="date" name="banner_edate" id="banner_edate" class="form-control date-input" value="${dto.banner_edate }">
+
                 </div>
             </div>
 
@@ -175,5 +190,22 @@
             </div>
         </form>
     </div>
+    </div>
 </body>
+
+<script>
+function updateEndDate() {
+    const startDateInput = document.getElementById('banner_sdate');
+    const endDateInput = document.getElementById('banner_edate');
+
+    const startDate = new Date(startDateInput.value);
+    
+
+    if (startDateInput.value) {
+        endDateInput.setAttribute('min', startDateInput.value); 
+    } else {
+        endDateInput.removeAttribute('min'); 
+    }
+}
+</script>
 </html>

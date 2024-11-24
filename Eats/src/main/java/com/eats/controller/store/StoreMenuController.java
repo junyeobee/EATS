@@ -278,7 +278,7 @@ public class StoreMenuController {
 			@RequestParam(value = "m_cate_info", required = false, defaultValue = "") String mCateInfo,
 			
 			HttpSession session) {
-
+		
 		int storeIdx = (int)session.getAttribute("storeIdx");
 		System.out.println("스토어 번호!!!:"+storeIdx);
 		
