@@ -278,12 +278,12 @@
 	                if (!response.ok) {
 	                    throw new Error(result.error || '매출 등록 중 오류가 발생했습니다.');
 	                }
-	
-	                showSuccessMessage(result.processedRows + '건의 매출이 등록되었습니다.');
+					alert(result.message);
+	                showSuccessMessage(result.message);
 	                
 	                setTimeout(function() {
 	                    location.reload();
-	                }, 3000);
+	                }, 2000);
 	
 	            } catch (error) {
 	                showError(error.message);
