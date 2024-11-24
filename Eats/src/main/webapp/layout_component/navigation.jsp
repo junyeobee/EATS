@@ -12,9 +12,6 @@
 			<div onclick="location.href='/admin/storeInfoUpdateOkList';" class="navi_small_cate_text">정보 수정 승인</div>
 		</div>
 		<div class="navi_small_cate_btn">
-			<div onclick="location.href='/admin/storeChart';" class="navi_small_cate_text">매장별 통계</div>
-		</div>
-		<div class="navi_small_cate_btn">
 			<div onclick="location.href='/admin/storeList';" class="navi_small_cate_text">가입 매장 조회</div>
 		</div>
 	</div>
@@ -50,13 +47,10 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn">
-			<div onclick="location.href='';" class="navi_small_cate_text">배너 관리</div>
+			<div onclick="location.href='/bannerList';" class="navi_small_cate_text">배너 관리</div>
 		</div>
 		<div class="navi_small_cate_btn">
-			<div onclick="location.href='';" class="navi_small_cate_text">배너 등록</div>
-		</div>
-		<div class="navi_small_cate_btn">
-			<div onclick="location.href='';" class="navi_small_cate_text">배너 수정</div>
+			<div onclick="location.href='/bannerInsert';" class="navi_small_cate_text">배너 등록</div>
 		</div>
 	</div>
 	<div class="navi_cate_box" onclick="selectThisMenu(this)">
@@ -64,10 +58,10 @@
 	</div>
 	<div class="navi_small_cate_box">
 		<div class="navi_small_cate_btn">
-			<div onclick="location.href='';" class="navi_small_cate_text">공지사항</div>
+			<div onclick="location.href='/admin/notice';" class="navi_small_cate_text">공지사항</div>
 		</div>
 		<div class="navi_small_cate_btn">
-			<div onclick="location.href='';" class="navi_small_cate_text">1:1 문의 관리</div>
+			<div onclick="location.href='/admin/qna';" class="navi_small_cate_text">1:1 문의 관리</div>
 		</div>
 	</div>
 </nav>
