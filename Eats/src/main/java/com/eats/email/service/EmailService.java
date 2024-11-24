@@ -31,5 +31,14 @@ public class EmailService {
 		mailSender.send(msg);
 	}
 	
-
+	//ex)받는 사람 메일주소, 메일 제목, 메일 내용을 모두 인자로 받는 메일 전송 메소드
+	public void sendEmail(String to, String subject, String content) {
+		SimpleMailMessage msg=new SimpleMailMessage();
+		
+		msg.setTo(to);
+		msg.setSubject(subject);
+		msg.setText(content);
+		
+		mailSender.send(msg);
+	}
 }

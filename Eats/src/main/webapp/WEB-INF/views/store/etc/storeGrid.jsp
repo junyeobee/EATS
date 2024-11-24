@@ -73,7 +73,10 @@
 	function grid_setting(date_check) {
 		
 		if(date_check > 0){
-			confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
+			//confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
+			
+			//예약된 테이블이 있을 수 있어 삭제후 삽입 안되게 막음
+			alert("영업중인 매장의 그리드는 수정할 수 없습니다.");
 			
 		}else {
 			grid_setting_action();

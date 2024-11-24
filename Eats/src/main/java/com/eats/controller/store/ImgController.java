@@ -1,5 +1,6 @@
 package com.eats.controller.store;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -21,6 +22,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.admin.service.StoreEntryService;
+import com.eats.page.EntryService;
 import com.eats.store.model.StoreImgBeforeDTO;
 import com.eats.store.model.StoreImgDTO;
 import com.eats.store.model.StoreNewsDTO;
@@ -34,6 +37,12 @@ public class ImgController {
 
     @Autowired
     private StoreImgService service;
+    
+    @Autowired
+    private StoreEntryService entry_service;
+    
+    @Autowired
+    private EntryService en_service;
 
     //파일명 저장시 현재날짜, 시간 담음
     private DateTimeFormatter timestamp = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -141,6 +150,15 @@ public class ImgController {
                     } else {
                         result += service.storeImgInsert(storeImgDTO);  // DB 삽입 처리
                         System.out.println("이미지 삽입: " + fileWithTimes[i]);
+                        
+                        if(img_order.get(i) == 1) {
+                        	//첫번째 이미지 저장할 때는 입점승인 후 로그인 한 상태
+                        	
+                        	//store_state를 바꾸기 위해 체크 후 변경
+                        	int test = en_service.entryCheck(store_idx);
+                        	System.out.println("testddd"+test);
+                        	
+                        }
                     }
                 }
             }
@@ -178,6 +196,31 @@ public class ImgController {
             return mav;
         }
     }
+    
+
+    /*
+	//태그, 특징, 영업시간 확인해서 데이터 있는경우는 store의 store_state > true로 바꿔줘야함
+    private int entryCheck(int store_idx) {
+    	
+    	int result_entry = 0;
+
+        int one_cnt = entry_service.tagOneCheck(store_idx);
+        int two_cnt = entry_service.tagTwoCheck(store_idx);
+        int time_cnt = entry_service.timeCheck(store_idx);
+        int img_cnt = entry_service.imgCheck(store_idx);
+        
+        int all_cnt = one_cnt* two_cnt* time_cnt *img_cnt;
+        
+        //하나라도 0이면 곱셈을 이용하여 0값이 되게 작업해둠
+        //0 초과 값이면 4개 다 수행완료, store_state를 true로 변경해야함
+        if(all_cnt > 1) {
+
+            result_entry = entry_service.storeEntryInAction(store_idx);
+        	
+        }
+        return result_entry; 
+    }
+    */
 
 
     private String uploadFile(MultipartFile file, String uploadDir, String filename, Integer test) throws IOException {
@@ -198,6 +241,41 @@ public class ImgController {
 
         return path.toString(); 
     }
+    
+    /*
+    private String uploadFile(MultipartFile file, String uploadDir, String filename) throws IOException {
+        // 업로드된 파일 이름 생성 (현재 시간 + 원본 파일명)
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        System.out.println("fileName: " + fileName);
+
+        // 업로드 경로의 디렉터리 확인 및 생성
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs(); // 디렉토리 생성
+            System.out.println("디렉토리 생성: " + directory.getAbsolutePath());
+        }
+
+        // 기존 이미지가 있다면 삭제
+        if (filename != null && !filename.isEmpty()) {
+            File oldFile = new File(uploadDir + filename);
+            if (oldFile.exists()) {
+                boolean deleted = oldFile.delete();
+                System.out.println("기존 파일 삭제: " + filename + " (성공: " + deleted + ")");
+            }
+        }
+
+        // 새로운 파일 경로
+        String filePath = uploadDir + fileName;
+        System.out.println("저장 경로: " + filePath);
+
+        // 파일을 지정한 경로에 업로드
+        file.transferTo(new File(filePath));
+
+        // 업로드 후 파일 경로 리턴
+        return filePath; // 파일 저장 경로 반환
+    }
+    */
+    
 
     @PostMapping("/store/imgUpDel2")
     public ModelAndView imgUpDel2( 

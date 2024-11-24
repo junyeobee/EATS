@@ -30,6 +30,7 @@
 					<th class="ws200">아이디</th>
 					<th class="ws200">연락처</th>
 					<th class="ws300">이메일</th>
+					<th class="ws200">입점상태</th>
 					<th class="ws200">입점신청일</th>
 					<th class="ws200">상세보기</th>
 				</tr>
@@ -59,6 +60,18 @@
 							</td>
 							<td class="a_left">
 								${dto.sj_email }
+							</td>
+							
+							<td class="a_left">
+								<c:if test="${dto.sj_stat == 0 }">
+									대기
+								</c:if>
+								<c:if test="${dto.sj_stat == 1 }">
+									승인
+								</c:if>
+								<c:if test="${dto.sj_stat == 2 }">
+									반려(${dto.sj_reason})
+								</c:if>
 							</td>
 							
 							<td class="a_center">

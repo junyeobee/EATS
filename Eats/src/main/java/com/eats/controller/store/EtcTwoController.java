@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.admin.service.AdminStoreService;
+import com.eats.page.EntryService;
 import com.eats.store.model.StoreDTO;
 import com.eats.store.model.StoreImgDTO;
 import com.eats.store.model.StoreInfoUpdateDTO;
@@ -28,6 +29,9 @@ public class EtcTwoController {
 
     @Autowired
     private AdminStoreService service;	//관리자에서 가입매장데이터 뿌릴때 시간도 보여주고 있는 걸 먼저 작업해서 admin에 서비스 만듦
+
+    @Autowired
+    private EntryService en_service;
 
 	@GetMapping("/store/storeTime")
     public ModelAndView storeTime(HttpServletRequest req) {
@@ -125,10 +129,13 @@ public class EtcTwoController {
         @RequestParam(value = "rest_time", required = false) List<String> rest_time_arr) {
 
     	int result = 0;
+    	int store_idx_val = 0;
 
         for (int i = 0; i < radio_val.size(); i++) {
             if (!radio_val.get(i).isEmpty()) {
                 if ("Y".equals(radio_val.get(i))) {
+                	
+                	store_idx_val = store_idx.get(i);
 
 	            	System.out.println(radio_val.get(i));
 	
@@ -156,6 +163,16 @@ public class EtcTwoController {
                 }
         	}
        	}
+    	System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+        
+        if(result > 0) {
+        	//store_state를 바꾸기 위해 체크 후 변경
+        	int test = en_service.entryCheck(store_idx_val);
+        	
+        	System.out.println("dddddddddddddddddd");
+        	System.out.println("testddd"+test);
+        	
+        }
         
         String msg = result > 0 ? "영업시간 설정되었습니다." : "영업시간 설정되지 않았습니다. 다시 저장해주세요.";
         String goPage = "storeTime";
@@ -186,7 +203,12 @@ public class EtcTwoController {
         @RequestParam(value = "work_ehour", required = false) List<String> work_ehour,
         @RequestParam(value = "work_eminute", required = false) List<String> work_eminute,
         
-        @RequestParam(value = "rest_time", required = false) List<String> rest_time_arr) {
+        @RequestParam(value = "rest_shour", required = false) List<String> rest_shour,
+        @RequestParam(value = "rest_sminute", required = false) List<String> rest_sminute,
+        @RequestParam(value = "rest_ehour", required = false) List<String> rest_ehour,
+        @RequestParam(value = "rest_eminute", required = false) List<String> rest_eminute) {
+    	
+    	//@RequestParam(value = "rest_time", required = false) List<String> rest_time_arr
 
     	int result = 0;
     	
@@ -202,12 +224,13 @@ public class EtcTwoController {
             	System.out.println("work_sminute"+work_sminute.size());
             	System.out.println("work_ehour"+work_ehour.size());
             	System.out.println("work_eminute"+work_eminute.size());
-            	System.out.println("rest_time_arr"+rest_time_arr.size());
+            	//System.out.println("rest_time_arr"+rest_time_arr.size());
 
             	
         	    String stime = work_shour.get(i)+":"+work_sminute.get(i);
         	    String etime = work_ehour.get(i)+":"+work_eminute.get(i);
-        	    String rest_time = rest_time_arr.get(i);
+        	    //String rest_time = rest_time_arr.get(i);
+        	    String rest_time = rest_shour.get(i)+":"+rest_sminute.get(i)+"~"+rest_ehour.get(i)+":"+rest_eminute.get(i);
         	    
         	    StoreTimeDTO StoreTimeDTO = new StoreTimeDTO();
 
@@ -242,6 +265,14 @@ public class EtcTwoController {
 
 		            	System.out.println("YX");
 		                result += service.storeTimeSave(StoreTimeDTO);
+
+		                if(result > 0) {
+		                	//store_state를 바꾸기 위해 체크 후 변경
+		                	int test = en_service.entryCheck(store_idx);
+		                	
+		                	System.out.println("testddd"+test);
+		                	
+		                }
 	            	}
 	            	
 	            	data_no++;

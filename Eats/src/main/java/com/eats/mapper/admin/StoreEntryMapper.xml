@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.StoreEntryMapper">	
+	
+		<select id="tagOneCheck" resultType="int">
+			<!-- 
+			select cate.*, ckey.cate_key_level
+			-->
+			select count(*) 
+			from category cate
+			left join cate_key ckey on cate.cate_key_idx = ckey.cate_key_idx
+			where store_idx = #{store_idx} and ckey.cate_key_level = 1
+		</select>
+		
+		<select id="tagTwoCheck" resultType="int">
+			select count(*) 
+			from category cate
+			left join cate_key ckey on cate.cate_key_idx = ckey.cate_key_idx
+			where store_idx = #{store_idx} and ckey.cate_key_level = 2
+		</select>
+		
+		<select id="timeCheck" resultType="int">
+			select count(*) 
+			from store_time 
+			where store_idx = #{store_idx} 
+		</select>
+		
+		<select id="imgCheck" resultType="int">
+			select count(*) 
+			from store_img 
+			where store_idx = #{store_idx} 
+		</select>
+		
+	   	
+		<update id="storeEntryInAction" parameterType="int">
+			update store set
+				store_state='TRUE'
+				where store_idx=#{store_idx}
+		</update>
+		
+		
+	</mapper>
