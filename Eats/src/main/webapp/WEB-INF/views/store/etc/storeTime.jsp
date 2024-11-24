@@ -36,6 +36,78 @@
 	    // 콘솔에 출력
 	    console.log('Selected value for work_yn[' + num + ']: ' + selectedValue);
 	}
+	
+	function timeCheck(click_id, tr_num) {
+        var startHour = parseInt(document.querySelector("[name='work_shour']").value);
+        var startMinute = parseInt(document.querySelector("[name='work_sminute']").value);
+        var endHour = parseInt(document.querySelector("[name='work_ehour']").value);
+        var endMinute = parseInt(document.querySelector("[name='work_eminute']").value);
+        
+        var restStartHour = parseInt(document.querySelector("[name='rest_shour']").value);
+        var restStartMinute = parseInt(document.querySelector("[name='rest_sminute']").value);
+        var restEndHour = parseInt(document.querySelector("[name='rest_ehour']").value);
+        var restEndMinute = parseInt(document.querySelector("[name='rest_eminute']").value);
+
+        // 시간 비교 함수: 시:분을 분으로 변환하여 비교
+        function timeToMinutes(hour, minute) {
+            return hour * 60 + minute;
+        }
+
+        var startTimeInMinutes = timeToMinutes(startHour, startMinute);
+        var endTimeInMinutes = timeToMinutes(endHour, endMinute);
+        var restStartTimeInMinutes = timeToMinutes(restStartHour, restStartMinute);
+        var restEndTimeInMinutes = timeToMinutes(restEndHour, restEndMinute);
+
+        // 시작 시간이 종료 시간보다 뒤에 올 수 없음
+        if (startTimeInMinutes >= endTimeInMinutes) {
+            alert("시작 시간이 종료 시간보다 뒤에 올 수 없습니다.");
+            document.querySelector("[id='"+click_id+"']").focus();
+            
+            //클릭한 컨텐츠가 work_s를 포함하면
+            if(click_id && click_id.includes('work_s')) {
+               	document.querySelector("[id='"+click_id+"']").selectedIndex = 0;  // 첫 번째 옵션 선택 (index 0)
+               	document.querySelector("[id='work_sminute_"+tr_num+"']").selectedIndex = 0;
+            }
+            
+            if(click_id && click_id.includes('work_e')) {
+               	document.querySelector("[id='"+click_id+"']").selectedIndex = 0;  // 첫 번째 옵션 선택 (index 0)
+               	document.querySelector("[id='work_sminute_"+tr_num+"']").selectedIndex = 0;
+            }
+            
+            return false;
+        }
+        
+        // 브레이크 타임이 시작 시간과 종료 시간 사이에 있어야 함
+        if (restStartTimeInMinutes < startTimeInMinutes || restEndTimeInMinutes > endTimeInMinutes) {
+            alert("브레이크 타임은 시작 시간과 종료 시간 사이에 있어야 합니다.");
+            //document.querySelector("[id='"+click_id+"']").focus();
+            //document.querySelector("[name='rest_shour']").focus();  // 브레이크 시작 시간 선택 박스로 포커스 이동
+           
+            
+            
+        	var wshour = parseInt(document.querySelector("[id='work_shour_"+tr_num+"']").value);
+       		var wehour = parseInt(document.querySelector("[id='work_ehour_"+tr_num+"']").value);
+        
+       		//var rshour = wshour+1;
+       		//rshour = rshour < 10 ? '0' + rshour : String(rshour);
+       		//var rshour = '00';
+           	//document.querySelector("[id='rest_shour_"+tr_num+"']").value = rshour;
+           	//document.querySelector("[id='rest_sminute_"+tr_num+"']").value = '00';
+           	document.querySelector("[id='rest_shour_"+tr_num+"']").selectedIndex = 0;
+           	document.querySelector("[id='rest_shour_"+tr_num+"']").selectedIndex = 0;
+
+       		//var rehour = wehour-1;
+       		//rehour = rehour < 10 ? '0' + rehour : String(rehour);
+       		//var rehour = '00';
+           	//document.querySelector("[id='rest_ehour_"+tr_num+"']").value = rehour; 
+           	//document.querySelector("[id='rest_eminute"+tr_num+"']").value = '00';
+           	document.querySelector("[id='rest_ehour_"+tr_num+"']").selectedIndex = 0;
+           	document.querySelector("[id='rest_eminute"+tr_num+"']").selectedIndex = 0;
+            return false;
+        }
+
+        return true; // 유효성 검사 성공
+    }
 </script>
 
 <div class="mainCon_1000">
@@ -49,9 +121,14 @@
 		
 		<c:set var="shour" value="0" />
 		<c:set var="ehour" value="23" />
-		
 		<c:set var="sminute" value="0" />
 		<c:set var="eminute" value="55" />
+		
+		
+		<c:set var="shour2" value="1" />
+		<c:set var="ehour2" value="24" />		
+		<c:set var="sminute2" value="0" />
+		<c:set var="eminute2" value="55" />
 		
 		<!-- 
 		<c:if test="${not empty t_list}">	
@@ -250,16 +327,29 @@
 								<input type="radio" name="work_yn_up${t_list_num}" id="work_n_${t_list_num}" value="N" onclick="radio_check(${t_list_num}, 'N', 'up')" ${radio_nocheck }><label for="work_n_${t_list_num}">휴무</label>
 								<input type="radio" name="work_yn_up${t_list_num}" id="work_y_${t_list_num}" value="Y" onclick="radio_check(${t_list_num}, 'Y', 'up')" ${radio_check }><label for="work_y_${t_list_num}">영업</label>
 							</td>
-											
-				            <!-- stime_start 값 분리 -->
+							
+							<!-- 값 분리 시작 -->
 				            <c:set var="startTimeParts" value="${fn:split(dto.stime_start, ':')}" />
 				            <c:set var="startHour" value="${startTimeParts[0]}" />
 				            <c:set var="startMinute" value="${startTimeParts[1]}" />
 				
-				            <!-- stime_end 값 분리 -->
 				            <c:set var="endTimeParts" value="${fn:split(dto.stime_end, ':')}" />
 				            <c:set var="endHour" value="${endTimeParts[0]}" />
 				            <c:set var="endMinute" value="${endTimeParts[1]}" />
+				            
+				            
+				            <c:set var="RestOneSlice" value="${fn:split(dto.stime_break, '~')}" />
+				            <c:set var="RestStart" value="${RestOneSlice[0]}" />
+				            <c:set var="RestEnd" value="${RestOneSlice[1]}" />
+				
+				            <c:set var="RestStartTime" value="${fn:split(RestStart, ':')}" />
+				            <c:set var="rest_shour" value="${RestStartTime[0]}" />
+				            <c:set var="rest_sminute" value="${RestStartTime[1]}" />
+				            
+				            <c:set var="RestEndTime" value="${fn:split(RestEnd, ':')}" />
+				            <c:set var="rest_ehour" value="${RestEndTime[0]}" />
+				            <c:set var="rest_eminute" value="${RestEndTime[1]}" />
+							<!-- 값 분리 마침 -->
 				            
 							<td>
 				           		<c:set var="work_box_yn" value="display:none;" />
@@ -269,95 +359,86 @@
 								
 								<div class="work_yn_box${t_list_num}" style="${work_box_yn }">
 									<span>시작</span>
-									<select name="work_shour" id="" class="">
-																		
-										<!-- 
-									    <option value="" ${empty startHour || startHour == "" ? 'selected' : ''}>시</option>
-									     -->
-									    
+									<select name="work_shour" id="work_shour_${t_list_num}" class="" onchange="timeCheck('work_shour_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
-									        <option value="${hour_add.index}" ${hour_add.index == startHour ? 'selected' : ''}>${hour_add.index}</option>
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == startHour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
 									    </c:forEach>
 									    
 									    
 									</select>
 									<span>:</span>
-									<select name="work_sminute" id="" class="">
-									
-										<!-- 
-									    <option value="" ${empty startMinute ? 'selected' : ''}>분</option>
-									     -->
-									    
+									<select name="work_sminute" id="work_sminute_${t_list_num}" class="" onchange="timeCheck('work_sminute_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
-									        <option value="${minute_add.index}" ${minute_add.index == startMinute ? 'selected' : ''}>${minute_add.index}</option>
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == startMinute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
 									    </c:forEach>
 									    
 									</select>
 									<span>~</span>
 									<span>종료</span>
-									<select name="work_ehour" id="" class="">
+									<select name="work_ehour" id="work_ehour_${t_list_num}" class="" onchange="timeCheck('work_ehour_${t_list_num}', ${t_list_num})">
 																		
-									    <!-- work_ehour 값이 비어 있으면 '시'가 선택되도록 -->
-									    <!-- 
-									    <option value="" ${empty endHour ? 'selected' : ''}>시</option>
-									     -->
-									    <!-- shour부터 ehour까지 범위에서 시간 선택 -->
-									    <c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
-									        <!-- 각 hour_add.index가 work_ehour와 일치하면 selected 설정 -->
-									        <option value="${hour_add.index}" ${hour_add.index == endHour ? 'selected' : ''}>${hour_add.index}</option>
+									    <c:forEach begin="${shour2}" end="${ehour2}" var="hour" varStatus="hour_add">
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == endHour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
 									    </c:forEach>
-									    
-									    
-    									<!-- 
-										<option value="">시</option>
-										
-										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
-										
-								    		<c:if test="${hour_add.index == endHour}">
-									            <c:set var="selected" value="selected" />
-					    					</c:if>
-								    		<c:if test="${hour_add.index != endHour}">
-									            <c:set var="selected" value="" />
-					    					</c:if>
-					    					
-						    				<option value="${hour_add.index}" ${selected }>${hour_add.index}</option>
-										</c:forEach>
-										 -->
 									</select>
 									<span>:</span>
-									<select name="work_eminute" id="" class="">
-									
-										<!-- 
-									    <option value="" ${empty endMinute ? 'selected' : ''}>분</option>
-									     -->
-									    
-										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
-									        <option value="${minute_add.index}" ${minute_add.index == endMinute ? 'selected' : ''}>${minute_add.index}</option>
+									<select name="work_eminute" id="work_eminute_${t_list_num}" class="" onchange="timeCheck('work_eminute_${t_list_num}', ${t_list_num})">
+										<c:forEach begin="${sminute2}" end="${eminute2}"  step="5" var="minute" varStatus="minute_add">
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == endMinute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
 									    </c:forEach>
 									    
-									    <!-- 
-										<option value="">분</option>
-										
-										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
-										
-								    		<c:if test="${minute_add.index == endMinute}">
-									            <c:set var="selected" value="selected" />
-					    					</c:if>
-								    		<c:if test="${minute_add.index != endMinute}">
-									            <c:set var="selected" value="" />
-					    					</c:if>
-					    					
-						    				<option value="${minute_add.index}" ${selected }>${minute_add.index}</option>
-										</c:forEach>
-										 -->
 									</select>
 									
 									<span class="ml20">브레이크타임</span>
-									<input type="text" name="rest_time" id="" class="ws200" value="${dto.stime_break }">
-									
 									<!-- 
-									<input type="submit" class="btn_black" value="수정">
-									 -->
+									<input type="text" name="rest_time" id="" class="ws200" value="${dto.stime_break }">
+									-->
+									
+									<select name="rest_shour" id="rest_shour_${t_list_num}" class="" onchange="timeCheck('rest_shour_${t_list_num}', ${t_list_num})">
+										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == rest_shour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									</select>
+									<span>:</span>
+									<select name="rest_sminute" id="rest_sminute_${t_list_num}" class="" onchange="timeCheck('rest_sminute_${t_list_num}', ${t_list_num})">
+										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == rest_sminute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									</select>
+									~
+									<select name="rest_ehour" id="rest_ehour_${t_list_num}" class="" onchange="timeCheck('rest_ehour_${t_list_num}', ${t_list_num})">
+										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == rest_ehour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									    
+									</select>
+									<span>:</span>
+									<select name="rest_eminute" id="rest_eminute_${t_list_num}" class="" onchange="timeCheck('rest_eminute_${t_list_num}', ${t_list_num})">
+										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == rest_eminute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									</select>
+									
 								</div>
 							</td>
 						</tr>
@@ -468,7 +549,49 @@
 									</select>
 									
 									<span class="ml20">브레이크타임</span>
+									<!-- 
 									<input type="text" name="rest_time" id="" class="ws200" value="">
+									 -->
+									
+									
+									<select name="rest_shour" id="" class="">
+										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == restSHour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									    
+									</select>
+									<span>:</span>
+									<select name="rest_sminute" id="" class="">
+										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == restSMinute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									</select>
+									~
+									<select name="rest_shour" id="" class="">
+										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
+									        <option value="${String.format('%02d', hour_add.index)}" ${hour_add.index == restEHour ? 'selected' : ''}>
+									        	${String.format('%02d', hour_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									    
+									</select>
+									<span>:</span>
+									<select name="rest_sminute" id="" class="">
+										<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
+									        <option value="${String.format('%02d', minute_add.index)}" ${minute_add.index == restEMinute ? 'selected' : ''}>
+									        	${String.format('%02d', minute_add.index)}
+									        </option>
+									    </c:forEach>
+									    
+									</select>
+									
 									
 									<!-- 
 									<input type="submit" class="btn_black" value="수정">
@@ -580,9 +703,9 @@
 			<!-- 
 			${work_type }
 			 -->
-			<input type="radio" name="s_work" id="ws1" value="Y" ${work_type == 'Y' ? 'checked' : ''} ><label for="ws1">운영</label>
-			<input type="radio" name="s_work" id="ws2" value="R" ${work_type == 'R' ? 'checked' : ''}><label for="ws2">휴업</label>
-			<input type="radio" name="s_work" id="ws3" value="N" ${work_type == 'N' ? 'checked' : ''}><label for="ws3">폐업</label>
+			<input type="radio" name="s_work" id="ws1" value="TRUE" ${work_type == 'TRUE' ? 'checked' : ''} ><label for="ws1">운영</label>
+			<input type="radio" name="s_work" id="ws2" value="REST" ${work_type == 'REST' ? 'checked' : ''}><label for="ws2">휴업</label>
+			<input type="radio" name="s_work" id="ws3" value="FALSE" ${work_type == 'FALSE' ? 'checked' : ''}><label for="ws3">폐업</label>
 		</div>
 		<input type="submit" class="btn_black mt10 ml200" value="설정">
 	</form>

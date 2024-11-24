@@ -9,6 +9,8 @@
 	            sj_req_date, sj_res_date 
 	        from 
 	            store_join 
+	        where 
+	        	sj_stat = 0    
 	        order by 
 	            sj_idx desc
 		</select>
@@ -38,6 +40,8 @@
 				sj_res_date=#{sj_res_date}
 				where sj_idx=#{sj_idx}
 		</update>
+		
+		
 	   	<insert id="StoreInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
 	        insert into STORE (
 			    store_idx,
@@ -63,7 +67,101 @@
 			        #{store_lng}
 			)
 	   	</insert>
-	   	<insert id="StoreAccountInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+	   	
+		<update id="storeJoinEntryApproval" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+			update store_join set
+				sj_stat=1,
+				sj_res_date=SYSDATE
+				where sj_idx=#{sj_idx}
+		</update>
+		
+		
+		
+	   <select id="storeJoinEntryData" resultType="com.eats.store.model.StoreJoinDTO">
+			SELECT * 
+			FROM store_join 
+			WHERE sj_idx = #{sj_idx}
+	   </select>
+		
+		
+		<select id="areaCity" resultType="int">
+			select 
+			     area_idx 
+			from 
+				area  
+			where 
+				area_lev = 1 and area_name like '%${city}%'
+		</select>
+		
+		<select id="areaGu" resultType="int">
+			select 
+			     area_idx 
+			from 
+				area  
+			where 
+				area_lev = 2 and parent_idx = #{city} and area_name like '%${gu}%'
+		</select>
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	   	<insert id="storeEntryInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+	        insert into STORE (
+			    store_idx,
+			    store_name,
+			    store_area,
+			    store_addr,
+			    store_daddr,
+			    store_tel,
+			    store_biznum,
+			    store_state,
+			    store_lat,
+			    store_lng
+			) 
+			VALUES (STORE_IDX_SEQ.nextval,
+			        #{store_name},
+			        #{store_area},
+			        #{store_addr},
+			        #{store_daddr},
+			        #{store_tel},
+			        #{store_biznum},
+			        #{store_state},
+			        #{store_lat},
+			        #{store_lng}
+			)
+	   	</insert>
+		
+		<select id="findStoreIdx" resultType="int">
+			select 
+			     store_idx  
+			from 
+				store   
+			where 
+				store_name = #{store_name}
+			order by
+				store_idx desc
+		</select>
+		
+	   	
+	   	<insert id="storeAccountInsert" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
 	        insert into STORE_ACCOUNT (
 			    store_idx,
 			    store_id,
@@ -78,4 +176,16 @@
 			        #{store_ceo}
 			)
 	   	</insert>
+	   	
+	   	
+	   	
+	   	
+		
+		<update id="storeJoinEntryCancel" parameterType="com.eats.mapper.admin.AdminStoreEntryMapper">
+			update store_join set
+				sj_stat=2,
+				sj_reason=#{sj_reason},
+				sj_res_date=SYSDATE
+				where sj_idx=#{sj_idx}
+		</update>
 	</mapper>
