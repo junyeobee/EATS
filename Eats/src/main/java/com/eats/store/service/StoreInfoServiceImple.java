@@ -53,7 +53,7 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		int jjimCnt=mapper.getJjimCnt(store_idx);
 		int revCount=mapper.getRevCount(store_idx);
 		double avgRevScore=mapper.getAvgRevScore(store_idx);
-		String foodType=mapper.getFoodType(store_idx);
+		List<String> foodType=mapper.getFoodType(store_idx);
 		HYStoreInfoDTO storeTotalInfo=new HYStoreInfoDTO(storeDto, imgList, todayTime, timeList, newsList, conv_list, menu_cate_list, menu_list, jjimCnt, avgRevScore, revCount, foodType);
 		
 		return storeTotalInfo;

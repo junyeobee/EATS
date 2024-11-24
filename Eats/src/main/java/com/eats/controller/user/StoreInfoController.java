@@ -176,15 +176,20 @@ public class StoreInfoController {
 					mv.addObject("goTo", callback);
 				}
 			}
-			
 		}
 		mv.setViewName("user/myplate/msg");
 		return mv;
 	}
 	
 	@GetMapping("/user/makeReserve")
-	public ModelAndView makeReserve(int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
-			HttpSession session, HttpServletRequest req) {
+	public ModelAndView makeReserve(HttpSession session, HttpServletRequest req) {
+		
+		Integer store_idx = (Integer)session.getAttribute("store_idx");
+		String reserve_date = (String)session.getAttribute("reserve_date");
+		Integer reserve_count = (Integer)session.getAttribute("reserve_count");
+		String reserve_time = (String)session.getAttribute("reserve_time");
+		String reserve_table = (String)session.getAttribute("reserve_table");
+		String request = (String)session.getAttribute("request");
 		
 		String callback=req.getHeader("Referer");
 		
@@ -203,6 +208,7 @@ public class StoreInfoController {
 			if(result>0) {
 				//예약 삽입 성공 로직 (매장에 문자 보내기)
 				mv=new ModelAndView("redirect:/");
+				System.out.println("예약성공");
 			}else {
 				//예약 삽입 실패 로직 -> 에러 메시지
 				mv=new ModelAndView("redirect:"+callback);
@@ -210,13 +216,12 @@ public class StoreInfoController {
 		}else {
 			mv=new ModelAndView();
 			mv.addObject("errorMsg", "잘못된 접근입니다.");
-			mv.addObject("goTo", callback);
+			mv.addObject("goTo", "/");
 			mv.setViewName("user/myplate/error");
 		}
 		
 		return mv;
 	}
-	
 	
 	@PostMapping("/user/insertJjim")
 	@ResponseBody
@@ -250,8 +255,6 @@ public class StoreInfoController {
 		
 		Map map=service.getStoreBriefInfo(store_idx);
 		
-		//System.out.println(""+map.get("STORE_IDX")+"/"+map.get("STORE_NAME"));
-		
 		List<Map<String, Object>> revList=service.getReviewList(store_idx);
 		
 		
@@ -279,7 +282,7 @@ public class StoreInfoController {
 					.map(String::trim)
 					.collect(Collectors.toList());
 			
-			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); //이건 언니 필요없음
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); 
 			
 			revList.get(i).put("revMenuList", revMenuList);
 			revList.get(i).put("tagList", tagList);
@@ -289,7 +292,7 @@ public class StoreInfoController {
 		int revCnt = service.getRevCount(store_idx);
 		
 		mv.addObject("store", map);
-		mv.addObject("reviewList", revList);	//이 리뷰리스트 안에 있는 멥에 아까 변환해서 저장한 이미지 리스트도 들어 있는 것
+		mv.addObject("reviewList", revList);
 		mv.addObject("avgScore", avgScore);
 		mv.addObject("revCnt", revCnt);
 		mv.setViewName("user/storeDetail/reviewList");

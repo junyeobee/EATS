@@ -205,7 +205,7 @@
 		FROM 
 			CATE_VALUE
 		WHERE 
-			CATE_VALUE_IDX = (
+			CATE_VALUE_IDX IN (
 			    SELECT 
 			    	CATE_VALUE_IDX 
 			    FROM 
@@ -215,7 +215,7 @@
 			    AND 
 			    	CATE_KEY_IDX = (
 			        	SELECT 
-			        		CATE_KEY_IDX
+			        		DISTINCT CATE_KEY_IDX
 				        FROM 
 				        	CATE_KEY
 				        WHERE 

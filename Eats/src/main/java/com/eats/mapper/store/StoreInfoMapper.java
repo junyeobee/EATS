@@ -31,6 +31,6 @@ public interface StoreInfoMapper {
 	public int deleteJjim(JjimDTO dto);
 	public Map getStoreBriefInfo(int store_idx);
 	public List<Map<String, Object>> getReviewList(int store_idx);
-	public String getFoodType(int store_idx);
+	public List<String> getFoodType(int store_idx);
 	public List<HYMenuDTO> getRevMenuList(List<Integer> list);
 }
