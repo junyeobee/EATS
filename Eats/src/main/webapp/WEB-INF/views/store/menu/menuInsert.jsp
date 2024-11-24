@@ -61,6 +61,14 @@
             border-radius: 4px;
             font-size: 14px;
         }
+        
+        input[type="number"] {
+        	width: 50%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
         textarea {
             height: 120px;
@@ -106,7 +114,7 @@
         .price-input::after {
             content: "원";
             position: absolute;
-            right: 10px;
+            right: 380px;
             top: 50%;
             transform: translateY(-50%);
             color: #666;
@@ -192,7 +200,7 @@
             <div class="form-group">
                 <label for="price">가격</label>
                 <div class="price-input">
-                    <input type="text" id="menu_price" name="menu_price" required>
+                    <input type="number" id="menu_price" name="menu_price" required >
                 </div>
             </div>
 
