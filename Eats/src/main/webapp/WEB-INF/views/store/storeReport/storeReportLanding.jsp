@@ -209,7 +209,7 @@
     <header class="header">
         <div class="container header-content">
             <div class="logo">잇츠로고</div>
-            <a href="#" class="create-button">리뷰 보고서 구독하기</a>
+            <a onclick="window.open('/store/storeReport/subscribe','subscribe','width=484px','height=500px')" class="create-button">리뷰 보고서 구독하기</a>
         </div>
     </header>
 
@@ -291,8 +291,8 @@
 
     <section class="cta">
         <div class="container">
-            <h2>무료 체험 신청하기</h2>
-            <a href="#" class="create-button">무료로 시작하기</a>
+            <h2>정기 구독 신청하기</h2>
+            <a onclick="window.open('/store/storeReport/subscribe','subscribe','width=484px','height=500px')" class="create-button">정기 구독하기</a>
         </div>
     </section>
 
