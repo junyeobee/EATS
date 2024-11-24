@@ -371,6 +371,7 @@ img {
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
 						<img src="${pf.profile_image}" alt="Profile Image">
+						<p> ${pf.user_name}</p>	
 					
 					</div>
 					
