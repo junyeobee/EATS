@@ -36,7 +36,7 @@ public class StoreMainController {
         dash.setReserveWeek(service.reserveWeek(store_idx));
         dash.setSellCompare(service.sellCompare(store_idx));
         dash.setSellTop3Menu(service.sellTop3Menu(store_idx));
-
+        System.out.println(dash.getDailyReserve());
         ModelAndView mv = new ModelAndView();
         mv.addObject("dash", dash);
         mv.setViewName("store/storeMain");

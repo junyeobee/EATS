@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -83,7 +82,12 @@ public class ReserveController {
 	   List<TableDTO> tables = service.tables(map);
 	   List<ReserveListDTO> lists = service.reserveList(map);
 	   StoreTimeDTO timeInfo = service.storeTime(map);
-	   
+	   if(timeInfo == null) {
+	       mv.addObject("timeInfo", "영업시간이 설정되지 않았습니다.");
+		   mv.addObject("today", dateStr);
+	       mv.setViewName("store/reservation/reserveOkPage");
+	       return mv;
+	   }
 	   List<String> timeList = generateTimeList(timeInfo.getStime_start(),timeInfo.getStime_end(),timeInfo.getStime_break());
 	   mv.addObject("timeList", timeList);
 	   

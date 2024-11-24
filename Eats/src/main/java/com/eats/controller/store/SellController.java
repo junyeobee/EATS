@@ -71,7 +71,7 @@ public class SellController {
 		int totalSell = 0;
 		int totalCnt = 0;
 		
-		DecimalFormat df = new DecimalFormat("#,##0");
+		DecimalFormat df = new DecimalFormat("#,##0");	
 		for(SalesResponseDTO dt : result) {
 			totalSell += Integer.parseInt(dt.getSalesAmount());
 			totalCnt += Integer.parseInt(dt.getSalesCount());

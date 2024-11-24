@@ -530,7 +530,7 @@
 		</div>
 		<script>
         document.addEventListener('DOMContentLoaded', () => {
-			let no = ${dash.reserveNoshowOrCancel.statecnt};
+			let no = ${empty dash.reserveNoshowOrCancel.statecnt ? 0 : dash.reserveNoshowOrCancel.statecnt};
 			let d = ${dash.dailyReserve};
 			if(d != null && d != 0){
 				let rate = 100 - ((no / d) * 100);
