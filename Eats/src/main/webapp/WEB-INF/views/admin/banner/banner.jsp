@@ -27,6 +27,11 @@ table {
 	margin: 20px 0;
 }
 
+form{
+width:80%;
+
+}
+
 .body_box {
 	width: 1440px;
 	margin: 0 auto;
@@ -183,7 +188,7 @@ a {
 								</c:if>
 
 								<td>
-								<input type="hidden" value="${dto.banner_idx}" name="banner_idx">
+								<%-- <input type="hidden" value="${dto.banner_idx}" name="banner_idx"> --%>
 								<input type="button" value="수정" onclick="location.href='/bannerUpdate/${dto.banner_idx}'"></td>
 								
 							</tr>
