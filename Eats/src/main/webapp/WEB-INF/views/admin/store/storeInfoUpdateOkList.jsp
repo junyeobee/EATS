@@ -93,7 +93,7 @@
 				<c:if test="${empty lists }">
 					<tr>
 						<td colspan="5" align="center">
-							<c:if test="${empty storeCheck}">
+							<c:if test="${empty storeCheck || storeCheck == 'waiting'}">
 								정보수정신청이 존재하지 않습니다.
 							</c:if>
 							<c:if test="${storeCheck == 'in'}">

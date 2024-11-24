@@ -10,7 +10,7 @@ public class StoreDTO {
     private int store_area;
     
     private String store_addr, store_daddr, store_tel, store_biznum, store_state;
-    private int store_lat, store_lng;
+    private double store_lat, store_lng;
     
     private String store_ceo;
     
@@ -24,7 +24,7 @@ public class StoreDTO {
 	}
 
 	public StoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
-			String store_tel, String store_biznum, String store_state, int store_lat, int store_lng) {
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng) {
 		super();
 		this.store_idx = store_idx;
 		this.store_name = store_name;
@@ -39,7 +39,7 @@ public class StoreDTO {
 	}
 
 	public StoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
-			String store_tel, String store_biznum, String store_state, int store_lat, int store_lng, String store_ceo) {
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng, String store_ceo) {
 		super();
 		this.store_idx = store_idx;
 		this.store_name = store_name;
@@ -56,7 +56,7 @@ public class StoreDTO {
 	}
 
 	public StoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
-			String store_tel, String store_biznum, String store_state, int store_lat, int store_lng, String stime_start,
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng, String stime_start,
 			String stime_end, String stime_break) {
 		super();
 		this.store_idx = store_idx;
@@ -138,19 +138,19 @@ public class StoreDTO {
 		this.store_state = store_state;
 	}
 
-	public int getStore_lat() {
+	public double getStore_lat() {
 		return store_lat;
 	}
 
-	public void setStore_lat(int store_lat) {
+	public void setStore_lat(double store_lat) {
 		this.store_lat = store_lat;
 	}
 
-	public int getStore_lng() {
+	public double getStore_lng() {
 		return store_lng;
 	}
 
-	public void setStore_lng(int store_lng) {
+	public void setStore_lng(double store_lng) {
 		this.store_lng = store_lng;
 	}
     

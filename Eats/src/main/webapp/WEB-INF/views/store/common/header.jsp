@@ -28,33 +28,7 @@
 
 </head>
 <body>
-	<div class="header">
-	</div>
-	<div class="contents">
-		<div class="leftMenu">
-			<span class="big_title">
-				<a href="#">매장관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeImage">이미지관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeCateOne">태그관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeInfoUpdateReq">정보수정신청</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeTime">영업시간수정</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeCateTwo">특징관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeGrid">매장그리드</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeNewsList">소식관리</a>
-			</span>
-		</div>
+	<%@ include file="../store_Header.jsp"%>
+	<%@ include file="../nav.jsp"%>
+	 <div class="container" style="margin-top:150px; margin-left:300px; ">
 		<div class="mainCont">

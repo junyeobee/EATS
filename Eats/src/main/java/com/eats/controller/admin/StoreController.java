@@ -101,7 +101,9 @@ public class StoreController {
     		@RequestParam("sj_idx") int sj_idx,
     		@RequestParam("entry_value") String entry_value,
     		@RequestParam("cancel_reason") String cancel_reason,
-    		@RequestParam("sj_email") String sj_email
+    		@RequestParam("sj_email") String sj_email,
+    		@RequestParam("w_do") double w_do,
+    		@RequestParam("k_do") double k_do
     		) {
 
     	int result = 0;
@@ -221,9 +223,11 @@ public class StoreController {
     		 */
     		
     		//위도, 경도 추가작업필요
-    		store_dto.setStore_lat(0);
-    		store_dto.setStore_lng(0);
-    		
+    		store_dto.setStore_lat(w_do);
+    		store_dto.setStore_lng(w_do);
+
+    		System.out.println("lat"+store_dto.getStore_lat());
+    		System.out.println("lng"+store_dto.getStore_lng());
 
             /*
     		1. store 테이블에 insert
