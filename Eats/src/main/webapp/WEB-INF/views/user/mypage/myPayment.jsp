@@ -17,9 +17,9 @@
         <h1>결제 내역</h1>
         <div class="payment-header">
             <span>매장</span>
-            <span>이용날짜</span>
-            <span>결제금액</span>
-            <span>결제방법</span>
+            <span>이용 날짜</span>
+            <span>결제 금액</span>
+            <span>결제 방법</span>
             <span>상태</span>
         </div>
         <c:choose>
@@ -29,8 +29,23 @@
                         <span>${payment.store_name}</span>
                         <span>${payment.reserve_date}</span>
                         <span>${payment.pay_price}원</span>
-                        <span>${payment.pay_method}</span>
-                        <span>${payment.reserve_state}</span>
+                        <span>
+                            <c:choose>
+                                <c:when test="${payment.pay_method == 1}">카드</c:when>
+                                <c:when test="${payment.pay_method == 2}">현금</c:when>
+                                <c:otherwise>기타</c:otherwise>
+                            </c:choose>
+                        </span>
+                        <span>
+                            <c:choose>
+                                <c:when test="${payment.reserve_state == 0}">결제 완료</c:when>
+                                <c:when test="${payment.reserve_state == 1}">매장 승인 완료</c:when>
+                                <c:when test="${payment.reserve_state == 2}">취소</c:when>
+                                <c:when test="${payment.reserve_state == 3}">방문 완료</c:when>
+                                <c:when test="${payment.reserve_state == 4}">노쇼</c:when>
+                                <c:otherwise>알 수 없음</c:otherwise>
+                            </c:choose>
+                        </span>
                     </div>
                 </c:forEach>
             </c:when>
@@ -38,6 +53,8 @@
                 <p class="no-payment">결제 내역이 없습니다.</p>
             </c:otherwise>
         </c:choose>
+
+        <!-- 돌아가기 버튼 -->
         <div class="button-container">
             <a href="javascript:history.back()" class="back-btn">돌아가기</a>
         </div>

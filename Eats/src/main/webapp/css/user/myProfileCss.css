@@ -5,7 +5,7 @@ body {
     font-family: "Noto Sans KR", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #FFF8EB;
+    background-color: #FFFFFF; /* White background */
     color: #333333;
     line-height: 1.6;
 }
@@ -15,15 +15,15 @@ body {
     width: 80%;
     max-width: 1000px;
     margin: 100px auto;
-    background-color: #FFFFFF;
+    background-color: #FFFFFF; /* White background */
     padding: 50px;
     border-radius: 25px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); /* Softer shadow */
     transition: all 0.3s ease-in-out;
 }
 
 .container:hover {
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
 }
 
 /* 프로필 섹션 */
@@ -37,13 +37,13 @@ body {
     height: 180px;
     border-radius: 50%;
     object-fit: cover;
-    border: 6px solid #FFB53C;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 6px solid #F3553C; /* Theme red border */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
 }
 
 .profile-img:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .profile-name {
@@ -55,7 +55,7 @@ body {
 
 .profile-point {
     font-size: 1.4rem;
-    color: #FF5722;
+    color: #F3553C; /* Theme red */
     font-weight: bold;
     margin: 10px 0;
 }
@@ -77,7 +77,7 @@ body {
 }
 
 .info-table th {
-    background-color: #FFB53C;
+    background-color: #F3553C; /* Theme red header */
     color: #FFFFFF;
     font-weight: bold;
     text-align: center;
@@ -85,7 +85,7 @@ body {
 }
 
 .info-table td {
-    background-color: #fef8ed;
+    background-color: #FFF8EB; /* Light beige row */
     color: #333333;
     font-size: 1.1rem;
 }
@@ -99,20 +99,20 @@ body {
 }
 
 .btn-link {
-    background-color: #FFB53C;
+    background-color: #F3553C; /* Theme red button */
     color: #FFFFFF;
     text-decoration: none;
     padding: 12px 25px;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
 }
 
 .btn-link:hover {
-    background-color: #E5942A;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background-color: #D9432A; /* Slightly darker red on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 /* 반응형 스타일 */
