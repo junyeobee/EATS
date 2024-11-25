@@ -11,12 +11,16 @@ th, td, div, span, input, textarea{
 }
 .table-wrapper{
 	width:100%;
-	margin:30px auto;
+	margin-top : 80px;
+	margin-left : 240px;
 }
 .review-table{
 	width:90%;
 	margin:20px auto;
 }
+</style>
+<style>
+	document.
 </style>
 </head>
 <body>
@@ -33,12 +37,27 @@ th, td, div, span, input, textarea{
 			</tr>	
 		</thead>
 		<tbody>
-			<!-- foreach 돌릴 부분 -->
+			<c:if test = "${empty lists }">
+				<tr>
+					<td colspan= "4">없어요</td>
+				</tr>
+			</c:if>
+			<c:forEach items="${lists }" var="dto">
+				<tr onclick = "showDetail(${dto.rev_idx})">
+					<td>${dto.rev_writedate.split(" ")[0] }</td>
+					<td>${dto.user_nickname }</td>
+					<td>${dto.rev_score }</td>
+					<td>${dto.rev_content }</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 	<div class="paging">
 	123
 	</div>
+	<dialog id = "detailPage">
+		
+	</dialog>
 </div>
 </body>
 </html>
