@@ -306,14 +306,10 @@ public class StoreMenuController {
 
 		ModelAndView mav = new ModelAndView();
 		int result = service.deleteMenu(menuList);
-		String msg;
-		try {
-			msg = result > 0 ? "선택한 메뉴가 삭제되었습니다." : "메뉴 삭제가 실패했습니다.";
-		} catch (Exception e) {
-			msg = "해당메뉴는 삭제할 수 없습니다.";
-		}
-		
+		String msg="";
 
+			msg = result > 0 ? "선택한 메뉴가 삭제되었습니다." : "해당메뉴는 삭제할 수 없습니다.";
+		
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", "storeMenuList");
 		mav.setViewName("store/menu/menuMsg");

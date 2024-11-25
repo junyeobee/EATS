@@ -318,13 +318,16 @@ img {
             background-color: rgb(0,0,0);
             background-color: rgba(0,0,0,0.4);
             padding-top: 60px;
+            
+            
         }
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff5e6;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            border-radius:20px;
+            width: 26%;
         }
         .close {
             color: #aaa;
@@ -339,6 +342,38 @@ img {
             cursor: pointer;
         }
         
+        .fwlistTable img{
+       width: 55px;
+	height: 55px;
+	border-radius: 50%;
+        }
+ 
+       
+       .unfollow-btn{
+       
+       	padding: 6px 16px;
+	border-radius: 20px;
+	border: none;
+	background-color: #cccccc;
+	color: white;
+	cursor: pointer;
+	font-size: 12px;
+	}
+	
+	table {
+    border-collapse: collapse; /* 테두리 겹침을 방지 */
+    margin:0 auto;
+	}
+
+	td {
+    padding: 10px; /* 셀 내부 여백 */
+ 
+	}
+	
+	td:nth-child(2) {
+    padding-right: 20px;
+}
+	
 </style>
 
 
@@ -401,18 +436,30 @@ img {
 
 
 <!-- 모달 팝업 -->
-
-
 <div id="myModal" class="modal">
-
     <div class="modal-content">
+    <span class="close" onclick="closeModal();">&times;</span>
+    <h2>팔로우</h2>
     <c:if test="${empty follow }">
 		<p>팔로워가 없습니다.</p>
 	</c:if>
 	
 	<c:if test="${!empty follow }">
-        <span class="close" onclick="closeModal();">&times;</span>
-        <p>${follow.following_idx }</p>
+        
+        <table class="fwlistTable">
+        <c:forEach var="fdto" items="${follow }">
+        <tr>
+        	<c:if test="${empty fdto.profile_image }">
+        		<td><img src="/myPageImg/default-icon.png"></td>
+        	</c:if>
+        	<c:if test="${!empty fdto.profile_image }">
+        		<td><img src="${fdto.profile_image}"></td>
+        	</c:if>
+         	<td>${fdto.user_nickname }</td>
+         	<td><button class="unfollow-btn" data-idx="${fdto.following_idx}" id="${fdto.following_idx}">팔로잉</button></td>
+        </tr>
+        </c:forEach>
+        </table>
     </c:if>
     </div>
 </div>
@@ -528,7 +575,34 @@ img {
         });
     } );
 
+  document.querySelectorAll('.unfollow-btn').forEach(button => {
+      button.addEventListener('click', () => {
+          if (button.textContent === '팔로우') {
+              button.textContent = '팔로잉';
+              button.style.backgroundColor = '#cccccc';
 
+              // 팔로우 요청
+              var idx = button.getAttribute('data-idx');  
+              var userId = ${sessionScope.user_idx}; 
+              var params = 'idx=' + userId + '&following_idx=' + idx;
+              sendRequest('followerReviewAjax', params, showSendResult, 'GET');
+          
+              
+          } else {
+              button.textContent = '팔로우';
+              button.style.backgroundColor = '#ff9933';
+
+              // 언팔로우 요청
+              var idx = button.getAttribute('data-idx');
+         		var userId = ${sessionScope.user_idx}; 
+              var params = 'idx=' + userId + '&following_idx=' + idx;
+              sendRequest('unFollowAjax', params, unFollowRequest, 'GET');
+              
+     
+          }
+      });
+  } );
+  
 function showSendResult() {
     var reviewContainer = document.querySelector('.review-container');
 
@@ -656,6 +730,7 @@ function show() {
 
 function closeModal() {
     document.getElementById("myModal").style.display = "none";
+    window.location = window.location.href;
 }
 
 // 모달 외부 클릭 시 닫기
@@ -667,5 +742,6 @@ window.onclick = function(event) {
 }
 
 </script>
+<script type="text/javascript" src="../js/userHeader.js"></script>
 </body>
 </html>
