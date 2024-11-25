@@ -69,13 +69,13 @@ public class StoreReviewController {
 		//이거 요청상태로 xhr객체 200일때, 204일때 얼럿창으로 처리하면됨
 		System.out.println(result);
 		if(result > 0){
-			return ResponseEntity.status(204).body(0);
+			return ResponseEntity.status(204).body("이미 삭제 신청한 리뷰입니다.");
 		}else{
 			System.out.println(parseIdx);
 			int insertResult = service.insertRevReq(parseIdx);
 			System.out.println(insertResult);
 			if(insertResult == 0) {
-				return ResponseEntity.status(204).body(1);
+				return ResponseEntity.status(204).body("삭제 신청 실패");
 			}else {
 				return ResponseEntity.status(200).body("삭제 신청 완료");
 			}

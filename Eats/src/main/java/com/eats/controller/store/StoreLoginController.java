@@ -66,7 +66,7 @@ public class StoreLoginController {
 			System.out.println("가게이름"+storeName);
 			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeMenuList"); 
+			mav.addObject("goUrl", "storeMain"); 
 
 			Cookie ck = new Cookie("saveid", storeId);
 
@@ -307,12 +307,15 @@ public class StoreLoginController {
 	
 	
 	//로그아웃 
-	@GetMapping("/storeLogout")
-	public String storeLogout(HttpSession session) {
-		
-		session.invalidate();
-		
-		return "/storeLogin";
+	
+	@GetMapping("/logout")
+	public String storeLogout(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Integer storeIdx = (Integer)session.getAttribute("storeIdx");
+		if(storeIdx!=null) {
+			session.removeAttribute("storeIdx");
+		}
+		return "store/login/storeLogin";
 	}
 	
 
