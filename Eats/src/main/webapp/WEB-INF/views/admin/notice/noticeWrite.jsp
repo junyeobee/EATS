@@ -15,6 +15,7 @@
                 <label for="ntc_title">제목</label>
                 <input type="text" id="ntc_title" name="ntc_title" placeholder="공지사항 제목을 입력하세요" required>
             </div>
+            <br>
             <div class="form-group">
                 <label for="ntc_content">내용</label>
                 <textarea id="ntc_content" name="ntc_content" placeholder="공지사항 내용을 입력하세요" required></textarea>
@@ -26,6 +27,7 @@
                     <option value="0">비활성</option>
                 </select>
             </div>
+            <br>
             <div class="button-group">
                 <button type="submit" class="btn_save">저장</button>
                 <a href="/admin/notice" class="btn_cancel">취소</a>

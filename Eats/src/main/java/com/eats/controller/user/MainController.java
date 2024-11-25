@@ -56,10 +56,11 @@ public class MainController {
 			pointTags.put(dto.getStore_idx(), ms.getStoreCategoryName(dto.getStore_idx()));
 		}
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = today.format(formatter);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
 		
-        List<BannerDTO> bannerList = ms.getBannerForSwiper(formattedDate);
+        String todate = today.format(formatter);
+		System.out.println(todate);
+        List<BannerDTO> bannerList = ms.getBannerForSwiper(todate);
         
         ModelAndView mv = new ModelAndView();
 		

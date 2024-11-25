@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eats.controller.store.SellController;
 import com.eats.mapper.user.ReservationMapper;
 import com.eats.user.model.AlarmDTO;
+import com.eats.user.model.PayDTO;
 import com.eats.user.model.ReservationDTO;
 
 @Service
@@ -62,10 +64,27 @@ public class ReservationServiceImple implements ReservationService {
 	}
 	
 	@Override
-	public int makeReserve(ReservationDTO reservationDTO) {
+	@Transactional
+	public int makeReserve(ReservationDTO reservationDTO, PayDTO paydto) {
+		int result = 0;
+		int presult = 0;
 		
-		int result=mapper.makeReserve(reservationDTO);
-		return result;
+		try {
+			result=mapper.makeReserve(reservationDTO);
+			
+			if(result > 0) {
+				presult = mapper.makePayment(paydto);
+			}
+			
+			if(result > 0 && presult > 0) {
+				return result = 1;
+			} else {
+				return result = 0;
+			}
+		} catch (Exception e) {
+			return result = 0;
+		}
+	
 	}
 	
 	@Override
@@ -97,4 +116,6 @@ public class ReservationServiceImple implements ReservationService {
 		int s_alarm_idx=mapper.checkAlarmExist(alarmDTO);
 		return s_alarm_idx;
 	}
+
+	
 }

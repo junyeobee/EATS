@@ -41,7 +41,7 @@ public class StoreReviewListServiceImple implements StoreReviewListService {
 	
 	@Override
 	public int insertRevReq(int rev_idx) {
-		int result = mapper.getRevRequest(rev_idx);
+		int result = mapper.insertRevReq(rev_idx);
 		return result;
 	}
 

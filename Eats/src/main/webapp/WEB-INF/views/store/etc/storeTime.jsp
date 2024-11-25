@@ -325,7 +325,7 @@
 									해당요일은 휴무일입니다.
 								</div>
 								
-								<div class="work_yn_box${t_list_num}" style="${work_box_yn }">
+								<div class="work_yn_box${t_list_num}" style="${work_box_yn } margin-left:50px;">
 									<span>시작</span>
 									<select name="work_shour" id="work_shour_${t_list_num}" class="" onchange="timeCheck('work_shour_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">

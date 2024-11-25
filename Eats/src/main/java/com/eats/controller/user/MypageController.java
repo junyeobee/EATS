@@ -247,11 +247,6 @@ public class MypageController {
         int pageSize = 10;
         int offset = (page - 1) * pageSize;
 
-        // 로그 출력으로 값 확인
-        System.out.println("user_idx: " + user_idx);
-        System.out.println("page: " + page);
-        System.out.println("offset: " + offset);
-
         int totalItems = mypageService.getTotalJjimCount(user_idx);
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
