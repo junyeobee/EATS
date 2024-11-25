@@ -55,14 +55,14 @@
 							<td class="a_left">
 								${dto.sj_id }
 							</td>
-							<td class="a_left">
+							<td class="a_center">
 								${dto.owner_tel }
 							</td>
 							<td class="a_left">
 								${dto.sj_email }
 							</td>
 							
-							<td class="a_left">
+							<td class="a_center">
 								<c:if test="${dto.sj_stat == 0 }">
 									대기
 								</c:if>
@@ -78,7 +78,7 @@
 								${dto.sj_req_date }
 							</td>
 							<td class="a_center">
-								<input type="button" class="btn_gray" value="상세보기" onclick="location.href='/admin/storeEntryDetail?sj_idx=${dto.sj_idx }'">
+								<input type="button" class="btn_orange" value="상세보기" onclick="location.href='/admin/storeEntryDetail?sj_idx=${dto.sj_idx }'">
 							</td>
 						</tr>
 					</c:forEach>
@@ -94,5 +94,7 @@
 		</table>
 	</div>
 </div>
-   
-<%@include file="/WEB-INF/views/admin/common/footer.jsp"%>
+ 		</div>
+	</div>
+</body>
+</html>

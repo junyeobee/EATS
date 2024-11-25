@@ -47,7 +47,9 @@ menu, ol, ul {
 	overflow: auto;
 	font-family: "Noto Sans KR", sans-serif;
 	width: 1240px;
+	/*
 	height:100%;
+	*/
 	display: flex;
 	flex-direction: column;
 	align-items: center;
