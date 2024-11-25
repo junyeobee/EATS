@@ -16,75 +16,80 @@ import org.springframework.web.servlet.ModelAndView;
 import com.eats.store.model.ReserveOkListDTO;
 import com.eats.store.service.StoreReserveService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class StoreReserveController {
-	
+
 	@Autowired
 	private StoreReserveService srs;
 
 	@GetMapping("/store/reserveOkListPage")
-	public ModelAndView reserveOkListPage(int store_idx,
-			@RequestParam(required=false) String selectedDate,
-			@RequestParam(required=false) String searching) {
-		
+	public ModelAndView reserveOkListPage(HttpSession session,
+			@RequestParam(required = false) String selectedDate,
+			@RequestParam(required = false) String searching) {
+		int store_idx = (int) session.getAttribute("storeIdx");
+
 		LocalDate today = LocalDate.now();
-		String todayDate="";
-		if(selectedDate==null || selectedDate.equals("")) {
-			todayDate=""+today;
+		String todayDate = "";
+		if (selectedDate == null || selectedDate.equals("")) {
+			todayDate = "" + today;
 		} else {
-			todayDate=selectedDate;
+			todayDate = selectedDate;
 		}
-		
+
 		Map<String, Object> infoMap = new HashMap<>();
 		infoMap.put("store_idx", store_idx);
 		infoMap.put("todayDate", todayDate);
 		infoMap.put("searching", searching);
-		
+
 		List<ReserveOkListDTO> rList = srs.getStoreReserveOkList(infoMap);
-		
+
 		Map<Integer, String> stateMap = new HashMap<>();
 		Map<Integer, String> stateClass = new HashMap<>();
-		for(ReserveOkListDTO dto:rList) {
+		for (ReserveOkListDTO dto : rList) {
 			String state = "";
-			String st_class="";
-			if(dto.getReserve_state()==0){
-				state="승인 대기";
-				st_class="st_ready";
-			} else if(dto.getReserve_state()==1){
-				state="승인됨";
-				st_class="st_apply";
-			} else if(dto.getReserve_state()==2){
-				state="취소됨";
-				st_class="st_cancel";
-			} else if(dto.getReserve_state()==3){
-				state="방문 완료";
-				st_class="st_visit";
-			} else if(dto.getReserve_state()==4){
-				state="노쇼";
-				st_class="st_noshow";
-			} 
-			
+			String st_class = "";
+			if (dto.getReserve_state() == 0) {
+				state = "승인 대기";
+				st_class = "st_ready";
+			} else if (dto.getReserve_state() == 1) {
+				state = "승인됨";
+				st_class = "st_apply";
+			} else if (dto.getReserve_state() == 2) {
+				state = "취소됨";
+				st_class = "st_cancel";
+			} else if (dto.getReserve_state() == 3) {
+				state = "방문 완료";
+				st_class = "st_visit";
+			} else if (dto.getReserve_state() == 4) {
+				state = "노쇼";
+				st_class = "st_noshow";
+			}
+
 			stateMap.put(dto.getReserve_idx(), state);
 			stateClass.put(dto.getReserve_idx(), st_class);
 		}
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("rList", rList);
 		mv.addObject("stateMap", stateMap);
 		mv.addObject("stateClass", stateClass);
+		mv.addObject("searching", searching);
+		mv.addObject("selectedDate", selectedDate);
 		mv.setViewName("/store/reservation/reserveOkListPage");
-		
+
 		return mv;
 	}
-	
+
 	@PostMapping("/store/selectThisList")
 	@ResponseBody
-	public Map<String, Object> seleteThisList(int reserve_idx){
+	public Map<String, Object> seleteThisList(int reserve_idx) {
 		Map<String, Object> map = new HashMap<>();
-		
+
 		List<ReserveOkListDTO> list = srs.getStoreReserveOkListDetail(reserve_idx);
 		map.put("dList", list);
-		
+
 		return map;
 	}
 }

@@ -6,8 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="/js/reserveOkList.js"></script>
 <script src="/js/ajaxJs.js"></script>
+
+<link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 <title>예약 관리</title>
 <style>
 * {
@@ -122,10 +123,10 @@ body {
 	background-color: #f8fafc;
 	border-radius: 6px;
 	display: flex;
-    flex-direction: row;
-    column-gap: 15px;
-    justify-content: flex-start;
-    align-items: center;
+	flex-direction: row;
+	column-gap: 15px;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 .button {
@@ -158,15 +159,19 @@ body {
 .st_ready {
 	background-color: rgba(255, 181, 60, 0.5);
 }
+
 .st_apply {
 	background-color: #7DC66C;
 }
+
 .st_cancel {
-	background-color:rgba(243, 85, 60, 0.6);
+	background-color: rgba(243, 85, 60, 0.6);
 }
+
 .st_visit {
 	background-color: #7DC66C;
 }
+
 .st_noshow {
 	background-color: rgba(243, 85, 60, 0.6);
 }
@@ -211,20 +216,87 @@ body {
 .reservation-details {
 	height: 800px;
 }
+
+.reservation-noitem {
+	text-align: center;
+}
+
+.calendar_container {
+	display: none;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	padding: 0px 20px;
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	z-index: 20;
+	padding-top: 20px;
+	background-color: #fefefe;
+}
+
+.button-group {
+	position: relative;
+}
+
+.calendar_reset {
+	font-size: 14px;
+	color: #878787;
+	top: 9px;
+	position: absolute;
+	right: 20px;
+}
+
+.calendar_reset:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.cal-wrapper .calendar-header button {
+	padding: 5px 10px;
+    cursor: pointer;
+    background-color: #349FFB;
+    border-radius: 5px;
+    border: 0;
+    color: white;
+}
+
+.cal-wrapper .selectable:hover {
+    background-color: #349FFB;
+    color:#fefefe;
+    opacity:0.8;
+}
+
+.cal-wrapper .selected {
+    background-color: #349FFB; 
+    color: white;
+}
 </style>
 </head>
 <body>
+	<%@ include file="../store_Header.jsp"%>
+	<%@ include file="../nav.jsp"%>
 	<div class="container">
 		<div class="page-title">
 			<h2>승인된 예약</h2>
 		</div>
 		<section class="search-section">
 			<div class="search-bar">
-				<input type="text" class="search-bar-text"
+				<input type="text" class="search-bar-text" id="search_text"
+					value="${searching==null||searching==''?'':searching }"
 					placeholder="고객명 또는 전화번호로 검색">
-				<button class="button button-primary">검색</button>
+				<button class="button button-primary" id="search_button"
+					onclick="searchThisWord()" oninput="searchThisWord(e)">검색</button>
 				<div class="button-group">
-					<button class="button button-outline">날짜 선택</button>
+					<button class="button button-outline" id="selected_date"
+						onclick="openCalendar()">${selectedDate==""||selectedDate==null?'날짜선택':selectedDate}</button>
+					<div class="calendar_container" id="calendar_container">
+						<a class="calendar_reset" href='/store/reserveOkListPage?searching=${searching }'>날짜 초기화</a>
+						<!-- 캘린더 영역(s) -->
+						<div class="cal-wrapper" id="calendar_box">
+							<div id="calendar"></div>
+						</div>
+						<!-- 캘린더 영역(e) -->
+					</div>
 				</div>
 			</div>
 		</section>
@@ -232,31 +304,33 @@ body {
 		<div class="content-wrapper">
 			<div class="table-grid-container">
 				<div class="reservation-list table-grid">
-					<c:forEach var="list" items="${rList }">
-						<div class="reservation-item active"
-							onclick="selectThisList(${list.reserve_idx})">
-							<div class="item-header">
-								<span>${list.user_name }</span> <span
-									class="status-tag ${stateClass[list.reserve_idx] }">
-									${stateMap[list.reserve_idx] }
-									</span>
+					<c:if test="${rList.size()>0 }">
+						<c:forEach var="list" items="${rList }">
+							<div class="reservation-item active"
+								onclick="selectThisList(${list.reserve_idx})">
+								<div class="item-header">
+									<span>${list.user_name }</span> <span
+										class="status-tag ${stateClass[list.reserve_idx] }">
+										${stateMap[list.reserve_idx] } </span>
+								</div>
+								<div>
+									<span class="description">${list.reserve_date } </span> <span
+										class="description">${list.reserve_time }</span> <span
+										class="description">${list.reserve_count }명 </span> <span
+										class="description">|</span> <span class="description">${list.table_num }번
+										테이블</span>
+								</div>
 							</div>
-							<div>
-								<span class="description">${list.reserve_date } </span> <span
-									class="description">${list.reserve_time }</span> <span
-									class="description">${list.reserve_count }명 </span> <span
-									class="description">|</span> <span class="description">${list.table_num }번
-									테이블</span>
-							</div>
-						</div>
-					</c:forEach>
-					
+						</c:forEach>
+					</c:if>
+					<c:if test="${rList.size()==0 }">
+						<div class="reservation-noitem">승인된 예약 목록이 없습니다.</div>
+					</c:if>
 				</div>
 			</div>
-			<div class="reservation-details" id="reserve_details">
-				
-			</div>
+			<div class="reservation-details" id="reserve_details"></div>
 		</div>
 	</div>
 </body>
+<script src="/js/reserveOkList.js"></script>
 </html>
