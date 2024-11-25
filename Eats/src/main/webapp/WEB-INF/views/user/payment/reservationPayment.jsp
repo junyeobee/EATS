@@ -122,7 +122,7 @@
         .submit-button {
             width: 100%;
             padding: 15px;
-            background-color: #1c7ed6;
+            background-color: #f3553c;
             color: white;
             border: none;
             border-radius: 4px;
@@ -131,9 +131,7 @@
             margin-top: 20px;
         }
 
-        .submit-button:hover {
-            background-color: #1971c2;
-        }
+        
 
         .point-input {
             display: flex;
@@ -159,6 +157,9 @@
             font-size: 14px;
             color: #666;
         }
+        p{
+        margin-bottom: 6px;
+        }
     </style>
 </head>
 <body>
@@ -166,42 +167,52 @@
         <h1>결제하기</h1>
 
         <div class="main-content">
+        <c:if test=${!empty dto }>
+              <c:set var="dto" items=${dto }>
             <section class="section">
-                <h2>방문 목적</h2>
+            
+                <h2>예약 정보</h2>
                 <div class="product">
-                    <img src="/api/placeholder/80/80" alt="Daily Facial Soap">
                     <div>
-                        <h3></h3>
-                        <p></p>
-                        <p></p>
-                    </div>
-                </div>
+                    <h2>${dto.store_name }</h2>
+                        <p>방문날짜 : ${reserve_date}</p>
+                        <p>예약일 : ${reserve_time}</p>
+                        <p>인원수 : ${reserve_count}</p>
+                        <p>테이블 : ${reserve_table}</p>
+                        <c:if test="${!empty request }">
+                        <p>${request}</p>
+                       </c:if>
+                    
+                    		</div>
+                		</div>
+                 
+               
             </section>
 
             <section class="section">
-                <h2>예약 정보</h2>
+                <h2>예약자 정보</h2>
                 <div class="user-info">
                     <div class="field">
                         <label>이름</label>
-                        <input type="text" value="홍길동">
+                        <input type="text" value="${dto.user_name }" readonly>
                     </div>
                     <div class="field">
                         <label>연락처</label>
-                        <input type="text" value="01012345678">
+                        <input type="text" value="${dto.user_tel }" maxlength="13" readonly>
                     </div>
             
                 </div>
             </section>
-
  
-
+			</c:set>
+  		</c:if>
             <section class="section">
-                <h2>레스토랑 주의사항</h2>
+                <h2>주의사항</h2>
                 <div class="field">
                    
                     <div class="point-input">
                        
-                        <button>2일 전 취소: 100% 환불</button>
+                        <h2>2일 전 취소: 100% 환불</h2>
                     </div>
                 </div>
             
@@ -214,17 +225,17 @@
             <h2>최종 결제금액</h2>
             <div class="price-row">
                 <span>금액</span>
-                <span>18,000원</span>
+                <span>10,000원</span>
             </div>
             <div class="price-row">
                 <span>할인</span>
-                <span>-1,000원</span>
+                <span>0원</span>
             </div>
       
            
             <div class="price-row total-price">
                 <span>총 결제금액</span>
-                <span>19,500원</span>
+                <span>10,000원</span>
             </div>
             
             
@@ -237,7 +248,7 @@
 
             <div class="agreement">
                 <label>
-                    <input type="checkbox">
+                    <input type="checkbox" id="paycheckS" onclick="agree_check();">
                     <span>구매조건 확인 및 결제진행에 동의</span>
                 </label>
             </div>
@@ -248,6 +259,13 @@
 </body>
 
 <script>
+let auth = false;
+
+function agree_check() {
+	var ckb1 = document.getElementById("paycheckS");
+	
+	if(ckb1.checked) auth = true;
+}
 
 function goPay(){
 	
@@ -260,9 +278,11 @@ function goPay(){
     // 견적서번호 넘기기 
     
     //int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
-    
-    window.open(url, "goPay",  "left=350px, top=100px, width=1000px height=600px");
-	
+	if(!auth){
+    	alert('결제약관에 동의해주세요.');
+    } else {
+    	window.open(url, "goPay",  "left=350px, top=100px, width=1000px height=600px");
+    }
 }
 
 

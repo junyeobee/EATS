@@ -66,6 +66,7 @@
 		rev.REV_MENU,
 		rev.REV_TAG,
 		up.USER_NICKNAME,
+		up.PROFILE_IMAGE,
 		st.STORE_NAME,
 		st.STORE_ADDR
 		FROM
@@ -103,6 +104,7 @@
 		rev.REV_MENU,
 		rev.REV_TAG,
 		up.USER_NICKNAME,
+		up.PROFILE_IMAGE,
 		st.STORE_NAME,
 		st.STORE_ADDR
 		FROM
