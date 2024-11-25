@@ -66,7 +66,7 @@ public class StoreLoginController {
 			System.out.println("가게이름"+storeName);
 			
 			mav.setViewName("store/login/storeLoginMsg");
-			mav.addObject("goUrl", "storeMain"); 
+			mav.addObject("goUrl", "storeMenuList"); 
 
 			Cookie ck = new Cookie("saveid", storeId);
 
@@ -313,7 +313,7 @@ public class StoreLoginController {
 		
 		session.invalidate();
 		
-		return "index";
+		return "/storeLogin";
 	}
 	
 

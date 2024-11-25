@@ -225,6 +225,16 @@
 		)
 	</insert>
 	
+	<insert id="makePayment" parameterType="com.eats.user.model.PayDTO">
+		INSERT INTO
+			reserve_pay
+		VALUES(
+			RESERVE_IDX_SEQ.currval
+			, #{pay_price}
+			, #{pay_method}
+			)
+	</insert>
+	
 	<insert id="sendAlarmRequest" parameterType="com.eats.user.model.AlarmDTO">
 		INSERT INTO
 			S_ALARM
