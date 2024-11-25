@@ -1,6 +1,7 @@
 var calendar_container = document.getElementById('calendar_container');
 
 function selectThisList(reserve_idx) {
+	console.log(reserve_idx);
 	var params = 'reserve_idx=' + reserve_idx;
 	sendRequest('selectThisList', params, showSelectList, 'POST');
 }
@@ -10,7 +11,7 @@ function showSelectList() {
 		if (XHR.status == 200) {
 			var data = XHR.responseText;
 			var dList = JSON.parse(data).dList[0];
-
+			console.log(JSON.parse(data).dList);
 			var state ='';
 			var st_class='';
 			if (dList.reserve_state==0){

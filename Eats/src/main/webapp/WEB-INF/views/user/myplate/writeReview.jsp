@@ -655,7 +655,7 @@ ul {
 				<input type="hidden" id="reserve_idx" name="reserve_idx" value="${reserveDTO.reserve_idx }">
 				<input type="hidden" name="rev_score" id="rev_score">
 				<textarea style="display:none;" name="rev_content" id="rev_content"></textarea>
-				<input type="hidden" id="rev_content" name="rev_content">
+				<!-- <input type="hidden" id="rev_content" name="rev_content"> -->
 				<input type="file" name="images" id="imageInput" multiple accept="image/*" style="display: none">
 				<input type="hidden" id="rev_menu" name="rev_menu">
 				<input type="hidden" id="rev_tag" name="rev_tag">
@@ -859,7 +859,7 @@ $(document).ready(function(){
 	        // hidden input에 값 추가
 	        var currentValue = $hiddenInput.val();
 	        if(currentValue) {
-	            $hiddenInput.val(currentValue + ", " + (menuIdx || selChk));
+	            $hiddenInput.val(currentValue + "," + (menuIdx || selChk));
 	        } else {
 	            $hiddenInput.val(menuIdx || selChk);
 	        }
@@ -882,11 +882,11 @@ $(document).ready(function(){
 	        // hidden input에서 값 제거
 	        var currentValue = $hiddenInput.val();
 	        if(currentValue) {
-	            var valueArray = currentValue.split(', ');
+	            var valueArray = currentValue.split(',');
 	            valueArray = valueArray.filter(function(value) {
 	                return value != (menuIdx || selChk);
 	            });
-	            $hiddenInput.val(valueArray.join(', '));
+	            $hiddenInput.val(valueArray.join(','));
 	        }
 	    }
 	});
@@ -900,11 +900,11 @@ $(document).ready(function(){
 		// hidden input에서 menu_idx 제거
         var currentValue = $hiddenInput.val();
         if(currentValue) {
-            var menuArray = currentValue.split(', ');
+            var menuArray = currentValue.split(',');
             menuArray = menuArray.filter(function(value) {
                 return value != menuIdx;
             });
-            $hiddenInput.val(menuArray.join(', '));
+            $hiddenInput.val(menuArray.join(','));
         }
 		
 		if ($(this).closest('.btn-group').siblings('.tab-wrap').length > 0){

@@ -17,4 +17,8 @@ public interface MyplateMapper {
 	public ReservationDTO getReserveInfoByreserve(int reserve_idx);
 	public List<AlarmDTO> getAlarmList(int user_idx);
 	public int checkWriter(int reserve_idx);
+	public Map<String, Object> getRevInfo(int reserve_idx);
+	public int cancelReserve(int reserve_idx);
+	public List<ReservationDTO> reserveListCal(Map map);
+	public List<AlarmDTO> alarmListCal(Map map);
 }

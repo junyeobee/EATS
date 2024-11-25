@@ -40,7 +40,7 @@ public class SellController {
 	@ResponseBody
     public Map<String, Object> uploadSales(@RequestParam("file") MultipartFile file, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = (Integer)session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		Map<String, Object> response = new HashMap<>();
 		try {
 			int processedCount = service.sellInsert(file, storeIdx);
@@ -59,7 +59,7 @@ public class SellController {
 	@GetMapping("/sellDetail")
 	public ModelAndView sellDetail(HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = (Integer)session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		ModelAndView mv = new ModelAndView();
 		SalesSearchDTO dto = new SalesSearchDTO();
 		dto.setStoreIdx(storeIdx);
@@ -87,7 +87,7 @@ public class SellController {
 	@ResponseBody
 	public List<SalesResponseDTO> getSalesList(SalesSearchDTO dto, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		dto.setStoreIdx(storeIdx);
 		System.out.println(dto.getStartDateTime());
 		System.out.println(dto.getEndDateTime());

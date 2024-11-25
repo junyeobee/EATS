@@ -72,7 +72,7 @@ public class KakaoPayController {
 	@GetMapping("/success")
 	public String paymentSuccess(@RequestParam("pg_token") String pgToken,HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		Integer storeIdx = (Integer)session.getAttribute("store_idx");
+		Integer storeIdx = (Integer)session.getAttribute("storeIdx");
 		int store_idx;
 		if(storeIdx == null) {
 			store_idx = 1;
@@ -92,7 +92,7 @@ public class KakaoPayController {
 	@PostMapping("/cancel")
 	@ResponseBody
 	public ResponseEntity<?> cancelPayment(HttpSession session) {
-		String storeidx = (String)session.getAttribute("store_idx");
+		String storeidx = (String)session.getAttribute("storeIdx");
 		int store_idx = storeidx == null? 1 : Integer.parseInt(storeidx);
 		GudokDTO subscription = mapper.getGudokInfo(store_idx);
 	   

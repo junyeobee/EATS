@@ -7,7 +7,7 @@
 <div class="mainCon_800">
 	<form name="" action="" method="post">
 	
-		<input type="hidden" name="store_idx" value="<%= storeIdx %>">
+		<input type="hidden" name="store_idx" value="">
 		<h2>운영설정</h2>
 		<div class="btnBox_top">
 			<input type="submit" class="btn_black" value="수정요청">

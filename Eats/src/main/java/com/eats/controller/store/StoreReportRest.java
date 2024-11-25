@@ -16,6 +16,7 @@ import com.eats.store.model.report.StoreAnalysisResultDTO;
 import com.eats.store.service.ReviewAnalyzsisService;
 import com.eats.store.service.StoreReportService;
 
+import jakarta.servlet.http.HttpSession;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -28,9 +29,10 @@ public class StoreReportRest {
 	
 	
 	@PostMapping("/storeReportCreate")
-	public Mono<StoreAnalysisResultDTO> reportSelect() {
+	public Mono<StoreAnalysisResultDTO> reportSelect(HttpSession session) {
 	    Map<String, String> map = new HashMap<>();
-	    map.put("store_idx", "1");
+		Integer storeIdx = (Integer)session.getAttribute("storeIdx");
+	    map.put("store_idx", storeIdx+"");
 	    map.put("thismonth", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM")));
 
 	    List<StoreReportDTO> reviews = service.selectReviewForReport(map);
