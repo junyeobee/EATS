@@ -61,10 +61,11 @@ public class StoreReportController {
 	@GetMapping("/weekreportTest")
 	@ResponseBody
 	public ResponseEntity<StoreAnalysisResultDTO> weekChartTest(
-			@RequestParam(defaultValue = "1") int storeIdx,
+			HttpServletRequest req,
 			@RequestParam(required = false) String yearMonth) {
-
-		// 기존 ReservReportDTO 생성
+		
+		HttpSession session = req.getSession();
+		int storeIdx = (int)session.getAttribute("storeIdx");
 		if (yearMonth == null) {
 			yearMonth = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
 		}
@@ -85,27 +86,22 @@ public class StoreReportController {
 		reservDTO.setSellMonth(storeReportService.sellMonth(map));
 		reservDTO.setSellMenu(storeReportService.sellMenu(map));
 
-		// AnalyzerDTO 테스트 데이터 생성
 		AnalyzerDTO analyzerDTO = new AnalyzerDTO();
 		List<AnalyzerDTO.AnalysisResult> resultList = new ArrayList<>();
 		AnalyzerDTO.AnalysisResult result = new AnalyzerDTO.AnalysisResult();
 
-		// 분위기 데이터
 		Map<String, List<String>> atmosphere = new HashMap<>();
 		atmosphere.put("긍정", Arrays.asList("깨끗해요", "편안해요"));
 		atmosphere.put("부정", Arrays.asList("시끄러워요"));
 		result.setAtmosphere(atmosphere);
 
-		// 서비스 데이터
 		Map<String, List<String>> service = new HashMap<>();
 		service.put("긍정", Arrays.asList("친절해요", "빨라요"));
 		service.put("부정", Arrays.asList("불친절해요"));
 		result.setService(service);
 
-		// 메뉴 데이터
 		List<Map<String, AnalyzerDTO.MenuEvaluation>> menuList = new ArrayList<>();
 		
-		// 첫 번째 메뉴
 		Map<String, AnalyzerDTO.MenuEvaluation> menu1 = new HashMap<>();
 		AnalyzerDTO.MenuEvaluation eval1 = new AnalyzerDTO.MenuEvaluation();
 		eval1.setPositive(Arrays.asList("맛있어요", "신선해요"));
@@ -113,7 +109,6 @@ public class StoreReportController {
 		menu1.put("파스타", eval1);
 		menuList.add(menu1);
 
-		// 두 번째 메뉴
 		Map<String, AnalyzerDTO.MenuEvaluation> menu2 = new HashMap<>();
 		AnalyzerDTO.MenuEvaluation eval2 = new AnalyzerDTO.MenuEvaluation();
 		eval2.setPositive(Arrays.asList("완벽해요"));
@@ -125,7 +120,6 @@ public class StoreReportController {
 		resultList.add(result);
 		analyzerDTO.setData(resultList);
 
-		// 최종 DTO 생성
 		StoreAnalysisResultDTO finalDTO = new StoreAnalysisResultDTO();
 		finalDTO.setAnalyzerResult(analyzerDTO);
 		finalDTO.setReservationStats(reservDTO);
