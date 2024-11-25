@@ -6,6 +6,7 @@
     <title>나의 찜 목록</title>
     <link rel="stylesheet" href="/css/user/myJjimCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
     <!-- 헤더 포함 -->
@@ -40,6 +41,7 @@
         <a href="/user/mypage/myPage" class="btn back">마이페이지로 돌아가기</a>
     </div>
 </div>
-
+<%@include file="/WEB-INF/views/userFooter.jsp" %>
+<script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

@@ -16,6 +16,7 @@ body{
 
 .store-wrap .tit-area {
 	padding-right: 90px;
+	font-weight: 800;
 }
 .store-wrap .tit-area .tit {
 	font-size: 30px;
@@ -229,10 +230,23 @@ body{
 .copy-link:hover{
 	text-decoration:underline;
 }
+.today-day{
+	font-weight: 800;
+}
 /* 공지사항 스와이프 */
 .swp-noti {
 	position: relative; 
 	padding-bottom: 49px;
+}
+.swp-noti .swiper-wrapper{
+	height: auto !important;
+}
+.swp-noti .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.swp-noti .swiper-slide .inner {
+  width: 100%;
 }
 .swp-noti .swiper-pagination-bullets .swiper-pagination-bullet {
 	width: 10px; 
@@ -252,6 +266,12 @@ body{
 	font-size: 10px; 
 	font-weight: 500;
 }
+.swp-noti .inner-content{
+	margin-top: 15px;
+	height: 0px;
+	overflow: hidden;
+	transition: height 0.5s ease;
+}
 .news-img-wrap{
     overflow: hidden;
     height: 300px;
@@ -261,6 +281,7 @@ body{
 .news-img-wrap img{
 	height: 100%;
 }
+
 
 /* 리뷰 버튼 */
 .btn-review {
@@ -409,15 +430,16 @@ body{
 	justify-content: flex-end;
 }
 .reservation .cnt-wrapper div input[type="button"]{
-    font-family: "Noto Sans KR", sans-serif;
+	font-family: "Noto Sans KR", sans-serif;
     background-color: #f3553c;
     border: 0;
     border-radius: 50%;
-    padding: 10px 12px;
+    padding: 10px 15px;
     font-size: 10px;
     width: fit-content;
     height: fit-content;
     color: #fefefe;
+    font-weight: 900;
 }
 .reservation .cnt-wrapper div input[type="text"]{
 	border:0;

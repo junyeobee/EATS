@@ -18,12 +18,13 @@ document.addEventListener('DOMContentLoaded', function(){
 <style>
 body{
 	font-family: "Noto Sans KR", sans-serif;
+	background-color: #FECBC3;
 }
 form{
 	margin:100px auto;
 	border:2px solid #FFB53C;
 	border-radius:10px;
-	background-color:#FFF8EB;
+	background-color:#fefefe;
 	text-align:center;
 	width:50%;
 	height:350px;
@@ -31,6 +32,7 @@ form{
     flex-direction: column;
     justify-content: center;
     font-family: "Noto Sans KR", sans-serif;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 .logo-wrapper{
 	width:20%;
@@ -66,8 +68,8 @@ input[type="submit"]{
     border-radius: 5px;
     border: 0;
     font-family: "Noto Sans KR", sans-serif;
-	background-color:#FFB53C;
-	color:#FFF8EB;
+	background-color:#F3553c;
+	color:#Fefefe;
 	border:0;
 	width:315PX;
 }

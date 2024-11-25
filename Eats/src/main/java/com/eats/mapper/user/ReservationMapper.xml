@@ -106,14 +106,18 @@
 	            cate_value_name as table_type
 	        FROM cate_value
 	        WHERE cate_value_idx IN (
-	            SELECT sts_type_idx 
-	            FROM store_table_set 
-	            WHERE sg_idx IN (
-	                SELECT sg_idx 
-	                FROM store_grid 
-	                WHERE store_idx = #{store_idx}
-	            )
-	        )
+	            SELECT cate_value_idx 
+	            FROM category 
+	            WHERE cate_idx IN (
+	            	SELECT sts_type_idx
+	            	FROM store_table_set
+	            	WHERE sg_idx = (
+				        SELECT sg_idx 
+				        FROM store_grid 
+				        WHERE store_idx = #{store_idx}
+				    )
+	           )
+	       )
 	    ),
 	    AVAILABLE_TABLE_SET AS (
 	        SELECT 
@@ -122,7 +126,8 @@
 	            cv.CATE_VALUE_NAME as table_type
 	        FROM STORE_TABLE_SET sts
 	        JOIN STORE_GRID sg ON sts.SG_IDX = sg.SG_IDX
-	        JOIN CATE_VALUE cv ON sts.STS_TYPE_IDX = cv.CATE_VALUE_IDX
+	        JOIN CATEGORY C ON sts.STS_TYPE_IDX = c.CATE_IDX
+	        JOIN CATE_VALUE cv ON c.CATE_VALUE_IDX = cv.CATE_VALUE_IDX
 	        WHERE sg.STORE_IDX = #{store_idx}
 	        AND sts.STS_NUM <![CDATA[ >= ]]> #{reserve_cnt}
 	        AND NOT EXISTS (
@@ -196,15 +201,19 @@
 		    SELECT 1 
 		    FROM RESERVATION r
 		    WHERE r.RESERVE_TABLE_IDX = sts.STS_IDX
-		    AND r.RESERVE_TIME = '17:00' --수저
+		    AND r.RESERVE_TIME = #{reserve_time}
 		    AND r.RESERVE_DATE = TO_DATE(#{reserve_date}, 'YYYY-MM-DD')
 		    AND r.RESERVE_STATE IN (0, 1)
 		)
-		AND a.res_hour = '17:00'
+		AND a.res_hour = #{reserve_time}
 		AND sts.sts_type_idx = (
-		    SELECT cate_value_idx 
-		    FROM cate_value 
-		    WHERE cate_value_name=#{reserve_table}
+			SELECT cate_idx
+			FROM category
+			WHERE cate_value_idx = (
+				SELECT cate_value_idx 
+			    FROM cate_value 
+			    WHERE cate_value_name=#{reserve_table}
+			)
 		)
 	</select>
 	
