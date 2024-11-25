@@ -15,83 +15,91 @@
 	</form>
 	
 	<div class="mc_left tableList mb60">
-		<h2>입점신청</h2>
-		<div class="btnBox_top">
-			<span class="pageChange" onclick="location.href='/admin/storeEntryOkList'">이동</span>
-		</div>
-		<table>
-			<thead>
-				<tr>
-					<th>no.</th>
-					<th class="ws100">입점신청매장</th>
-					<th class="ws400">입점신청일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:if test="${empty store_lists }">
+		<h2 class="mb30 ml10">입점신청승인</h2>
+		
+		<div class="box_shadow">
+			<table>
+				<thead>
 					<tr>
-						<td colspan="5" align="center">
-							입점신청건이 없습니다.
-						</td>
+						<th>no.</th>
+						<th class="ws200">입점신청매장</th>
+						<th class="ws300">입점신청일</th>
 					</tr>
-				</c:if>
-				<c:if test="${!empty store_lists }">
-					<c:forEach var="dto" items="${store_lists }">
+				</thead>
+				<tbody>
+					<c:if test="${empty store_lists }">
 						<tr>
-							<td class="a_center">
-								${dto.sj_idx }
-							</td>
-							<td class="a_left">
-								${dto.sj_name }
-							</td>
-							<td class="a_left">
-								${dto.sj_req_date }
+							<td colspan="5" align="center">
+								입점신청건이 없습니다.
 							</td>
 						</tr>
-					</c:forEach>
-				</c:if>
-			</tbody>
-		</table>
+					</c:if>
+					<c:if test="${!empty store_lists }">
+						<c:forEach var="dto" items="${store_lists }">
+							<tr>
+								<td class="a_center">
+									${dto.sj_idx }
+								</td>
+								<td class="a_center">
+									${dto.sj_name }
+								</td>
+								<td class="a_center">
+									${dto.sj_req_date }
+								</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+		
+		</div>
+		<div class="btnBox_top mt20">
+			<span class="pageChange" onclick="location.href='/admin/storeEntryOkList'">입점신청승인 바로가기→</span>
+		</div>
 	</div>
 	
-	<div class="mc_right tableList mb60">
-		<h2>리뷰삭제신청</h2>
-		<div class="btnBox_top">
-			<span class="pageChange" onclick="location.href='/admin/reviewDelOkList'">이동</span>
-		</div>
-		<table>
-			<thead>
-				<tr>
-					<th>no.</th>
-					<th class="ws400">등록된 리뷰</th>
-					<th class="ws400">삭제신청사유</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:if test="${empty review_lists }">
+	<div class="mc_left tableList mb60 ml20">
+		<h2 class="mb30 ml10">리뷰삭제신청</h2>
+		<div class="box_shadow">
+			<table>
+				<thead>
 					<tr>
-						<td colspan="5" align="center">
-							리뷰삭제신청건이 없습니다.
-						</td>
+						<th>no.</th>
+						<th class="ws400">등록된 리뷰</th>
+						<th class="ws400">삭제신청사유</th>
 					</tr>
-				</c:if>
-				<c:if test="${!empty review_lists }">
-					<c:forEach var="dto" items="${review_lists }">
+				</thead>
+				<tbody>
+					<c:if test="${empty review_lists }">
 						<tr>
-							<td class="a_center">
-								${dto.rev_idx }
-							</td>
-							<td class="a_left">
-								${dto.rev_content }
-							</td>
-							<td class="a_left">
-								${dto.del_reason }
+							<td colspan="5" align="center">
+								리뷰삭제신청건이 없습니다.
 							</td>
 						</tr>
-					</c:forEach>
-				</c:if>
-			</tbody>
-		</table>
+					</c:if>
+					<c:if test="${!empty review_lists }">
+						<c:forEach var="dto" items="${review_lists }">
+							<tr>
+								<td class="a_center">
+									${dto.rev_idx }
+								</td>
+								<td class="a_left">
+									${dto.rev_content }
+								</td>
+								<td class="a_left">
+									${dto.del_reason }
+								</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			
+			
+		</div>
+		<div class="btnBox_top mt20">
+			<span class="pageChange" onclick="location.href='/admin/reviewDelOkList'">리뷰삭제승인 바로가기→</span>
+		</div>
 	</div>
 </div>
    

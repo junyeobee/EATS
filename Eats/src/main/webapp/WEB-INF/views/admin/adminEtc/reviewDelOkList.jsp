@@ -88,10 +88,12 @@
 									<input type="button" name="" id="" class="btn_black" value="반려" onclick="reviewDelete_Act(${dto.rev_idx}, '반려')">
 								</c:if>
 								<c:if test="${dto.del_state == '1'}">
-									승인완료(${dto.check_date })
+									승인완료<br>
+									(${dto.check_date })
 								</c:if>
 								<c:if test="${dto.del_state == '2'}">
-									반려(${dto.check_date })
+									반려<br>
+									(${dto.check_date })
 								</c:if>
 								
 							</td>

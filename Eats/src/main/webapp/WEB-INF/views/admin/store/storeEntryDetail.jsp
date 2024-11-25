@@ -7,7 +7,7 @@
 <script>
 	function entryACT_cancel(){
 		var open_box = document.getElementById("reason_box");
-		open_box.style.display = "block";
+		open_box.style.display = "inline-block";
 		
 		var btn_cancel = document.getElementById("btn_cancel");
 		btn_cancel.style.display = "none";
@@ -45,30 +45,12 @@
 		<c:if test="${not empty data}">	
 			<h2>입점신청정보</h2>
 			
-			<!-- 0대기 1승인 2반려 -->
-			<c:if test="${data.sj_stat == 0}">	
-				<div class="btnBox_top">
-					<input type="button" class="btn_black" value="승인" onclick="entryACT('Y')">
-					<input type="button" class="btn_gray" id="btn_cancel" value="반려" onclick="entryACT_cancel('N')">
-				</div>
-				<div id="reason_box" style="width:100%; height:30px; margin:50px 0; text-align:right; display:none;">
-					반려사유:<input type="text" name="cancel_reason" class="ws300">
-					<input type="button" name="" id="" class="btn_red" value="반려하기" onclick="entryACT('N')">
-				</div>
-			</c:if>
-			<c:if test="${data.sj_stat == 1}">
-				<div class="btnBox_top">승인완료</div>
-			</c:if>
-			<c:if test="${data.sj_stat == 2}">
-				<div class="btnBox_top" style="text-align:right;">
-					반려<br>
-					반려사유:${data.sj_reason}
-				</div>
-			</c:if>
 			
+			<!-- 
 			<span id="latlng"></span>
+			 -->
 			
-			<div class="tableWrite_4 mb60">
+			<div class="tableWrite_4 box_shadow mt20 mb30">
 				<table>
 					<tr>
 						<th>매장명</th>
@@ -105,10 +87,35 @@
 					</tr>
 				</table>
 			</div>
+			
+			
+			<!-- 0대기 1승인 2반려 -->
+			<c:if test="${data.sj_stat == 0}">	
+				<div class="btnBox_center">
+				
+					<span id="reason_box" style="height:30px; margin:50px 0; text-align:right; display:none;">
+						반려사유:<input type="text" name="cancel_reason" class="ws300">
+						<input type="button" name="" id="" class="btn_red" value="반려하기" onclick="entryACT('N')">
+					</span>
+					
+					<input type="button" class="btn_black" value="승인" onclick="entryACT('Y')">
+					<input type="button" class="btn_gray" id="btn_cancel" value="반려" onclick="entryACT_cancel('N')">
+					
+				</div>
+			</c:if>
+			<c:if test="${data.sj_stat == 1}">
+				<div class="btnBox_top">승인완료</div>
+			</c:if>
+			<c:if test="${data.sj_stat == 2}">
+				<div class="btnBox_top" style="text-align:right;">
+					반려<br>
+					반려사유:${data.sj_reason}
+				</div>
+			</c:if>
 		</c:if>
 		
-		<input type="text" name="w_do" id="w_do" value="">
-		<input type="text" name="k_do" id="k_do" value="">
+		<input type="hidden" name="w_do" id="w_do" value="">
+		<input type="hidden" name="k_do" id="k_do" value="">
 	</form>
 </div>
    
@@ -139,4 +146,7 @@ window.addEventListener('load', getAddrFor());
    
    }
    </script>
-<%@include file="../common/footer.jsp"%>
+   		</div>
+	</div>
+</body>
+</html>
