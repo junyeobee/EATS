@@ -113,7 +113,7 @@
 		UPDATE 
 			USER_PROFILE
 		SET 
-			USER_POINT=USER_POINT+1000
+			USER_POINT=USER_POINT+500
 		WHERE
 			USER_IDX = #{user_idx}
 	</update>
@@ -132,7 +132,7 @@
 			POINT_IDX_SEQ.NEXTVAL
 			, #{user_idx}
 			, #{update_point}
-			, 1000
+			, 500
 			, null
 		)
 	</insert>

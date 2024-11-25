@@ -293,7 +293,7 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
-								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }">
+								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }" begin="0" end="4">
 									<div class="store_reserve_tag">
 										<div class="store_reserve_tag_text">
 											${tag }
@@ -340,7 +340,7 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
-								<c:forEach var="tag" items="${pointTags[point.store_idx] }">
+								<c:forEach var="tag" items="${pointTags[point.store_idx] }" begin="0" end="4">
 									<div class="store_reserve_tag">
 										<div class="store_reserve_tag_text">
 											${tag }

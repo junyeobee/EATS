@@ -39,7 +39,12 @@
 						<strong class="tit">${stInfo.storeDTO.store_name }</strong>
 						<span class="cate">
 							<span>${stInfo.storeDTO.parent_area_name }&nbsp;${stInfo.storeDTO.area_name }</span>
-							<span>${stInfo.foodType }</span>
+							<c:if test="${!empty stInfo.foodType }">
+								<c:forEach var="type" items="${stInfo.foodType}" varStatus="cnt">
+								<span>${stInfo.foodType } </span>
+								</c:forEach>
+							</c:if>
+							
 						</span>
 					</div>
 					<div class="info">
@@ -284,7 +289,6 @@
 						</div>
 					</div>
 					<div class="time-area" id="time_area"></div>
-					
 				</div>
 				<!-- 시간 선택 영역(e) -->
 				

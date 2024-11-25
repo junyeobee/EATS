@@ -188,6 +188,34 @@
 		ORDER BY
 			R.REV_WRITEDATE DESC
 	</select>
+	<select id="getSortedReviewList" parameterType="map" resultType="map">
+        SELECT 
+            r.*, 
+            u.USER_NICKNAME,
+            u.PROFILE_IMAGE
+        FROM 
+            review r
+        INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+        <choose>
+            <when test='sortType == "latest"'>
+                ORDER BY r.rev_writedate DESC
+            </when>
+            <when test='sortType == "high_rating"'>
+                ORDER BY r.rev_score DESC, r.rev_writedate DESC
+            </when>
+            <when test='sortType == "low_rating"'>
+                ORDER BY r.rev_score ASC, r.rev_writedate DESC
+            </when>
+            <otherwise>
+                ORDER BY r.rev_writedate DESC
+            </otherwise>
+        </choose>
+    </select>
 	<select id="getRevMenuList" parameterType="java.util.List" resultType="map">
 		SELECT 
 			*
@@ -205,7 +233,7 @@
 		FROM 
 			CATE_VALUE
 		WHERE 
-			CATE_VALUE_IDX = (
+			CATE_VALUE_IDX IN (
 			    SELECT 
 			    	CATE_VALUE_IDX 
 			    FROM 
@@ -215,7 +243,7 @@
 			    AND 
 			    	CATE_KEY_IDX = (
 			        	SELECT 
-			        		CATE_KEY_IDX
+			        		DISTINCT CATE_KEY_IDX
 				        FROM 
 				        	CATE_KEY
 				        WHERE 
