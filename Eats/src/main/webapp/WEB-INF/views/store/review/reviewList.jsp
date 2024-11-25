@@ -3,20 +3,230 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>리뷰 관리</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
-th, td, div, span, input, textarea{
-	color:black;
-}
-.table-wrapper{
-	width:100%;
-	margin-top : 80px;
-	margin-left : 240px;
-}
-.review-table{
-	width:90%;
-	margin:20px auto;
-}
+    .review-container {
+        width: 100%;
+        margin-top: 80px;
+        margin-left: 240px;
+        padding: 20px;
+    }
+    
+    .review-list {
+        width: 90%;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .review-item {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        width:80%;
+    }
+    
+    .review-item:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .review-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .user-icon {
+        width: 40px;
+        height: 40px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .review-meta {
+        margin-left: auto;
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .review-content {
+        margin: 10px 0;
+    }
+    
+    .review-stars {
+        color: #FFD700;
+    }
+    
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    
+    .modal-content {
+        position: relative;
+        background: #E5F3FF;
+        width: 90%;
+        max-width: 600px;
+        margin: 50px auto;
+        border-radius: 12px;
+        padding: 20px;
+        top:100px;
+    }
+    
+    .modal-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+    
+    .user-info {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .rev-info{
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .review-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 15px 0;
+    }
+    
+    .tag {
+        background: #e7f3ff;
+        color: #1a73e8;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+    }
+    
+    .review-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        flex:1;
+    }
+    
+    .btn-primary {
+        background: #1a73e8;
+        color: white;
+    }
+    
+    .btn-outline {
+        border: 1px solid #1a73e8;
+        color: #1a73e8;
+        background: white;
+    }
+    .del-modal-container{
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    .delete-modal {
+        position:absolute;
+        top: 35%;
+        left: 35%;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        z-index: 1100;
+    }
+    
+    .delete-reason {
+        margin: 20px 0;
+    }
+    
+    .reason-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+    
+    .reason-input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    #reviewMenu{
+        font-weight:900;
+    }
+    #reviewContent {
+        border:2px solid black;
+        width:95%;
+        min-height:80px;
+        padding: 10px;
+        border-radius: 3px;
+    }
+    .menuDiv{
+        margin:10px;
+        display: flex;
+        color : #349FFB;
+        font-weight: 600;
+    }
+    .menuDiv div{
+        margin-right: 10px;
+        border: 2px solid #349FFB;
+        padding : 5px 10px;
+        border-radius:15px;
+    }
+    .center{
+        display: flex;
+        align-items: center;
+        text-align: center; 
+        height:30px;
+        color:#757575;
+    }
+    .material-icons{
+        height:20px;
+    }
 </style>
 
 <script src = "../js/ajaxJs.js"></script>
