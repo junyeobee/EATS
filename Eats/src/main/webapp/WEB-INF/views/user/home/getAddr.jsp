@@ -87,7 +87,7 @@
 				var lng = result[0].x;
 
 				var latlngbox = document.getElementById('latlng');
-				latlngbox.innerText = '위도: ' + lat + ' 경도:' + lng;
+				latlngbox.innerText = '위도,경도: ' + lat + ' ' + lng;
 
 				panTo(lat, lng);
 			} else {

@@ -19,6 +19,8 @@ public class ReserveOkListDTO {
 	private int sts_type_idx;
 	private String cate_value_name;
 	private String user_tel;
+	private int pay_price;
+	private int pay_method;
 	
 	public ReserveOkListDTO() {
 		// TODO Auto-generated constructor stub
@@ -43,9 +45,11 @@ public class ReserveOkListDTO {
 		this.user_tel = user_tel;
 	}
 
+	
 	public ReserveOkListDTO(String user_name, int reserve_idx, int user_idx, int store_idx, Date reserve_date,
 			String reserve_time, int reserve_count, int reserve_table_idx, String request, int reserve_state,
-			Date reserve_applydate, int table_num, int sts_type_idx, String cate_value_name, String user_tel) {
+			Date reserve_applydate, int table_num, int sts_type_idx, String cate_value_name, String user_tel,
+			int pay_price, int pay_method) {
 		super();
 		this.user_name = user_name;
 		this.reserve_idx = reserve_idx;
@@ -62,6 +66,8 @@ public class ReserveOkListDTO {
 		this.sts_type_idx = sts_type_idx;
 		this.cate_value_name = cate_value_name;
 		this.user_tel = user_tel;
+		this.pay_price = pay_price;
+		this.pay_method = pay_method;
 	}
 
 	public String getUser_name() {
@@ -182,6 +188,22 @@ public class ReserveOkListDTO {
 
 	public void setUser_tel(String user_tel) {
 		this.user_tel = user_tel;
+	}
+
+	public int getPay_price() {
+		return pay_price;
+	}
+
+	public void setPay_price(int pay_price) {
+		this.pay_price = pay_price;
+	}
+
+	public int getPay_method() {
+		return pay_method;
+	}
+
+	public void setPay_method(int pay_method) {
+		this.pay_method = pay_method;
 	}
 
 	
