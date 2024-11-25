@@ -19,9 +19,23 @@ th, td, div, span, input, textarea{
 	margin:20px auto;
 }
 </style>
-<style>
-	document.
-</style>
+
+<script src = "../js/ajaxJs.js"></script>
+<script>
+function showResult(){
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var jsondata=JSON.parse(data);
+			
+		}
+	}
+}
+function showDetail(i){
+	var params='rev_idx='+i;
+	sendRequest('/store/review/detail', params, showResult, 'get');
+}
+</script>
 </head>
 <body>
 <%@include file="../store_Header.jsp" %>

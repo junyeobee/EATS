@@ -28,8 +28,8 @@ public class StoreReviewListServiceImple implements StoreReviewListService {
 	}
 
 	@Override
-	public List<String> getMenus(List<Integer> list) {
-		List<String> result = mapper.getMenus(list);
+	public String getMenus(Integer menu) {
+		String result = mapper.getMenus(menu);
 		return result;
 	}
 
