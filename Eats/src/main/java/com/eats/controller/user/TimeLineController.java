@@ -37,16 +37,16 @@ public class TimeLineController {
 				
 		TimelineDTO profile = service.timeLineProfile(userIdx);
 		
-		/*
-		 * List<TimelineDTO> follow=service.followerList(userIdx);
-		 */
+	
+		List<TimelineDTO> follow=service.followerList(userIdx);
+		
 		
 		ModelAndView mav= new ModelAndView();
 		
 		mav.addObject("lists", lists);
 		mav.addObject("review",review);
 		mav.addObject("profile",profile);
-		/* mav.addObject("follow",follow); */
+		mav.addObject("follow",follow);
 		
 		mav.setViewName("user/timeLine/timeLine");
 

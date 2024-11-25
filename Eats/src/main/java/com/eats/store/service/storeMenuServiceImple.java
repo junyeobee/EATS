@@ -81,7 +81,13 @@ public class storeMenuServiceImple implements storeMenuService {
 
 	@Override
 	public int deleteMenu(List<Integer> menuIdx) {
-		int result = mapper.deleteMenu(menuIdx);
+		int result = 0;
+		try {
+			result = mapper.deleteMenu(menuIdx);
+		} catch (Exception e) {
+			result = 0;
+		}
+		
 		return result;
 	}
 	

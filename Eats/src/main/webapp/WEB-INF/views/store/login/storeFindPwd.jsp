@@ -130,7 +130,7 @@
 	max-width: 400px;
 	margin: 20px auto;
 	padding: 20px;
-	font-family: Arial, sans-serif;
+	margin-top:150px;
 }
 
 .div2 {
@@ -255,16 +255,10 @@ input[type="button"]:hover, input[type="submit"]:hover {
 		<div class="div4">
 			<input type="text" name="storeCode" id="storeCode"
 				placeholder="인증번호 입력">
-			<div id="code-message"
-				style="color: red; font-size: 10px; margin-top: 5px; text-align: start; padding-left: 20px;"></div>
+			<div id="code-message" style="color: red; font-size: 10px; margin-top: 5px; text-align: start; padding-left: 20px;"></div>
 			<input type="button" value="인증번호 확인" onclick="storevalidateCode();">
 		</div>
 		<input type="submit" value="비밀번호 찾기">
-
-
-
-
-
 	</div>
 
 </body>
