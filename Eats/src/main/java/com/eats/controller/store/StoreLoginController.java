@@ -307,7 +307,6 @@ public class StoreLoginController {
 	
 	
 	//로그아웃 
-	
 	@GetMapping("/storeLogout")
 	public String storeLogout(HttpSession session) {
 		

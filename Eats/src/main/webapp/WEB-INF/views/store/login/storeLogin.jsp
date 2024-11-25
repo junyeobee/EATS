@@ -138,7 +138,8 @@ body {
 		</div>
 		<div class="findAcc-wrapper">
 			<a href="/storeFindIdPage">아이디 찾기</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a
-				href="/storeFindPwdPage">비밀번호 찾기</a>
+				href="/storeFindPwdPage">비밀번호 찾기</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a
+				href="/store/apply">입점 신청</a>
 		</div>
 		<div>
 			

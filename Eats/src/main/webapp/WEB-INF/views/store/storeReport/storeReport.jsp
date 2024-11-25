@@ -1103,6 +1103,7 @@
     </script>
 </head>
 <body>
+    <%@ include file="../store_Header.jsp" %>
     <div class="container">
         <a id="click_me" onclick="result()">매장명</a>
         <form action="/storeReportCreate" method="Post">
@@ -1317,10 +1318,6 @@
                         </div>
                     </div>
                 </section>
-                <a href="/storeReportCreate" class="download-btn">
-                    <span>다운로드</span>
-                    <span>(pdf)</span>
-                </a>
             </div>
         </div>
     </div>
