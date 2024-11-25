@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>EATS 리뷰쓰기</title>
+<link rel="stylesheet" href="/css/font.css">
 <link rel="stylesheet" href="/css/user/userHeader.css">
 <style>
 /* reset */

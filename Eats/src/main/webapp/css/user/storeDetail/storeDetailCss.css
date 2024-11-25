@@ -1,4 +1,7 @@
 @charset "utf-8";
+body{
+	font-family: "Noto Sans KR", sans-serif;
+}
 .wrapper{
 	margin-top:50px;
 }
@@ -406,7 +409,7 @@
 	justify-content: flex-end;
 }
 .reservation .cnt-wrapper div input[type="button"]{
-    font-family: 'SBAggroB';
+    font-family: "Noto Sans KR", sans-serif;
     background-color: #f3553c;
     border: 0;
     border-radius: 50%;
@@ -420,7 +423,7 @@
 	border:0;
 	width:30%;
 	text-align:center;
-	font-family: 'SBAggroB';
+	font-family: "Noto Sans KR", sans-serif;
 }
 .reservation .time-wrapper{
 	height: 0;
@@ -536,6 +539,7 @@
     padding: 15px;
     color: #fefefe;
     font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
 }
 .reservation .btn-wrapper .alarm-btn{
     background-color: #FFB53C;
@@ -545,4 +549,5 @@
     padding: 15px;
     color: #fefefe;
     font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
 }

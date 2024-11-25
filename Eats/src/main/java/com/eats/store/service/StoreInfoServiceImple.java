@@ -119,4 +119,12 @@ public class StoreInfoServiceImple implements StoreInfoService {
 		int revCnt = mapper.getRevCount(store_idx);
 		return revCnt;
 	}
+	
+	@Override
+	public List<Map<String, Object>> getSortedReviewList(int store_idx, String sortType) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("store_idx", store_idx);
+        params.put("sortType", sortType);
+        return mapper.getSortedReviewList(params);
+    }
 }

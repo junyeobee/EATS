@@ -260,6 +260,10 @@ public class StoreInfoController {
 		
 		//문자열로 저장한 img, menu, tag를 리스트로 변환해서 저장
 		for(int i=0; i<revList.size(); i++) {
+			
+			if(revList.get(i).get("PROFILE_IMAGE")==null || revList.get(i).get("PROFILE_IMAGE")=="") {
+				revList.get(i).put("PROFILE_IMAGE", "/svg/one_icon.svg");
+			}
 			String menuStr=(String)revList.get(i).get("REV_MENU");
 			String imgStr=(String)revList.get(i).get("REV_IMG");
 			String tagStr=(String)revList.get(i).get("REV_TAG");
@@ -299,4 +303,92 @@ public class StoreInfoController {
 		
 		return mv;
 	}
+	
+	// 리뷰 정렬을 위한 비동기 요청 처리
+    @GetMapping("/user/storeInfo/reviewList/sort")
+    @ResponseBody
+    public Map<String, Object> getSortedReviews(int store_idx, @RequestParam(defaultValue = "latest") String order) {
+        Map<String, Object> response = new HashMap<>();
+        String sortType = "";
+        switch(order) {
+        case "별점낮은순" -> sortType = "low_rating";
+        case "별점높은순" -> sortType = "high_rating";
+        case "최신순" -> sortType = "latest";
+        default -> sortType = "latest";
+        }
+        System.out.println("store_idx="+store_idx+"sortType="+sortType);
+        // 정렬된 리뷰 리스트 조회
+        List<Map<String, Object>> revList = service.getSortedReviewList(store_idx, sortType);
+        
+		//문자열로 저장한 img, menu, tag를 리스트로 변환해서 저장
+		for(int i=0; i<revList.size(); i++) {
+			
+			if(revList.get(i).get("PROFILE_IMAGE")==null || revList.get(i).get("PROFILE_IMAGE")=="") {
+				revList.get(i).put("PROFILE_IMAGE", "/svg/one_icon.svg");
+			}
+			String menuStr=(String)revList.get(i).get("REV_MENU");
+			String imgStr=(String)revList.get(i).get("REV_IMG");
+			String tagStr=(String)revList.get(i).get("REV_TAG");
+			
+			List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+			
+			if(imgStr != null && imgStr != "") {
+				List<String> imgList = Arrays.stream(imgStr.split(","))
+						.map(String::trim)
+						.collect(Collectors.toList());
+				
+				//리스트에 저장한 이미지 리스트를 맵에 imgList 키값으로 저장
+				revList.get(i).put("imgList", imgList);
+			}
+			List<String> tagList = Arrays.stream(tagStr.split(","))
+					.map(String::trim)
+					.collect(Collectors.toList());
+			
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); 
+			
+			revList.get(i).put("revMenuList", revMenuList);
+			revList.get(i).put("tagList", tagList);
+		}
+        for(int i = 0; i < revList.size(); i++) {
+        	System.out.println(revList.get(i).get("revMenuList"));
+        }
+        response.put("reviewList", revList);
+        return response;
+    }
+    
+    // 리뷰 데이터 처리 메서드
+    private void processReviewList(List<Map<String, Object>> revList) {
+        for(Map<String, Object> review : revList) {
+            String menuStr = (String) review.get("REV_MENU");
+            String imgStr = (String) review.get("REV_IMG");
+            String tagStr = (String) review.get("REV_TAG");
+            
+            // 메뉴 처리
+            List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            
+            // 이미지 처리
+            if(imgStr != null && !imgStr.isEmpty()) {
+                List<String> imgList = Arrays.stream(imgStr.split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                review.put("imgList", imgList);
+            }
+            
+            // 태그 처리
+            List<String> tagList = Arrays.stream(tagStr.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            
+            List<HYMenuDTO> revMenuList = service.getRevMenuList(menuIdxList);
+            
+            review.put("revMenuList", revMenuList);
+            review.put("tagList", tagList);
+        }
+    }
 }
