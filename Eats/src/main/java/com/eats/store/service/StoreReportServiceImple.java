@@ -20,10 +20,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StoreReportServiceImple implements StoreReportService {
-	
 	@Autowired
 	private StoreReportMapper mapper;
 	
+	@Override
+	public int isGudoked(int store_idx) {
+		int result = mapper.isGudoked(store_idx);
+		return result;
+	}
+
 	public List<StoreReportDTO> selectReviewForReport(Map<String,String> map){
 		List<StoreReportDTO> reivews = mapper.selectReviewForReport(map);
 		return reivews;

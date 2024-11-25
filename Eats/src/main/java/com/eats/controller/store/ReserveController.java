@@ -42,7 +42,7 @@ public class ReserveController {
 	   ModelAndView mv = new ModelAndView();
 	   HttpSession session = req.getSession();
 	   
-	   int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+	   int storeIdx = (Integer)session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 	   
 	   LocalDateTime now = LocalDateTime.now();
 	   
@@ -141,7 +141,7 @@ public class ReserveController {
 			case SATURDAY -> "토";
 			case SUNDAY -> "일";
 		};
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		Map<String, Object> map = new HashMap<>();
 		map.put("storeIdx", storeIdx);
 		map.put("stimeDay", todayChar);
@@ -159,7 +159,7 @@ public class ReserveController {
 	@ResponseBody
 	public ReservOkViewDTO getReservations(HttpServletRequest req, String date, String time) {
 		HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		Map<String, Object> map = new HashMap<>();
 		map.put("storeIdx", storeIdx);
 		map.put("day", date);
@@ -177,7 +177,7 @@ public class ReserveController {
 	@ResponseBody
 	public Map<String, Integer> assignTable(HttpServletRequest req, int tableNum, int reserveIdx) {
 		HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		Map<String, Object> map = new HashMap<>();
 		map.put("storeIdx", storeIdx);
 		map.put("reserveIdx", reserveIdx);
@@ -198,7 +198,7 @@ public class ReserveController {
     @GetMapping("/binTables")
     public List<BinTables> getEmptyTables(String date, String time, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-        int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+        int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
         
         Map<String, Object> map = new HashMap<>();
         map.put("storeIdx", storeIdx);
@@ -212,7 +212,7 @@ public class ReserveController {
 	@GetMapping("/alarms")
 	public List<AlarmDTO> getAlarms(String date, String time, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("storeIdx", storeIdx);
@@ -226,7 +226,7 @@ public class ReserveController {
 	@ResponseBody
 	public Map<String, Object> sendVacancyAlarms(@RequestBody Map<String, Object> data, HttpServletRequest req) {
 	    HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		
 		data.put("storeIdx", storeIdx);
 		List<String> userEmails = (List<String>)data.get("userEmails");

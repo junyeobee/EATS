@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <style>
 .header {
     position: fixed;
@@ -60,6 +61,12 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 </script>
+<c:if test="${empty sessionScope.storeId}">
+    <script>
+        alert('로그인이 필요한 서비스입니다.');
+        location.href = '/storeLogin';
+    </script>
+</c:if>
 <header class="header">
     <div class="nav-logo">
         <img src="../img/store/storeLogo.png" alt="Logo" height="32" id = "homeLogo">

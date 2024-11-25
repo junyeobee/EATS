@@ -15,6 +15,7 @@ import com.eats.store.model.report.WeekSellDTO;
 import com.eats.store.model.report.YearCompareDTO;
 
 public interface StoreReportService {
+	public int isGudoked(int store_idx);
 	public List<StoreReportDTO> selectReviewForReport(Map<String,String> map);
 	public boolean reportIsThere(Map<String, String> map);
 	public List<WeekReservDTO> reservWeek(Map<String,String> map);

@@ -473,7 +473,7 @@
 					<div class="chart-header">
 						<div class="chart-title">방문객 성비</div>
 					</div>
-					<div class="chart-container">
+					<div class="chart-container" id = "genderDataContainer">
 						<canvas id="genderCanvas"></canvas>
 					</div>
 				</div>
@@ -532,6 +532,8 @@
         document.addEventListener('DOMContentLoaded', () => {
 			let no = ${empty dash.reserveNoshowOrCancel.statecnt ? 0 : dash.reserveNoshowOrCancel.statecnt};
 			let d = ${dash.dailyReserve};
+			console.log(no);
+			console.log(d);
 			if(d != null && d != 0){
 				let rate = 100 - ((no / d) * 100);
 				document.getElementById('visitRate').innerText = rate.toFixed(2) + '%';
@@ -542,17 +544,21 @@
                 labels: [${monthlyLabels}],
                 data: [${monthlyData}]
             };
-
-            const genderData = {
-                male: ${dash.gendercnt[0].visitorcnt},
-                female: ${dash.gendercnt[1].visitorcnt}
-            };
+			if(${empty dash.gendercnt[0]} || ${empty dash.gendercnt[1]}){
+				document.getElementById('genderDataContainer').innerHTML = '<div>정보가 없습니다</div>';
+			}else{
+				const genderData = {
+					male: ${dash.gendercnt[0].visitorcnt},
+					female: ${dash.gendercnt[1].visitorcnt}
+            	};
+				createGenderChart(genderData);
+			}
+            
 			
             const weeklyData = {
                 labels: [${weeklyLabels}],
                 data: [${weeklyAmount}]
             };
-			console.log(weeklyData);
 
             const timeSlotData = {
                 labels: [${timeSlotLabels}],
@@ -563,10 +569,8 @@
                 labels: ['전주', '이번주'],
                 amount: [${dash.sellCompare.lastweekamount}, ${dash.sellCompare.thisweekamount}]
             };
-			console.log(${weeklyAmount});
-            // 차트 생성
             createMonthlyChart(monthlyData);
-            createGenderChart(genderData);
+            
             createWeeklyChart(weeklyData);
             createTimeSlotChart(timeSlotData);
             createCompareChart(compareData);
