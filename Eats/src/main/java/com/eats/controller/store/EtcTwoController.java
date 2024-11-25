@@ -230,7 +230,7 @@ public class EtcTwoController {
         	    String stime = work_shour.get(i)+":"+work_sminute.get(i);
         	    String etime = work_ehour.get(i)+":"+work_eminute.get(i);
         	    //String rest_time = rest_time_arr.get(i);
-        	    String rest_time = rest_shour.get(i)+":"+rest_sminute.get(i)+"~"+rest_ehour.get(i)+":"+rest_eminute.get(i);
+        	    String rest_time = rest_shour.get(i)+":"+rest_sminute.get(i)+"-"+rest_ehour.get(i)+":"+rest_eminute.get(i);
         	    
         	    StoreTimeDTO StoreTimeDTO = new StoreTimeDTO();
 

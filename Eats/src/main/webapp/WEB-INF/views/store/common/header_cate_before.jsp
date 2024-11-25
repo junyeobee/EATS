@@ -38,6 +38,10 @@
 	    }
 		//중복태그 들어가지 않도록 마침
 	    
+		
+		
+		
+		
         // 선택된 option의 value
         var this_small_cate_key = thisCon.value;
 
@@ -66,8 +70,7 @@
 	}
 	
 	function small_cate_del(small_cate_name, cate_key_value) {
-	    //alert("'" + small_cate_name + "'////" +cate_key_value +" 태그가 삭제됩니다.");
-	    alert("'" + small_cate_name + "' 태그가 삭제됩니다.");
+	    alert("'" + small_cate_name + "'////" +cate_key_value +" 태그가 삭제됩니다.");
 	    
 	    // 해당 클래스의 span 요소 삭제
 	    $(".small_tag_span_" + cate_key_value).remove();
@@ -80,18 +83,16 @@
 	            url: "/store/storeTagDel",  // 서버에서 처리할 URL
 	            type: "GET",         // GET 방식으로 요청 (URL 파라미터 전송)
 	            data: {              // 서버로 전송할 데이터
-	                store_cate_key: cate_key_value
+	                store_cate_key: store_cate_key
 	            },
 	            success: function(response) {
 	                // 서버 응답 성공 시 처리
 	                console.log("태그 삭제 완료:", response);
 	                // 필요시 추가적인 로직을 여기에 추가할 수 있습니다.
-	                alert("삭제완료 되었습니다.");
 	            },
 	            error: function(xhr, status, error) {
 	                // 에러 발생 시 처리
 	                console.error("에러 발생:", error);
-	                //alert("에러발생");
 	            }
 	        });
 	    }
@@ -120,7 +121,33 @@
 </script>
 </head>
 <body>
-	<%@ include file="../store_Header.jsp"%>
-	<%@ include file="../nav.jsp"%>
-	 <div class="container" style="margin-top:150px; margin-left:300px; ">
+	<div class="header">
+	</div>
+	<div class="contents">
+		<div class="leftMenu">
+			<span class="big_title">
+				<a href="#">매장관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeImage">이미지관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeCateOne">태그관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeInfoUpdateReq">정보수정신청</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeTime">영업시간수정</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeCateTwo">특징관리</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeGrid">매장그리드</a>
+			</span>
+			<span class="small_title">
+				<a href="/store/storeNewsList">소식관리</a>
+			</span>
+		</div>
 		<div class="mainCont">

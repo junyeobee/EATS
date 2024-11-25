@@ -133,6 +133,9 @@ pageEncoding="UTF-8"%>
                     <a href="/store/storeTime">영업시간수정</a>
                 </li>
                 <li class="nav-item">
+                    <a href="/store/storeInfoUpdateReq">정보수정신청</a>
+                </li>
+                <li class="nav-item">
                     <a href="/store/storeCateTwo">특징관리</a>
                 </li>
                 <li class="nav-item">

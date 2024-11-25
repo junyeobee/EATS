@@ -1,32 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="/css/store/storeContCss.css">
-
-<meta charset="UTF-8">
-<title>eats</title>
-
 <script>
 	function smallTagAdd(thisCon, click_id){
-		
 
         // 선택된 option의 value
         var this_small_cate_key = thisCon.value;
-
+        
+        //alert("this_small_cate_key"+this_small_cate_key);
+        //alert("click_id"+click_id);
+        //alert("thisCon"+thisCon);
 		
 		//중복태그 들어가지 않도록 시작
-	    var container = document.getElementById('cateBox');
+	    var container = document.getElementById('cateTagBox');
 	    var exists = false;
 	    var inputs = container.querySelectorAll('input[name="small_cate_key"]');
+
+	    //console.log(inputs.length); // inputs의 개수를 확인
+	    /*
+	    if (inputs.length > 0) {
+	        inputs.forEach(function(input) {
+                //alert("input.value: " + input.value);
+	            if (input.value === this_small_cate_key) {
+	                exists = true; // 동일한 값이 있으면 exists를 true로 설정
+	                //alert("input.value: " + input.value);
+	            }
+	        });
+	    } else {
+	        console.log("No input elements found with the name 'small_cate_key'.");
+	    }
+	    */
 
 	    inputs.forEach(function(input) {
 	        if (input.value === this_small_cate_key) {
 	            exists = true; // 동일한 값이 있으면 exists를 true로 설정
+	            //alert("input.value"+input.value);
 	        }
 	    });
 	    
@@ -118,9 +126,3 @@
 	}
 	
 </script>
-</head>
-<body>
-	<%@ include file="../store_Header.jsp"%>
-	<%@ include file="../nav.jsp"%>
-	 <div class="container" style="margin-top:150px; margin-left:300px; ">
-		<div class="mainCont">

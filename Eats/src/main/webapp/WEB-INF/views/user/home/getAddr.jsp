@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -31,8 +34,6 @@
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1"></script>
  -->
 <!-- services 라이브러리 불러오기 -->
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
 
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

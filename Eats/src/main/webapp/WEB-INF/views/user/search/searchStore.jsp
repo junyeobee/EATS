@@ -292,5 +292,6 @@ menu, ol, ul {
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
 <script type="text/javascript" src="/js/sliderScript.js"></script>
 <script type="text/javascript" src="/js/searchScript.js"></script>
+<script type="text/javascript" src="/js/userHeader.js"></script>
 
 </html>

@@ -1,20 +1,43 @@
 @charset "UTF-8";
+
 /* 공통 스타일 */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9fb;
     margin: 0;
-    padding: 20px;
     color: #333;
     line-height: 1.6;
 }
 
-h1 {
-    text-align: center;
-    font-size: 24px;
+.layout {
+	display: flex;
+	flex-direction: row;
+	width: 1440px;
+	margin: 0 auto;
+}
+
+.main-content{
+	width:1000px;
+	margin: 50px auto;
+}
+
+h1, h2 {
+    text-align: left;
+    font-size: 20px;
     font-weight: bold;
     color: #222;
     margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+/* 컨테이너 스타일 */
+.mainCon_1400 {
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 테이블 스타일 */
@@ -22,31 +45,28 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 table th, table td {
-    padding: 15px;
-    text-align: left;
+    padding: 12px 15px;
+    text-align: center;
     font-size: 14px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #eaeaea;
 }
 
 table th {
     background-color: #f4f6f8;
     color: #555;
     font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
+    text-transform: none;
 }
 
 table td {
-    text-align: center;
-    color: #666;
+    color: #333;
 }
 
 table tr:hover {
@@ -54,42 +74,70 @@ table tr:hover {
     cursor: pointer;
 }
 
-table td a {
-    color: #4a90e2;
-    text-decoration: none;
-    font-weight: bold;
+table tr:last-child td {
+    border-bottom: none;
 }
 
-table td a:hover {
-    text-decoration: underline;
+/* 상세보기 버튼 */
+table td input[type="button"] {
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
 }
 
-/* 글쓰기 버튼 스타일 */
+table td input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* 상세보기 버튼 */
+table td input[type="button"] {
+    background-color: #f8f4eb; /* 연한 노란색 버튼 배경 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 13px;
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 6px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd; /* 얇은 테두리 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 효과 */
+}
+
+table td input[type="button"]:hover {
+    background-color: #f5e9d8; /* hover 시 살짝 어두운 노란색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 살짝 강조된 그림자 */
+}
+
+/* 글쓰기 버튼 */
 .write-btn {
     display: inline-block;
-    padding: 12px 20px;
-    background-color: #4a90e2;
-    color: #fff;
+    padding: 10px 20px;
+    background-color: #f8f4eb; /* 연한 노란색 배경 */
+    color: #333; /* 텍스트 색상 */
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 6px; /* 둥근 모서리 */
     text-align: center;
+    border: 1px solid #ddd; /* 얇은 테두리 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     float: right;
     margin-top: 10px;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .write-btn:hover {
-    background-color: #357abd;
-    transform: translateY(-2px);
+    background-color: #f5e9d8; /* hover 시 색상 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 살짝 강조된 그림자 */
 }
 
-/* 페이징 버튼 스타일 */
+
+/* 페이징 스타일 */
 .pagination {
     display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    align-items: center;
+    justify-content: center;
     margin-top: 20px;
     gap: 5px; /* 버튼 간격 */
     font-size: 14px;
@@ -103,29 +151,30 @@ table td a:hover {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
-    color: #333; /* 기본 글자색 */
-    border: 1px solid #ddd; /* 버튼 테두리 */
-    background-color: #fff; /* 기본 배경색 */
+    color: #333; /* 텍스트 기본 색상 */
+    border: 1px solid #ddd; /* 기본 테두리 */
+    background-color: #f8f4eb; /* 기본 배경색 */
     border-radius: 50%; /* 둥근 버튼 */
-    transition: all 0.3s ease;
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 효과 */
 }
 
 .pagination a:hover {
-    background-color: #f4f4f4; /* 호버 배경색 */
+    background-color: #f5e9d8; /* hover 시 배경색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 강조된 그림자 */
 }
 
 .pagination span {
-    background-color: #007bff; /* 현재 페이지 배경색 */
-    color: #fff; /* 현재 페이지 글자색 */
-    border-color: #007bff; /* 현재 페이지 테두리 */
-    cursor: default;
-    pointer-events: none;
+    background-color: #ffd966; /* 현재 페이지 배경색 (노란색 강조) */
+    color: #333; /* 현재 페이지 텍스트 색상 */
+    border-color: #ffd966; /* 현재 페이지 테두리 */
+    pointer-events: none; /* 클릭 불가 */
 }
 
 .pagination .disabled {
-    color: #ccc; /* 비활성화 상태 글자색 */
-    border-color: #eee; /* 비활성화 상태 테두리 */
-    background-color: #f9f9f9; /* 비활성화 상태 배경색 */
-    cursor: not-allowed;
+    color: #ccc; /* 비활성화 텍스트 색상 */
+    background-color: #fdf8e4; /* 비활성화 배경색 */
+    border-color: #eee; /* 비활성화 테두리 */
+    cursor: not-allowed; /* 비활성화 상태 커서 */
 }
+
