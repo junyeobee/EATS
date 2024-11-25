@@ -32,5 +32,17 @@ public class StoreReviewListServiceImple implements StoreReviewListService {
 		String result = mapper.getMenus(menu);
 		return result;
 	}
+	
+	@Override
+	public int getRevRequest(int rev_idx) {
+		int result = mapper.getRevRequest(rev_idx);
+		return result;
+	}
+	
+	@Override
+	public int insertRevReq(int rev_idx) {
+		int result = mapper.getRevRequest(rev_idx);
+		return result;
+	}
 
 }

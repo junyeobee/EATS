@@ -9,4 +9,6 @@ public interface StoreReviewListMapper {
 	public List<ReviewsListDTO> getReivewLists(int storeIdx);
 	public ReviewDetailDTO getReviewDetail(int revIdx);
 	public String getMenus(Integer menu);
+	public int getRevRequest(int rev_idx);
+	public int insertRevReq(int rev_idx);
 }

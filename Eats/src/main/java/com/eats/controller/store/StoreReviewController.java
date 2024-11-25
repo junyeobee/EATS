@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,7 +56,25 @@ public class StoreReviewController {
 					result.setRev_menu(result.getRev_menu()+menu+"/");
 				}
 			}
-		}
+		}	
 		return result;
+	}
+	
+	@GetMapping("/store/review/revDelreq")
+	@ResponseBody
+	public ResponseEntity<Integer> reviewDelReq(String rev_idx){
+		int parseIdx = Integer.parseInt(rev_idx);
+		int result = service.getRevRequest(parseIdx);
+		//이거 요청상태로 xhr객체 200일때, 204일때 얼럿창으로 처리하면됨
+		if(result == 0){
+			return ResponseEntity.status(204).body(0);
+		}else{
+			int result2 = service.insertRevReq(parseIdx);
+			if(result2 == 0) {
+				return ResponseEntity.status(204).body(1);
+			}else {
+				return ResponseEntity.status(200).body(204);
+			}
+		}
 	}
 }

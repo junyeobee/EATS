@@ -44,4 +44,10 @@
 		where menu_idx 
 		in #{param}
 	</select>
+	<select id = "getRevRequest">
+		select count(*) from rev_del where rev_idx = #{rev_idx}
+	</select>
+	<select id="insertRevReq">
+		insert into rev_del values(#{rev_idx}, sysdate, 0, null)
+	</select>
 </mapper>
