@@ -15,7 +15,7 @@
     <div class="container">
         <!-- 프로필 섹션 -->
         <div class="profile">
-<img src="${not empty userProfile1.profile_image ? userProfile1.profile_image : '/myPageImg/default-icon.png'}?timestamp=${currentTime}" 
+<img src="${not empty userProfile1.profile_image ? userProfile1.profile_image : '/svg/profile_icon.svg'}?timestamp=${currentTime}" 
      alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile1.user_nickname}</div>
             <div class="profile-points">${userProfile.user_point} 포인트</div>
@@ -24,7 +24,7 @@
         <!-- 메뉴 섹션 -->
         <div class="menu">
             <a href="/user/mypage/myJjim" class="menu-item">
-                <img src="/myPageImg/jjim-icon.png" alt="찜 아이콘">
+                <img src="/svg/fork_icon_white.svg" alt="찜 아이콘">
                 <div>나의 콕!</div>
             </a>
             <a href="/user/mypage/myReviews" class="menu-item">

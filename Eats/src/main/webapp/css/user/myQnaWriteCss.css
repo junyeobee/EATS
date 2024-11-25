@@ -1,0 +1,140 @@
+@charset "UTF-8";
+/* 전체 배경과 기본 설정 */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #FEFEFE; /* 기본 배경 색상 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #FFFFFF; /* 흰색 배경 */
+    padding: 50px 60px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 제목 스타일 */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #F3553C; /* 테마 색상 (빨간색) */
+    margin-bottom: 30px;
+}
+
+/* 폼 요소 그룹 */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* 라벨 스타일 */
+label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333; /* 진한 회색 */
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #FDFDFD; /* 약간의 흰 배경 */
+}
+
+/* 입력 필드 포커스 시 효과 */
+input[type="text"]:focus, textarea:focus {
+    border-color: #F3553C;
+    box-shadow: 0 0 5px rgba(243, 85, 60, 0.3);
+}
+
+/* 텍스트 에어리어 높이 */
+textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* 버튼 그룹 스타일 */
+.button-group {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* 제출 버튼 스타일 */
+.btn-submit {
+    background-color: #F3553C; /* 테마 색상 (빨간색) */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 10px;
+}
+
+/* 제출 버튼 호버 효과 */
+.btn-submit:hover {
+    background-color: #D8442F; /* 조금 더 진한 빨간색 */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(243, 85, 60, 0.2);
+}
+
+/* 취소 버튼 스타일 */
+.btn-cancel {
+    background-color: #E0E0E0; /* 회색 */
+    color: #333333; /* 텍스트 색상 */
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 취소 버튼 호버 효과 */
+.btn-cancel:hover {
+    background-color: #BDBDBD; /* 조금 더 진한 회색 */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    label {
+        font-size: 1rem;
+    }
+
+    input[type="text"], textarea {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .btn-submit, .btn-cancel {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}

@@ -2,26 +2,27 @@
 
 body {
     font-family: "Noto Sans KR", sans-serif;
-    background-color: #FFF8EB;
+    background-color: #FEFEFE; /* White background */
     margin: 0;
     padding: 0;
 }
 
 .container {
-    width: 90%;
-    max-width: 800px;
-    margin: 50px auto;
+    text-align: center; /* 가운데 정렬 */
+    width: 80%; /* 마이페이지와 동일한 너비 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 100px auto; /* 상단 여백 */
     background: #FFFFFF;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 60px 40px; /* 여백 설정 */
+    border-radius: 20px; /* 둥근 모서리 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* 마이페이지와 동일한 그림자 */
 }
 
 h1 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem; /* 큰 제목 크기 */
     font-weight: bold;
-    color: #333333;
+    color: #F3553C; /* Theme red for headers */
     margin-bottom: 30px;
 }
 
@@ -29,80 +30,38 @@ h1 {
 .jjim-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px; /* 항목 간격을 마이페이지에 맞춤 */
 }
 
 /* 개별 찜 아이템 */
 .jjim-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #FFFDF6;
-    border: 1px solid #EEE;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+    padding: 30px; /* 여백 조정 */
+    background-color: #FFF8EB; /* Beige background */
+    border: 1px solid #F3553C; /* Theme red border */
+    border-radius: 15px; /* 모서리 둥글게 */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* 마이페이지 카드 그림자 */
     transition: box-shadow 0.3s, transform 0.2s;
 }
 
 .jjim-item:hover {
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2); /* Hover 효과 */
     transform: translateY(-5px);
 }
 
 /* 매장 정보 스타일 */
 .store-info h2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* 마이페이지 텍스트와 비슷한 크기 */
     color: #333333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 
 .store-info p {
-    font-size: 1rem;
-    color: #777777;
-    margin: 5px 0;
-}
-
-/* 버튼 스타일 */
-.button-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.2s;
-    cursor: pointer;
-}
-
-/* 매장 보기 버튼 */
-.btn.detail {
-    background-color: #FFB53C;
-    color: white;
-}
-
-.btn.detail:hover {
-    background-color: #E68A00;
-    transform: scale(1.05);
-}
-
-/* 삭제 버튼 */
-.btn.delete {
-    background-color: #E74C3C;
-    color: white;
-    border: none;
-}
-
-.btn.delete:hover {
-    background-color: #C0392B;
-    transform: scale(1.05);
+    font-size: 1.2rem; /* 텍스트 크기 조정 */
+    color: #555555;
+    margin: 10px 0;
 }
 
 /* 뒤로가기 버튼 */
@@ -127,29 +86,26 @@ h1 {
     transform: scale(1.05);
 }
 
-/* 페이징 스타일 */
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination .btn {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 10px 15px;
-    background-color: #FFB53C;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.pagination .btn:hover {
-    background-color: #E68A00;
-    transform: scale(1.05);
-}
-
-.pagination span {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333333;
+/* 추가 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* 화면 크기에 맞춰 조정 */
+        padding: 40px 20px; /* 여백 조정 */
+    }
+    h1 {
+        font-size: 2rem; /* 제목 크기 조정 */
+    }
+    .jjim-item {
+        padding: 20px;
+    }
+    .jjim-item h2 {
+        font-size: 1.5rem;
+    }
+    .jjim-item p {
+        font-size: 1rem;
+    }
+    .btn.back {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
 }
