@@ -37,11 +37,23 @@ public class StoreReserveController {
 		} else {
 			todayDate = selectedDate;
 		}
-
+		
 		Map<String, Object> infoMap = new HashMap<>();
+		
+		if(searching!=null && !searching.equals("")) {
+		String searchEx = searching.replaceAll(" ", "");
+		searchEx = searchEx.replaceAll("[^\\uAC00-\\uD7A30-9a-zA-Z]","");
+
+			if(searchEx.matches("[0-9]+")) {
+				infoMap.put("searchTel", searchEx);
+			} else {
+				infoMap.put("searchName", searchEx);
+			}
+		}
+		
 		infoMap.put("store_idx", store_idx);
 		infoMap.put("todayDate", todayDate);
-		infoMap.put("searching", searching);
+		
 
 		List<ReserveOkListDTO> rList = srs.getStoreReserveOkList(infoMap);
 
