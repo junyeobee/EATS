@@ -32,6 +32,7 @@ import com.eats.user.model.ReviewDTO;
 import com.eats.user.service.MyplateService;
 import com.eats.user.service.UserReviewService;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -112,7 +113,7 @@ public class MyPlateController {
 			@RequestParam(value="rev_tag", required=false) String rev_tag,
 			Model model, HttpServletRequest req,
 			HttpSession session) {
-		
+		System.out.println(rev_content);
 		String failedCallback=req.getHeader("Referer"); //실패 시 돌아갈 페이지 가져오기
 		
 		String projectPath=System.getProperty("user.dir");
@@ -178,8 +179,9 @@ public class MyPlateController {
 			if(log_result>0) {
 				int pointResult=reviewService.givePoint(user_idx);
 				if(pointResult>0) {
-					mv.addObject("msg", "리뷰 등록 성공!\n500p 지급완료!");
-					mv.addObject("goTo", "/");
+					mv.addObject("msg", "리뷰 등록 성공! 500p 지급완료!");
+					mv.addObject("goTo", "/user/myPlate");
+					System.out.println("리뷰 등록 성공! 포인트 지급 완료!");
 				}
 			}
 		}else {

@@ -36,6 +36,7 @@ public class StoreReviewController {
 	@GetMapping("/store/review/detail")
 	@ResponseBody
 	public ReviewDetailDTO reviewDetail(String rev_idx) {
+		System.out.println(rev_idx);
 		ReviewDetailDTO result = service.getReviewDetail(Integer.parseInt(rev_idx));
 		System.out.println(rev_idx);
 		System.out.println(result.getRev_menu());
@@ -62,18 +63,18 @@ public class StoreReviewController {
 	
 	@GetMapping("/store/review/revDelreq")
 	@ResponseBody
-	public ResponseEntity<Integer> reviewDelReq(String rev_idx){
+	public ResponseEntity<String> reviewDelReq(String rev_idx){
 		int parseIdx = Integer.parseInt(rev_idx);
 		int result = service.getRevRequest(parseIdx);
 		//이거 요청상태로 xhr객체 200일때, 204일때 얼럿창으로 처리하면됨
-		if(result == 0){
-			return ResponseEntity.status(204).body(0);
+		if(result > 0){
+			return ResponseEntity.status(204).body("이미 삭제신청된 리뷰입니다.");
 		}else{
 			int result2 = service.insertRevReq(parseIdx);
 			if(result2 == 0) {
-				return ResponseEntity.status(204).body(1);
+				return ResponseEntity.status(204).body("저장 중 오류");
 			}else {
-				return ResponseEntity.status(200).body(204);
+				return ResponseEntity.status(200).body("삭제 신청 완료");
 			}
 		}
 	}
