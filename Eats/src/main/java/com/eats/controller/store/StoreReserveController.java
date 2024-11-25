@@ -50,7 +50,7 @@ public class StoreReserveController {
 				infoMap.put("searchName", searchEx);
 			}
 		}
-		
+
 		infoMap.put("store_idx", store_idx);
 		infoMap.put("todayDate", todayDate);
 		

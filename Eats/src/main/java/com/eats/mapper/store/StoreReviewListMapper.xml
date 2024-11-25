@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eats.mapper.store.StoreReviewListMapper">
+	<select id="getReivewLists" resultType = "com.eats.store.model.reviewList.ReviewsListDTO">
+		select 
+		    r.rev_idx,r.rev_writedate, u.user_nickname, r.rev_score, r.rev_content 
+		from 
+		    review r 
+		join 
+		    reservation res 
+		on 
+		    res.reserve_idx = r.reserve_idx 
+		join
+		    user_profile u 
+		on 
+		    u.user_idx = res.user_idx 
+		where store_idx = #{storeIdx}
+	</select>
+	<select id = "getReviewDetail" resultType = "com.eats.store.model.reviewList.ReviewDetailDTO">
+		select 
+			u.user_name, res.reserve_date,res.reserve_time,res.reserve_count, sts.sts_num,r.rev_score,r.rev_content,r.rev_tag, r.rev_menu
+		from 
+			reservation res
+		join 
+			eats_user u
+		on 
+			res.user_idx = u.user_idx
+		join 
+			review r
+		on 
+			r.reserve_idx = res.reserve_idx
+		join 
+			store_table_set sts
+		on 
+			sts.sts_idx = res.reserve_table_idx
+		where 
+			r.rev_idx = #{revIdx}
+	</select>
+	<select id="getMenus" parameterType="list" resultType = "String">
+		select 
+			menu_name 
+		from 
+			menu 
+		where menu_idx 
+		in #{param}
+	</select>
+	<select id = "getRevRequest">
+		select count(*) from rev_del where rev_idx = #{rev_idx}
+	</select>
+	<select id="insertRevReq">
+		insert into rev_del values(#{rev_idx}, sysdate, 0, null)
+	</select>
+</mapper>
