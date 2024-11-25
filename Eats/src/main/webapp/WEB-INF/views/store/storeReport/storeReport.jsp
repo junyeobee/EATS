@@ -1103,6 +1103,7 @@
     </script>
 </head>
 <body>
+    <%@ include file="../store_Header.jsp" %>
     <div class="container">
         <a id="click_me" onclick="result()">매장명</a>
         <form action="/storeReportCreate" method="Post">
