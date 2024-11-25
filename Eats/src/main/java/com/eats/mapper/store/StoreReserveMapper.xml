@@ -12,9 +12,11 @@
 		where a.user_idx=eats_user.user_idx)b, store_table_set
 		where b.reserve_table_idx=store_table_set.sts_idx)c, user_profile
 		where c.user_idx=user_profile.user_idx
-		<if test="searching!=null and searching!=''">
-			and user_name like '%'||#{searching}||'%'
-			or replace(user_tel,'-','') like '%'||#{searching}||'%'
+		<if test="searchTel!=null and searchTel!=''">
+			and replace(user_tel,'-','') like '%'||#{searchTel}||'%'
+		</if>
+		<if test="searchName!=null and searchName!=''">
+			and user_name like '%'||#{searchName}||'%'
 		</if>
 		order by reserve_idx asc
   	</select>
