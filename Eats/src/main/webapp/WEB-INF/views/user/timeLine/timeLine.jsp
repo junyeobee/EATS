@@ -7,17 +7,17 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="./css/user/userHeader.css"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <title>Insert title here</title>
 <script type="text/javascript" src="js/httpRequest.js"></script>
 <style>
-* {
+
+
+body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-family: "Noto Sans KR", sans-serif;
-}
-
-body {
 	background-color: #f5f5f5;
 }
 
@@ -75,7 +75,8 @@ body {
 }
 
 .profile-image img {
-	width: 100%;
+	border-radius: 50%;
+		width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
@@ -283,6 +284,7 @@ body {
 }
 
 img {
+
 	width: 100%; /* 이미지 너비를 슬라이드에 맞춤 */
 	display: block; /* 이미지 아래 여백 제거 */
 }
@@ -373,7 +375,19 @@ img {
 	td:nth-child(2) {
     padding-right: 20px;
 }
-	
+
+a{
+text-decoration: none;
+color:black;
+}
+.reviewer-profile img{
+
+     
+	border-radius: 50%;
+		width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
 </style>
 
 
@@ -382,6 +396,7 @@ img {
 </head>
 <body>
 <%@include file="../../userHeader.jsp"%>
+
 
 <!-- 세션 idx값 받아오기 -->
 		<c:if test="${empty sessionScope.user_idx}">
@@ -485,7 +500,12 @@ img {
 				<c:forEach var="dto" items="${lists }">
 
 					<div class="user-card">
+					<c:if test="${empty dto.profile_image }">
+					<div class="user-profile"><img src="/myPageImg/default-icon.png"></div>
+					</c:if>
+					<c:if test="${!empty dto.profile_image }">
 						<div class="user-profile"><img src="${dto.profile_image }"></div>
+					</c:if>
 						<span>${dto.user_nickname }</span>
 						<button class="follow-btn" data-idx="${dto.user_idx}" id="${dto.user_idx}">팔로우</button>
 					</div>
@@ -506,7 +526,7 @@ img {
 					<!-- 리뷰 카드 1 -->
 					<div class="review-card">
 						<div class="reviewer-info">
-							<div class="reviewer-profile"></div>
+							<div class="reviewer-profile"><img src="${dto.profile_image}"></div>
 							<div>
 								<div class="reviewer-name">${dto.user_nickname}</div>
 								<div class="reviewer-location">${dto.rev_writedate }</div>
@@ -533,7 +553,8 @@ img {
 								<div class="restaurant-name">${dto.store_name }</div>
 								<div class="restaurant-address">${dto.store_addr}</div>
 							</div>
-							<a href="/user/storeInfo">→</a>
+							<input type="hidden" value=${dto.store_idx }>
+							<a href="/user/storeInfo?store_idx=${dto.store_idx}">→</a>
 						</div>
 					</div>
 				</c:forEach>
@@ -619,10 +640,18 @@ function showSendResult() {
 
                     var reviewerInfoDiv = document.createElement('div');
                     reviewerInfoDiv.className = 'reviewer-info';
+                    
+                    var img = document.createElement('img');
+                    img.src = dto.profile_image;
+                   img.style.borderRadius = '50%';
+                    img.style.width = '45px';
+                    img.style.height = '45px';
+                    img.style.objectFit = 'cover'; 
 
-                    var reviewerProfileDiv = document.createElement('div');
-                    reviewerProfileDiv.className = 'reviewer-profile';
-
+                  	var reviewerProfileDiv = document.createElement('div');
+                    reviewerProfileDiv.className = 'reviewer-profile'; 
+					
+                    
                     var reviewerDetailsDiv = document.createElement('div');
                     var reviewerNameDiv = document.createElement('div');
                     reviewerNameDiv.className = 'reviewer-name';
@@ -630,33 +659,36 @@ function showSendResult() {
 
                     var reviewerLocationDiv = document.createElement('div');
                     reviewerLocationDiv.className = 'reviewer-location';
-                    reviewerLocationDiv.textContent = '서울 강남구';
+                    reviewerLocationDiv.textContent = dto.rev_writedate;
 
                     reviewerDetailsDiv.appendChild(reviewerNameDiv);
                     reviewerDetailsDiv.appendChild(reviewerLocationDiv);
-                    reviewerInfoDiv.appendChild(reviewerProfileDiv);
+                   	reviewerInfoDiv.appendChild(reviewerProfileDiv);
                     reviewerInfoDiv.appendChild(reviewerDetailsDiv);
+                    
+
 
                     var imageSliderDiv = document.createElement('div');
                     imageSliderDiv.className = 'image-slider';
 
                     var prevButton = document.createElement('button');
                     prevButton.className = 'slider-button prev';
-                    prevButton.textContent = '←';
+                    prevButton.textContent = '<';
 
                     var nextButton = document.createElement('button');
                     nextButton.className = 'slider-button next';
-                    nextButton.textContent = '→';
+                    nextButton.textContent = '>';
 
                     var sliderContainerDiv = document.createElement('div');
                     sliderContainerDiv.className = 'slider-container';
-
+                    var reviewImages = dto.rev_img.split(",");
+                    
                     // 이미지 
-                    for (var i = 0; i < 3; i++) { 
+                    for (var i = 0; i < reviewImages.length; i++) { 
                         var slideDiv = document.createElement('div');
                         slideDiv.className = 'slide';
                         var imgElement = document.createElement('img');
-                        imgElement.src = `/img/review/${dto.review_img}`;  //리뷰이미지 수정한 부분
+                        imgElement.src = '/img/user/review/'+reviewImages[i];  //리뷰이미지 수정한 부분
                         imgElement.alt = '음식 사진 ' + (i + 1);
                         slideDiv.appendChild(imgElement);
                         sliderContainerDiv.appendChild(slideDiv);
@@ -680,7 +712,7 @@ function showSendResult() {
                     var restaurantDetailsDiv = document.createElement('div');
                     var restaurantNameDiv = document.createElement('div');
                     restaurantNameDiv.className = 'restaurant-name';
-                    restaurantNameDiv.textContent = '뉴욕스테이크';
+                    restaurantNameDiv.textContent = dto.store_name;
 
                     var restaurantAddressDiv = document.createElement('div');
                     restaurantAddressDiv.className = 'restaurant-address';
@@ -696,10 +728,12 @@ function showSendResult() {
                     restaurantInfoDiv.appendChild(storeLink);
 
                     reviewCard.appendChild(reviewerInfoDiv);
+                   // reviewCard.appendChild(img);
                     reviewCard.appendChild(imageSliderDiv);
                     reviewCard.appendChild(ratingDiv);
                     reviewCard.appendChild(reviewContentDiv);
                     reviewCard.appendChild(restaurantInfoDiv);
+                   	reviewerProfileDiv.appendChild(img);
 
                     reviewContainer.insertBefore(reviewCard, reviewContainer.firstChild);
                 });
@@ -743,5 +777,7 @@ window.onclick = function(event) {
 
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
+
 </body>
+
 </html>

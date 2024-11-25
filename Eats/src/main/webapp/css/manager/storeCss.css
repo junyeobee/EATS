@@ -1,10 +1,18 @@
 @charset "UTF-8";
 
 	.my_contents {margin-left:20px;}
-	/* 매장-정보수정신청승인 리스트박스 */
-	/*
-	.contents .mainCont .mainCon_1400 {width:1400px;}
-	*/
+	
+	
+	.box_shadow {
+		border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+		margin:0 0 0px 10px; padding: 10px 10px 60px 10px; 
+	}
+	
+	
+	
+	
+	.mainCon_1400 {padding:0 30px;}
+	
 	.mainCon_1400 .tableList {height:300px; border:0px solid red;}
 	.mainCon_1400 .tableList table {width:100%;}
 	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
@@ -16,12 +24,29 @@
 	.mainCon_1400 .listPaging {width:100%; margin-top:20px; text-align:center;}
 	.mainCon_1400 .listPaging > * {display:inline-block; cursor:pointer;}
 	
-	.mainCon_1400 > .mc_left {float:left; width:49%;}
-	.mainCon_1400 > .mc_right {float:right; width:49%;}
+	.mainCon_1400 > .mc_left {float:left; width:48%;}
+	
+	
+	
+	
+	
+	.mainCon_800 {width:95%;}
+	.mainCon_800 .tableWrite_4 {padding:50px;}
+	.mainCon_800 .tableWrite_4 table {width:100%;}
+	.mainCon_800 .tableWrite_4 table tr {height:60px;}
+	.mainCon_800 .tableWrite_4 table tr th {width:20%; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
+	.mainCon_800 .tableWrite_4 table tr td {width:30%; border-bottom:1px solid #eee;}
+	.mainCon_800 .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
 	
 	/* <버튼> */	
 	/* 매장-정보수정신청승인 버튼 */
-	.btn_orange {cursor:pointer; background:orange; color:white; text-align:center; border:1px solid #E17814; border-radius:5px; padding:5px 10px;}
+	.btn_orange {
+		cursor:pointer; background:orange; color:white; 
+		text-align:center; border:1px solid #E17814; border-radius:5px; 
+		padding:5px 10px; font-weight:600;
+	}
 		
 	/* 매장-정보수정신청반려 버튼 */
 	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
@@ -29,28 +54,56 @@
 	/* 매장-정보수정신청반려하기 버튼*/
 	.btn_red{cursor:pointer; background:red; color:white; text-align:center; border:1px solid darkred; border-radius:5px; padding:5px 10px;}
 	
+	/* 이미지관리-삭제버튼 / 소식등록-취소버튼 */
+	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
 	
-	.a_left {text-align:left; padding-left:10px;}
+	/* 소식관리-상세보기 버튼 */
+	.btn_skyblue {cursor:pointer; background:#349FFB; color:white; text-align:center; border:1px solid #2778BD; border-radius:5px; padding:5px 10px;}
+	
+	
+	.a_left {text-align:left; padding-left:20px;}
 	.a_center {text-align:center;}
 	.a_right {text-align:right; padding-right:10px;}
 	
 	.ws100 {width:100px;}
 	.ws200 {width:200px;}
+	.ws300 {width:300px;}
 	.ws400 {width:400px;}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
 	.btnBox_top {float:right; }
 	.btnBox_top > * {margin-top:-40px; margin-left:10px;}
 	
+	.btnBox_center {text-align:center; }
+	
 	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
+	
+	
+	.mainCon_info {margin: 20px auto; background: #fff;  }
+	.mainCon_info .two_contents {width:100%; height:150px;}
+	.mainCon_info .two_contents > * {float:left; width:500px;}
+	.mainCon_info .two_contents .one_con {width:650px;}
+	
+	.mainCon_info .tableWrite_4 {padding:50px; height:600px;}
+	.mainCon_info .tableWrite_4 table {width:100%;}
+	.mainCon_info .tableWrite_4 table tr {height:60px;}
+	.mainCon_info .tableWrite_4 table tr th {width:30%; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
+	.mainCon_info .tableWrite_4 table tr td {width:70%; border-bottom:1px solid #eee;}
+	.mainCon_info .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_info .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/* 이미지관리-이미지등록 테이블박스 */
@@ -64,8 +117,6 @@
 	.mainCon_400 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
 	
-	/* 소식관리-소식등록, 수정, 상세보기 테이블박스 */
-	.mainCon_800 {width:800px;}
 	.mainCon_800 .tableWrite_2 {}
 	.mainCon_800 .tableWrite_2 table {width:100%;}
 	.mainCon_800 .tableWrite_2 table tr {height:40px; }
@@ -91,15 +142,6 @@
 	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
 	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
 	
-	/* 정보수정신청 테이블박스 */
-	.mainCon_800 {width:800px;}
-	.mainCon_800 .tableWrite_4 {}
-	.mainCon_800 .tableWrite_4 table {width:100%;}
-	.mainCon_800 .tableWrite_4 table tr {height:60px;}
-	.mainCon_800 .tableWrite_4 table tr th {width:20%; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
-	.mainCon_800 .tableWrite_4 table tr td {width:30%; border-bottom:1px solid #eee;}
-	.mainCon_800 .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
-	.mainCon_800 .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
 	
 	
 	
@@ -120,12 +162,6 @@
 	
 	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
 	
-	/* 이미지관리-삭제버튼 / 소식등록-취소버튼 */
-	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
-	
-	/* 소식관리-상세보기 버튼 */
-	.btn_skyblue {cursor:pointer; background:#349FFB; color:white; text-align:center; border:1px solid #2778BD; border-radius:5px; padding:5px 10px;}
-	
 	/* 정보수정신청 input */
 	input[type='text'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
 	input[type='text']:focus {
@@ -140,13 +176,19 @@
 	
 	.mt20 {margin-top:20px;}
 	
-	/* 이미지관리 - 상단컨텐츠 박스 */
+	.mb30 {margin-bottom:30px;}
 	.mb60 {margin-bottom:60px;}
+	
+	.ml10 {margin-left:10px;}
+	.ml20 {margin-left:20px;}
 	
 	/* 정보수정신청 주소input */
 	.ws100 {width:100px;}
+	.ws150 {width:150px;}
 	.ws200 {width:200px;}
 	.ws300 {width:300px;}
 	.ws400 {width:400px;}
+	.ws600 {width:600px;}
 	.ws800 {width:800px;}
 	
+	.hs500 {height:500px;}

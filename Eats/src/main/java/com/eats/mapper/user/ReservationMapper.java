@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.eats.user.model.AlarmDTO;
+import com.eats.user.model.PayDTO;
 import com.eats.user.model.ReservationDTO;
 
 public interface ReservationMapper {
@@ -14,6 +15,7 @@ public interface ReservationMapper {
 	public List<Map> getAvailableTable(Map map);
 	public int getMinTableIdx(Map map);
 	public int makeReserve(ReservationDTO reservationDTO);
+	public int makePayment(PayDTO paydto);
 	public int sendAlarmRequest(AlarmDTO alarmDTO);
 	public int checkAlarmExist(AlarmDTO alarmDTO);
 }

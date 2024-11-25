@@ -36,7 +36,8 @@ $(document).ready(function() {
          if ( rsp.success ) {
              var msg = '결제가 완료되었습니다.';
              location.href='/user/makeReserve';
-
+			
+          
          } else {
             var msg = '결제에 실패하였습니다.';
             msg += '에러내용 : ' + rsp.error_msg;
@@ -59,7 +60,7 @@ $(document).ready(function() {
 
       //   opener.location.href = "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');";
          //window.opener.goInsertOrder('${requestScope.price}');
-         opener.location.href = "javascript:goInsertOrder();";
+         //opener.location.href = "javascript:goInsertOrder();";
       //  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');");
 
           self.close();

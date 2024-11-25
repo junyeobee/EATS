@@ -259,20 +259,25 @@ menu, ol, ul {
 									<img class="store_location_icon" src="/svg/location_icon.svg" />
 									<div class="store_addr">${list.store_addr }</div>
 								</div>
-								<div class="store_time_box">
-									<div class="store_last_time_box">
-										<div class="store_last_time_text">영업시간</div>
-										<div class="store_last_time_time">${list.stime_start }</div>
-										<div class="store_last_time_text">-</div>
-										<div class="store_last_time_time">${list.stime_end }</div>
-									</div>
-									<c:if test="${!empty list.stime_break }">
-										<div class="store_break_time_box">
-											<div class="store_break_time_text">브레이크 타임</div>
-											<div class="store_break_time_time">${list.stime_break }</div>
+								<c:if test="${!list.stime_start.contains('휴무') }">
+									<div class="store_time_box">
+										<div class="store_last_time_box">
+											<div class="store_last_time_text">영업시간</div>
+											<div class="store_last_time_time">${list.stime_start }</div>
+											<div class="store_last_time_text">-</div>
+											<div class="store_last_time_time">${list.stime_end }</div>
 										</div>
-									</c:if>
-								</div>
+										<c:if test="${!empty list.stime_break }">
+											<div class="store_break_time_box">
+												<div class="store_break_time_text">브레이크 타임</div>
+												<div class="store_break_time_time">${list.stime_break }</div>
+											</div>
+										</c:if>
+									</div>
+								</c:if>
+								<c:if test="${list.stime_start.contains('휴무') }">
+									<div class="store_not_work">${list.stime_start }</div>
+								</c:if>
 							</div>
 						</div>
 					</div>

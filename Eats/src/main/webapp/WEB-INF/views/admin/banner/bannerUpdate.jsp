@@ -209,5 +209,5 @@ function updateEndDate() {
     }
 }
 </script>
-
+<script src="./js/adminScript.js"></script>
 </html>

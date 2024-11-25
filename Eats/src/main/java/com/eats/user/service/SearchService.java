@@ -16,4 +16,5 @@ public interface SearchService {
 	public List<SearchDTO> getSearchData(Map<String,String> dateMap);
 	public Map<String, Integer> getSearchCountByTag(List<String> valueList, Map<String, String> map);
 	public List<HYStoreDTO> getStoreInfo(Map<String, Object> map);
+	public int getStoreStimeDay(Map<String, Object> map);
 }

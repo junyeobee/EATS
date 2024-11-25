@@ -16,4 +16,5 @@ public interface SearchMapper {
 	public List<SearchDTO> getSearchData(Map<String,String> dateMap);
 	public List<SearchDTO> getSearchCountByTag(Map<String, Object> map);
 	public List<HYStoreDTO> getStoreInfo(Map<String, Object> map);
+	public int getStoreStimeDay(Map<String, Object> map);
 }
