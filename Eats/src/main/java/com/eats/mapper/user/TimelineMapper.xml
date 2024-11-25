@@ -20,7 +20,7 @@
 
 
 	<select id="randomuser" resultType="com.eats.user.model.TimelineDTO" parameterType="Integer">
-    SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+  <!--   SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
     FROM (
         SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
         FROM USER_PROFILE
@@ -29,6 +29,18 @@
             FROM FOLLOW
             WHERE USER_IDX = #{userIdx} 
         )
+        ORDER BY DBMS_RANDOM.VALUE
+    )
+    WHERE ROWNUM &lt;= 4 -->
+       SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+    FROM (
+        SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+        FROM USER_PROFILE
+        WHERE USER_IDX NOT IN (
+            SELECT FOLLOWING_IDX
+            FROM FOLLOW
+            WHERE USER_IDX = #{userIdx} 
+        ) AND USER_IDX != #{userIdx}  
         ORDER BY DBMS_RANDOM.VALUE
     )
     WHERE ROWNUM &lt;= 4
@@ -172,12 +184,12 @@
 	</select>
 	
 	
-	<select id="followerList" parameterType="Integer" resultType="java.util.List">
+	<select id="followerList" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
 	
-		SELECT UP.USER_NICKNAME, F.*
+		SELECT UP.USER_NICKNAME,UP.PROFILE_IMAGE,F.FOLLOWING_IDX
 		FROM FOLLOW F
 		JOIN USER_PROFILE UP ON F.FOLLOWING_IDX = UP.USER_IDX
-		WHERE F.USER_IDX = #{userIdx}
+		WHERE F.USER_IDX = #{userIdx, jdbcType=INTEGER}
 		
 	</select>
 

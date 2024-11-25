@@ -20,8 +20,7 @@ public class StoreMainController {
     @GetMapping("/storeMain")
     public ModelAndView storeMain(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        String storeidx = (String)session.getAttribute("store_idx");
-        int store_idx = storeidx != null ? Integer.parseInt(storeidx) : 1;
+        Integer store_idx = (Integer)session.getAttribute("storeIdx");
 
         // 모든 데이터 조회
         DashBoardDTO dash = new DashBoardDTO();
