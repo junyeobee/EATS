@@ -244,7 +244,7 @@ menu, ol, ul {
 						onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
 						<div class="store_info_top">
 							<div class="store_ingo_img_box">
-								<img class="store_info_img" src="${list.store_img }" />
+								<img class="store_info_img" src="/img/storeUploadImg/${list.store_img }" />
 							</div>
 							<div class="store_info_title">
 								<div class="store_info_title_line">
@@ -263,14 +263,14 @@ menu, ol, ul {
 									<div class="store_time_box">
 										<div class="store_last_time_box">
 											<div class="store_last_time_text">영업시간</div>
-											<div class="store_last_time_time">${list.stime_start }</div>
+											<div class="store_last_time_time">${tMap[list.store_idx].stime_start }</div>
 											<div class="store_last_time_text">-</div>
-											<div class="store_last_time_time">${list.stime_end }</div>
+											<div class="store_last_time_time">${tMap[list.store_idx].stime_end }</div>
 										</div>
-										<c:if test="${!empty list.stime_break }">
+										<c:if test="${!empty tMap[list.store_idx].stime_break }">
 											<div class="store_break_time_box">
 												<div class="store_break_time_text">브레이크 타임</div>
-												<div class="store_break_time_time">${list.stime_break }</div>
+												<div class="store_break_time_time">${tMap[list.store_idx].stime_break }</div>
 											</div>
 										</c:if>
 									</div>

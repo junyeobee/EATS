@@ -203,8 +203,8 @@ menu, ol, ul {
 		<c:if test="${!empty reviewData }">
 			<div class="review_box">
 				<div class="review_box_text">
-					<div class="review_title">리뷰 폭!</div>
-					<div class="review_sub">폭!을 많이 받은 리뷰로 맛집을 추천 받아 보세요!</div>
+					<div class="review_title">팔로우 폭!</div>
+					<div class="review_sub">팔로우가 많은 유저의 리뷰로 맛집을 추천 받아 보세요!</div>
 				</div>
 				<div class="review_container">
 				
@@ -229,15 +229,13 @@ menu, ol, ul {
 							<div class="user_review_text">${reviews.rev_content }</div>
 							<div class="user_review_sub">
 								<div class="review_tag_box">
+								<c:if test="${tags.size()>0 }">
 								<c:forEach var="tag" items="${tags.get(cnt.index) }">
 									<div class="review_tag">
 										<div class="review_tag_text">${tag }</div>
 									</div>
 								</c:forEach>
-								</div>
-								<div class="fork_info">
-									<img class="fork_img" src="/svg/fork_icon.svg" />
-									<div class="fork_text">${likeCount.get(cnt.index) }</div>
+								</c:if>
 								</div>
 							</div>
 						</div>
@@ -276,7 +274,7 @@ menu, ol, ul {
 				<c:forEach var="jcnt" items="${jcntList }">
 					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${jcnt.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="${jcnt.store_img }" />
+							<img class="reserve_img" src="/img/storeUploadImg/${jcnt.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">
@@ -323,7 +321,7 @@ menu, ol, ul {
 				<c:forEach var="point" items="${pointList }">
 					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${point.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/user/review/${point.store_img }" />
+							<img class="reserve_img" src="/img/storeUploadImg/${point.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">

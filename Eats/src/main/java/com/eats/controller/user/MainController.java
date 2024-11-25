@@ -80,7 +80,7 @@ public class MainController {
 			List<Integer> likeCount = new ArrayList<>();
 			for (int idx : revIdxList) {
 				reviewData.add(ms.getReview(idx));
-				likeCount.add(ms.getLikeCount(idx));
+				//likeCount.add(ms.getLikeCount(idx));
 			}
 
 			List<Double> storePoint = new ArrayList<>();
@@ -89,7 +89,7 @@ public class MainController {
 			List<String> tags = new ArrayList<>();
 
 			for (ReviewDTO rev_dto : reviewData) {
-				if(rev_dto!=null) {
+				if(rev_dto!=null&&rev_dto.getRev_tag()!=null) {
 					storePoint.add(ms.getStorePoint(rev_dto.getStore_idx()));
 					followCount.add(ms.getFollowerCount(rev_dto.getUser_idx()));
 	
@@ -101,7 +101,7 @@ public class MainController {
 				
 				mv.addObject("reviewData", reviewData);
 				mv.addObject("storePoint", storePoint);
-				mv.addObject("likeCount", likeCount);
+				//mv.addObject("likeCount", likeCount);
 				mv.addObject("followCount", followCount);
 				mv.addObject("tags", tags);
 			}
@@ -159,7 +159,6 @@ public class MainController {
 		Cookie cks[] = req.getCookies();
 		
 		for(Cookie temp:cks) {
-			System.out.println(temp.getName());
 			if (temp.getName().equals("cityCk")) {
 				temp.setMaxAge(0);
 			}

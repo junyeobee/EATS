@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eats.admin.model.SearchDTO;
 import com.eats.store.model.HYStoreDTO;
 import com.eats.store.model.StoreDTO;
+import com.eats.store.model.StoreTimeDTO;
 import com.eats.user.model.CateKeyDTO;
 
 public interface SearchMapper {
@@ -17,4 +18,5 @@ public interface SearchMapper {
 	public List<SearchDTO> getSearchCountByTag(Map<String, Object> map);
 	public List<HYStoreDTO> getStoreInfo(Map<String, Object> map);
 	public int getStoreStimeDay(Map<String, Object> map);
+	public StoreTimeDTO getStoreTimes(Map<String, Object> map);
 }

@@ -14,6 +14,7 @@ import com.eats.mapper.user.MainMapper;
 import com.eats.mapper.user.SearchMapper;
 import com.eats.store.model.HYStoreDTO;
 import com.eats.store.model.StoreDTO;
+import com.eats.store.model.StoreTimeDTO;
 import com.eats.user.model.CateKeyDTO;
 
 @Service
@@ -159,7 +160,7 @@ public class SearchServiceImple implements SearchService {
 				Map<String,Object> daymap = new HashMap<>();
 				daymap.put("store_idx", dto.getStore_idx());
 				daymap.put("week", week);
-				
+
 				if(mp.getStoreStimeDay(daymap)==0) {
 					dto.setStime_start(week+" 휴무");
 				}
@@ -173,5 +174,11 @@ public class SearchServiceImple implements SearchService {
 	public int getStoreStimeDay(Map<String, Object> map) {
 		int count = mp.getStoreStimeDay(map);
 		return count;
+	}
+	
+	@Override
+	public StoreTimeDTO getStoreTimes(Map<String, Object> map) {
+		StoreTimeDTO dto = mp.getStoreTimes(map);
+		return dto;
 	}
 }

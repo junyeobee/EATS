@@ -80,8 +80,8 @@ public class MainServiceImple implements MainService {
 	}
 
 	@Override
-	public ReviewDTO getReview(int rev_idx) {
-		ReviewDTO dto = mp.getReview(rev_idx);
+	public ReviewDTO getReview(int user_idx) {
+		ReviewDTO dto = mp.getReview(user_idx);
 		return dto;
 	}
 	

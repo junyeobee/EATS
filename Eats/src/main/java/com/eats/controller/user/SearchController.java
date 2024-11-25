@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.HYStoreDTO;
+import com.eats.store.model.StoreTimeDTO;
 import com.eats.user.model.AreaDTO;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
@@ -106,16 +107,53 @@ public class SearchController {
 		words.put("price", selectedPrice);
 		List<HYStoreDTO> storeList = ss.getStoreInfo(words);
 
+		String week = null;
+		if (selectedDate != null && !selectedDate.equals("")) {
+			DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate date = LocalDate.parse(selectedDate, formatter2);
+
+			// 요일을 숫자로 구하기 (1=월요일, 7=일요일)
+			int weekNumber = date.getDayOfWeek().getValue();
+			switch (weekNumber) {
+			case 1:
+				week = "월";
+				break;
+			case 2:
+				week = "화";
+				break;
+			case 3:
+				week = "수";
+				break;
+			case 4:
+				week = "목";
+				break;
+			case 5:
+				week = "금";
+				break;
+			case 6:
+				week = "토";
+				break;
+			case 7:
+				week = "일";
+				break;
+			}
+		}
+		
 		ModelAndView mv = new ModelAndView();
 		
 		Map<Integer, Integer> reviewCount = new HashMap<>();
 		Map<Integer, Double> reviewPoint = new HashMap<>();
+		Map<Integer, StoreTimeDTO> tMap = new HashMap<>();
 		Map<String, Map<String, Double>> location = new HashMap<>();
 		if(storeList!=null) {
 		for(HYStoreDTO dto:storeList) {
+			Map<String,Object> daymap = new HashMap<>();
+			daymap.put("store_idx", dto.getStore_idx());
+			daymap.put("week", week);
+			
 			reviewCount.put(dto.getStore_idx(), ms.getReviewCountByStoreIdx(dto.getStore_idx())==null?0:ms.getReviewCountByStoreIdx(dto.getStore_idx()));
 			reviewPoint.put(dto.getStore_idx(), ms.getStorePoint(dto.getStore_idx()));
-			
+			tMap.put(dto.getStore_idx(), ss.getStoreTimes(daymap));
 			Map<String, Double> latlng = new HashMap<>();
 			latlng.put("lat", dto.getStore_lat());
 			latlng.put("lng", dto.getStore_lng());
@@ -139,6 +177,7 @@ public class SearchController {
 		mv.addObject("reviewPoint", reviewPoint);
 		mv.addObject("location", location);
 		mv.addObject("selectedPrice",selectedPrice);
+		mv.addObject("tMap",tMap);
 		
 		mv.setViewName("user/search/searchStore");
 

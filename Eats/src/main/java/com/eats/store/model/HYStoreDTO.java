@@ -83,6 +83,26 @@ public class HYStoreDTO {
 		this.avg_price = avg_price;
 		this.store_img = store_img;
 	}
+	
+	
+
+	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
+			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
+			int avg_price, String store_img) {
+		super();
+		this.store_idx = store_idx;
+		this.store_name = store_name;
+		this.store_area = store_area;
+		this.store_addr = store_addr;
+		this.store_daddr = store_daddr;
+		this.store_tel = store_tel;
+		this.store_biznum = store_biznum;
+		this.store_state = store_state;
+		this.store_lat = store_lat;
+		this.store_lng = store_lng;
+		this.avg_price = avg_price;
+		this.store_img = store_img;
+	}
 
 	public HYStoreDTO(int store_idx, String store_name, int store_area, String store_addr, String store_daddr,
 			String store_tel, String store_biznum, String store_state, double store_lat, double store_lng,
