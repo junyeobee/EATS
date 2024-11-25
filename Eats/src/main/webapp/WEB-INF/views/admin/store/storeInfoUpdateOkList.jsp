@@ -306,6 +306,9 @@
 							<td class="a_left">
 								${dto.su_ceo }
 							</td>
+							<td class="a_left">
+								${dto.su_reason }
+							</td>
 							
 							<!-- 
 							<td class="a_center">

@@ -86,7 +86,12 @@
 					</tr>
 					<tr>
 						<td style="width:50px;">
-							<img src="/img/storeNewsImg/${data.s_news_img}">
+								<c:if test="${empty data.s_news_img}">
+									<div style="width:640px; height:420px; border:1px solid gray; text-align:center; line-height:420px;">저장된 이미지가 없습니다.</div>
+								</c:if>
+								<c:if test="${not empty data.s_news_img}">
+									<img src="/img/storeNewsImg/${data.s_news_img}">
+								</c:if>
 						</td>
 						<td>
 							<textarea name="s_news_content" style="height:220px; height:400px; padding:10px;">${data.s_news_content}</textarea>

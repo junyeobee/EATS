@@ -165,7 +165,7 @@
 	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
 	.mainCont .btnBox_top > * {float:right; margin-top:-40px;}
 	
-	.mainCont .btnBox_bottom > * {float:right; margin-left:10px;}
+	.mainCont .btnBox_bottom > * {float:right; margin-left:10px; margin-bottom:40px;}
 	
 	
 	.mainCont .mainCon_400 {width:400px;}
