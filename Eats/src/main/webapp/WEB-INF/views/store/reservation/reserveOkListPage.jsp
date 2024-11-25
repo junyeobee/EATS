@@ -22,8 +22,8 @@ body {
 }
 
 .container {
-	margin-left: 240px; /* 네비게이션 바 너비 */
-	margin-top: 80px; /* 헤더 높이 */
+	margin-left: 240px;
+	margin-top: 80px;
 	padding: 24px;
 	min-height: calc(100vh - 80px);
 }
@@ -152,11 +152,23 @@ body {
 	border-radius: 4px;
 	font-size: 12px;
 	font-weight: 500;
+	color: #121212;
 }
 
-.status-Ok {
+.st_ready {
+	background-color: rgba(255, 181, 60, 0.5);
+}
+.st_apply {
 	background-color: #7DC66C;
-	color: #121212;
+}
+.st_cancel {
+	background-color:rgba(243, 85, 60, 0.6);
+}
+.st_visit {
+	background-color: #7DC66C;
+}
+.st_noshow {
+	background-color: rgba(243, 85, 60, 0.6);
 }
 
 .request-section {
@@ -225,7 +237,9 @@ body {
 							onclick="selectThisList(${list.reserve_idx})">
 							<div class="item-header">
 								<span>${list.user_name }</span> <span
-									class="status-tag status-Ok">승인됨</span>
+									class="status-tag ${stateClass[list.reserve_idx] }">
+									${stateMap[list.reserve_idx] }
+									</span>
 							</div>
 							<div>
 								<span class="description">${list.reserve_date } </span> <span

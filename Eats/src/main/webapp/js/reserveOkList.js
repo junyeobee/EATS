@@ -12,21 +12,27 @@ function showSelectList() {
 			var dList = JSON.parse(data).dList[0];
 
 			var state ='';
+			var st_class='';
 			if (dList.reserve_state==0){
 				state='승인 대기';
+				st_class='st_ready';
 			} else if (dList.reserve_state==1){
 				state='승인됨';
+				st_class='st_apply';
 			} else if (dList.reserve_state==2) {
 				state='취소됨';
+				st_class='st_cancel';
 			} else if (dList.reserve_state==3) {
 				state='방문 완료';
+				st_class='st_visit';
 			} else if (dList.reserve_state==4) {
 				state='노쇼';
+				st_class='st_noshow';
 			}
 			
 			var reqmsg ='요청사항 없음';
 			if(dList.request!=null && dList.request!=''){
-				reqmsg=dList.request.split('|')[1];
+				reqmsg=dList.request;
 			}
 			
 			var pbox = document.getElementById('reserve_details');
@@ -39,7 +45,7 @@ function showSelectList() {
 			+'<div class="detail-item"><span class="description">날짜/시간</span><span id="time-text">'
 			+dList.reserve_date+' '+dList.reserve_time+'</span></div><div class="detail-item">'
 			+'<span class="description">인원</span> <span id="totalCnt">'+dList.reserve_count+'명</span>'
-			+'</div><div class="detail-item"><span class="description">상태</span><span class="status-tag status-Ok">'+state+'</span>'
+			+'</div><div class="detail-item"><span class="description">상태</span><span class="status-tag '+st_class+'">'+state+'</span>'
 			+'</div><div class="detail-item"><span class="description">테이블</span><span id="tableNum">'+dList.table_num+'번'
 			+'테이블<span id="tableType">('+dList.cate_value_name+')</span></span></div></div>'
 			+'<div class="detail-section"><h4>요청 사항</h4><div class="request-section"><span id="request-text">'

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="./css/user/indexCss.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
 <link rel="stylesheet" href="./css/user/userHeader.css">
+<link rel="stylesheet" href="./css/user/userFooter.css">
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -180,6 +181,7 @@ menu, ol, ul {
 			<div class="banner_swiper">
 
 				<!-- Slider main container -->
+				<c:if test="${bannerList.size()>0 }">
 				<div class="swiper">
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
@@ -193,6 +195,7 @@ menu, ol, ul {
 					<!-- If we need pagination -->
 					<div class="swiper-pagination"></div>
 				</div>
+				</c:if>
 			</div>
 		</div>
 
@@ -356,6 +359,7 @@ menu, ol, ul {
 	</div> <!-- main div (e) -->
 	</section>
 </body>
+<%@include file="userFooter.jsp" %>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script>
 	var locationBox = document.getElementById("location_box");

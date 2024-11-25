@@ -14,10 +14,18 @@
   width: 156px;
   object-fit: contain;
 }
+.header_logo_icon:hover {
+	cursor: pointer;
+}
 .header_profile_box {
     position: absolute;
     top: 8px;
     right: 12px;
     font-size: 16px;
-    color: #461002;
+    color: #461002;   
+}
+
+.header_profile_box a {
+	text-decoration: none;
+	color: #461002;   
 }

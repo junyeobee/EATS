@@ -182,7 +182,7 @@ margin-top:5px;
 			</div>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="biz_num">사업자 등록 번호</label> <input type="text"
+					<label for="biz_num">사업자 등록 번호</label> <input type="text" maxLength="11"
 						id="biz_num" name="biz_num" class="form-control" placeholder="예시) 123-45-78910" onkeyup="autoBizNum(value)"/>
 				</div>
 				<div class="alert-text" id="checkBiz">
@@ -196,7 +196,7 @@ margin-top:5px;
 				<div class="form-group">
 					<label for="owner_tel">점주 연락처</label> <input type="text"
 						id="owner_tel" name="owner_tel" class="form-control"
-						placeholder="예시) 010-1234-5678" onkeyup="autoHyphen(value)"/>
+						placeholder="예시) 010-1234-5678" onkeyup="autoHyphen(value)" maxLength="13"/>
 				</div>
 				<div class="alert-text" id="checkTel">
 				</div>
