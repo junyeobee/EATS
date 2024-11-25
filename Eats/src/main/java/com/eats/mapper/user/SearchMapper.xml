@@ -41,11 +41,7 @@
 		<if test="word!=null and word!=''">
 			store_name like '%'||#{word}||'%' and
 		</if>
-		store_state='TRUE')a, store_time
-		<if test="week !=null and week!='' ">
-			where stime_day=#{week} and a.store_idx=store_time.store_idx
-		</if>
-		)b
+		store_state='TRUE')a, store_time)b
 		<if test="tag.size()>0">
 			,
 		</if>
@@ -65,4 +61,7 @@
 		order by store_area asc
 	</select>
 	
+	<select id="getStoreStimeDay" parameterType="Map" resultType="Integer">
+		select count(*) from store_time where store_idx=#{store_idx} and stime_day=#{week}
+	</select>
 </mapper>
