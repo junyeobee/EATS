@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.eats.mapper.store.StoreReserveMapper">
   	<select id="getStoreReserveOkList" parameterType="Map" resultType="com.eats.store.model.ReserveOkListDTO">
-		select c.*, user_tel from
+		select distinct c.*, user_tel from
 		(select b.*, table_num from
 		(select user_name, a.* from
 		(select * from reservation
@@ -13,12 +13,15 @@
 		where b.reserve_table_idx=store_table_set.sts_idx)c, user_profile
 		where c.user_idx=user_profile.user_idx
 		<if test="searching!=null and searching!=''">
-			and #{searching} in (user_name, user_tel)
+			and user_name like '%'||#{searching}||'%'
+			or replace(user_tel,'-','') like '%'||#{searching}||'%'
 		</if>
+		order by reserve_idx asc
   	</select>
   	
   	<select id="getStoreReserveOkListDetail" parameterType="Integer" resultType="com.eats.store.model.ReserveOkListDTO">
-  		select d.*, cate_value_name
+  		select f.*, pay_price, pay_method
+  		from (select d.*, cate_value_name
 		from (select c.*, table_num, sts_type_idx
 		from (select user_name, b.*
 		from (select a.*, user_tel
@@ -26,6 +29,7 @@
 		where a.user_idx=user_profile.user_idx)b, eats_user
 		where b.user_idx=eats_user.user_idx)c, store_table_set
 		where c.reserve_table_idx=store_table_set.sts_idx)d, cate_value
-		where d.sts_type_idx=cate_value.cate_value_idx
+		where d.sts_type_idx=cate_value.cate_value_idx)f, reserve_pay
+		where f.reserve_idx=reserve_pay.reserve_idx
   	</select>
   </mapper>
