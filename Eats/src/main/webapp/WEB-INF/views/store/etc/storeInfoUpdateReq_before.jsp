@@ -1,24 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="/css/store/storeContCss.css">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<meta charset="UTF-8">
-<title>eats</title>
+<%@include file="../common/header.jsp"%>
 
-</head>
-<body>
-	<%@ include file="../store_Header.jsp"%>
-	<%@ include file="../nav.jsp"%>
-	 <div class="container" style="margin-top:150px; margin-left:100px; ">
-		<div class="mainCont">
-
-<div class="mainCon_info">
+<div class="mainCon_800">
 	<form name="infoUpdateReq" action="storeInfoUpdateReqSave" method="post">
 	
 		<input type="hidden" name="store_idx" value="${store_idx }">
@@ -30,74 +16,52 @@
 			<div class="btnBox_top">
 				<input type="submit" class="btn_black" value="수정요청">
 			</div>
-			
-			<div class="two_contents">
-			
-				<div class="tableWrite_4 mb60 mr40">
-					<table>
-						<tr>
-							<th>현재 매장명</th>
-							<td>${data.store_name}</td>
-						</tr>
-						<tr>
-							<th>현재 전화번호</th>
-							<td>${data.store_tel}</td>
-						</tr>
-						<tr>
-							<th>현재 대표자명</th>
-							<td>${data.store_ceo}</td>
-						</tr>
-						<tr>
-							<th>현재 주소</th>
-							<td>
-								<br>
-								${data.store_addr} 
-								<br><br>
-								${data.store_daddr}
-							</td>
-						</tr>
-					</table>
-				</div>
-				
-				<div class="tableWrite_4 mb60">
-					<table>
-						<tr>
-							<th>수정할 매장명</th>
-							<td>
-								<input type="text" name="su_name" id="" value="">
-							</td>
-						</tr>
-						<tr>
-							<th>수정할 전화번호</th>
-							<td>
-								<input type="text" name="su_tel" id="" value="">
-							</td>
-						</tr>
-						<tr>
-							<th>수정할 대표자명</th>
-							<td>
-								<input type="text" name="su_ceo" id="" value="">
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<br>
-								수정할 주소
-								<br><br>
-								<input type="button" class="btn_black" onclick="getPostCode()" value="주소 찾기">
-							</th>
-							<td>
-								<br>
-								<input type=text name="su_addr" id="su_addr" class="ws300" value="" placeholder="기본주소">
-								<br><br>
-								<input type=text name="su_daddr" id="su_daddr" class="ws300" value="" placeholder="상세주소">
-							</td>
-						</tr>
-					</table>
-				</div>
+			<div class="tableWrite_4 mb60">
+				<table>
+					<tr>
+						<th>현재 매장명</th>
+						<td>${data.store_name}</td>
+						<th>수정할 매장명</th>
+						<td>
+							<input type="text" name="su_name" id="" value="">
+						</td>
+					</tr>
+					<tr>
+						<th>현재 전화번호</th>
+						<td>${data.store_tel}</td>
+						<th>수정할 전화번호</th>
+						<td>
+							<input type="text" name="su_tel" id="" value="">
+						</td>
+					</tr>
+					<tr>
+						<th>현재 대표자명</th>
+						<td>${data.store_ceo}</td>
+						<th>수정할 대표자명</th>
+						<td>
+							<input type="text" name="su_ceo" id="" value="">
+						</td>
+					</tr>
+					<tr>
+						<th>현재 주소</th>
+						<td colspan="3">
+							${data.store_addr} 
+							<br />
+							${data.store_daddr}
+						</td>
+					</tr>
+					<tr>
+						<th>수정할 주소</th>
+						<td colspan="3">
+							<br />
+							<input type=text name="su_addr" id="su_addr" class="ws400" value="" placeholder="기본주소">
+							<input type="button" class="btn_black" onclick="getPostCode()" value="주소 찾기">
+							<br /><br />
+							<input type=text name="su_daddr" id="su_daddr" class="ws400" value="" placeholder="상세주소">
+						</td>
+					</tr>
+				</table>
 			</div>
-			
-			
 		</c:if>
 	</form>
 </div>
@@ -150,7 +114,5 @@ function getPostCode() {
 	});	
 }
 </script>
-   		</div>
-	</div>
-</body>
-</html>
+   
+<%@include file="../common/footer.jsp"%>

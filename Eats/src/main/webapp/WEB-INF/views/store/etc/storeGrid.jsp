@@ -69,7 +69,7 @@
 	            grid += "<div>";
 	            grid += "<input type='number' name='sts["+i+","+j+"][tname]' class='mt10 mb10 a_center' value='"+table_name+"' placeholder='테이블번호(숫자만입력가능)' readonly>";
 	            grid += "<br>";
-	            grid += "<select name='sts["+i+","+j+"][type]' class='ws100'>";
+	            grid += "<select name='sts["+i+","+j+"][type]' class='ws80'>";
 	            grid += table_type;
 	            grid += "</select>";
 	            grid += "<select name='sts["+i+","+j+"][cnt]' class='ws60 ml10'>";
@@ -275,7 +275,9 @@
 				
 				
 					
+				<!-- 
 				<hr class="view_line" ${view_yn}>
+				 -->
 			
 				<div class="gridBox">
 					<!-- 그리드상세테이블의 제일 첫번째 행 기본키값 -->
@@ -323,7 +325,7 @@
 												<br>
 									            
 												<!-- 테이블 타입 select 박스 생성 -->
-												<select id="table_type" name="sts[${tr},${td}][type]" class='ws100'>
+												<select id="table_type" name="sts[${tr},${td}][type]" class='ws80'>
 													<!-- 
 													<option value="">테이블타입</option>
 													 -->

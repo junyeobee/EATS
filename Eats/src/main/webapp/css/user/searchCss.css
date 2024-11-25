@@ -706,3 +706,7 @@ input[type=range]:focus::-ms-fill-upper {
 .search_input::placeholder {
 	font-size: 15px;
 }
+
+.store_not_work {
+	color: tomato;
+}

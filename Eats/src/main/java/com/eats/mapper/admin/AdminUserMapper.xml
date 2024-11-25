@@ -45,7 +45,11 @@
 		    (
 		        select rownum as rnum, a.* from 
 		        (
-		            select * from eats_user 
+		            select 
+		            	user_idx, user_id, user_pwd, user_name, user_email, 
+		            	TO_CHAR(user_birth, 'YYYY-MM-DD') AS user_birth, 
+		            	user_gender, join_method
+		            from eats_user 
 		            where 
 						user_idx != 1 
 						
@@ -69,7 +73,10 @@
 		 
 	   <select id="userDetail" resultType="com.eats.admin.model.AdminUserDTO">
 			select 
-			    us.*, up.user_nickname, up.user_intro, up.user_tel, up.user_point   
+            	us.user_idx, us.user_id, us.user_pwd, us.user_name, us.user_email, 
+            	TO_CHAR(user_birth, 'YYYY-MM-DD') AS user_birth, 
+            	us.user_gender, us.join_method, 
+            	up.user_nickname, up.user_intro, up.user_tel, up.user_point   
 			from 
 				eats_user us
 			left join 
