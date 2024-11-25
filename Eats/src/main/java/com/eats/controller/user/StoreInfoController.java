@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.email.service.EmailService;
@@ -26,6 +27,7 @@ import com.eats.store.model.HYMenuDTO;
 import com.eats.store.model.HYStoreInfoDTO;
 import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.JjimDTO;
+import com.eats.user.model.PayDTO;
 import com.eats.user.model.ReservationDTO;
 import com.eats.user.model.ReviewDTO;
 import com.eats.store.model.StoreTimeDTO;
@@ -208,21 +210,19 @@ public class StoreInfoController {
 					reserve_table);
 
 			Date reserve_date_d = Date.valueOf(reserve_date);
-			ReservationDTO reservationDTO = new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time,
-					reserve_count, minTableIdx, request, 0, null);
 
-			int result = reserveService.makeReserve(reservationDTO);
-
-			if (result > 0) {
-				// 예약 삽입 성공 로직 (매장에 메일 보내기)
-				mv = new ModelAndView("redirect:/");
-				// System.out.println("예약성공");
-
-				// reserve_pay에 insert하는 로직 추가
-
-			} else {
-				// 예약 삽입 실패 로직 -> 에러 메시지
-				mv = new ModelAndView("redirect:" + callback);
+			ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
+			PayDTO paydto = new PayDTO(10000,1);
+			
+			int result=reserveService.makeReserve(reservationDTO,paydto);
+			
+			if(result>0) {
+				//예약 삽입 성공 로직 (매장에 문자 보내기)
+				mv=new ModelAndView("redirect:/");
+				System.out.println("예약성공");
+			}else {
+				//예약 삽입 실패 로직 -> 에러 메시지
+				mv=new ModelAndView("redirect:"+callback);
 			}
 		} else {
 			mv = new ModelAndView();

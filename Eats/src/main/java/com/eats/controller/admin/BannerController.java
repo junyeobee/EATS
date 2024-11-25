@@ -171,18 +171,18 @@ public class BannerController {
 
 		            // 기존 이미지 삭제
 		            if (oldFileName != null && !oldFileName.isEmpty()) {
-		                File oldFile = new File(realpath + "img/menu/" + oldFileName);
+		                File oldFile = new File(realpath + "img/" + oldFileName);
 		                if (oldFile.exists()) {
 		                    oldFile.delete();
 		                }
 		            }
 		            
-		            String filePath = realpath + "img/menu/" + fileName;
+		            String filePath = realpath + "img/" + fileName;
 
-		            
+		            System.out.println(filePath);
 		            banner_img.transferTo(new File(filePath)); 
 
-		            BannerDTO.setBanner_img(realpath);
+		            BannerDTO.setBanner_img(fileName);
 		        
 		            
 		        } else {

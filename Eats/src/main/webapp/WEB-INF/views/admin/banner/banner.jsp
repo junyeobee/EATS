@@ -201,5 +201,5 @@ a {
 		</div>
 	</div>
 </body>
-
+<script src="./js/adminScript.js"></script>
 </html>

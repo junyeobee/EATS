@@ -41,7 +41,7 @@
 								<img src="/img/storeNewsImg/${data.s_news_img}">
 							</c:if>
 							<c:if test="${empty data.s_news_img}">
-								저장된 이미지가 없습니다.
+								<div style="width:640px; text-align:right;">저장된 이미지가 없습니다.</div>
 							</c:if>
 						</span>
 					</td>
