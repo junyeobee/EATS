@@ -71,9 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.add('selected');
                 //선택된 날짜 = this.dataset.date
 				
-                console.log('Selected date:', this.dataset.date);
+                //console.log('Selected date:', this.dataset.date);
 				var dateArea=document.getElementById('selected_date');
 				dateArea.textContent=formatDate(this.dataset.date);
+				
+				var param = 'date='+this.dataset.date;
+				sendRequest('/user/myplate/getTodayList', param, showList, 'POST');
+				
             });
         });
 
@@ -101,3 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     generateCalendar(currentMonth, currentYear);
 });
+
+function showList(){
+	if(XHR.readyState===4){
+		if(XHR.statues===200){
+			alert('dd');
+		}
+	}
+}

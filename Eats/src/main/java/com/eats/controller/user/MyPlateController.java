@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.lang.module.ModuleDescriptor.Requires;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eats.store.model.HYMenuCateDTO;
 import com.eats.store.model.HYMenuDTO;
+import com.eats.store.service.StoreInfoService;
 import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.ReservationDTO;
 import com.eats.user.model.ReviewDTO;
@@ -40,6 +43,9 @@ public class MyPlateController {
 	
 	@Autowired
 	private MyplateService myplateService;
+	
+	@Autowired
+	private StoreInfoService storeInfoService;
 		
 	@Value("${review.upload.path}")
 	private String uploadPath;
@@ -172,7 +178,7 @@ public class MyPlateController {
 			if(log_result>0) {
 				int pointResult=reviewService.givePoint(user_idx);
 				if(pointResult>0) {
-					mv.addObject("msg", "리뷰 등록 성공!\n1000p 지급완료!");
+					mv.addObject("msg", "리뷰 등록 성공!\n500p 지급완료!");
 					mv.addObject("goTo", "/");
 				}
 			}
@@ -251,11 +257,90 @@ public class MyPlateController {
 			case 4:state="노쇼";break;
 			default:break;
 		}
-		
+		if(reserve_state==3) {
+			//예약완료건의 경우 작성된 리뷰가 있는지 확인하여 저장
+			boolean revExist=myplateService.checkReviewExist(reserve_idx);
+			mv.addObject("revExist", revExist);
+			if(revExist) {
+				Map<String, Object> revInfoMap = myplateService.getRevInfo(reserve_idx);
+				String imgstr = (String)revInfoMap.get("REV_IMG");
+				if(imgstr!=null && imgstr!="") {
+					List<String> imgList = Arrays.stream(imgstr.split(","))
+							.map(String::trim)
+							.collect(Collectors.toList());
+					revInfoMap.put("imgList", imgList);
+				}
+				String tagstr=(String)revInfoMap.get("REV_TAG");
+				if(tagstr!=null && tagstr!="") {
+					List<String> tagList = Arrays.stream(tagstr.split(","))
+							.map(String::trim)
+							.collect(Collectors.toList());
+					
+					revInfoMap.put("tagList", tagList);
+				}
+				String menustr=(String)revInfoMap.get("REV_MENU");
+				if(menustr!=null && menustr!="") {
+					List<Integer> menuIdxList=Arrays.stream(menustr.split(","))
+							.map(String::trim)
+							.map(Integer::parseInt)
+							.collect(Collectors.toList());
+					
+					List<HYMenuDTO> revMenuList=storeInfoService.getRevMenuList(menuIdxList);
+					
+					revInfoMap.put("revMenuList", revMenuList);
+				}
+				mv.addObject("revInfoMap", revInfoMap);
+			}
+		}else if(reserve_state==0 || reserve_state==1) {
+			//방문예정인 경우 방문 며칠 전인지 저장
+			int dDay=myplateService.getDday(reserve_idx);
+			System.out.println(dDay);
+			mv.addObject("dDay", dDay);
+		}
 		
 		mv.addObject("reserveDTO", reservation);
 		mv.addObject("state", state);
 		mv.setViewName("user/myplate/reserveInfo");
 		return mv;
+	}
+	
+	@GetMapping("/user/cancelReserve")
+	public ModelAndView cancelReserve(int reserve_idx) {
+		ModelAndView mv=new ModelAndView();
+		
+		int cancelResult = myplateService.cancelReserve(reserve_idx);
+		String msg="";
+		String goTo="/user/reserveInfo?reserve_idx="+reserve_idx;
+		if(cancelResult>0) {
+			msg="예약이 취소되었습니다.";
+		}else {
+			msg="취소에 실패했습니다. 다시 시도해주세요.";
+		}
+		
+		mv.addObject("msg", msg);
+		mv.addObject("goTo", goTo);
+		mv.setViewName("/user/myplate/msg");
+		return mv;
+	}
+	
+	@PostMapping("/user/myplate/getTodayList")
+	@ResponseBody
+	public Map<String, List> myplateCalendar(String date, HttpSession session){
+		Integer user_idx = (Integer)session.getAttribute("user_idx");
+		Map param = new HashMap<>();
+		param.put("user_idx", user_idx);
+		param.put("date", date);
+		
+		Map<String, List> map = new HashMap<>();
+		
+		if(user_idx != null) {
+			List<ReservationDTO> reserveList = myplateService.reserveListCal(param);
+			List<AlarmDTO> alarmList = myplateService.alarmListCal(param);
+			
+			map.put("reserveList", reserveList);
+			map.put("alarmList", alarmList);
+		}
+		
+		return map;
 	}
 }
