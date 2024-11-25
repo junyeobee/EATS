@@ -16,7 +16,7 @@
     <div class="container">
         <!-- 프로필 섹션 -->
         <div class="profile">
-            <img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/myPageImg/default-icon.png'}" 
+            <img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/svg/profile_icon.svg'}" 
                  alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile.user_nickname}</div>
             <div class="profile-points">${userProfile.user_point} 포인트</div>

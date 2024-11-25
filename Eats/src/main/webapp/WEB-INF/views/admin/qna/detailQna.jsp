@@ -4,7 +4,7 @@
 <%@ include file="../common/header.jsp" %>
 
 <h2>1:1 사용자 문의 상세</h2>
-
+<link rel="stylesheet" href="/css/manager/qnaDetailCss.css">
 <p><strong>제목:</strong> ${userQna.uqna_title}</p>
 <p><strong>내용:</strong> ${userQna.uqna_content}</p>
 <p><strong>문의일:</strong> ${userQna.uqna_wdate}</p>
@@ -43,4 +43,3 @@
 </script>
 
 <%@ include file="../common/footer.jsp" %>
-

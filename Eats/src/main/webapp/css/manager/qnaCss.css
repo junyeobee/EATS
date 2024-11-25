@@ -1,0 +1,180 @@
+@charset "UTF-8";
+
+/* 공통 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9fb;
+    margin: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.layout {
+	display: flex;
+	flex-direction: row;
+	width: 1440px;
+	margin: 0 auto;
+}
+
+.main-content{
+	width:1000px;
+	margin: 50px auto;
+}
+
+h1, h2 {
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+/* 컨테이너 스타일 */
+.mainCon_1400 {
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+table th {
+    background-color: #f4f6f8;
+    color: #555;
+    font-weight: bold;
+    text-transform: none;
+}
+
+table td {
+    color: #333;
+}
+
+table tr:hover {
+    background-color: #f9fafc;
+    cursor: pointer;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+/* 상세보기 버튼 */
+table td input[type="button"] {
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+table td input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* 상세보기 버튼 */
+table td input[type="button"] {
+    background-color: #f8f4eb; /* 연한 노란색 버튼 배경 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 13px;
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 6px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd; /* 얇은 테두리 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 효과 */
+}
+
+table td input[type="button"]:hover {
+    background-color: #f5e9d8; /* hover 시 살짝 어두운 노란색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 살짝 강조된 그림자 */
+}
+
+/* 글쓰기 버튼 */
+.write-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f8f4eb; /* 연한 노란색 배경 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px; /* 둥근 모서리 */
+    text-align: center;
+    border: 1px solid #ddd; /* 얇은 테두리 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    float: right;
+    margin-top: 10px;
+}
+
+.write-btn:hover {
+    background-color: #f5e9d8; /* hover 시 색상 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 살짝 강조된 그림자 */
+}
+
+
+/* 페이징 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px; /* 버튼 간격 */
+    font-size: 14px;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    color: #333; /* 텍스트 기본 색상 */
+    border: 1px solid #ddd; /* 기본 테두리 */
+    background-color: #f8f4eb; /* 기본 배경색 */
+    border-radius: 50%; /* 둥근 버튼 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 효과 */
+}
+
+.pagination a:hover {
+    background-color: #f5e9d8; /* hover 시 배경색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 강조된 그림자 */
+}
+
+.pagination span {
+    background-color: #ffd966; /* 현재 페이지 배경색 (노란색 강조) */
+    color: #333; /* 현재 페이지 텍스트 색상 */
+    border-color: #ffd966; /* 현재 페이지 테두리 */
+    pointer-events: none; /* 클릭 불가 */
+}
+
+.pagination .disabled {
+    color: #ccc; /* 비활성화 텍스트 색상 */
+    background-color: #fdf8e4; /* 비활성화 배경색 */
+    border-color: #eee; /* 비활성화 테두리 */
+    cursor: not-allowed; /* 비활성화 상태 커서 */
+}
+

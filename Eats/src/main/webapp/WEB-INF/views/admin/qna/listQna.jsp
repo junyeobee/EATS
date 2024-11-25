@@ -4,7 +4,9 @@
 <%@ include file="../common/header.jsp" %>
 
 <h2>1:1 문의 리스트</h2>
-
+ <link rel="stylesheet" href="../css/manager/headerCss.css"> <!-- 헤더 CSS -->
+ <link rel="stylesheet" href="../css/manager/navigationCss.css"> <!-- 네비게이션 CSS -->
+ <link rel="stylesheet" href="/css/manager/qnaCss.css"> <!-- CSS -->
 <!-- 드롭다운 메뉴 -->
 <form method="get" action="/admin/qna">
     <select name="type" id="qnaType" onchange="this.form.submit()">

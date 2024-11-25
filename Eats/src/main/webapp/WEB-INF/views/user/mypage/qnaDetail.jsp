@@ -6,111 +6,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문의 상세 보기</title>
     <link rel="stylesheet" href="/css/user/myPageCss.css">
-    <link rel="stylesheet" href="./css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userHeader.css">
+    <style>
+        /* 컨테이너 스타일 */
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 100px auto;
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: #F3553C;
+            margin-bottom: 30px;
+        }
+
+        /* 문의 상세 정보 박스 */
+        .qna-detail {
+            background-color: #FFF8EB;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 개별 항목 스타일 */
+        .qna-item {
+            margin-bottom: 20px;
+        }
+
+        .qna-item label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .qna-item input, .qna-item textarea {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            background-color: #FFFFFF;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            resize: none;
+        }
+
+        .qna-item input:focus, .qna-item textarea:focus {
+            border-color: #F3553C;
+            outline: none;
+            background-color: #FFFAF0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 버튼 섹션 */
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-back {
+            background-color: #F3553C;
+            color: #FFFFFF;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back:hover {
+            background-color: #D84332;
+            transform: translateY(-3px);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .qna-item input, .qna-item textarea {
+                font-size: 0.9rem;
+            }
+
+            .btn-back {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>문의 상세 보기</h1>
+    <%@include file="/WEB-INF/views/userHeader.jsp" %>
 
-    <div class="qna-detail">
-        <div class="qna-item">
-            <label>제목:</label>
-            <!-- 제목을 클릭하면 목록으로 이동 -->
-            <a href="/user/mypage/myQna" style="color: blue; text-decoration: underline;">
-                ${qnaDetail.UQNA_TITLE}
-            </a>
+    <div class="container">
+        <h1>문의 상세 보기</h1>
+
+        <div class="qna-detail">
+            <div class="qna-item">
+                <label>제목:</label>
+                <input type="text" value="${qnaDetail.UQNA_TITLE}" readonly>
+            </div>
+            <div class="qna-item">
+                <label>문의 내용:</label>
+                <textarea rows="4" readonly>${qnaDetail.UQNA_CONTENT}</textarea>
+            </div>
+            <div class="qna-item">
+                <label>문의일:</label>
+                <input type="text" value="${qnaDetail.UQNA_WDATE}" readonly>
+            </div>
+            <div class="qna-item">
+                <label>처리 상태:</label>
+                <input type="text" value="${qnaDetail.UQNA_STAT == 0 ? '처리 대기' : '처리 완료'}" readonly>
+            </div>
+            <c:if test="${qnaDetail.UQNA_ANSWER != null}">
+                <div class="qna-item">
+                    <label>답변:</label>
+                    <textarea rows="4" readonly>${qnaDetail.UQNA_ANSWER}</textarea>
+                </div>
+            </c:if>
         </div>
-        <div class="qna-item">
-            <label>문의 내용:</label>
-            <p>${qnaDetail.UQNA_CONTENT}</p>
+
+        <div class="button-group">
+            <button onclick="window.history.back();" class="btn-back">돌아가기</button>
         </div>
-        <div class="qna-item">
-            <label>문의일:</label>
-            <!-- 문의일을 클릭하면 목록으로 이동 -->
-            <a href="/user/mypage/myQna" style="color: blue; text-decoration: underline;">
-                ${qnaDetail.UQNA_WDATE}
-            </a>
-        </div>
-        <div class="qna-item">
-            <label>처리 상태:</label>
-            <c:choose>
-                <c:when test="${qnaDetail.UQNA_STAT == 0}">
-                    처리 대기
-                </c:when>
-                <c:otherwise>
-                    처리 완료
-                </c:otherwise>
-            </c:choose>
-        </div>
-<!-- 처리 완료일 -->
-<c:if test="${qnaDetail.UQNA_ANSWER != null}">
-    <div class="qna-item">
-        <label>답변:</label>
-        <p>${qnaDetail.UQNA_ANSWER}</p>
     </div>
-</c:if>
-
-    </div>
-
-    <div class="button-group">
-        <button onclick="window.history.back();" class="btn-back">돌아가기</button>
-    </div>
-</div>
-
-<style>
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .qna-detail {
-        border: 1px solid #ccc;
-        padding: 15px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-
-    .qna-item {
-        margin-bottom: 15px;
-    }
-
-    .qna-item label {
-        font-weight: bold;
-        display: inline-block;
-        width: 100px;
-    }
-
-    .qna-item span, .qna-item p {
-        display: inline-block;
-        margin-left: 10px;
-    }
-
-    .button-group {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .btn-back {
-        background-color: #007BFF;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .btn-back:hover {
-        background-color: #0056b3;
-    }
-</style>
-
 </body>
 </html>

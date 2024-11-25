@@ -20,7 +20,7 @@
                 <div class="jjim-list">
                     <c:forEach var="jjim" items="${jjimList}">
                         <div class="jjim-item">
-                            <a href="${jjim.store_idx}"><h2>매장 이름: ${jjim.store_name}</h2></a>
+                            <h2>매장 이름: ${jjim.store_name}</h2>
                             <p>주소: ${jjim.store_addr}</p>
                             <p>전화번호: ${jjim.store_tel}</p>
                         </div>
