@@ -110,7 +110,7 @@ public class SearchServiceImple implements SearchService {
 			}
 		}
 
-		map.put("week", week);
+		//map.put("week", week);
 
 		List<HYStoreDTO> storeList = mp.getStoreInfo(map);
 
@@ -154,18 +154,24 @@ public class SearchServiceImple implements SearchService {
 			}
 		}
 		
-//		if(storeList.size()>0) {
-//			String[] wordList = word.split(" ");
-//			
-//			for(int i=0; i<wordList.length; i++) {
-//				for(HYStoreDTO dto:storeList) {
-//					if(!dto.getStore_name().contains(wordList[i])
-//							&& !dto.getStore_addr().contains(wordList[i])
-//							&& !dto.get)
-//				}
-//			}
-//		}
-
+		if(storeList.size()>0) {
+			for(HYStoreDTO dto:storeList) {
+				Map<String,Object> daymap = new HashMap<>();
+				daymap.put("store_idx", dto.getStore_idx());
+				daymap.put("week", week);
+				
+				if(mp.getStoreStimeDay(daymap)==0) {
+					dto.setStime_start(week+" 휴무");
+				}
+			}
+		}
+		
 		return storeList;
+	}
+	
+	@Override
+	public int getStoreStimeDay(Map<String, Object> map) {
+		int count = mp.getStoreStimeDay(map);
+		return count;
 	}
 }

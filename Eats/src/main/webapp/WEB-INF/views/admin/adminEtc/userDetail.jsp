@@ -21,7 +21,7 @@
 			</c:if>
 				
 			<h2>[${user_login_id }]회원정보</h2>
-			<div class="tableWrite_4 mb60">
+			<div class="tableWrite_4 mt20 mb30 box_shadow">
 				<table>
 					<tr>
 						<th>아이디</th>
@@ -55,7 +55,7 @@
 				</table>
 			</div>
 			
-			<div class="tableWrite_4 mb60">
+			<div class="tableWrite_4 mt20 mb30 box_shadow">
 				<table>
 					<tr>
 						<th>닉네임</th>

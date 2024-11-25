@@ -27,12 +27,12 @@
 				<tr>
 					<th>no.</th>
 					<th class="ws100">로그인방법</th>
-					<th class="ws100">아이디</th>
-					<th class="ws400">회원명</th>
-					<th class="ws100">이메일</th>
-					<th class="ws100">생년월일</th>
+					<th class="ws200">아이디</th>
+					<th class="ws200">회원명</th>
+					<th class="ws400">이메일</th>
+					<th class="ws150">생년월일</th>
 					<th class="ws100">성별</th>
-					<th class="ws200">상세보기</th>
+					<th class="ws100">상세보기</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,12 +49,12 @@
 							<td class="a_center">
 								${dto.user_idx }
 							</td>
-							<td class="a_left">
+							<td class="a_center">
 								<c:if test="${dto.join_method != 'NORMAL'}">
-									카카오계정
+									카카오
 								</c:if>
 								<c:if test="${dto.join_method == 'NORMAL'}">
-									잇츠계정
+									잇츠
 								</c:if>
 							</td>
 							<td class="a_left">
@@ -65,16 +65,17 @@
 									${dto.user_id }
 								</c:if>
 							</td>
-							<td class="a_left">
+							<td class="a_center">
 								${dto.user_name }
 							</td>
 							<td class="a_left">
 								${dto.user_email }
 							</td>
-							<td class="a_left">
+							<td class="a_center">
 								${dto.user_birth }
+								
 							</td>
-							<td class="a_left">
+							<td class="a_center">
 								<c:if test="${dto.user_gender == 1}">
 									남자
 								</c:if>
@@ -84,7 +85,7 @@
 							</td>
 							
 							<td class="a_center">
-								<input type="button" class="btn_gray" value="상세보기" onclick="location.href='/admin/userDetail?user_idx=${dto.user_idx }'">
+								<input type="button" class="btn_orange" value="상세보기" onclick="location.href='/admin/userDetail?user_idx=${dto.user_idx }'">
 							</td>
 						</tr>
 					</c:forEach>

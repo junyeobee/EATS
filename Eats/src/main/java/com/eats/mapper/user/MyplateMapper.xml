@@ -108,4 +108,56 @@
 		WHERE
 			RESERVE_IDX=#{reserve_idx}
 	</select>
+	<!-- 리뷰 내용 가져오기 -->
+	<select id="getRevInfo" resultType="map" parameterType="int">
+		SELECT
+			*
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX = #{reserve_idx}
+	</select>
+	<!-- 예약취소 -->
+	<update id="cancelReserve" parameterType="int">
+		UPDATE
+			RESERVATION
+		SET
+			RESERVE_STATE = 2
+		WHERE
+			RESERVE_IDX = #{reserve_idx}
+	</update>
+	<!-- 캘린더에 보여줄 예약리스트 -->
+	<select id="reserveListCal" parameterType="map" resultType="com.eats.user.model.ReservationDTO">
+		SELECT
+			R.*, SI.STORE_IMG, S.STORE_NAME
+		FROM
+			RESERVATION R
+		INNER JOIN
+			STORE S ON R.STORE_IDX = S.STORE_IDX
+		INNER JOIN
+			STORE_IMG SI ON S.STORE_IDX = SI.STORE_IDX
+		WHERE
+			R.USER_IDX=#{user_idx}
+		AND
+			R.RESERVE_DATE = TO_DATE(#{date}, 'YYYY-MM-DD')
+		AND
+			SI.IMG_ORDER = 1
+	</select>
+	<!-- 캘린더에 보여줄 알림리스트 -->
+	<select id="alarmListCal" parameterType="map" resultType="com.eats.user.model.AlarmDTO">
+		SELECT
+			A.*, SI.STORE_IMG, S.STORE_NAME
+		FROM
+			S_ALARM A
+		INNER JOIN
+			STORE S ON S.STORE_IDX = A.STORE_IDX
+		INNER JOIN
+			STORE_IMG SI ON S.STORE_IDX = SI.STORE_IDX
+		WHERE
+			A.S_ALARM_DATE = TO_DATE(#{date}, 'YYYY-MM-DD')
+		AND
+			A.USER_IDX = #{user_idx}
+		AND
+			SI.IMG_ORDER = 1
+	</select>
 </mapper>

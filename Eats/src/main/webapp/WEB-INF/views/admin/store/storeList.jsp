@@ -53,10 +53,10 @@
 								${dto.store_name }
 							</td>
 							<td class="a_left">
-								${dto.store_tel }
-							</td>
-							<td class="a_left">
 								${dto.store_id }
+							</td>
+							<td class="a_center">
+								${dto.store_tel }
 							</td>
 							<td class="a_left">
 								${dto.store_email }
@@ -71,7 +71,7 @@
 								</c:if>
 							</td>
 							<td class="a_center">
-								<input type="button" class="btn_gray" value="상세보기" onclick="location.href='/admin/storeDetail?st_idx=${dto.store_idx }'">
+								<input type="button" class="btn_orange" value="상세보기" onclick="location.href='/admin/storeDetail?st_idx=${dto.store_idx }'">
 							</td>
 						</tr>
 					</c:forEach>

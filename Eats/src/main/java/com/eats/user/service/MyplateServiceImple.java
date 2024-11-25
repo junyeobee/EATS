@@ -63,4 +63,28 @@ public class MyplateServiceImple implements MyplateService {
 		int user_idx=mapper.checkWriter(reserve_idx);
 		return user_idx;
 	}
+	
+	@Override
+	public Map<String, Object> getRevInfo(int reserve_idx) {
+		Map<String, Object> map = mapper.getRevInfo(reserve_idx);
+		return map;
+	}
+	
+	@Override
+	public int cancelReserve(int reserve_idx) {
+		int result = mapper.cancelReserve(reserve_idx);
+		return result;
+	}
+	
+	@Override
+	public List<ReservationDTO> reserveListCal(Map map) {
+		List<ReservationDTO> reservlist=mapper.reserveListCal(map);
+		return reservlist;
+	}
+	
+	@Override
+	public List<AlarmDTO> alarmListCal(Map map) {
+		List<AlarmDTO> alarmlist = mapper.alarmListCal(map);
+		return alarmlist;
+	}
 }

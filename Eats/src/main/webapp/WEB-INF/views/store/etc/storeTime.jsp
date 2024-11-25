@@ -3,7 +3,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<%@include file="../common/header.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="/css/store/storeContCss.css">
+
+<meta charset="UTF-8">
+<title>eats</title>
+
+</head>
+<body>
+	<%@ include file="../store_Header.jsp"%>
+	<%@ include file="../nav.jsp"%>
+	 <div class="container" style="margin-top:150px; margin-left:100px; ">
+		<div class="mainCont">
 
 <script>
 	function radio_check(num, r_value, up){
@@ -26,9 +41,12 @@
 	    	
 	    	if(r_value == 'Y'){
 
+		    	$(".rest_yn_box"+num).css("display", "none");
 		    	$(".work_yn_box"+num).css("display", "block");
+		    	$(".work_yn_box"+num).css("text-align", "center");
 	    	}else {
 
+		    	$(".rest_yn_box"+num).css("display", "block");
 		    	$(".work_yn_box"+num).css("display", "none");
 	    	}
 	    }
@@ -111,48 +129,41 @@
 </script>
 
 <div class="mainCon_1000">
-	
-		<h2>
-			영업시간 설정
-		</h2>
 
-		<c:set var="day_start" value="0" />
-		<c:set var="day_end" value="6" />
-		
-		<c:set var="shour" value="0" />
-		<c:set var="ehour" value="23" />
-		<c:set var="sminute" value="0" />
-		<c:set var="eminute" value="55" />
+	<form name="storeWorkForm" action="storeWorkSet" method="post">
+		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 		
 		
-		<c:set var="shour2" value="1" />
-		<c:set var="ehour2" value="24" />		
-		<c:set var="sminute2" value="0" />
-		<c:set var="eminute2" value="55" />
-		
-		<!-- 
-		<c:if test="${not empty t_list}">	
-			<h2>영업시간</h2>
-			<div class="tableWrite_2 mb60">
-				<table>
-					저장시킬때 일월화수목금토로 저장시키고 불러올때 기본키로 정렬시켜서 불러옴
-					<c:if test="${!empty t_list }">
-						<c:forEach var="dto" items="${t_list }">
-							<tr>
-								<th>${dto.stime_day }</th>
-								<td >
-									${dto.stime_start } : ${dto.stime_end}
-									( ${dto.stime_break} )
-								</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-					
-					
-				</table>
+		<h2>운영설정</h2>
+		<div class="btnBox_top">
+			<input type="submit" class="btn_black mt10 ml200" value="운영 설정">
+		</div>
+		<div class="workStateBox mb60">
+			<div class="detail_wsb">
+				<input type="radio" name="s_work" id="ws1" value="TRUE" ${work_type == 'TRUE' ? 'checked' : ''} ><label for="ws1" class="mr100">운영</label>
+				<input type="radio" name="s_work" id="ws2" value="REST" ${work_type == 'REST' ? 'checked' : ''}><label for="ws2" class="mr100">휴업</label>
+				<input type="radio" name="s_work" id="ws3" value="FALSE" ${work_type == 'FALSE' ? 'checked' : ''}><label for="ws3">폐업</label>
+				
 			</div>
-		</c:if>
-		 -->
+		</div>
+	</form>
+	
+	
+	<h2>영업시간 설정</h2>
+
+	<c:set var="day_start" value="0" />
+	<c:set var="day_end" value="6" />
+	
+	<c:set var="shour" value="0" />
+	<c:set var="ehour" value="23" />
+	<c:set var="sminute" value="0" />
+	<c:set var="eminute" value="55" />
+	
+	
+	<c:set var="shour2" value="1" />
+	<c:set var="ehour2" value="24" />		
+	<c:set var="sminute2" value="0" />
+	<c:set var="eminute2" value="55" />
 	 
 	 <!-- 수정모드 -->
 	<c:if test="${not empty t_list}">
@@ -236,25 +247,10 @@
 			</c:if>
 		</c:forEach>
 
-		<!-- 
-		<div class="tableWrite_2 mb60">
-			<table>
-				<c:forEach var="dto" items="${t_list }">
-					<tr>
-						<th>${dto.stime_day }</th>
-						<td >
-							${dto.stime_start } ${dto.stime_end}
-							( ${dto.stime_break} )
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
-		 -->
 	
 		<form name="storeTimeForm" action="storeTimeUpdate" method="post">
 			<div class="btnBox_top">
-				<input type="submit" class="btn_black" value="설정">
+				<input type="submit" class="btn_black" value="영업시간 설정">
 			</div>
 			<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 				
@@ -268,50 +264,16 @@
 			
 			<div class="tableWrite_3 mb60">
 				<table>
-					<!-- 
-					c:forEach begin="${day_start}" end="${day_end}" var="day_num" varStatus="day_add"
-					 -->
 					<c:set var="t_list_num" value="0" />
 					
 					<c:forEach var="dto" items="${t_list }">
 						<tr>
 							<th>
-							
 								<input type="hidden" name="stime_idx" value="${dto.stime_idx }">
 								
 					            <!-- 요일 이름 출력 -->
 					            <input type="hidden" name="stime_day" id="" value="${dto.stime_day }">
 								${dto.stime_day }
-								<!-- 
-					    		<c:if test="${day_add.index == 0}">
-					    			일
-					    			<input type="text" name="stime_day" id="" value="일">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 1}">
-					    			월
-					    			<input type="text" name="stime_day" id="" value="월">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 2}">
-					    			화
-					    			<input type="text" name="stime_day" id="" value="화">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 3}">
-					    			수
-					    			<input type="text" name="stime_day" id="" value="수">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 4}">
-					    			목
-					    			<input type="text" name="stime_day" id="" value="목">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 5}">
-					    			금
-					    			<input type="text" name="stime_day" id="" value="금">
-					    		</c:if>
-					    		<c:if test="${day_add.index == 6}">
-					    			토
-					    			<input type="text" name="stime_day" id="" value="토">
-					    		</c:if>
-					    		 -->
 							</th>
 							
 				    		<c:if test="${dto.stime_start == null && dto.stime_end == null}">
@@ -353,9 +315,15 @@
 				            
 							<td>
 				           		<c:set var="work_box_yn" value="display:none;" />
+				           		<c:set var="rest_box_yn" value="display:block; text-align:center;" />
 								<c:if test="${radio_check == 'checked'}">
 									<c:set var="work_box_yn" value="display:block;" />
+				           			<c:set var="rest_box_yn" value="display:none;" />
 								</c:if>
+								
+								<div class="rest_yn_box${t_list_num}" style="${rest_box_yn }">
+									해당요일은 휴무일입니다.
+								</div>
 								
 								<div class="work_yn_box${t_list_num}" style="${work_box_yn }">
 									<span>시작</span>
@@ -365,7 +333,6 @@
 									        	${String.format('%02d', hour_add.index)}
 									        </option>
 									    </c:forEach>
-									    
 									    
 									</select>
 									<span>:</span>
@@ -398,9 +365,6 @@
 									</select>
 									
 									<span class="ml20">브레이크타임</span>
-									<!-- 
-									<input type="text" name="rest_time" id="" class="ws200" value="${dto.stime_break }">
-									-->
 									
 									<select name="rest_shour" id="rest_shour_${t_list_num}" class="" onchange="timeCheck('rest_shour_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
@@ -436,9 +400,7 @@
 									        	${String.format('%02d', minute_add.index)}
 									        </option>
 									    </c:forEach>
-									    
 									</select>
-									
 								</div>
 							</td>
 						</tr>
@@ -448,8 +410,6 @@
 					</c:forEach>
 				</table>
 			</div>
-			
-			
 			
 		</form>
 	</c:if>
@@ -511,6 +471,16 @@
 								<input type="radio" name="work_yn_${day_add.index}" id="work_y_${day_add.index}" value="Y" onclick="radio_check(${day_add.index}, 'Y')" checked><label for="work_y_${day_add.index}">영업</label>
 							</td>
 							<td>
+				           		<c:set var="work_box_yn" value="display:none;" />
+				           		<c:set var="rest_box_yn" value="display:block;" />
+								<c:if test="${radio_check == 'checked'}">
+									<c:set var="work_box_yn" value="display:block;" />
+				           			<c:set var="rest_box_yn" value="display:none;" />
+								</c:if>
+								
+								<div class="rest_yn_box${t_list_num}" style="${rest_box_yn }">
+									해당요일은 휴무일입니다.
+								</div>
 								<div class="work_yn_box${day_add.index}">
 									<span>시작</span>
 									<select name="work_shour" id="" class="">
@@ -592,10 +562,6 @@
 									    
 									</select>
 									
-									
-									<!-- 
-									<input type="submit" class="btn_black" value="수정">
-									 -->
 								</div>
 							</td>
 						</tr>
@@ -605,110 +571,9 @@
 		</form>
 	</c:if>
 	
-	<!-- 
-	<form name="storeTimeForm" action="dddd" method="post">
-		
-		<div class="tableWrite_3 mb60">
-			<table>
-				<c:forEach begin="${day_start}" end="${day_end}" var="day_num" varStatus="day_add">
-				
-					<tr>
-						<th>
-				    		<c:if test="${day_add.index == 0}">
-				    			일
-				    			<input type="text" name="stime_day" id="" value="일">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 1}">
-				    			월
-				    			<input type="text" name="stime_day" id="" value="월">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 2}">
-				    			화
-				    			<input type="text" name="stime_day" id="" value="화">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 3}">
-				    			수
-				    			<input type="text" name="stime_day" id="" value="수">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 4}">
-				    			목
-				    			<input type="text" name="stime_day" id="" value="목">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 5}">
-				    			금
-				    			<input type="text" name="stime_day" id="" value="금">
-				    		</c:if>
-				    		<c:if test="${day_add.index == 6}">
-				    			토
-				    			<input type="text" name="stime_day" id="" value="토">
-				    		</c:if>
-						</th>
-						<td class="ws120">
-							<input type="radio" name="work_yn" id="work_n_${day_add.index}" value="N"><label for="work_n_${day_add.index}">휴무</label>
-							<input type="radio" name="work_yn" id="work_y_${day_add.index}" value="Y"><label for="work_y_${day_add.index}">영업</label>
-						</td>
-						<td>
-							<span>시작</span>
-							<select name="work_shour" id="" class="">
-								<option value="">시</option>
-								
-								<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
-				    				<option value="${hour_add.index}">${hour_add.index}</option>
-								</c:forEach>
-								
-							</select>
-							<span>:</span>
-							<select name="work_sminute" id="" class="">
-								<option value="">분</option>
-								
-								<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
-				    				<option value="${minute_add.index}">${minute_add.index}</option>
-								</c:forEach>
-							</select>
-							<span>~</span>
-							<span>종료</span>
-							<select name="work_ehour" id="" class="">
-								<option value="">시</option>
-								
-								<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
-				    				<option value="${hour_add.index}">${hour_add.index}</option>
-								</c:forEach>
-								
-							</select>
-							<span>:</span>
-							<select name="work_eminute" id="" class="">
-								<option value="">분</option>
-								
-								<c:forEach begin="${sminute}" end="${eminute}"  step="5" var="minute" varStatus="minute_add">
-				    				<option value="${minute_add.index}">${minute_add.index}</option>
-								</c:forEach>
-							</select>
-							
-							<span class="ml20">브레이크타임</span>
-							<input type="text" name="rest_time" id="" class="ws300" value="">
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
-	</form>
-	 -->
-	 
-	<hr class="view_line">
 	
-	<form name="storeWorkForm" action="storeWorkSet" method="post">
-		<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
-		<h2>운영설정</h2>
-		<div>
-			<!-- 
-			${work_type }
-			 -->
-			<input type="radio" name="s_work" id="ws1" value="TRUE" ${work_type == 'TRUE' ? 'checked' : ''} ><label for="ws1">운영</label>
-			<input type="radio" name="s_work" id="ws2" value="REST" ${work_type == 'REST' ? 'checked' : ''}><label for="ws2">휴업</label>
-			<input type="radio" name="s_work" id="ws3" value="FALSE" ${work_type == 'FALSE' ? 'checked' : ''}><label for="ws3">폐업</label>
-		</div>
-		<input type="submit" class="btn_black mt10 ml200" value="설정">
-	</form>
 </div>
-   
-<%@include file="../common/footer.jsp"%>
+		</div>
+	</div>
+</body>
+</html>
