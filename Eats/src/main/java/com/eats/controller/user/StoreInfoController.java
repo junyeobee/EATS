@@ -223,7 +223,6 @@ public class StoreInfoController {
 			}else {
 				//예약 삽입 실패 로직 -> 에러 메시지
 				mv=new ModelAndView("redirect:"+callback);
-
 			}
 		} else {
 			mv = new ModelAndView();
