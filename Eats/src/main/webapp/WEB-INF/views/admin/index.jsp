@@ -17,7 +17,7 @@
 	<div class="mc_left tableList mb60">
 		<h2 class="mb30 ml10">입점신청승인</h2>
 		
-		<div class="box_shadow">
+		<div class="box_shadow hs500">
 			<table>
 				<thead>
 					<tr>
@@ -60,7 +60,7 @@
 	
 	<div class="mc_left tableList mb60 ml20">
 		<h2 class="mb30 ml10">리뷰삭제신청</h2>
-		<div class="box_shadow">
+		<div class="box_shadow hs500">
 			<table>
 				<thead>
 					<tr>
