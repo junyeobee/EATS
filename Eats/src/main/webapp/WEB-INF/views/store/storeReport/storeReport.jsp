@@ -1317,10 +1317,6 @@
                         </div>
                     </div>
                 </section>
-                <a href="/storeReportCreate" class="download-btn">
-                    <span>다운로드</span>
-                    <span>(pdf)</span>
-                </a>
             </div>
         </div>
     </div>

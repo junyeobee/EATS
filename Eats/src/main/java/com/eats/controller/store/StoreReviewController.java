@@ -66,11 +66,14 @@ public class StoreReviewController {
 		int parseIdx = Integer.parseInt(rev_idx);
 		int result = service.getRevRequest(parseIdx);
 		//이거 요청상태로 xhr객체 200일때, 204일때 얼럿창으로 처리하면됨
-		if(result == 0){
+		System.out.println(result);
+		if(result > 0){
 			return ResponseEntity.status(204).body(0);
 		}else{
-			int result2 = service.insertRevReq(parseIdx);
-			if(result2 == 0) {
+			System.out.println(parseIdx);
+			int insertResult = service.insertRevReq(parseIdx);
+			System.out.println(insertResult);
+			if(insertResult == 0) {
 				return ResponseEntity.status(204).body(1);
 			}else {
 				return ResponseEntity.status(200).body(204);

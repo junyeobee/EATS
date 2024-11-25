@@ -308,12 +308,14 @@ public class StoreLoginController {
 	
 	//로그아웃 
 	
-	@GetMapping("/storeLogout")
-	public String storeLogout(HttpSession session) {
-		
-		session.invalidate();
-		
-		return "index";
+	@GetMapping("/logout")
+	public String storeLogout(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Integer storeIdx = (Integer)session.getAttribute("storeIdx");
+		if(storeIdx!=null) {
+			session.removeAttribute("storeIdx");
+		}
+		return "store/login/storeLogin";
 	}
 	
 
