@@ -8,7 +8,31 @@
 <title>EATS - MY PLATE</title>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 <link rel="stylesheet" href="/css/user/userFooter.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+	rel="stylesheet">
 <style>
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	font-family: "Noto Sans KR", sans-serif;
+}
 body{
 	position: relative;
 }
@@ -123,6 +147,7 @@ body{
 	display: flex;
 	font-size: 0;
 	gap:10px;
+	margin-left: 2%;
 }
 .tab-wrap .tab-list li{
 	display: inline-block;
@@ -170,11 +195,13 @@ body{
 .reserve-list .list-item{
 	display: flex;
     flex-direction: column;
-    border: 1px solid black;
-	border-radius: 10px;
-	padding-left: 15px;
-	margin: 15px auto;
-	cursor: pointer;
+    border: 2px solid #f3553c;
+    border-radius: 10px;
+    padding-left: 15px;
+    /* margin: 15px auto; */
+    cursor: pointer;
+    width: 90%;
+    margin-top: 15px;
 }
 .reserve-list .list-item .info-top{
 	display: flex;
@@ -329,6 +356,18 @@ td.selected:hover {
 td:empty {
     /* background: #f9f9f9; */
 }
+
+hr{
+	width: 81%;
+    margin: 50px auto;
+    border: 1px solid #f3553c;
+    border-radius: 10px;
+}
+
+h2{
+	margin-left: 12%;
+    font-size: 20px;
+}
 </style>
 </head>
 <body>
@@ -367,6 +406,7 @@ td:empty {
 	</div>
 </section>
 <hr>
+<h2>나의 예약</h2>
 <section class="myplate-wrapper" id="my-reserve">
 	<div class="reserve-wrapper">
 		<div class="tab-wrap">
@@ -514,8 +554,41 @@ td:empty {
 	</div>
 </section>
 <hr>
-<section class="" id="my-alarm">
-
+<h2>나의 알림신청</h2>
+<section class="myplate-wrapper" id="my-alarm">
+	<div class="alarm-wrap">
+		<c:if test="${empty alarmList }">
+		<p>신청 내역이 없습니다.</p>
+		</c:if>
+		<ul class="reserve-list">
+			<c:forEach var="a" items="${alarmList }">
+				<li class="list-item">
+					<div class="info-bottom" data-idx="${a.s_alarm_idx }">
+						<div class="store-img-wrap">
+							<img src="../img/storeUploadImg/${a.store_img }">
+						</div>
+						<div class="text-area">
+							<ul>
+								<li class="store-name">${a.store_name }</li>
+								<li class="reserve-info">
+									<img src="../img/user/storeInfo/cal_icon.png">
+									<span>${a.s_alarm_date }</span>
+								</li>
+								<li class="reserve-info">
+									<img src="../img/user/storeInfo/watch_icon.png">
+									<span>${a.s_alarm_time }</span>
+								</li>
+								<li class="reserve-info">
+									<img src="../svg/group_icon.svg">
+									<span>${a.s_alarm_count }명</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</c:forEach>
+		</ul>
+	</div>
 </section>
 <%@include file="/WEB-INF/views/userFooter.jsp" %>
 </body>
@@ -595,6 +668,7 @@ var reserveItems=document.querySelectorAll('.info-bottom');
 		});
 	});
 </script>
+<script type="text/javascript" src="../js/httpRequest.js"></script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="/js/myplate/myplateCal.js"></script>
 </html>

@@ -27,7 +27,7 @@ function showResult(){
 		if(XHR.status==200){
 			var data=XHR.responseText;
 			var jsondata=JSON.parse(data);
-			
+			alert(jsondata.user_name);
 		}
 	}
 }
