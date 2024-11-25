@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.admin.model.AdminStoreDTO;
 import com.eats.admin.model.AdminStoreInfoUpdateDTO;
 import com.eats.admin.model.AdminUserDTO;
 import com.eats.admin.model.RevDelDTO;
@@ -27,6 +28,9 @@ import com.eats.store.model.StoreGridAllDTO;
 import com.eats.store.model.StoreImgDTO;
 import com.eats.store.model.StoreJoinDTO;
 import com.eats.store.model.StoreTimeDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminUserController {
@@ -49,11 +53,59 @@ public class AdminUserController {
     */
 
 	@GetMapping("/admin/userList")
-    public ModelAndView userList() {
+    public ModelAndView userList(
+    		HttpServletRequest req, 
+    		@RequestParam(value="cp", defaultValue="1") int cp, 
+    		@RequestParam(value="search_key", defaultValue="") String search_key, 
+    		@RequestParam(value="search_value", defaultValue="") String search_value
+    		) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
 
-		List<AdminUserDTO> lists = service.userList();
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
+        
+        //List<AdminUserDTO> lists = service.userList();
+        //int list_size = lists.size();
+        /*
+		Map<String, Object> params = new HashMap<>();
+		params.put("search_key", search_key);  // 컬럼명
+		params.put("search_value", "%"+search_value+"%");  // LIKE 조건 값
+		*/
+		
+        //int list_size = service.userListCnt(params);
+        int list_size = service.userListCnt();
+        System.out.println("list_size"+list_size);
+        System.out.println("cp"+cp);
+        
+		int listSize=5;	//몇개 행을 보여줄 것인지
+		int pageSize=5; //페이징 클릭부분 몇개 보여줄 것인지
+		
+		String pageStr = com.eats.page.PageModule
+				.makePage("/admin/userList", list_size, listSize, pageSize, cp, search_key, search_value);
+		
+		//List<AdminUserDTO> pagelists = service.userListPage(cp, listSize, params);
+		List<AdminUserDTO> pagelists = service.userListPage(cp, listSize);
+		
+		//List<AdminUserDTO> lists = service.userList();
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("lists", lists);
+		mav.addObject("lists", pagelists);
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/adminEtc/userList");
 		return mav;
@@ -78,12 +130,32 @@ public class AdminUserController {
     }
 	
 	@GetMapping("/admin/reviewDelOkList")
-    public ModelAndView reviewDelOkList() {
+    public ModelAndView reviewDelOkList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer adminidx = (Integer) session.getAttribute("admin_idx");
+        int admin_idx = (adminidx != null) ? adminidx : 0;
+        System.out.println("adminidx 값: " + admin_idx);
+
+        if(admin_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/adminLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("admin/common/basicMsg");
+            return mav;
+        	//return new ModelAndView("redirect:/adminLogin");
+        }
 		
 		List<ReviewDeleteDTO> review_lists = re_service.adminRevDelList();
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", review_lists);
+		mav.addObject("admin_idx", admin_idx);
 		
 		mav.setViewName("admin/adminEtc/reviewDelOkList");
 		return mav;
@@ -109,7 +181,7 @@ public class AdminUserController {
 		result += re_service.revDel_stateChange(dto);
 
 
-        String msg = result > 0 ? "승인되었습니다." : "반려되었습니다.";
+        String msg = result > 0 ? "처리되었습니다." : "처리 되지 않았습니다. 다시 실행하세요.";
         String goPage = "reviewDelOkList";
     
         ModelAndView mav = new ModelAndView();

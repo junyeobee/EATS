@@ -36,6 +36,7 @@
 
 
 	<delete id="deleteBanner" parameterType="java.util.List">
+	
 		delete from
 		BANNER
 		where
@@ -43,14 +44,15 @@
 		<foreach item="banner_idx" collection="list" open="(" separator="," close=")">
 			#{banner_idx}
 		</foreach>
+		
 	</delete>
 
 
 	<update id="bannerUpdate" parameterType="com.eats.admin.model.BannerDTO">
 
-		update banner
+		update 
+		BANNER
 		set
-		BANNER_IDX = #{banner_idx},
 		BANNER_IMG = #{banner_img},
 		BANNER_ORDER = #{banner_order},
 		BANNER_NAME = #{banner_name},
@@ -58,9 +60,22 @@
 		BANNER_STAT = #{banner_stat},
 		BANNER_SDATE =#{banner_sdate},
 		BANNER_EDATE = #{banner_edate}
+		where 
+		BANNER_IDX = #{banner_idx}
 		
 	</update>
 
+
+	<select id="bannerInfo"  parameterType="Integer" resultType="com.eats.admin.model.BannerDTO">
+	  select * from 
+	  banner
+	  where
+	  banner_idx=#{bannerIdx}
+	
+	</select>
+	
+		
+	
 
 
 </mapper>

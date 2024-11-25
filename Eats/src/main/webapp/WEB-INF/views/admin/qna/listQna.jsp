@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="../common/header.jsp" %>
 
 <h2>1:1 문의 리스트</h2>
@@ -38,9 +39,10 @@
                     <a href="/admin/qna/${type}/${qna.uqna_idx}">${qna.uqna_title}</a>
                 </td>
 
-                <!-- 문의일 -->
-                <td>${qna.uqna_wdate}</td>
-
+<!-- 문의일 -->
+                <td>
+                <fmt:formatDate value="${qna.uqna_wdate}" pattern="yyyy-MM-dd" />
+            </td>
                 <!-- 처리상태 -->
                 <td>
                     <c:choose>

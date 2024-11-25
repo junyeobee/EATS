@@ -27,12 +27,17 @@ table {
 	margin: 20px 0;
 }
 
+form{
+width:80%;
+
+}
+
 .body_box {
 	width: 1440px;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: row;
-	padding-bottom: 100px;
+
 }
 
 .my_contents {
@@ -159,6 +164,7 @@ a {
 					</thead>
 
 					<tbody>
+					
 						<c:if test="${empty lists }">
 							<tr>
 								<td>등록된 배너가 없습니다.</td>
@@ -168,11 +174,9 @@ a {
 
 						<c:forEach var="dto" items="${lists }">
 							<tr>
-								<td><input type="checkbox" name="banner_idx"
-									value="${dto.banner_idx }"></td>
-								<td>${dto.banner_idx }</td>
-								<td><img src="../img/${dto.banner_img }"
-									style='width: 60px; height: 60px;'></td>
+								<td><input type="checkbox" name="banner_idx" value="${dto.banner_idx}"></td>
+								<td>${dto.banner_idx}</td>
+								<td><img src="../img/${dto.banner_img}" style='width: 60px; height: 60px;'></td>
 								<td>${dto.banner_name }</td>
 								<td>${dto.banner_url }</td>
 
@@ -183,8 +187,10 @@ a {
 									<td>사용안함</td>
 								</c:if>
 
-								<td><input type="button" value="수정"
-									onclick="location.href='/bannerUpdate'"></td>
+								<td>
+								<%-- <input type="hidden" value="${dto.banner_idx}" name="banner_idx"> --%>
+								<input type="button" value="수정" onclick="location.href='/bannerUpdate/${dto.banner_idx}'"></td>
+								
 							</tr>
 						</c:forEach>
 

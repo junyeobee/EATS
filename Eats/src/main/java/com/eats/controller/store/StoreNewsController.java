@@ -28,6 +28,7 @@ import com.eats.store.model.StoreNewsDTO;
 import com.eats.store.service.StoreNewsService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class StoreNewsController {
@@ -79,13 +80,25 @@ public class StoreNewsController {
 	}
 	
 	@GetMapping("/store/storeNewsList")
-    public ModelAndView storeNewsList(
-    		@SessionAttribute(value = "store_idx", required = false) Integer store_idx
-    		) {
-		
-        // store_idx가 null이면 기본값을 1로 설정
-        if (store_idx == null) {
-            store_idx = 1;  // 기본값 설정
+    public ModelAndView storeNewsList(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.addObject("store_idx", store_idx);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
         }
 		
 		List<StoreNewsDTO> lists = service.storeNewsList(store_idx);

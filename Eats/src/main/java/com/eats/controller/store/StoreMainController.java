@@ -20,8 +20,7 @@ public class StoreMainController {
     @GetMapping("/storeMain")
     public ModelAndView storeMain(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        String storeidx = (String)session.getAttribute("store_idx");
-        int store_idx = storeidx != null ? Integer.parseInt(storeidx) : 1;
+        Integer store_idx = (Integer)session.getAttribute("storeIdx");
 
         // 모든 데이터 조회
         DashBoardDTO dash = new DashBoardDTO();
@@ -36,7 +35,7 @@ public class StoreMainController {
         dash.setReserveWeek(service.reserveWeek(store_idx));
         dash.setSellCompare(service.sellCompare(store_idx));
         dash.setSellTop3Menu(service.sellTop3Menu(store_idx));
-
+        System.out.println(dash.getDailyReserve());
         ModelAndView mv = new ModelAndView();
         mv.addObject("dash", dash);
         mv.setViewName("store/storeMain");

@@ -1,13 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<%@include file="../common/header2.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="/css/store/storeContCss.css">
+<meta charset="UTF-8">
+<title>eats</title>
 
 <script>
 	var gridData = [];  // gridData는 글로벌 변수로 설정하여 전체에서 접근할 수 있게 함.
 	
 	function grid_view() {
+		
+
+	    var tr = $('#id_tr').val();
+	    var td = $('#id_td').val();
+	    
+	    if(!tr){
+	    	alert("행을 입력해주세요.");
+	    	return;
+	    }
+	    
+	    if(!td){
+	    	alert("열을 입력해주세요.");
+	    	return;
+	    }
+	    
+	    
+	    
 	    // 테이블 타입 select box 시작
 	    var v_idx = $('#v_idx').val();
 	    var v_name = $('#v_name').val();
@@ -28,8 +50,8 @@
 	        table_seat += "<option value='" + i + "'>" + i + "</option>";
 	    }
 	
-	    var tr = $('#id_tr').val();
-	    var td = $('#id_td').val();
+	    //var tr = $('#id_tr').val();
+	    //var td = $('#id_td').val();
 	    
 	    var grid = "";
 	    grid += "<table class='gridTable'>";
@@ -43,16 +65,19 @@
 	            grid += "<td onclick='grid_part("+i+", "+j+")'>";
 	            
 	            table_name = table_name + 1;
-	            
+
+	            grid += "<div>";
 	            grid += "<input type='number' name='sts["+i+","+j+"][tname]' class='mt10 mb10 a_center' value='"+table_name+"' placeholder='테이블번호(숫자만입력가능)' readonly>";
 	            grid += "<br>";
 	            grid += "<select name='sts["+i+","+j+"][type]' class='ws100'>";
 	            grid += table_type;
 	            grid += "</select>";
-	            grid += "<select name='sts["+i+","+j+"][cnt]' class='ws60'>";
+	            grid += "<select name='sts["+i+","+j+"][cnt]' class='ws60 ml10'>";
 	            grid += table_seat;
 	            grid += "</select>";
 	            grid += "<input type='hidden' name='sts["+i+","+j+"][location]' value='"+i+","+j+"' />";
+	            grid += "</div>";
+	            
 	            grid += "</td>";
 	        }
 	
@@ -62,8 +87,8 @@
 	    grid += "</table>";
 	    $('.gridBox').html(grid);
 	    
-	    $(".view_line").css("display", "block");
-	    $(".view_btn").css("display", "block");
+	    $(".view_line").css("display", "inline-block");
+	    $(".view_btn").css("display", "inline-block");
 	}
 	
 	function grid_part(tr, td) {
@@ -73,7 +98,10 @@
 	function grid_setting(date_check) {
 		
 		if(date_check > 0){
-			confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
+			//confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
+			
+			//예약된 테이블이 있을 수 있어 삭제후 삽입 안되게 막음
+			alert("영업중인 매장의 그리드는 수정할 수 없습니다.");
 			
 		}else {
 			grid_setting_action();
@@ -180,43 +208,14 @@
 	}
 
 </script>
-		
-		
-		
 </head>
 <body>
-	<div class="header">
-	</div>
-	<div class="contents">
-		<div class="leftMenu">
-			<span class="big_title">
-				<a href="#">매장관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeImage">이미지관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeCateOne">태그관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeInfoUpdateReq">정보수정신청</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeTime">영업시간수정</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeCateTwo">특징관리</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeGrid">매장그리드</a>
-			</span>
-			<span class="small_title">
-				<a href="/store/storeNewsList">소식관리</a>
-			</span>
-		</div>
-		<div class="mainCont">	
+	<%@ include file="../store_Header.jsp"%>
+	<%@ include file="../nav.jsp"%>
+	 <div class="container" style="margin-top:150px; margin-left:300px; ">
+		<div class="mainCont">
 			<div class="mainCon_1400">
-				<input type="hidden" name="store_idx" id="store_idx" value="1">
+				<input type="hidden" name="store_idx" id="store_idx" value="${store_idx}">
 				<input type="hidden" name="sg_idx" id="sg_idx" value="${baseData.sg_idx}">
 				
 				<c:set var="v_idx" value="" /> <!-- v_idx 초기화 -->
@@ -240,7 +239,6 @@
 				<input type="hidden" name="" id="v_idx" value="${v_idx }" class="">
 				<input type="hidden" name="" id="v_name" value="${v_name }" class="">
 				
-				
 				<c:forEach var="viewDetail" items="${gridDetail}">
 					<c:set var="sts_location" value="${viewDetail.sts_location}" />
 					<c:set var="sts_idx" value="${viewDetail.sts_idx}" />
@@ -252,7 +250,7 @@
 				</c:forEach>
 				
 				<h2>매장 그리드 설정</h2>
-				<div>
+				<div class="grid_first_step">
 					<span>행</span>				
 					<c:if test="${baseData.sg_row == 0}">
 						<input type="text" name="" id="id_tr" class="ws50 a_center" value="">
@@ -270,9 +268,13 @@
 					<c:if test="${baseData.sg_col != 0}">
 						<input type="text" name="" id="id_td" class="ws50 a_center" value="${baseData.sg_col}">
 					</c:if>
+					
 					<input type="button" class="btn_black ml20" value="그리드 확인" onclick="grid_view()">
+					<input type="submit" class="btn_skyblue ml20 view_btn" ${view_yn} value="그리드 설정" onclick="grid_setting(${for_num})">
 				</div>
 				
+				
+					
 				<hr class="view_line" ${view_yn}>
 			
 				<div class="gridBox">
@@ -364,7 +366,9 @@
 					</table>
 				</div>
 					
-				<input type="submit" class="btn_black ml20 view_btn" ${view_yn} value="그리드 설정" onclick="grid_setting(${for_num})" >
 			</div>
    
-<%@include file="../common/footer.jsp"%>
+		</div>
+	</div>
+</body>
+</html>

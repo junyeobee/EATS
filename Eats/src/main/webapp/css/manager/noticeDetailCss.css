@@ -77,6 +77,18 @@ label {
     color: #333;
 }
 
+.content-text {
+    border: 1px solid #eeeeee;
+    border-radius: 8px; /* 둥근 모서리 */
+    background-color: #fff8e6; /* 밝은 베이지 */
+    padding: 20px; /* 내부 여백 확대 */
+    font-size: 1.3rem; /* 텍스트 크기 확대 */
+    line-height: 2; /* 가독성 개선 */
+    color: #333;
+    height: 400px; /* 본문 칸 높이 추가 */
+    overflow-y: auto; /* 내용이 많을 경우 스크롤 추가 */
+}
+
 /* 푸터 버튼 */
 footer {
     margin-top: 40px;

@@ -209,7 +209,7 @@
     <header class="header">
         <div class="container header-content">
             <div class="logo">잇츠로고</div>
-            <a href="#" class="create-button">리뷰 보고서 구독하기</a>
+            <a onclick="window.open('/store/storeReport/subscribe','subscribe','width=484px','height=500px')" class="create-button">리뷰 보고서 구독하기</a>
         </div>
     </header>
 
@@ -231,7 +231,7 @@
                     <p>많은 리뷰 보기 힘드셨죠?<br>리뷰에서 유의미한 정보를 빠르게 파악하여 분석해줍니다</p>
                 </div>
                 <div class="feature-image">
-                    <img src="../img/store/storeLanding/dd4.jpg" alt="AI 분석">
+                    <img src="../img/store/storeLanding/img1.jpg" alt="AI 분석">
                 </div>
             </div>
 
@@ -241,7 +241,7 @@
                     <p>실제 매장을 방문한 고객들의 리뷰를 통해<br>더욱 정확한 우리 매장의 방향성을 잡아줘요!</p>
                 </div>
                 <div class="feature-image">
-                    <img src="../img/store/storeLanding/dd2.jpg" alt="통계 기반">
+                    <img src="../img/store/storeLanding/img2.jpg" alt="통계 기반">
                 </div>
             </div>
 
@@ -251,7 +251,7 @@
                     <p>손님들이 남긴 악플을 요약받아서<br>고소장을 작성하기 더욱 편리해졌어요!</p>
                 </div>
                 <div class="feature-image">
-                    <img src="../img/store/storeLanding/dd.jpg" alt="사용자 후기">
+                    <img src="../img/store/storeLanding/img3.jpg" alt="사용자 후기">
                 </div>
             </div>
         </div>
@@ -291,8 +291,8 @@
 
     <section class="cta">
         <div class="container">
-            <h2>무료 체험 신청하기</h2>
-            <a href="#" class="create-button">무료로 시작하기</a>
+            <h2>정기 구독 신청하기</h2>
+            <a onclick="window.open('/store/storeReport/subscribe','subscribe','width=484px','height=500px')" class="create-button">정기 구독하기</a>
         </div>
     </section>
 

@@ -25,6 +25,7 @@ import com.eats.store.service.storeMenuService;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class StoreMenuController {
@@ -72,9 +73,10 @@ public class StoreMenuController {
 		return "store/menu/menuInsert";
 	}
 
+	
 	@GetMapping("/menuUpdatePage/{menu_idx}")
 	public ModelAndView menuUpdatePage(@PathVariable("menu_idx") Integer menuIdx) {
-
+		
 		List<MenuDTO> lists = service.storeCateList();
 		MenuDTO info = service.updateMenuInfo(menuIdx);
 		ModelAndView mav = new ModelAndView();
@@ -85,6 +87,7 @@ public class StoreMenuController {
 		mav.setViewName("store/menu/menuUpdate");
 
 		return mav;
+		
 	}
 
 	
@@ -250,9 +253,9 @@ public class StoreMenuController {
 	
 	
 	@PostMapping("/deleteMenuCate")
-	public ModelAndView deleteMenuCate(@RequestParam(value = "m_cate_name", required = true) String cateName) {
+	public ModelAndView deleteMenuCate(@RequestParam(value = "m_cate_idx", required = true) int idx) {
 
-		int result = service.deleteMenuCate(cateName);
+		int result = service.deleteMenuCate(idx);
 
 		String msg = result > 0 ? "카테고리가 삭제되었습니다." : "삭제 실패";
 		ModelAndView mav = new ModelAndView();
@@ -267,11 +270,21 @@ public class StoreMenuController {
 	}
 
 	
+	
+	//메뉴 카테고리 등록
 	@PostMapping("/insertMenuCate")
 	public ModelAndView insertMenuCate(
-			@RequestParam(value = "m_cate_name", required = false, defaultValue = "") String cateName) {
-
-		int result = service.insertCate(cateName);
+			@RequestParam(value = "m_cate_name", required = false, defaultValue = "") String cateName,
+			@RequestParam(value = "m_cate_info", required = false, defaultValue = "") String mCateInfo,
+			
+			HttpSession session) {
+		
+		int storeIdx = (int)session.getAttribute("storeIdx");
+		System.out.println("스토어 번호!!!:"+storeIdx);
+		
+		int result = service.insertCate(storeIdx, cateName, mCateInfo);
+		
+		
 
 		String msg = result > 0 ? "카테고리가 등록되었습니다." : "카테고리 등록에 실패했습니다.";
 		
@@ -293,9 +306,10 @@ public class StoreMenuController {
 
 		ModelAndView mav = new ModelAndView();
 		int result = service.deleteMenu(menuList);
+		String msg="";
 
-		String msg = result > 0 ? "선택한 메뉴가 삭제되었습니다." : "메뉴 삭제가 실패했습니다.";
-
+			msg = result > 0 ? "선택한 메뉴가 삭제되었습니다." : "해당메뉴는 삭제할 수 없습니다.";
+		
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", "storeMenuList");
 		mav.setViewName("store/menu/menuMsg");

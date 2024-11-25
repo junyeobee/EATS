@@ -30,6 +30,7 @@ public class LoginController {
 	@Autowired
 	private EmailService emailService;
 	
+	//로그인 페이지로 이동
 	@GetMapping("/user/login")
 	public String goLogin(org.springframework.ui.Model model,
 			HttpServletRequest request, HttpSession session) {
@@ -42,6 +43,7 @@ public class LoginController {
 		return "/user/login/userLogin";
 	}
 	
+	//로그인 제출
 	@PostMapping("/user/login")
 	public ModelAndView submitLogin(
 			@RequestParam(value="userId", required = true)String userId,
@@ -51,14 +53,14 @@ public class LoginController {
 			HttpSession session, 
 			HttpServletResponse resp,
 			HttpServletRequest req) {
+		
 		//로그인 처리
 		boolean result=service.loginCheck(userId, userPwd);
-				
 
 		ModelAndView mv=null;
 		if(result) {
 			String callbackUri=(String)session.getAttribute("callbackUri");
-			System.out.println(callbackUri);
+			
 			mv=new ModelAndView("redirect:"+callbackUri);
 			session.removeAttribute("callbackUri");
 			Map<String, Object> map=service.getUserInfo(userId);
@@ -87,6 +89,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//로그아웃
 	@GetMapping("/user/logout")
 	public String goLogout(HttpSession session, HttpServletRequest request) {
 		//로그아웃 처리
@@ -94,8 +97,8 @@ public class LoginController {
 		session.removeAttribute("user_nickname");
 		
 		String uri=request.getHeader("referer");
-		
-		if(uri==null) {
+		System.out.println(uri);
+		if(uri==null || uri.contains("/user/myPlate") || uri.contains("/timeLineMain") || uri.contains("mypage")) {
 			uri="/";
 		}else {
 			uri=uri.substring(uri.indexOf("9090")+4);
@@ -103,12 +106,14 @@ public class LoginController {
 		return "redirect:"+uri;
 	}
 	
+	//아이디찾기 페이지로 이동
 	@GetMapping("/user/findId")
 	public String goFindId() {
 		
 		return "user/login/userFindId";
 	}
 	
+	//아이디를 찾기 위한 코드 전송
 	@PostMapping("/user/findId/sendCode")
 	public ModelAndView sendCode(
 			@RequestParam(value="userName", required=true)String userName,
@@ -133,10 +138,12 @@ public class LoginController {
 		return mv;
 	}
 	
+	//전송된 코드와 입력한 코드가 일치하는지 확인
 	@PostMapping("/user/findId/checkCode")
 	public ModelAndView validateCode(
 			@RequestParam(value="userCode", required=true)String userCode,
 			HttpSession session) {
+		
 		String validCode=(String)session.getAttribute("validCode");
 		LocalDateTime expiration = (LocalDateTime) session.getAttribute("codeTime");
 		
@@ -165,6 +172,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//아이디 보여주기
 	@GetMapping("/user/showId")
 	public ModelAndView showUserId(HttpSession session) {
 		
@@ -177,12 +185,13 @@ public class LoginController {
 		return mv;
 	}
 	
+	//비밀번호 찾기로 이동
 	@GetMapping("/user/findPwd")
 	public String userFindPwd() {
-		
 		return "user/login/userFindPwd";
 	}
 	
+	//비밀번호를 찾기 위해 아이디가 존재하는지 확인
 	@PostMapping("/user/findPwd/idExist")
 	public ModelAndView idCheckForFindPwd(String userId, HttpSession session) {
 		
@@ -203,6 +212,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//비밀번호 찾기를 위한 코드 전송
 	@PostMapping("/user/findPwd/sendCode")
 	public ModelAndView sendCodeForFindPwd(String userId, String userEmail, HttpSession session) {
 		
@@ -225,6 +235,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//비밀번호 찾기를 위해 전송한 코드와 입력한 코드가 일치하는지 확인
 	@PostMapping("/user/findPwd/checkCode")
 	public ModelAndView validatePwdCode(
 			@RequestParam(value="userCode", required=true)String userCode,
@@ -257,6 +268,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//비밀번호 재설정 페이지
 	@GetMapping("/user/resetPwd")
 	public String resetPwdForm(String userId, HttpSession session) {
 		
@@ -265,6 +277,7 @@ public class LoginController {
 		return "user/login/resetPwd";
 	}
 	
+	//비밀번호 재설정 제출
 	@PostMapping("/user/resetPwd")
 	public ModelAndView resetPwd(String newPwd, HttpSession session) {
 		
@@ -277,12 +290,9 @@ public class LoginController {
 			session.removeAttribute("userId");
 			String msg=(result>0)?"비밀번호 변경 완료":"비밀번호 변경 실패";
 			
-			
 			mv.addObject("result", msg);
 			mv.setViewName("user/login/userPwdUpdate_ok");
 		}
-		
-		
 		return mv;
 	}
 }

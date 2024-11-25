@@ -19,6 +19,7 @@ public class HYStoreInfoDTO {
 	private int jjimCnt;	//찜 개수
 	private double avgRevScore;	//평점
 	private int revCount;
+	private List<String> foodType;
 	
 	public HYStoreInfoDTO() {
 		
@@ -26,7 +27,7 @@ public class HYStoreInfoDTO {
 
 	public HYStoreInfoDTO(HYStoreDTO storeDTO, List<HYStoreImgDTO> storeImgList, StoreTimeDTO todayTime, List<StoreTimeDTO> storeTimeList,
 			List<HYStoreNewsDTO> storeNewsList, List<CategoryDTO> convList, List<HYMenuCateDTO> menuCateList,
-			List<HYMenuDTO> menuList, int jjimCnt, double avgRevScore, int revCount) {
+			List<HYMenuDTO> menuList, int jjimCnt, double avgRevScore, int revCount, List<String> foodType) {
 		super();
 		this.storeDTO = storeDTO;
 		this.storeImgList = storeImgList;
@@ -39,6 +40,7 @@ public class HYStoreInfoDTO {
 		this.jjimCnt = jjimCnt;
 		this.avgRevScore = avgRevScore;
 		this.revCount = revCount;
+		this.foodType = foodType;
 	}
 
 	public HYStoreDTO getStoreDTO() {
@@ -127,5 +129,13 @@ public class HYStoreInfoDTO {
 
 	public void setRevCount(int revCount) {
 		this.revCount = revCount;
+	}
+
+	public List<String> getFoodType() {
+		return foodType;
+	}
+
+	public void setFoodType(List<String> foodType) {
+		this.foodType = foodType;
 	}
 }

@@ -14,17 +14,17 @@
 .cal-wrapper {
     width: 300px;
     margin: 20px auto;
-    font-family: 'SBAggroB';
+    font-family: "Noto Sans KR", sans-serif;
 }
 .ca-wrapper h2{
-	font-family: 'SBAggroB';
+	font-family: "Noto Sans KR", sans-serif;
 }
 .cal-wrapper .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    font-family: 'SBAggroB';
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 .cal-wrapper .calendar-header button {
@@ -44,14 +44,14 @@
 .cal-wrapper table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'SBAggroB';
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 .cal-wrapper th, td {
     padding: 8px 4px;
     text-align: center;
     border: 0;
-    font-family: 'SBAggroB';
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 .cal-wrapper th {

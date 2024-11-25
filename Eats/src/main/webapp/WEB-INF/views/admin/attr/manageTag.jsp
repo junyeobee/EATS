@@ -57,7 +57,19 @@ menu, ol, ul {
 		var my_contents = document.getElementById('my_contents');
 		var new_cate_tag = document.getElementById('new_category_box');
 
+		var nowCateTitle = document.getElementsByClassName('category_title_text');
+		var isExist='';
+		for(var i=0; i<nowCateTitle.length-1; i++) {
+			if(cate_title.value==nowCateTitle[i].innerText){
+				isExist='on';
+			}
+		}
 		if (cate_title.value != '' && cate_tag.value!='' && new_cate_tag==null) {
+			if(isExist=='on'){
+				cate_title.value='';
+				cate_tag.value='';
+				alert('이미 존재하는 카테고리입니다.');
+			} else {
 			var category_box = document.createElement('div');
 			category_box.className = 'new_category_box';
 			category_box.id = 'new_category_box';
@@ -69,7 +81,7 @@ menu, ol, ul {
 			cate_tag.value='';
 			
 			my_contents.insertBefore(category_box, t.parentElement);
-		}	
+		}}
 	}
 
 	function createCategoryBox(category_box, title,keyidx) {
@@ -180,15 +192,16 @@ menu, ol, ul {
 		tag_text.innerText = tag;
 		tag_text.setAttribute('onclick','updateNewTag(this)');
 		
-			var tag_icon = document.createElement('img');
-			tag_icon.className = 'tag_delete_icon';
-			tag_icon.src = '/svg/minus_icon.svg';
+		var tag_icon = document.createElement('img');
+		tag_icon.className = 'tag_delete_icon';
+		tag_icon.src = '/svg/minus_icon.svg';
 			
 			if(keyidx!=0){
 				var keyname = document.getElementById('tagbox'+keyidx);
-				if(keyname==true && keyname.previousElementSibling.firstElementChild.innerText=='좌석 유형') {
+
+				if(keyname!=null && keyname.previousElementSibling.firstElementChild.innerText=='좌석 유형') {
 					tag_box.appendChild(tag_text);
-					console.log(d);
+					console.log(keyname.previousElementSibling.firstElementChild);
 				} else {
 					tag_icon.setAttribute('onclick','modalForCheck("tagdelete","'+tag+'",'+keyidx+')');
 					tag_box.append(tag_text, tag_icon);
@@ -225,7 +238,17 @@ menu, ol, ul {
 
 	function submitTagText(e, t,keyidx) {
 		if (e.keyCode == 13 && t.value != '') {
-			if(keyidx==0){
+			var tagCont = document.getElementById('tagbox'+keyidx);
+			var getTags = tagCont.querySelectorAll('.tag_box');
+			var isExistTag='';
+			for(var i=0; i<getTags.length; i++) {
+				if(getTags[i].firstElementChild.innerText==t.value) {
+					isExistTag='on';
+				}
+			}
+			
+			if(isExistTag==null || isExistTag==''){
+				if(keyidx==0){
 				var newtag = t.value;
 				var tag_box = t.parentElement;
 				tag_box.className='tag_box';
@@ -238,15 +261,18 @@ menu, ol, ul {
 				tag_text.innerText=newtag;
 				tag_text.setAttribute('onclick','updateNewTag(this)');
 
-					var delete_icon = document.createElement('img');
-					delete_icon.setAttribute('src','/svg/minus_icon.svg');
-					delete_icon.className='tag_delete_icon';
-					delete_icon.setAttribute('onclick','deleteNewTag(this)');
-					tag_box.append(tag_text,delete_icon);
-				console.log('ad')
+				var delete_icon = document.createElement('img');
+				delete_icon.setAttribute('src','/svg/minus_icon.svg');
+				delete_icon.className='tag_delete_icon';
+				delete_icon.setAttribute('onclick','deleteNewTag(this)');
+				tag_box.append(tag_text,delete_icon);
 			} else if(keyidx!=0) {
 				var params = 'cate_key_idx='+t.id+'&cate_value_name='+t.value;
 				sendRequest('addTag', params, showAddTag, 'GET');
+			}
+			} else {
+				t.value='';
+				alert('이미 존재하는 태그입니다.');
 			}
 		}
 	}

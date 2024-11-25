@@ -3,7 +3,6 @@ package com.eats.controller.store;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +40,12 @@ public class SellController {
 	@ResponseBody
     public Map<String, Object> uploadSales(@RequestParam("file") MultipartFile file, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = (Integer)session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		Map<String, Object> response = new HashMap<>();
 		try {
 			int processedCount = service.sellInsert(file, storeIdx);
 			response.put("success", true);
-			response.put("message", processedCount + "건의 매출이 성공적으로 등록되었습니다.");
+			response.put("message", processedCount + "건의 매출이 등록되었습니다.");
 			response.put("processedCount", processedCount);
     
 		} catch (Exception e) {
@@ -60,7 +59,7 @@ public class SellController {
 	@GetMapping("/sellDetail")
 	public ModelAndView sellDetail(HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = (Integer)session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = (Integer)session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		ModelAndView mv = new ModelAndView();
 		SalesSearchDTO dto = new SalesSearchDTO();
 		dto.setStoreIdx(storeIdx);
@@ -72,7 +71,7 @@ public class SellController {
 		int totalSell = 0;
 		int totalCnt = 0;
 		
-		DecimalFormat df = new DecimalFormat("#,##0");
+		DecimalFormat df = new DecimalFormat("#,##0");	
 		for(SalesResponseDTO dt : result) {
 			totalSell += Integer.parseInt(dt.getSalesAmount());
 			totalCnt += Integer.parseInt(dt.getSalesCount());
@@ -88,7 +87,7 @@ public class SellController {
 	@ResponseBody
 	public List<SalesResponseDTO> getSalesList(SalesSearchDTO dto, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		int storeIdx = session.getAttribute("store_idx") == null ? 1 : (Integer)session.getAttribute("store_idx");
+		int storeIdx = session.getAttribute("storeIdx") == null ? 1 : (Integer)session.getAttribute("storeIdx");
 		dto.setStoreIdx(storeIdx);
 		System.out.println(dto.getStartDateTime());
 		System.out.println(dto.getEndDateTime());
@@ -96,4 +95,5 @@ public class SellController {
 		
 		return result;
 	}
+	
 }

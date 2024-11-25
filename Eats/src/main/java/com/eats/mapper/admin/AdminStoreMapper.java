@@ -1,6 +1,7 @@
 package com.eats.mapper.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +14,11 @@ import com.eats.store.model.StoreTimeDTO;
 public interface AdminStoreMapper {
 
 	public List<AdminStoreDTO> storeList();
+	//public List<AdminStoreDTO> storeListPage(Map map);
+	public int storeListCnt();
+	public List<AdminStoreDTO> storeListPage(int cp, int listSize);
+
+
 	public AdminStoreDTO adminStoreDetail(int st_idx);
 	public List<StoreTimeDTO> storeTimeList(int st_idx);
 	

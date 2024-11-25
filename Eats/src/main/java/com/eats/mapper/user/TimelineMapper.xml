@@ -2,137 +2,197 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.eats.mapper.user.TimelineMapper">
-  
-  <select id="randomuser" resultType="com.eats.user.model.TimelineDTO">
-  
- 	SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
-	FROM (
-    SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE 
-    FROM USER_PROFILE 
-    ORDER BY DBMS_RANDOM.VALUE
-	) 
-	WHERE ROWNUM &lt;= 4
-	
-  </select>
-  
-  
-  <select id="selectReviewList" resultType="com.eats.user.model.TimelineDTO">
-  
-SELECT 
-    r.RESERVE_IDX,
-    r.USER_IDX,
-    r.STORE_IDX,
-    r.RESERVE_DATE,
-    r.RESERVE_TIME,
-    r.RESERVE_COUNT,
-    r.RESERVE_STATE,
-    rev.REV_IDX,
-    rev.REV_SCORE,
-    rev.REV_CONTENT,
-    rev.REV_WRITEDATE,
-    rev.REV_STATE,
-    rev.REV_IMG,
-    rev.REV_MENU,
-    rev.REV_TAG,
-	up.USER_NICKNAME,
-	st.STORE_NAME,
-	st.STORE_ADDR
-FROM 
-    RESERVATION r
-JOIN 
-    REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
-JOIN 
-USER_PROFILE up ON r.USER_IDX = up.USER_IDX
-JOIN
-STORE st ON r.STORE_IDX = st.STORE_IDX
 
-WHERE 
-    r.RESERVE_STATE = 3
-    
-  </select>
-  
-  
-  
-  <select id="selectFollowerReview" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
-  	SELECT 
-    r.RESERVE_IDX,
-    r.USER_IDX,
-    r.STORE_IDX,
-    r.RESERVE_DATE,
-    r.RESERVE_TIME,
-    r.RESERVE_COUNT,
-    r.RESERVE_STATE,
-    rev.REV_IDX,
-    rev.REV_SCORE,
-    rev.REV_CONTENT,
-    rev.REV_WRITEDATE,
-    rev.REV_STATE,
-    rev.REV_IMG,
-    rev.REV_MENU,
-    rev.REV_TAG,
-	up.USER_NICKNAME,
-	st.STORE_NAME,
-	st.STORE_ADDR
-FROM 
-    RESERVATION r
-JOIN 
-    REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
-JOIN 
-USER_PROFILE up ON r.USER_IDX = up.USER_IDX
-JOIN
-STORE st ON r.STORE_IDX = st.STORE_IDX
-WHERE 
-    r.RESERVE_STATE = 3
-AND
-	r.USER_IDX=#{user_idx}
-  </select>
-  
-  
-  
-  <insert id="userFollow" parameterType="Map">
-  
-  	 insert into follow
-  	 values(
-  	 follow_idx_seq.nextval,
-  	 #{user_idx},
-  	 #{following_idx}
-  	 )  	
-  	  
-  </insert>
-  
-  
-  <delete id="unFollow" parameterType="Map">
-  
-  	delete from
-  	follow
-  	where
-  	user_idx=#{user_idx}
-  	and
-  	following_idx=#{following_idx}
-  
-  </delete>
-  
-  
-  
-  <select id="timeLineProfile" parameterType="int" resultType="com.eats.user.model.TimelineDTO">
-  
-  	SELECT 
+<mapper namespace="com.eats.mapper.user.TimelineMapper">
+
+<!-- 	<select id="randomuser"
+		resultType="com.eats.user.model.TimelineDTO">
+
+		SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+		FROM (
+		SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+		FROM USER_PROFILE
+		ORDER BY DBMS_RANDOM.VALUE
+		)
+		WHERE ROWNUM &lt;= 4
+
+	</select> -->
+
+
+	<select id="randomuser" resultType="com.eats.user.model.TimelineDTO" parameterType="Integer">
+  <!--   SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+    FROM (
+        SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+        FROM USER_PROFILE
+        WHERE USER_IDX NOT IN (
+            SELECT FOLLOWING_IDX
+            FROM FOLLOW
+            WHERE USER_IDX = #{userIdx} 
+        )
+        ORDER BY DBMS_RANDOM.VALUE
+    )
+    WHERE ROWNUM &lt;= 4 -->
+       SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+    FROM (
+        SELECT USER_NICKNAME, USER_IDX, PROFILE_IMAGE
+        FROM USER_PROFILE
+        WHERE USER_IDX NOT IN (
+            SELECT FOLLOWING_IDX
+            FROM FOLLOW
+            WHERE USER_IDX = #{userIdx} 
+        ) AND USER_IDX != #{userIdx}  
+        ORDER BY DBMS_RANDOM.VALUE
+    )
+    WHERE ROWNUM &lt;= 4
+	</select>
+
+
+	<select id="selectReviewList" resultType="com.eats.user.model.TimelineDTO">
+
+		SELECT
+		r.RESERVE_IDX,
+		r.USER_IDX,
+		r.STORE_IDX,
+		r.RESERVE_DATE,
+		r.RESERVE_TIME,
+		r.RESERVE_COUNT,
+		r.RESERVE_STATE,
+		rev.REV_IDX,
+		rev.REV_SCORE,
+		rev.REV_CONTENT,
+		rev.REV_WRITEDATE,
+		rev.REV_STATE,
+		rev.REV_IMG,
+		rev.REV_MENU,
+		rev.REV_TAG,
+		up.USER_NICKNAME,
+		st.STORE_NAME,
+		st.STORE_ADDR
+		FROM
+		RESERVATION r
+		JOIN
+		REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
+		JOIN
+		USER_PROFILE up ON r.USER_IDX = up.USER_IDX
+		JOIN
+		STORE st ON r.STORE_IDX = st.STORE_IDX
+
+		WHERE
+		r.RESERVE_STATE = 3
+
+	</select>
+
+
+
+	<select id="selectFollowerReview" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
+		
+		SELECT
+		r.RESERVE_IDX,
+		r.USER_IDX,
+		r.STORE_IDX,
+		r.RESERVE_DATE,
+		r.RESERVE_TIME,
+		r.RESERVE_COUNT,
+		r.RESERVE_STATE,
+		rev.REV_IDX,
+		rev.REV_SCORE,
+		rev.REV_CONTENT,
+		rev.REV_WRITEDATE,
+		rev.REV_STATE,
+		rev.REV_IMG,
+		rev.REV_MENU,
+		rev.REV_TAG,
+		up.USER_NICKNAME,
+		st.STORE_NAME,
+		st.STORE_ADDR
+		FROM
+		RESERVATION r
+		JOIN
+		REVIEW rev ON r.RESERVE_IDX = rev.RESERVE_IDX
+		JOIN
+		USER_PROFILE up ON r.USER_IDX = up.USER_IDX
+		JOIN
+		STORE st ON r.STORE_IDX = st.STORE_IDX
+		WHERE
+		r.RESERVE_STATE = 3
+		AND 
+		r.USER_IDX=#{user_idx}
+		
+	</select>
+
+
+
+	<insert id="userFollow" parameterType="Map">
+
+		insert into follow
+		values(
+		follow_idx_seq.nextval,
+		#{user_idx},
+		#{following_idx}
+		)
+
+	</insert>
+
+
+	<delete id="unFollow" parameterType="Map">
+
+		delete from
+		follow
+		where
+		user_idx=#{user_idx}
+		and
+		following_idx=#{following_idx}
+
+	</delete>
+
+
+
+	<select id="timeLineProfile" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
+
+<!-- 	SELECT 
     COUNT(r.REV_IDX) AS total_reviews,  
     (SELECT COUNT(*) 
      FROM FOLLOW 
-     WHERE FOLLOWING_IDX = #{user_idx}) AS follower_count,  
+     WHERE FOLLOWING_IDX = #{userIdx}) AS follower_count,  
     (SELECT COUNT(*) 
      FROM FOLLOW 
-     WHERE USER_IDX = #{user_idx}) AS following_count  
+     WHERE USER_IDX = #{userIdx}) AS following_count,
+    up.PROFILE_IMAGE
 	FROM EATS_USER u
 	LEFT JOIN REVIEW r ON u.USER_IDX = r.RESERVE_IDX  
-	WHERE u.USER_IDX = #{user_idx}
-	GROUP BY u.USER_IDX
+	LEFT JOIN USER_PROFILE up ON u.USER_IDX = up.USER_IDX
+	WHERE u.USER_IDX = #{userIdx}
+	GROUP BY u.USER_IDX, up.PROFILE_IMAGE -->
+	
+	SELECT 
+    COUNT(r.REV_IDX) AS total_reviews,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE FOLLOWING_IDX = #{userIdx}) AS follower_count,  
+    (SELECT COUNT(*) 
+     FROM FOLLOW 
+     WHERE USER_IDX = #{userIdx}) AS following_count,
+    up.PROFILE_IMAGE,
+    up.USER_NICKNAME  
+	FROM EATS_USER u
+	LEFT JOIN REVIEW r ON u.USER_IDX = r.RESERVE_IDX  
+	LEFT JOIN USER_PROFILE up ON u.USER_IDX = up.USER_IDX
+	WHERE u.USER_IDX = #{userIdx}
+	GROUP BY u.USER_IDX, up.PROFILE_IMAGE, up.USER_NICKNAME
+	
 
-  </select>
-  
-  
-  </mapper>
+	</select>
+	
+	
+	<select id="followerList" parameterType="Integer" resultType="com.eats.user.model.TimelineDTO">
+	
+		SELECT UP.USER_NICKNAME,UP.PROFILE_IMAGE,F.FOLLOWING_IDX
+		FROM FOLLOW F
+		JOIN USER_PROFILE UP ON F.FOLLOWING_IDX = UP.USER_IDX
+		WHERE F.USER_IDX = #{userIdx, jdbcType=INTEGER}
+		
+	</select>
+
+
+</mapper>
   

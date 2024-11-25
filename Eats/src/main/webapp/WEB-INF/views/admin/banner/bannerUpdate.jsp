@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="/css/manager/headerCss.css">
+<link rel="stylesheet" href="/css/manager/navigationCss.css">
     <style>
         * {
             margin: 0;
@@ -12,13 +15,20 @@
         }
 
         .container {
-            max-width: 800px;
+            width: 800px;
             margin: 20px auto;
             padding: 20px;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+             .body_box {
+		width: 1440px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: row;
+		padding-bottom: 100px;
+	}
 
         h1 {
             font-size: 24px;
@@ -27,7 +37,7 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 35px;
         }
 
         .form-group label {
@@ -107,21 +117,30 @@
     </style>
 </head>
 <body>
+<%@ include file="/layout_component/header.jsp"%>
+<div class="body_box" id="body_box">
+	<%@ include file="/layout_component/navigation.jsp"%>
     <div class="container">
         <h1>배너 수정</h1>
-        <form name="banenerInsertForm" action="bannerInsertOk" method="post" enctype="multipart/form-data">
+        <c:if test="${not empty dto }">
+ 		
+ 		
+        <form name="banenerUpdateForm" action="/bannerUpdateOk" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="banner_idx" value="${dto.banner_idx }">
+            
             <div class="form-group">
                 <label>배너명</label>
-                <input type="text" name="banner_name" id="banner_name" class="form-control" required>
-               
+                <input type="text" name="banner_name" id="banner_name" class="form-control" value="${dto.banner_name }" required>
             </div>
 
             <div class="form-group">
                 <label>파일업로드</label>
                 <div class="file-upload">
-                    <input type="file" name="banner_img" id="banner_img" accept="image/jpeg,image/jpg,image/png" required>
+                    <input type="file" name="banner_img" id="banner_img" accept="image/jpeg,image/jpg,image/png">
                 </div>
                 <div class="file-notice">
+                <p style="color:black;">기존 이미지:${dto.banner_img }</p>
+                <input type="hidden" value="${dto.banner_img }" name="oldName">
                     • 정사각형 이미지 사용 (1440px X 1440px / 1080px X 1080px 권장)<br>
                     • JPG, JPEG, PNG 형식 파일 등록
                 </div>
@@ -129,7 +148,7 @@
 
             <div class="form-group">
                 <label>링크 URL</label>
-                <input type="url" name="banner_url" id="banner_url" class="form-control">
+                <input type="url" name="banner_url" id="banner_url" class="form-control" value="${dto.banner_url }">
             </div>
             
             
@@ -144,14 +163,12 @@
                   </select>
             </div>
 
-    
-
             <div class="form-group">
                 <label>반영 기간</label>
                 <div class="date-group">
-                    <input type="date" name="banner_sdate" id="banner_sdate" class="form-control date-input">
+                    <input type="date" name="banner_sdate" id="banner_sdate" class="form-control date-input" value="${dto.banner_sdate }" onchange="updateEndDate()">
                     <span>~</span>
-                    <input type="date" name="banner_edate" id="banner_edate" class="form-control date-input">
+                    <input type="date" name="banner_edate" id="banner_edate" class="form-control date-input" value="${dto.banner_edate }">
                 </div>
             </div>
 
@@ -159,21 +176,38 @@
                 <label>반영 여부</label>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="banner_stat" value="1" checked> YES
+                        <input type="radio" name="banner_stat" value="1" ${dto.banner_stat == 1 ? 'checked' : ''}> YES
                     </label>
                     <label>
-                        <input type="radio" name="banner_stat" value="2"> NO
+                        <input type="radio" name="banner_stat" value="2" ${dto.banner_stat == 2 ? 'checked' : '' }> NO 
                     </label>
                 </div>
             </div>
-
-         
 
             <div class="button-group">
                 <button type="button" class="btn btn-cancel" onclick="location.href='/bannerList'">취소</button>
                 <button type="submit" class="btn btn-submit">수정</button>
             </div>
         </form>
+       </c:if>
+    </div>
     </div>
 </body>
+
+<script>
+function updateEndDate() {
+    const startDateInput = document.getElementById('banner_sdate');
+    const endDateInput = document.getElementById('banner_edate');
+
+    const startDate = new Date(startDateInput.value);
+    
+   
+    if (startDateInput.value) {
+        endDateInput.setAttribute('min', startDateInput.value); 
+    } else {
+        endDateInput.removeAttribute('min'); 
+    }
+}
+</script>
+
 </html>

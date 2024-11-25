@@ -1,6 +1,7 @@
 package com.eats.controller.user;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,18 +27,27 @@ public class TimeLineController {
 	@GetMapping("/timeLineMain")
 	public ModelAndView timelineMain(Integer userIdx, HttpSession session) {
 		
-		int idx = (int) session.getAttribute("user_idx");
+		userIdx = (int) session.getAttribute("user_idx"); 
 		
-		List<TimelineDTO> lists= service.randomuser();
+	
+		List<TimelineDTO> lists= service.randomuser(userIdx);
+		
+		
 		List<TimelineDTO> review= service.selectReviewList();
+				
+		TimelineDTO profile = service.timeLineProfile(userIdx);
 		
-		TimelineDTO profile = service.timeLineProfile(idx);
+	
+		List<TimelineDTO> follow=service.followerList(userIdx);
+		
 		
 		ModelAndView mav= new ModelAndView();
 		
 		mav.addObject("lists", lists);
 		mav.addObject("review",review);
 		mav.addObject("profile",profile);
+		mav.addObject("follow",follow);
+		
 		mav.setViewName("user/timeLine/timeLine");
 
 		return mav;
@@ -82,6 +92,8 @@ public class TimeLineController {
 	    return response;
 		
 	}
+	
+	
 	
 	
 	

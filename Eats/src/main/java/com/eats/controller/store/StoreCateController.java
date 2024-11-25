@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.page.EntryService;
 import com.eats.store.model.CategoryDTO;
 import com.eats.store.service.StoreCateService;
 import com.eats.user.model.CateKeyDTO;
 import com.eats.user.model.CateValueDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class StoreCateController {
@@ -25,12 +29,29 @@ public class StoreCateController {
     @Autowired
     private StoreCateService service;
     
+    @Autowired
+    private EntryService en_service;
+    
     @GetMapping("/store/storeCateOne")
-    public ModelAndView storeCateOne(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	// store_idx가 null이면 기본값을 1로 설정
-    	if (store_idx == null) {
-    	    store_idx = 1;  // 기본값 설정
-    	}
+    public ModelAndView storeCateOne(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
+        }
 
     	//페이지로드시 로그인한 매장의 store_idx로 category테이블에 데이터 있는지 확인
     	//int store_cate_check = service.storeTagCheck(store_idx);
@@ -60,6 +81,7 @@ public class StoreCateController {
     	mav.addObject("cateBigTitle", cateBigTitle);  // 대메뉴
     	mav.addObject("cateSmallData", cateSmallData);  // 소메뉴
     	//관리자가 등록해놓은 카테고리와 태그값 가져오는 부분 마침
+    	mav.addObject("store_idx", store_idx);
 
     	mav.setViewName("store/storeCate/storeCateOne"); 
     	return mav;
@@ -67,11 +89,25 @@ public class StoreCateController {
 
     
     @GetMapping("/store/storeCateTwo")
-    public ModelAndView storeCateTwo(@SessionAttribute(value = "store_idx", required = false) Integer store_idx) {
-    	// store_idx가 null이면 기본값을 1로 설정
-    	if (store_idx == null) {
-    	    store_idx = 1;  // 기본값 설정
-    	}
+    public ModelAndView storeCateTwo(HttpServletRequest req) {
+    	
+        HttpSession session = req.getSession();
+        
+        Integer storeidx = (Integer) session.getAttribute("storeIdx");
+        int store_idx = (storeidx != null) ? storeidx : 0;
+        System.out.println("store_idx 값: " + store_idx);
+
+        if(store_idx == 0) {
+
+            String msg = "로그인이 필요합니다.";
+            String goPage = "/storeLogin";
+        
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("msg", msg);
+            mav.addObject("goPage", goPage);
+            mav.setViewName("store/common/basicMsg");
+            return mav;
+        }
 
     	ModelAndView mav = new ModelAndView();
     	
@@ -98,6 +134,7 @@ public class StoreCateController {
     	mav.addObject("cateBigTitle", cateBigTitle);  // 대메뉴
     	mav.addObject("cateSmallData", cateSmallData);  // 소메뉴
     	//관리자가 등록해놓은 카테고리와 태그값 가져오는 부분 마침
+    	mav.addObject("store_idx", store_idx);
 
     	mav.setViewName("store/storeCate/storeCateTwo"); 
     	return mav;
@@ -134,6 +171,11 @@ public class StoreCateController {
             //category 테이블에서 가져온 값이 아니고 select box 선택한 경우는 cate_key(즉 store_cate_key)존재안함
             if(cate_key.get(i) == null) {
                 result += service.storeTagInsert(cate_dto);
+                
+
+            	//store_state를 바꾸기 위해 체크 후 변경
+            	int test = en_service.entryCheck(store_idx);
+            	System.out.println("testddd"+test);
                 
             //아무것도 처리 안했어도 잘 넘어가지게
             }else {
@@ -175,6 +217,7 @@ public class StoreCateController {
     	@RequestParam(value = "store_cate_key") int store_cate_key) {
     	
     	//태그관리, 특징관리에서 같이 사용
+    	System.out.println("store_cate_key"+store_cate_key);
     	
         CategoryDTO cate_dto = new CategoryDTO();
         cate_dto.setCate_idx(store_cate_key);

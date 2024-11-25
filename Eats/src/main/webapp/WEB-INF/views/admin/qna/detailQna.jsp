@@ -3,32 +3,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../common/header.jsp" %>
 
-<h2>1:1 사용자 문의 상세</h2>
 <link rel="stylesheet" href="/css/manager/qnaDetailCss.css">
-<p><strong>제목:</strong> ${userQna.uqna_title}</p>
-<p><strong>내용:</strong> ${userQna.uqna_content}</p>
-<p><strong>문의일:</strong> ${userQna.uqna_wdate}</p>
-<p><strong>처리 상태:</strong>
-    <c:choose>
-        <c:when test="${userQna.uqna_stat == 1}">처리완료</c:when>
-        <c:otherwise>대기중</c:otherwise>
-    </c:choose>
-</p>
 
-<c:if test="${userQna.uqna_stat == 0}">
-    <!-- 답변 작성 폼 -->
-    <form method="post" action="/admin/qna/user/${userQna.uqna_idx}/reply" onsubmit="return validateAnswer()">
-        <textarea name="answer" rows="5" cols="50" placeholder="답변을 입력하세요"></textarea><br>
-        <button type="submit">확인</button>
-    </form>
-</c:if>
+<div class="container">
+    <h2>1:1 사용자 문의 상세</h2>
 
-<c:if test="${userQna.uqna_stat == 1}">
-    <p><strong>답변 내용:</strong> ${userQna.uqna_answer}</p>
-</c:if>
+    <div class="info-box">
+        <p><strong>제목:</strong> ${userQna.uqna_title}</p>
+        <p><strong>내용:</strong> ${userQna.uqna_content}</p>
+        <p><strong>문의일:</strong> ${userQna.uqna_wdate}</p>
+        <p><strong>처리 상태:</strong>
+            <c:choose>
+                <c:when test="${userQna.uqna_stat == 1}">처리완료</c:when>
+                <c:otherwise>대기중</c:otherwise>
+            </c:choose>
+        </p>
+    </div>
 
-<!-- 이전 버튼 -->
-<a href="/admin/qna?type=user&page=1&size=10&sortBy=date&order=desc"><button>이전</button></a>
+    <c:if test="${userQna.uqna_stat == 0}">
+        <form method="post" action="/admin/qna/user/${userQna.uqna_idx}/reply" onsubmit="return validateAnswer()">
+            <textarea name="answer" placeholder="답변을 입력하세요"></textarea>
+            <div class="button-group">
+                <button type="submit">확인</button>
+                <a href="/admin/qna?type=user&page=1&size=10&sortBy=date&order=desc" class="back-button">이전</a>
+            </div>
+        </form>
+    </c:if>
+
+    <c:if test="${userQna.uqna_stat == 1}">
+        <div class="answer-box">
+            <p><strong>답변 내용:</strong> ${userQna.uqna_answer}</p>
+        </div>
+        <div class="button-group">
+            <a href="/admin/qna?type=user&page=1&size=10&sortBy=date&order=desc" class="back-button">이전</a>
+        </div>
+    </c:if>
+</div>
+
 
 <script>
     // 답변 입력 여부 확인

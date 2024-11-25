@@ -5,7 +5,7 @@
 <%@include file="/WEB-INF/views/admin/common/header.jsp"%>
 
 <div class="mainCon_1400">
-	<input type="hidden" name="admin_idx" id="" value="<%= admin_idx %>">
+	<input type="hidden" name="admin_idx" id="admin_idx" value="${admin_idx}">
 	<h2>가입매장조회</h2>
 	
 	
@@ -77,15 +77,13 @@
 					</c:forEach>
 				</c:if>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="5" align="center">
-						${pageStr }
-					</td>
-				</tr>
-			</tfoot>
+			
 		</table>
 	</div>
+	
+		<div class="listPaging">
+			${pageStr }
+		</div>
 </div>
 </div>
    

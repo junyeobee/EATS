@@ -182,8 +182,8 @@ margin-top:5px;
 			</div>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="biz_num">사업자 등록 번호</label> <input type="text"
-						id="biz_num" name="biz_num" class="form-control" placeholder="예시) 123-45-78910"/>
+					<label for="biz_num">사업자 등록 번호</label> <input type="text" maxLength="11"
+						id="biz_num" name="biz_num" class="form-control" placeholder="예시) 123-45-78910" onkeyup="autoBizNum(value)"/>
 				</div>
 				<div class="alert-text" id="checkBiz">
 				</div>
@@ -196,7 +196,7 @@ margin-top:5px;
 				<div class="form-group">
 					<label for="owner_tel">점주 연락처</label> <input type="text"
 						id="owner_tel" name="owner_tel" class="form-control"
-						placeholder="예시) 010-1234-5678"/>
+						placeholder="예시) 010-1234-5678" onkeyup="autoHyphen(value)" maxLength="13"/>
 				</div>
 				<div class="alert-text" id="checkTel">
 				</div>
@@ -212,7 +212,7 @@ margin-top:5px;
 			</div>
 			<div class="form-group">
 				<label for="sj_addr">매장 주소</label> <input type="text" id="sj_addr"
-					name="sj_addr" class="form-control" disabled/> <input type="button"
+					name="sj_addr" class="form-control" readonly/> <input type="button"
 					class="btn-check" onclick="getPostCode()" value="주소 찾기">
 			</div>
 			<div class="form-group">
@@ -251,7 +251,7 @@ margin-top:5px;
 				<button type="reset" class="btn btn-secondary">취소</button>
 			</div>
 		</form>
-
+		<input type="hidden" id="isIdChecked">
 	</div>
 
 	<!-- 팝업 -->
@@ -266,8 +266,9 @@ margin-top:5px;
 
 <script>
 var finalCheck = document.getElementById('finalCheck');
+var isIdCheck = document.getElementById('isIdChecked');
 const regId =/^[0-9a-z]{4,12}$/;
-const regPwd = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()._-]{8,15}$/;
+const regPwd = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
 const regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 const regBiz = /^\d{3}-\d{2}-\d{5}$/;
 const regTel = /^\d{3}-\d{4}-\d{4}$/;
@@ -278,7 +279,7 @@ function checkValid() {
 	
 	var allForm = document.getElementsByClassName('form-control');
 	for(var i=0; i<allForm.length; i++){
-		if(allForm[i].value==null || allForm[i].value=='') {
+		if(allForm[i].value==null || allForm[i].value=='' && allForm[i].id!='sj_daddr') {
 			finalCheck.innerText='모든 정보를 기입해주세요.';
 			console.log(allForm[i])
 			cnt++;	
@@ -300,6 +301,11 @@ function checkValid() {
 	checkAnyInput('checkTel', 'owner_tel', regTel, '유효하지 않은 전화번호 형식입니다.','');
 	checkAnyInput('checkEmail', 'sj_email', regEmail, '유효하지 않은 이메일 형식입니다.','');
 
+	if(isIdCheck.value=='' || isIdCheck.value==null) {
+		cnt++;
+		alert('사용 가능한 아이디인지 확인해주세요.');
+	}
+	
 	if(cnt>0) {
 		console.log(cnt);
 		return false;
@@ -308,7 +314,7 @@ function checkValid() {
 
 function checkIdValid(inId) {
 	var checkId = document.getElementById('checkId');
-	
+	isIdCheck.value='';
 	if(!regId.exec(inId)) {
 		checkId.style.color='red';
 		checkId.innerText = '4~12자의 영문자 또는 숫자만 사용 가능합니다.';
@@ -389,6 +395,7 @@ window.addEventListener('load', function() {
     				inputId.value='';
     			} else {
     				alert('사용 가능한 아이디입니다.');
+    				isIdCheck.value='on';
     			}
     		}
     	}
@@ -438,6 +445,55 @@ window.addEventListener('load', function() {
 				    popupTitle: '장소 검색'
 				});	
 	}
+	
+    const autoHyphen = (number) => {
+        number = number.replace(/[^0-9]/g, '');
+        let temp = '';
+        if (number.length < 4) {
+          temp = number;
+        } else if (number.length < 8) {
+          temp += number.substr(0, 3);
+          temp += '-';
+          temp += number.substr(3, 4);
+        } else if (number.length < 12) {
+          temp += number.substr(0, 3);
+          temp += '-';
+          temp += number.substr(3, 4);
+          temp += '-';
+          temp += number.substr(7);
+        }
+        const PHONE_NUMBER_WITH_HYPHEN = temp;
+        const PHONE_INPUT_BOX = document.querySelector('#owner_tel');
+        PHONE_INPUT_BOX.value = PHONE_NUMBER_WITH_HYPHEN;
+        PHONE_INPUT_BOX.setAttribute('value', PHONE_NUMBER_WITH_HYPHEN);
+      };
+      
+      const autoBizNum = (number) => {
+          number = number.replace(/[^0-9]/g, '');
+          let temp = '';
+          if (number.length < 6) {
+        	    // 6자리 미만일 때는 그냥 그대로 입력
+        	    temp = number;
+        	  } else if (number.length < 9) {
+        	    // 6자리 이상 9자리 미만일 때 '123-12' 형식
+        	    temp += number.substr(0, 3);
+        	    temp += '-';
+        	    temp += number.substr(3, 2);
+        	    temp += '-';
+        	    temp += number.substr(5);
+        	  } else {
+        	    // 9자리 이상일 때 '123-12-12345' 형식
+        	    temp += number.substr(0, 3);
+        	    temp += '-';
+        	    temp += number.substr(3, 2);
+        	    temp += '-';
+        	    temp += number.substr(5);
+        	  }
+          const PHONE_NUMBER_WITH_HYPHEN = temp;
+          const PHONE_INPUT_BOX = document.querySelector('#biz_num');
+          PHONE_INPUT_BOX.value = PHONE_NUMBER_WITH_HYPHEN;
+          PHONE_INPUT_BOX.setAttribute('value', PHONE_NUMBER_WITH_HYPHEN);
+        };
 </script>
 </html>
 

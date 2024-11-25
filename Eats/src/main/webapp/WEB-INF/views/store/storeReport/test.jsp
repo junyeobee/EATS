@@ -5,17 +5,64 @@
     <title>정기구독 신청</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+    body {
+        font-family: 'Noto-Sans', sans-serif;
+        
+    }
+    #yellow {
+        background-color: #FFD700;
+        width: auto;
+        height: 440px;
+        text-align: center;
+        padding: 50px;
+    }
+    #kakaoDiv {
+        text-align: center;
+        display: grid;
+        align-content: space-between;
+        justify-content: center;
+        margin: 0 auto;
+        width: fit-content;
+        padding: 30px;
+        margin-top: 100px;
+        border: 3px solid #191919;
+        border-radius: 5px;
+        background-color: white;
+        cursor: pointer;
+    }
+    #cancel {
+        position: absolute;
+        bottom: 1px;
+        width: 516px;
+        height: 35px;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        background-color: #191919;
+        border: none;
+        border-radius: 5px;
+        left: 0;
+        border: 1px solid #121212;
+    }
+    p {
+        margin-bottom: 0;
+    }
+</style>
 <body>
     <h2>정기구독 신청</h2>
-    
-    <form id="subscribeForm" onsubmit="return false;">
-        <input type="hidden" name="userId" value="test_user">
-        <button type="button" id="payButton">구독하기</button>
-    </form>
-    <button id = "cancel"></button>
+    <hr>
+    <div id = "yellow">
+        <div id = "kakaoDiv">
+            <input type="hidden" name="userId" value="test_user">
+            <img src = "../../img/store/storeLanding/kakaopay.png" alt="kakaopay" width="200" height="200" id = "payButton">
+            <p>카카오 페이로 결제하기</p>
+        </div>
+    </div>
+    <button id = "cancel">취소하기</button>
     <script>
 $(document).ready(function() {
-    $("#payButton").click(function(e) {
+    $("#kakaoDiv").click(function(e) {
         e.preventDefault();  // 이벤트 기본 동작 중지
         e.stopPropagation();  // 이벤트 전파 중지
         
@@ -69,10 +116,7 @@ $(document).ready(function() {
         return false;
     });
     $("#cancel").click(function(e){
-		$.ajax({
-			url: '/store/storeReport/cancel',
-            method: 'POST',
-		});
+		window.self.close();
 
 	
     });

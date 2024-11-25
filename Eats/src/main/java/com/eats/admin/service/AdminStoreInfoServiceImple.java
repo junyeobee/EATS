@@ -20,6 +20,20 @@ public class AdminStoreInfoServiceImple implements AdminStoreInfoService {
 		List<AdminStoreInfoUpdateDTO> lists = mapper.adminStoreInfoList();
 		return lists;
 	}
+	
+	@Override
+	public List<AdminStoreInfoUpdateDTO> adminStoreInfoListIn() {
+		
+		List<AdminStoreInfoUpdateDTO> lists = mapper.adminStoreInfoListIn();
+		return lists;
+	}
+	
+	@Override
+	public List<AdminStoreInfoUpdateDTO> adminStoreInfoListOut() {
+		
+		List<AdminStoreInfoUpdateDTO> lists = mapper.adminStoreInfoListOut();
+		return lists;
+	}
 
 	@Override
 	public int infoUpdateAction(AdminStoreInfoUpdateDTO dto) {

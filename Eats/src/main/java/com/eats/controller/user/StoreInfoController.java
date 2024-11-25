@@ -3,11 +3,13 @@ package com.eats.controller.user;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,15 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eats.store.model.HYMenuDTO;
 import com.eats.store.model.HYStoreInfoDTO;
+import com.eats.user.model.AlarmDTO;
 import com.eats.user.model.JjimDTO;
 import com.eats.user.model.ReservationDTO;
+import com.eats.user.model.ReviewDTO;
 import com.eats.store.model.StoreTimeDTO;
 import com.eats.store.service.StoreInfoService;
 import com.eats.user.service.ReservationService;
 
 import ch.qos.logback.classic.joran.ModelClassToModelHandlerLinker;
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -88,7 +94,28 @@ public class StoreInfoController {
 	public List getTimeListWithYN(int store_idx, String reserve_date, int reserve_cnt) {
 		
 		List<Map> timeList=reserveService.getTimeListWithYN(store_idx, reserve_date, reserve_cnt);
-
+		
+		LocalDate nowdate = LocalDate.now();
+		String today = nowdate.toString();
+		if(today.equals(reserve_date)) {
+			LocalTime nowtime = LocalTime.now();
+			int untilHourIdx=nowtime.toString().indexOf(":");
+			int untilMinIdx=nowtime.toString().lastIndexOf(":");
+			int nowhour=Integer.parseInt(nowtime.toString().substring(0, untilHourIdx));
+			int nowmin=Integer.parseInt(nowtime.toString().substring(untilHourIdx+1, untilMinIdx));
+			
+			for(int i=0; i<timeList.size(); i++) {
+				String hours = (String)timeList.get(i).get("RESERVE_HOUR");
+				int rhour=Integer.parseInt(hours.substring(0, hours.indexOf(":")));
+				int rmin=Integer.parseInt(hours.substring(hours.indexOf(":")+1));
+				
+				if(rhour - nowhour <1) {
+					timeList.remove(i);
+					i--;
+				}
+			}
+			//System.out.println("h:"+nowhour+"m:"+nowmin);
+		}
 		return timeList;
 	}
 	
@@ -116,27 +143,81 @@ public class StoreInfoController {
 		return mv;
 	}
 	
+	@GetMapping("/user/sendAlarmRequest")
+	public ModelAndView sendAlarmRequest(int store_idx, String s_alarm_date, int s_alarm_count, String s_alarm_time, HttpSession session, HttpServletRequest req) {
+		
+		String callback=req.getHeader("Referer");
+		
+		Integer user_idx=(Integer)session.getAttribute("user_idx");
+		
+		ModelAndView mv=new ModelAndView();
+		
+		if(user_idx != null) {
+			AlarmDTO alarmDTO=new AlarmDTO(0, user_idx, store_idx, s_alarm_date, s_alarm_time, s_alarm_count);
+			
+			boolean alarmExist = reserveService.checkAlarmExist(alarmDTO)>0?true:false;
+			
+			if(alarmExist) {
+				//이미 알림 신청 내역이 있음
+				mv.addObject("msg", "이미 알림신청 내역이 있습니다!");
+				mv.addObject("goTo", callback);
+			}else {
+				//알림 신청 내역 없음 -> 알림 신청 정상 실행
+				
+				int reqResult=reserveService.sendAlarmRequest(alarmDTO);
+				
+				if(reqResult<0) {
+					//알림신청 성공
+					mv.addObject("msg", "알림 신청이 완료되었습니다.");
+					mv.addObject("goTo", "/");
+				}else {
+					//알림신청 실패
+					mv.addObject("msg", "알림 신청이 완료되었습니다.");
+					mv.addObject("goTo", callback);
+				}
+			}
+		}
+		mv.setViewName("user/myplate/msg");
+		return mv;
+	}
+	
 	@GetMapping("/user/makeReserve")
-	public ModelAndView makeReserve(int store_idx, String reserve_date, int reserve_count, String reserve_time, String reserve_table, String request,  
-			HttpSession session) {
+	public ModelAndView makeReserve(HttpSession session, HttpServletRequest req) {
+		
+		Integer store_idx = (Integer)session.getAttribute("store_idx");
+		String reserve_date = (String)session.getAttribute("reserve_date");
+		Integer reserve_count = (Integer)session.getAttribute("reserve_count");
+		String reserve_time = (String)session.getAttribute("reserve_time");
+		String reserve_table = (String)session.getAttribute("reserve_table");
+		String request = (String)session.getAttribute("request");
+		
+		String callback=req.getHeader("Referer");
 		
 		Integer user_idx = (Integer)session.getAttribute("user_idx");
-		if(user_idx == null) {
-		    user_idx = 0;
-		}
-		int minTableIdx=reserveService.getMinTableIdx(store_idx, reserve_date, reserve_count, reserve_time, reserve_table);
 		
-		Date reserve_date_d = Date.valueOf(reserve_date);
-		ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
-		
-		int result=reserveService.makeReserve(reservationDTO);
 		ModelAndView mv=null;
-		if(result>0) {
-			//예약 삽입 성공 로직 (매장에 문자 보내기)
-			mv=new ModelAndView("redirect:/");
+		
+		if(user_idx != null) {
+			int minTableIdx=reserveService.getMinTableIdx(store_idx, reserve_date, reserve_count, reserve_time, reserve_table);
+			
+			Date reserve_date_d = Date.valueOf(reserve_date);
+			ReservationDTO reservationDTO=new ReservationDTO(0, user_idx, store_idx, reserve_date_d, reserve_time, reserve_count, minTableIdx, request, 0, null);
+			
+			int result=reserveService.makeReserve(reservationDTO);
+			
+			if(result>0) {
+				//예약 삽입 성공 로직 (매장에 문자 보내기)
+				mv=new ModelAndView("redirect:/");
+				System.out.println("예약성공");
+			}else {
+				//예약 삽입 실패 로직 -> 에러 메시지
+				mv=new ModelAndView("redirect:"+callback);
+			}
 		}else {
-			//예약 삽입 실패 로직 -> 에러 메시지
-			mv=new ModelAndView("redirect:/");
+			mv=new ModelAndView();
+			mv.addObject("errorMsg", "잘못된 접근입니다.");
+			mv.addObject("goTo", "/");
+			mv.setViewName("user/myplate/error");
 		}
 		
 		return mv;
@@ -167,8 +248,147 @@ public class StoreInfoController {
 		}
 	}
 	
-	@GetMapping("/goHeader")
-	public String header() {
-		return "userHeader";
+	@GetMapping("/user/storeInfo/reviewList")
+	public ModelAndView reviewList(int store_idx) {
+		
+		ModelAndView mv=new ModelAndView();
+		
+		Map map=service.getStoreBriefInfo(store_idx);
+		
+		List<Map<String, Object>> revList=service.getReviewList(store_idx);
+		
+		
+		//문자열로 저장한 img, menu, tag를 리스트로 변환해서 저장
+		for(int i=0; i<revList.size(); i++) {
+			
+			if(revList.get(i).get("PROFILE_IMAGE")==null || revList.get(i).get("PROFILE_IMAGE")=="") {
+				revList.get(i).put("PROFILE_IMAGE", "/svg/one_icon.svg");
+			}
+			String menuStr=(String)revList.get(i).get("REV_MENU");
+			String imgStr=(String)revList.get(i).get("REV_IMG");
+			String tagStr=(String)revList.get(i).get("REV_TAG");
+			
+			List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+			
+			if(imgStr != null && imgStr != "") {
+				List<String> imgList = Arrays.stream(imgStr.split(","))
+						.map(String::trim)
+						.collect(Collectors.toList());
+				
+				//리스트에 저장한 이미지 리스트를 맵에 imgList 키값으로 저장
+				revList.get(i).put("imgList", imgList);
+			}
+			
+			List<String> tagList = Arrays.stream(tagStr.split(","))
+					.map(String::trim)
+					.collect(Collectors.toList());
+			
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); 
+			
+			revList.get(i).put("revMenuList", revMenuList);
+			revList.get(i).put("tagList", tagList);
+		}
+		
+		double avgScore = service.getAvgRevScore(store_idx);
+		int revCnt = service.getRevCount(store_idx);
+		
+		mv.addObject("store", map);
+		mv.addObject("reviewList", revList);
+		mv.addObject("avgScore", avgScore);
+		mv.addObject("revCnt", revCnt);
+		mv.setViewName("user/storeDetail/reviewList");
+		
+		return mv;
 	}
+	
+	// 리뷰 정렬을 위한 비동기 요청 처리
+    @GetMapping("/user/storeInfo/reviewList/sort")
+    @ResponseBody
+    public Map<String, Object> getSortedReviews(int store_idx, @RequestParam(defaultValue = "latest") String order) {
+        Map<String, Object> response = new HashMap<>();
+        String sortType = "";
+        switch(order) {
+        case "별점낮은순" -> sortType = "low_rating";
+        case "별점높은순" -> sortType = "high_rating";
+        case "최신순" -> sortType = "latest";
+        default -> sortType = "latest";
+        }
+        System.out.println("store_idx="+store_idx+"sortType="+sortType);
+        // 정렬된 리뷰 리스트 조회
+        List<Map<String, Object>> revList = service.getSortedReviewList(store_idx, sortType);
+        
+		//문자열로 저장한 img, menu, tag를 리스트로 변환해서 저장
+		for(int i=0; i<revList.size(); i++) {
+			
+			if(revList.get(i).get("PROFILE_IMAGE")==null || revList.get(i).get("PROFILE_IMAGE")=="") {
+				revList.get(i).put("PROFILE_IMAGE", "/svg/one_icon.svg");
+			}
+			String menuStr=(String)revList.get(i).get("REV_MENU");
+			String imgStr=(String)revList.get(i).get("REV_IMG");
+			String tagStr=(String)revList.get(i).get("REV_TAG");
+			
+			List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+			
+			if(imgStr != null && imgStr != "") {
+				List<String> imgList = Arrays.stream(imgStr.split(","))
+						.map(String::trim)
+						.collect(Collectors.toList());
+				
+				//리스트에 저장한 이미지 리스트를 맵에 imgList 키값으로 저장
+				revList.get(i).put("imgList", imgList);
+			}
+			List<String> tagList = Arrays.stream(tagStr.split(","))
+					.map(String::trim)
+					.collect(Collectors.toList());
+			
+			List<HYMenuDTO> revMenuList=service.getRevMenuList(menuIdxList); 
+			
+			revList.get(i).put("revMenuList", revMenuList);
+			revList.get(i).put("tagList", tagList);
+		}
+        for(int i = 0; i < revList.size(); i++) {
+        	System.out.println(revList.get(i).get("revMenuList"));
+        }
+        response.put("reviewList", revList);
+        return response;
+    }
+    
+    // 리뷰 데이터 처리 메서드
+    private void processReviewList(List<Map<String, Object>> revList) {
+        for(Map<String, Object> review : revList) {
+            String menuStr = (String) review.get("REV_MENU");
+            String imgStr = (String) review.get("REV_IMG");
+            String tagStr = (String) review.get("REV_TAG");
+            
+            // 메뉴 처리
+            List<Integer> menuIdxList = Arrays.stream(menuStr.split(","))
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            
+            // 이미지 처리
+            if(imgStr != null && !imgStr.isEmpty()) {
+                List<String> imgList = Arrays.stream(imgStr.split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                review.put("imgList", imgList);
+            }
+            
+            // 태그 처리
+            List<String> tagList = Arrays.stream(tagStr.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            
+            List<HYMenuDTO> revMenuList = service.getRevMenuList(menuIdxList);
+            
+            review.put("revMenuList", revMenuList);
+            review.put("tagList", tagList);
+        }
+    }
 }

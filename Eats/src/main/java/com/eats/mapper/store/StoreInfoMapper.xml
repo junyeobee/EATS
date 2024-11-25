@@ -166,4 +166,89 @@
 		AND
 			STORE_IDX=#{store_idx}
 	</delete>
+	<select id="getStoreBriefInfo" parameterType="int" resultType="map">
+		SELECT
+			STORE_IDX, STORE_NAME
+		FROM
+			STORE
+		WHERE
+			STORE_IDX = #{store_idx}
+	</select>
+	<select id="getReviewList" parameterType="int" resultType="map">
+		SELECT
+			R.*, U.USER_NICKNAME, U.PROFILE_IMAGE
+		FROM
+			REVIEW R
+		INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+		ORDER BY
+			R.REV_WRITEDATE DESC
+	</select>
+	<select id="getSortedReviewList" parameterType="map" resultType="map">
+        SELECT 
+            r.*, 
+            u.USER_NICKNAME,
+            u.PROFILE_IMAGE
+        FROM 
+            review r
+        INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+        <choose>
+            <when test='sortType == "latest"'>
+                ORDER BY r.rev_writedate DESC
+            </when>
+            <when test='sortType == "high_rating"'>
+                ORDER BY r.rev_score DESC, r.rev_writedate DESC
+            </when>
+            <when test='sortType == "low_rating"'>
+                ORDER BY r.rev_score ASC, r.rev_writedate DESC
+            </when>
+            <otherwise>
+                ORDER BY r.rev_writedate DESC
+            </otherwise>
+        </choose>
+    </select>
+	<select id="getRevMenuList" parameterType="java.util.List" resultType="map">
+		SELECT 
+			*
+	    FROM 
+	    	MENU
+	    WHERE 
+	    	MENU_IDX IN
+	    <foreach collection="list" item="menuIdx" open="(" separator="," close=")">
+	        #{menuIdx}
+	    </foreach>
+	</select>
+	<select id="getFoodType" parameterType="int" resultType="String">
+		SELECT 
+			CATE_VALUE_NAME
+		FROM 
+			CATE_VALUE
+		WHERE 
+			CATE_VALUE_IDX IN (
+			    SELECT 
+			    	CATE_VALUE_IDX 
+			    FROM 
+			    	CATEGORY 
+			    WHERE 
+			    	STORE_IDX = #{store_idx}
+			    AND 
+			    	CATE_KEY_IDX = (
+			        	SELECT 
+			        		DISTINCT CATE_KEY_IDX
+				        FROM 
+				        	CATE_KEY
+				        WHERE 
+				        	CATE_KEY_NAME='음식 종류' 
+			    	)
+			) 
+	</select>
 </mapper>

@@ -24,10 +24,11 @@ body {
 }
 
 	.dashboard-container {
-			margin-left: 240px;
+			width:100%;
+			margin-left: 280px;
 			margin-top: 64px;
 			padding: 32px;
-			background-color: #eff9ff;
+		/* 	background-color: #eff9ff; */
 		}
 
 .menu-header {
@@ -182,6 +183,18 @@ color:#F3553C;
 font-size:12px;
 
 }
+form{
+
+width:100%;
+position:absolute;
+}
+.bt_wrap{
+width:300px;
+height:50px;
+position: relative;
+right:0;
+
+}
 </style>
 </head>
 
@@ -199,9 +212,9 @@ font-size:12px;
 		</c:if>
 
 		 <div class="tab-group">
-        <button class="tab active" onclick="loadMenu('0')">전체</button>
+        <button class="tab active" onclick="loadMenu('0'); setActiveTab(this)">전체</button>
         <c:forEach var="dto" items="${lists}">
-            <button class="tab" id="${dto.m_cate_idx}" onclick="loadMenu('${dto.m_cate_idx}')">${dto.m_cate_name}</button>
+            <button class="tab" id="${dto.m_cate_idx}" onclick="loadMenu('${dto.m_cate_idx}'); setActiveTab(this)">${dto.m_cate_name}</button>
         </c:forEach>
     </div>
 	</div>
@@ -212,6 +225,11 @@ font-size:12px;
 	<!-- 메뉴 출력 -->
 
 	<form name="deleteMenu" action="deleteMenu" method="post">
+		<div class="bt_wrap">
+		<input type="button" value="선택삭제" class="delete-button" onclick="submitSelectedMenus();">
+		<input type="button" value="등록하기" class="add-button" onclick="location.href='StoreMenuInsert'"> 
+		
+		</div>
 		<div class="menu-grid" id="menuList">
 			<!-- 메뉴 아이템 반복 -->
 			<c:if test="${empty menu }">
@@ -240,9 +258,7 @@ font-size:12px;
 			</c:forEach>
 		</div>
 		
-		
-		<input type="button" value="등록하기" class="add-button" onclick="location.href='StoreMenuInsert'"> <input type="button" value="선택삭제" class="delete-button"
-			onclick="submitSelectedMenus();">
+	
 	</form>
 
 
@@ -362,6 +378,17 @@ function submitSelectedMenus() {
     form.submit();
 }
 
+
+function setActiveTab(selectedTab) {
+    // 모든 탭에서 active 클래스를 제거
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // 클릭한 탭에 active 클래스 추가
+    selectedTab.classList.add('active');
+}
 
 </script>
 </html>

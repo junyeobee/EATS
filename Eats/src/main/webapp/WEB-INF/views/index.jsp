@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="./css/user/indexCss.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
 <link rel="stylesheet" href="./css/user/userHeader.css">
+<link rel="stylesheet" href="./css/user/userFooter.css">
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,7 +129,7 @@ menu, ol, ul {
 	
 				<div class="search_input_box">
 					<form name="searchForm" id="form" action="searchStore" method="GET">
-						<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
+						<input type="text" class="search_input" id="search_input" placeholder="찾으시는 식당 이름을 검색해보세요.">
 						<input type="hidden" id="word" name="word">
 						<input type="hidden" id="areaWord" name="areaWord" value="${cookie.cityCk.value } ${cookie.unitCk.value }">
 					</form>
@@ -141,32 +142,7 @@ menu, ol, ul {
 	</article>
 	<!-- 이미지, 검색박스 아티클(e) -->
 	<div class="main" id="main">
-		<%-- <div class="search_box">
-			<div class="location_box" id="location_box" data-target="modalArea"
-				data-toggle="modal">
-				<c:if test="${empty cookie.areaCk.value }">
-					<img class="ep-location" src="/svg/location_icon.svg" />
-					<div class="locaton_text">지역</div>
-				</c:if>
-				<c:if test="${!empty cookie.areaCk.value }">
-					<img class="ep-location" src="/svg/location_icon_tomato.svg" />
-					<div class="locaton_text">${cookie.areaCk.value }</div>
-				</c:if>
-			</div>
-
-
-			<div class="search_input_box">
-				<form name="searchForm" id="form" action="searchStore" method="GET">
-					<input type="text" class="search_input" id="search_input" placeholder="‘한식대첩’을 검색해보세요">
-					<input type="hidden" id="word" name="word">
-					<input type="hidden" id="areaWord" name="areaWord" value="${cookie.areaCk.value }">
-				</form>
-			</div>
-			<img class="fe-search" src="/svg/search_icon.svg" id="search_icon"/>
-		</div> --%>
-
 		<div class="categorys">
-
 			<c:forEach var="values" items="${valueList }">
 			<c:if test="${!empty values }">
 				<div class="cate_box">
@@ -205,19 +181,21 @@ menu, ol, ul {
 			<div class="banner_swiper">
 
 				<!-- Slider main container -->
+				<c:if test="${bannerList.size()>0 }">
 				<div class="swiper">
 					<!-- Additional required wrapper -->
 					<div class="swiper-wrapper">
 						<!-- Slides -->
 						<c:forEach var="banner" items="${bannerList }">
 							<div class="swiper-slide" onclick="location.href='${banner.banner_url}'">
-								<img src="${banner.banner_img }">
+								<img src="../img/${banner.banner_img }">
 							</div>
 						</c:forEach>
 					</div>
 					<!-- If we need pagination -->
 					<div class="swiper-pagination"></div>
 				</div>
+				</c:if>
 			</div>
 		</div>
 
@@ -315,7 +293,7 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
-								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }">
+								<c:forEach var="tag" items="${jcntTags[jcnt.store_idx] }" begin="0" end="4">
 									<div class="store_reserve_tag">
 										<div class="store_reserve_tag_text">
 											${tag }
@@ -345,7 +323,7 @@ menu, ol, ul {
 				<c:forEach var="point" items="${pointList }">
 					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${point.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="${point.store_img }" />
+							<img class="reserve_img" src="/img/user/review/${point.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">
@@ -362,7 +340,7 @@ menu, ol, ul {
 									</div>
 								</div>
 								<div class="store_reserve_tag_box">
-								<c:forEach var="tag" items="${pointTags[point.store_idx] }">
+								<c:forEach var="tag" items="${pointTags[point.store_idx] }" begin="0" end="4">
 									<div class="store_reserve_tag">
 										<div class="store_reserve_tag_text">
 											${tag }
@@ -377,29 +355,11 @@ menu, ol, ul {
 				</div>
 			</div>
 		</c:if>
-			<!-- <div class="content_box">
-				<div class="content_text">
-					<div class="content_title">
-						주변<br />문화콘텐츠
-					</div>
-					<div class="content_sub">밥 먹고 뭐 할까?</div>
-				</div>
-				<div class="content_container">
-					<div class="culture_content">
-						<div class="content_img_box">
-							<img src="/img/contents_img.png" alt="" class="content_img">
-						</div>
-						<div class="content_info">
-							<div class="place_name">수성못</div>
-							<div class="place_addr">대구시 수성구 어쩌구로 110</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
 		</div><!-- category div (e) -->
 	</div> <!-- main div (e) -->
 	</section>
 </body>
+<%@include file="userFooter.jsp" %>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script>
 	var locationBox = document.getElementById("location_box");
