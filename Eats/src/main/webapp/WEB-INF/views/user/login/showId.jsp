@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>EATS - SHOW USER'S ID</title>
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function(){
 	var user_id='${sessionScope.userId}';
 	if(!user_id || user_id===null || user_id ===''){
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		location.href='/';
 	}
 });
-</script>
+</script> -->
 </head>
 <!-- noto sans kr font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <body>
 <div class="id-show-wrapper">
 	<div class="logo-wrapper">
-		<a href="/"><img src="img/eats_logo.png"></a>
+		<a href="/"><img src="/svg/logo_icon_red.svg"></a>
 	</div>
 	<div class="id-wrapper">
 		<p>아이디는</p>

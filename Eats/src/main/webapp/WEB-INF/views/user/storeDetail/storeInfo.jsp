@@ -98,12 +98,11 @@
 							<div class="acco-head">
 								<a href="#" class="btn-acco">
 									<i class="clock"></i>
-									<span id="today-day"></span>
 									<c:if test="${empty stInfo.todayTime.stime_start }">
-									<span>오늘 휴무</span>
+									<span class="today-day">오늘 휴무</span>
 									</c:if>
 									<c:if test="${!empty stInfo.todayTime.stime_start }">
-									<span>${stInfo.todayTime.stime_start }-${stInfo.todayTime.stime_end }</span>
+									<span class="today-day">${stInfo.todayTime.stime_start }-${stInfo.todayTime.stime_end }</span>
 									</c:if> 
 								</a>
 							</div>
@@ -162,16 +161,16 @@
 							<c:forEach var="news" items="${stInfo.storeNewsList }">
 							<div class="swiper-slide">
 								<div class="inner txt">
-									<c:if test="${!empty news.s_news_img }">
-									<div class="news-img-wrap">
-										<img src="/img/storeNewsImg/${news.s_news_img }">
-									</div>
-									</c:if>
 									<strong class="tit">${news.s_news_title }</strong>
 									<div class="btn-area">
 										<button type="button" class="btn-more">더보기</button>
 									</div>
 									<div class="inner-content">
+										<c:if test="${!empty news.s_news_img }">
+										<div class="news-img-wrap">
+											<img src="/img/storeNewsImg/${news.s_news_img }">
+										</div>
+										</c:if>
 										<p class="desc">${news.s_news_content }</p>
 									</div>
 								</div>
@@ -308,10 +307,10 @@
 		</section>
 	</div>
 <%@include file="/WEB-INF/views/userFooter.jsp" %>
-</body>
+
 <script>
-const store_idx=${storeTotalInfo.storeDTO.store_idx};
-var maxCnt=parseInt(${max_people_cnt});
+const store_idx='${storeTotalInfo.storeDTO.store_idx}';
+var maxCnt=parseInt('${max_people_cnt}');
 const user_idx = '${sessionScope.user_idx}';  // 서버에서 세션값 가져오기
 
 function sssshow(sw){
@@ -500,9 +499,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }else if(e.target.classList.contains('reserve-btn')){
         	
         	var reserveParam='?store_idx='+store_idx+'&reserve_date='+reserve_date.value+'&reserve_cnt='+reserve_cnt.value+'&reserve_time='+reserve_time.value+'&reserve_table='+reserve_table.value;
-        	
-        	
-
         	if (!user_idx || user_idx === 'null' || user_idx === '') {
         	    alert('로그인 후 이용해주세요');
         	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
@@ -516,7 +512,6 @@ document.addEventListener('DOMContentLoaded', function() {
         	    alert('로그인 후 이용해주세요');
         	    location.href = '/user/login';  // 로그인 페이지로 리다이렉트
         	} else {
-        		//alert(alarmParam);
         	    location.href = '/user/sendAlarmRequest' + alarmParam;
         	}
         }
@@ -657,9 +652,28 @@ function relayoutMap(){
 	
 	map.panTo(new kakao.maps.LatLng(lat,lng));
 }
+
+const newsBtns = document.querySelectorAll('.btn-more');
+if(newsBtns){
+	newsBtns.forEach(news=>{
+		news.addEventListener('click', function(){
+			const content = this.closest('.inner').querySelector('.inner-content');
+			if(content.style.height==='0px'){
+				content.style.height = 'fit-content';
+				
+				news.textContent='닫기';
+			}else{
+				content.style.height = '0px';
+				news.textContent='더보기';
+			}
+		});
+	});
+}
+
 </script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script src="../js/storeInfo/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="../js/storeInfo/storeInfo.js"></script>
 <script type="text/javascript" src="../js/storeInfo/reserveCal.js"></script>
+</body>
 </html>

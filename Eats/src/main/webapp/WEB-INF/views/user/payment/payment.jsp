@@ -35,7 +35,7 @@ $(document).ready(function() {
        
          if ( rsp.success ) {
              var msg = '결제가 완료되었습니다.';
-             location.href='/user/makeReserve';
+             opener.location.href='/user/makeReserve';
 			
           
          } else {

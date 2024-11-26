@@ -61,21 +61,19 @@ public class MypageController {
             return mav;
         }
 
-        // 사용자 기본 정보 가져오기
-        EatsUserDTO userProfile = mypageService.getUserProfile(user_idx);
+        // 사용자 프로필 가져오기 (포인트 포함)
         EatsUserProfileDTO userProfile1 = mypageService.getUserProfile1(user_idx);
 
+//        // 디버깅: 데이터 확인
+//        if (userProfile1 != null) {
+//            System.out.println("Controller (MyPage): User Point = " + userProfile1.getUser_point());
+//            System.out.println("Controller (MyPage): User Nickname = " + userProfile1.getUser_nickname());
+//        } else {
+//            System.out.println("Controller (MyPage): userProfile1 is null.");
+//        }
 
-        if (userProfile == null) {
-            mav.setViewName("error");
-            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return mav;
-        }
-        long currentTime = System.currentTimeMillis(); // 현재 시간 추가
-
-        mav.addObject("userProfile", userProfile);
+        // JSP로 데이터 전달
         mav.addObject("userProfile1", userProfile1);
-        mav.addObject("currentTime", currentTime);
         mav.setViewName("user/mypage/myPage");
         return mav;
     }

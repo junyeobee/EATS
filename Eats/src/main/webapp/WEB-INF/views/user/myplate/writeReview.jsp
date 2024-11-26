@@ -8,6 +8,10 @@
 <title>EATS 리뷰쓰기</title>
 <link rel="stylesheet" href="/css/font.css">
 <link rel="stylesheet" href="/css/user/userHeader.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/user/userFooter.css">
 <style>
 /* reset */
 html, body, div, span, applet, object, iframe,
@@ -22,13 +26,14 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+time, mark, audio, video, textarea, input{
 	margin: 0;
 	padding: 0;
 	border: 0;
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 article, aside, details, figcaption, figure, 
@@ -36,9 +41,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 html {
-	font-family: SpoqaHanSansNeo, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-		'Noto Sans KR','Nanum Gothic', sans-serif;
+	font-family: "Noto Sans KR", sans-serif;
 	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -258,13 +261,13 @@ ul {
 #content > .btn-area {
 	display: inline-block; 
 	width: 100%; 
-	margin-top: 45px; 
+/* 	margin-top: 45px; 
 	padding: 28px 0; 
 	border-radius: 10px; 
 	background: #ff533e; 
 	color: #fff; 
 	font-size: 24px; 
-	font-weight: 700; 
+	font-weight: 700;  */
 	text-align: center;
 }
 
@@ -501,6 +504,13 @@ ul {
 .btn-group.type1 button {
 	background: #ff533e;
 }
+.btn-submit{
+	background-color: #f3553c;
+    color: #fefefe;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
 </style>
 </head>
 <body>
@@ -648,14 +658,13 @@ ul {
 				<div class="btn-group type1"></div>
 			</div>
 		</section>
-		<!-- 태그 선택 영역 (s) -->
+		<!-- 태그 선택 영역 (e) -->
 
 		<div class="btn-area">
 			<form name="review_insert" id="reviewForm" method="post" enctype="multipart/form-data" action="/user/insertReview">
 				<input type="hidden" id="reserve_idx" name="reserve_idx" value="${reserveDTO.reserve_idx }">
 				<input type="hidden" name="rev_score" id="rev_score">
 				<textarea style="display:none;" name="rev_content" id="rev_content"></textarea>
-				<!-- <input type="hidden" id="rev_content" name="rev_content"> -->
 				<input type="file" name="images" id="imageInput" multiple accept="image/*" style="display: none">
 				<input type="hidden" id="rev_menu" name="rev_menu">
 				<input type="hidden" id="rev_tag" name="rev_tag">
@@ -663,6 +672,7 @@ ul {
 			</form>
 		</div>
 	</section>
+<%@include file="/WEB-INF/views/userFooter.jsp" %>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="../js/myplate/reviewWrite.js"></script>
 <script>
@@ -787,7 +797,6 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
     
     // 제출
     this.submit();
-    alert(document.getElementById('rev_content').value);
 });
 /************************************img upload (e)*******************************************/
 

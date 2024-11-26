@@ -1,9 +1,31 @@
 @charset "UTF-8";
 body{
+	margin: 0px;
+	display: flex;
 	font-family: "Noto Sans KR", sans-serif;
 }
+.empty{
+	width: 60%;
+	background-color: #f3553c;
+	display: flex;
+	
+}
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+.empty h1{
+	color: #fefefe;
+    font-family: 'Tenada';
+    position: absolute;
+    top: 35%;
+    left: 13%;
+    font-size: 100px;
+}
 #user_login_form{
-	width:50%;
+	width:100%;
 	margin:100px auto;
 }
 .login-wrapper{
@@ -28,7 +50,7 @@ body{
 .text-wrapper input{
 	width:95%;
     margin-top: 20px;
-    background-color: #FFF8EB;
+    background-color: #fefefe;
     border: 1px solid gray;
     height: 30px;
     border-radius: 5px;
@@ -57,12 +79,15 @@ body{
     font-family: "Noto Sans KR", sans-serif;
 }
 #button-login{
-	background-color:#FFB53C;
-	color:#FFF8EB;
+	background-color:#F3553C;
+	color:#fefefe;
 }
 #button-kakao{
-	box-shadow: 0 0 0 1px #FFB53C inset;
-	background-color:#FFF8EB;
+	box-shadow: 0 0 0 1px #f3553c inset;
+    background-color: #fefefe;
+    background: url(/img/user/kakao_logo.png) no-repeat left center;
+    background-size: 40px;
+    background-position-x: 15px;
 }
 .findAcc-wrapper{
 	text-align:center;

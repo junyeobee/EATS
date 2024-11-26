@@ -90,7 +90,15 @@ public class StoreInfoController {
 			boolean isJjimed = service.checkJjim(user_idx, store_idx);
 			mv.addObject("isJjimed", isJjimed);
 		}
-		mv.setViewName("user/storeDetail/storeInfo");
+		
+		String viewName="user/storeDetail/storeInfo";
+		String store_state=storeTotalInfo.getStoreDTO().getStore_state();
+		if(!store_state.equals("TRUE")) {
+			viewName="user/myplate/error";
+			mv.addObject("errorMsg", "존재하지 않는 매장이거나 접근할 수 없는 매장입니다.");
+			mv.addObject("goTo", "/");
+		}
+		mv.setViewName(viewName);
 
 		return mv;
 	}
@@ -217,7 +225,7 @@ public class StoreInfoController {
 			int result=reserveService.makeReserve(reservationDTO,paydto);
 			
 			if(result>0) {
-				//예약 삽입 성공 로직 (매장에 문자 보내기)
+				//예약 삽입 성공 로직 (매장에 메일 보내기)
 				mv=new ModelAndView("redirect:/");
 				System.out.println("예약성공");
 			}else {

@@ -50,6 +50,7 @@
 		    , NULL
 		    , '010-0000-0000'
 		    , 0 
+		    , null
 		)
 	</insert>
 </mapper>

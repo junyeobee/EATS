@@ -12,16 +12,16 @@
     </select>
     
 <select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
-    SELECT 
-        user_idx, 
-        user_nickname, 
-        user_intro, 
-        user_point, 
-        profile_image
+    SELECT user_idx, 
+           user_nickname, 
+           user_intro, 
+           user_location, 
+           user_tel, 
+           user_point AS user_point,  <!-- 명시적 매핑 -->
+           profile_image
     FROM user_profile
     WHERE user_idx = #{user_idx}
 </select>
-
 
     <!-- 나의 정보 상세보기 -->
 <select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">

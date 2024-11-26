@@ -227,6 +227,17 @@
     .material-icons{
         height:20px;
     }
+    .page{
+        margin: 0 auto;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+    .page a{
+        margin: 0 5px;
+        text-decoration: none;
+    }
 </style>
 
 <script src = "../js/ajaxJs.js"></script>
@@ -278,6 +289,11 @@ function showDetail(i){
                     </div>
                 </div>
             </c:forEach>
+        </div>
+        <div>
+            <c:if test ="${not empty pageStr}">
+                <div class = "page">${pageStr}</div>
+            </c:if>
         </div>
     </div>
 

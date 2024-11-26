@@ -12,6 +12,9 @@ import com.eats.user.model.UserQnaDTO;
 public interface MypageService {
     // 마이페이지 메인 화면 정보 가져오기
     EatsUserDTO getUserProfile(int user_idx);
+    
+    EatsUserProfileDTO getUserProfile1(int user_idx);
+
 
     // 나의 정보 상세 보기
     EatsUserProfileDTO getUserProfileDetail(int user_idx);

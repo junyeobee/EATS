@@ -28,6 +28,7 @@
                     option.setAttribute('selected', 'selected');
                 }
             }
+            
             //있으면 생성유도, 없으면 생성버튼 숨김
             select.addEventListener('change', function(e) {
                 let currentDate = e.target.value;
@@ -1155,7 +1156,7 @@
                     </div>
                 </div>
                 <section class="anal-section reservation">
-                    <h2 class="section-title">${date}월 예약 분석</h2>
+                    <h2 class="section-title">${date}11월 예약 분석</h2>
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">
@@ -1240,7 +1241,7 @@
                     </div>
                 </section>
                 <section class="anal-section sales">
-                    <h2 class="section-title"><span>${date}<span>월 매출 분석</h2>
+                    <h2 class="section-title"><span>${date}11<span>월 매출 분석</h2>
                     <div class="anal-card">
                         <div class="anal-content">
                             <div class="anal-info">

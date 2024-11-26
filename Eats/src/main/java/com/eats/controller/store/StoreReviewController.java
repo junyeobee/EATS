@@ -1,7 +1,8 @@
 package com.eats.controller.store;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,22 @@ public class StoreReviewController {
 	private StoreReviewListService service;
 	
 	@GetMapping("/store/review")
-	public ModelAndView reviewList(HttpSession session) {
+	public ModelAndView reviewList(HttpSession session,@RequestParam(required = false, defaultValue = "1")int cp) {
 		Integer store_idx = (Integer)session.getAttribute("storeIdx");
-		List<ReviewsListDTO> result = service.getReivewLists(store_idx);
+		int ls = 5;
+		int start = (cp - 1) * ls + 1;
+		int end = cp * ls;
+		int totalCnt = service.getReviewCount(store_idx);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("storeIdx", store_idx);
+		map.put("start", start);
+		map.put("end", end);
+		List<ReviewsListDTO> result = service.getReivewLists(map);
+		String pageStr = com.eats.page.PageModule
+				.makePage("/store/review", totalCnt, 5, 5, cp, "", "");
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("lists", result);
+		mv.addObject("pageStr", pageStr);
 		mv.setViewName("store/review/reviewList");
 		return mv;
 	}

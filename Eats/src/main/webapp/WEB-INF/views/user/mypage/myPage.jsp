@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,7 @@
     <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
 	rel="stylesheet">
+
 </head>
 <body>
     <!-- 헤더 포함 -->
@@ -21,8 +23,10 @@
 <img src="${not empty userProfile1.profile_image ? userProfile1.profile_image : '/svg/profile_icon.svg'}?timestamp=${currentTime}" 
      alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile1.user_nickname}</div>
-<div class="profile-points">${userProfile1.user_point} 포인트</div>
-        </div>
+                <div class="profile-points">
+                    현재 포인트: <strong>${userProfile1.user_point}</strong> 점
+                </div> 
+           	</div>
 
         <!-- 메뉴 섹션 -->
         <div class="menu">
@@ -48,6 +52,8 @@
             </a>
         </div>
     </div>
+    <%@include file="/WEB-INF/views/userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
-<%@include file="/WEB-INF/views/userFooter.jsp" %>
+
 </html>

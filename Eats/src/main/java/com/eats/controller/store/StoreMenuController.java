@@ -254,11 +254,23 @@ public class StoreMenuController {
 	
 	@PostMapping("/deleteMenuCate")
 	public ModelAndView deleteMenuCate(@RequestParam(value = "m_cate_idx", required = true) int idx) {
-
-		int result = service.deleteMenuCate(idx);
-
-		String msg = result > 0 ? "카테고리가 삭제되었습니다." : "삭제 실패";
 		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		 try {
+		        int result = service.deleteMenuCate(idx);
+		        if (result > 0) {
+		            msg = "카테고리가 삭제되었습니다.";
+		        } else {
+		            msg = "삭제 실패";
+		        }
+		    } catch (Exception e) {
+		        msg = "해당 카테고리는 삭제할 수 없습니다.";
+		        // 로그를 남기는 것도 좋습니다.
+		        e.printStackTrace(); // 또는 Logger를 사용하여 예외 정보를 기록
+		    }
+
+		
+		
 
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", "storeMenuCate");

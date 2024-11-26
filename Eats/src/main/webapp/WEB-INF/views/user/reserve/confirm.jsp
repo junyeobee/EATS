@@ -162,7 +162,13 @@ function makeReserve(){
 	var reserve_time=document.getElementById('reserve_time').firstChild.nodeValue;
 	var reserve_count=document.getElementById('reserve_count').firstChild.nodeValue;
 	var reserve_table=document.getElementById('reserve_table').firstChild.nodeValue;
-	var request=document.getElementById('request').value;
+	
+	var request=' ';
+	if(document.getElementById('request').value){
+		request=document.getElementById('request').value;
+	}
+	
+	
 	if(store_idx && reserve_date && reserve_time && reserve_count && reserve_table && request){
 		var param='?store_idx='+store_idx+'&reserve_date='+reserve_date+'&reserve_time='+reserve_time+'&reserve_count='+reserve_count+'&reserve_table='+reserve_table+'&request='+request;
 		//alert(param);

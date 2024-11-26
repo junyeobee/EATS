@@ -90,10 +90,53 @@ function showResult(){
 	rel="stylesheet">
 <link rel="stylesheet" href="../css/user/userFindIdCss.css">
 </head>
+<!-- <body>
+  <div class="form-wrapper">
+    <div class="logo-wrapper">
+      <a href="/"><img src="/svg/logo_icon_red.svg" alt="로고"></a>
+    </div>
+    
+    <div class="title-wrapper">
+      <p>가입된 회원정보로 아이디를 확인하세요</p>
+    </div>
+    
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <td>
+            <input type="text" id="userName" placeholder="이름">
+            <div class="message">이름을 입력해주세요.</div>
+          </td>
+          <td></td>
+        </tr>
+        
+        <tr>
+          <td>
+            <input type="text" id="userEmail" placeholder="이메일 예) example@naver.com">
+            <div class="message">이메일을 입력해주세요.</div>
+          </td>
+          <td>
+            <input type="button" value="인증번호 발송" onclick="sendCode()">
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <input type="text" id="userCode" placeholder="인증번호">
+            <div class="message" id="code-message"></div>
+          </td>
+          <td>
+            <input type="button" value="인증번호 확인" onclick="validateCode();">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body> -->
 <body>
 	<div class="form-wrapper">
 		<div class="logo-wrapper">
-			<a href="/"><img src="/img/eats_logo.png"></a>
+			<a href="/"><img src="/svg/logo_icon_red.svg"></a>
 		</div>
 		<div class="title-wrapper">
 			<p>가입된 회원정보로 아이디를 확인하세요</p>
@@ -107,7 +150,7 @@ function showResult(){
 							<div id="name-message" style="margin-top:5px; font-size:10px; text-algin:start;">이름을 입력해주세요.</div>
 						</div>
 					</td>
-					<!-- <td> </td> -->
+					<td> </td>
 				</tr>
 				<tr>
 					<td>
