@@ -421,10 +421,10 @@ color:black;
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
 					<c:if test="${empty pf.profile_image }">
-        		<td><img src="/myPageImg/default-icon.png"></td>
+        		<td><img src="/img/user/profile/default-icon.png"></td>
         		</c:if>
         		<c:if test="${!empty pf.profile_image }">
-        		<td><img src="${pf.profile_image}"></td>
+        			<td><img src="/img/user/profile/${pf.profile_image}"></td>
         		</c:if>
 						<%-- <img src="${pf.profile_image}" alt="Profile Image"> --%>
 						<p> ${pf.user_nickname}</p>	
@@ -471,10 +471,10 @@ color:black;
         <c:forEach var="fdto" items="${follow }">
         <tr>
         	<c:if test="${empty fdto.profile_image }">
-        		<td><img src="/myPageImg/default-icon.png"></td>
+        		<td><img src="/img/user/profile/default-icon.png"></td>
         	</c:if>
         	<c:if test="${!empty fdto.profile_image }">
-        		<td><img src="${fdto.profile_image}"></td>
+        		<td><img src="/img/user/profile/${fdto.profile_image}"></td>
         	</c:if>
          	<td>${fdto.user_nickname }</td>
          	<td><button class="unfollow-btn" data-idx="${fdto.following_idx}" id="${fdto.following_idx}">팔로잉</button></td>
@@ -507,10 +507,10 @@ color:black;
 
 					<div class="user-card">
 					<c:if test="${empty dto.profile_image }">
-					<div class="user-profile"><img src="/myPageImg/default-icon.png"></div>
+					<div class="user-profile"><img src="/img/user/profile/default-icon.png"></div>
 					</c:if>
 					<c:if test="${!empty dto.profile_image }">
-						<div class="user-profile"><img src="${dto.profile_image }"></div>
+						<div class="user-profile"><img src="/img/user/profile/${dto.profile_image }"></div>
 					</c:if>
 						<span>${dto.user_nickname }</span>
 						<button class="follow-btn" data-idx="${dto.user_idx}" id="${dto.user_idx}">팔로우</button>
@@ -532,7 +532,7 @@ color:black;
 					<!-- 리뷰 카드 1 -->
 					<div class="review-card">
 						<div class="reviewer-info">
-							<div class="reviewer-profile"><img src="${dto.profile_image}"></div>
+							<div class="reviewer-profile"><img src="/img/user/profile/${dto.profile_image}"></div>
 							<div>
 								<div class="reviewer-name">${dto.user_nickname}</div>
 								<div class="reviewer-location">${dto.rev_writedate }</div>
@@ -648,7 +648,7 @@ function showSendResult() {
                     reviewerInfoDiv.className = 'reviewer-info';
                     
                     var img = document.createElement('img');
-                    img.src = dto.profile_image;
+                    img.src = '/img/user/profile/'+dto.profile_image;
                    img.style.borderRadius = '50%';
                     img.style.width = '45px';
                     img.style.height = '45px';

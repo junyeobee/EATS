@@ -46,18 +46,21 @@ public class StoreLoginController {
 
 		ModelAndView mav = new ModelAndView();
 		 
-		int storeIdx = service.storeLogin(storeId, storePwd);
+		int loginOk = service.storeLogin(storeId, storePwd);
+		
 		
 		String msg = "";
-
-		if (storeIdx > 0) {
-			msg = "로그인 성공";
+		
+		if (loginOk ==3) {
+			Integer storeIdx = service.storeIdx(storeId);
+			msg = "로그인 성공 storeIdx:"+storeIdx;
+			
 			
 			session.setAttribute("storeId",storeId);
 			
 			session.setAttribute("storeIdx", storeIdx);
 			
-			System.out.println(storeIdx); 
+			System.out.println("매장번호"+storeIdx); 
 			
 			String storeName = service.storeName(storeIdx);
 			

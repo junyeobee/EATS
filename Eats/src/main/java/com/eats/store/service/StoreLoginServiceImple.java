@@ -27,18 +27,16 @@ public class StoreLoginServiceImple implements StoreLoginService {
 		
 		int result=0;
 
-		if (dbPwd == null) {
+		if (dbPwd == null||dbPwd.equals("")) {
 
 			result= NOT_ID;
 		
-		}else if(!dbPwd.getStore_pwd().equals(storePwd)) {
+		}else if(dbPwd.getStore_pwd().equals(storePwd)) {
 			
-			result = NOT_PWD; 	
-			
-
+			 	
+			result= LOGIN_OK; 
 		}else {
-			
-			result= dbPwd.getStore_idx(); //로그인성공. 매장idx 반환
+			result = NOT_PWD;
 		}
 
 		return result;
@@ -83,6 +81,12 @@ public class StoreLoginServiceImple implements StoreLoginService {
 	@Override
 	public String storeName(int storeIdx) {
 		String result = mapper.storeName(storeIdx);
+		return result;
+	}
+	
+	@Override
+	public int storeIdx(String storeId) {
+int result = mapper.storeIdx(storeId);
 		return result;
 	}
 }
