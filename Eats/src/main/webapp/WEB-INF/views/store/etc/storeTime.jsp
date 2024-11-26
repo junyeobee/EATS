@@ -47,6 +47,7 @@
 	    	}else {
 
 		    	$(".rest_yn_box"+num).css("display", "block");
+		    	$(".rest_yn_box"+num).css("text-align", "center");
 		    	$(".work_yn_box"+num).css("display", "none");
 	    	}
 	    }
@@ -325,7 +326,7 @@
 									해당요일은 휴무일입니다.
 								</div>
 								
-								<div class="work_yn_box${t_list_num}" style="${work_box_yn } margin-left:50px;">
+								<div class="work_yn_box${t_list_num}" style="${work_box_yn } margin-left:50px; text-align:center;">
 									<span>시작</span>
 									<select name="work_shour" id="work_shour_${t_list_num}" class="" onchange="timeCheck('work_shour_${t_list_num}', ${t_list_num})">
 										<c:forEach begin="${shour}" end="${ehour}" var="hour" varStatus="hour_add">
@@ -472,7 +473,7 @@
 							</td>
 							<td>
 				           		<c:set var="work_box_yn" value="display:none;" />
-				           		<c:set var="rest_box_yn" value="display:block;" />
+				           		<c:set var="rest_box_yn" value="display:block; text-align:center;" />
 								<c:if test="${radio_check == 'checked'}">
 									<c:set var="work_box_yn" value="display:block;" />
 				           			<c:set var="rest_box_yn" value="display:none;" />
@@ -481,7 +482,7 @@
 								<div class="rest_yn_box${t_list_num}" style="${rest_box_yn }">
 									해당요일은 휴무일입니다.
 								</div>
-								<div class="work_yn_box${day_add.index}">
+								<div class="work_yn_box${day_add.index}" style=" margin-left:50px;">
 									<span>시작</span>
 									<select name="work_shour" id="" class="">
 										<option value="">시</option>
