@@ -11,7 +11,7 @@
 			FROM
 				STORE_TABLE_SET
 			WHERE
-				SG_IDX=(
+				SG_IDX in (
 					SELECT
 						SG_IDX
 					FROM
@@ -111,7 +111,7 @@
 	            WHERE cate_idx IN (
 	            	SELECT sts_type_idx
 	            	FROM store_table_set
-	            	WHERE sg_idx = (
+	            	WHERE sg_idx in (
 				        SELECT sg_idx 
 				        FROM store_grid 
 				        WHERE store_idx = #{store_idx}

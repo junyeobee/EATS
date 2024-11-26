@@ -80,6 +80,8 @@
 
 		WHERE
 		r.RESERVE_STATE = 3
+		AND
+		rev.rev_state = 1
 
 	</select>
 

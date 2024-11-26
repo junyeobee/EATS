@@ -47,7 +47,7 @@ public class StoreLoginController {
 		ModelAndView mav = new ModelAndView();
 		 
 		int storeIdx = service.storeLogin(storeId, storePwd);
-		
+		System.out.println(storeIdx);
 		String msg = "";
 
 		if (storeIdx > 0) {

@@ -122,6 +122,8 @@ public class SearchServiceImple implements SearchService {
 				timeMap.put("week",week);
 
 				StoreTimeDTO sdto = mp.getStoreTimes(timeMap);
+				
+				if(sdto.getStime_break()!=null && sdto.getStime_break()!="") {
 				String[] breakTime = sdto.getStime_break().split("-");
 
 				int bshour = Integer.parseInt(breakTime[0].split(":")[0]);
@@ -141,7 +143,7 @@ public class SearchServiceImple implements SearchService {
 				} else if (selectedHour == behour && selectedMin <= bemin) {
 					storeList.remove(i);
 					i--;
-				}
+				}}
 			}
 		}
 

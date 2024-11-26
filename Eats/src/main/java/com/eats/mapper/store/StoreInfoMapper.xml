@@ -185,6 +185,8 @@
 			ON RES.USER_IDX = U.USER_IDX
 		WHERE
 			RES.STORE_IDX = #{store_idx}
+		AND
+			R.REV_STATE = 1
 		ORDER BY
 			R.REV_WRITEDATE DESC
 	</select>

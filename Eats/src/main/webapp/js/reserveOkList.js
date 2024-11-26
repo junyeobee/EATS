@@ -52,7 +52,7 @@ function showSelectList() {
 			+'<div class="detail-section"><h4>요청 사항</h4><div class="request-section"><span id="request-text">'
 			+reqmsg+'</span></div></div></div><div class="detail-section"><h3>결제 정보</h3><div class="detail-grid">'
 			+'<div class="detail-item"><span id="card-info" class="description">결제 방법</span><span id="card-info-detail">'
-			+dList.pay_method+'</span></div><div class="detail-item"><span class="description">결제금액</span>'
+			+'카드 결제'+'</span></div><div class="detail-item"><span class="description">결제금액</span>'
 			+'<span id="reserveCount-text">'+dList.pay_price+'원</span></div></div></div>';
 		}
 	}

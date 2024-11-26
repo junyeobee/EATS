@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		left join store_table_set sts
         on 
 			sts.sts_type_idx = cv.cate_value_idx
+		where sts.sg_idx in (select sg_idx from store_grid where store_idx = #{storeIdx})
 		order by 
 			table_num asc
 	</select>
