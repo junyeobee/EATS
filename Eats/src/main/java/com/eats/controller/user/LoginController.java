@@ -119,7 +119,6 @@ public class LoginController {
 			@RequestParam(value="userName", required=true)String userName,
 			@RequestParam(value="userEmail", required=true)String userEmail,
 			HttpSession session) {
-		
 		ModelAndView mv=new ModelAndView();
 		String userId=service.findId(userName, userEmail);
 		
@@ -130,6 +129,8 @@ public class LoginController {
 			session.setAttribute("validCode", validCode);
 			session.setAttribute("codeTime", LocalDateTime.now().plusMinutes(5));
 			session.setAttribute("userId", userId);
+			
+			System.out.println("code:"+validCode);
 		}
 		
 		mv.addObject("msg", "이메일 전송이 완료되었습니다.");
@@ -177,9 +178,19 @@ public class LoginController {
 	public ModelAndView showUserId(HttpSession session) {
 		
 		ModelAndView mv=new ModelAndView();
+		
+		String viewname="";
 		String savedId=(String)session.getAttribute("userId");
-		mv.addObject("userId", savedId);
-		mv.setViewName("user/login/showId");
+		if(savedId==null || savedId=="") {
+			viewname="user/myplate/error";
+			mv.addObject("errorMsg", "잘못된 접근입니다.");
+			mv.addObject("goTo", "/user/login");
+		}else {
+			mv.addObject("userId", savedId);
+			viewname="user/login/showId";
+		}
+		
+		mv.setViewName(viewname);
 		
 		session.removeAttribute("userId");
 		return mv;

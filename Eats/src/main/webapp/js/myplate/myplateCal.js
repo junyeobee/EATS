@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				dateArea.textContent=formatDate(this.dataset.date);
 				
 				var param = 'date='+this.dataset.date;
-				sendRequest('/user/myplate/getTodayList', param, showList, 'POST');
+				sendRequest('/user/myplate/getTodayList', param, showList, 'GET');
 				
             });
         });
@@ -104,12 +104,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     generateCalendar(currentMonth, currentYear);
+	sendRequest('/user/myplate/getTodayList', 'date='+today, showList, 'GET');
 });
 
 function showList(){
-	if(XHR.readyState===4){
-		if(XHR.statues===200){
-			alert('dd');
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data = XHR.responseText;
+			var jsondata = JSON.parse(data);
+			
+			makeList(jsondata);
 		}
 	}
+}
+
+function makeList(data){
+	let rHtml='';
+	if(data.reserveList.length==0){
+		rHtml+='<p>예약 내역이 없습니다.</p>'
+	}else{
+		rHtml+='<ul class="cal-ul">'
+		for(var i=0; i<data.reserveList.length; i++){
+			var reserve=data.reserveList[i];
+			rHtml+='<li class="cal-list-item">'+
+				'<div class="img-wrapper"><img src="/img/storeUploadImg/'+reserve.store_img+'"></div>'
+				+'<div>'
+				+'<ul class="inner-ul">'
+				+'<li>'+reserve.store_name+'</li>'
+				+'<li>'+reserve.reserve_date+'</li>'
+				+'<li>'+reserve.reserve_time+'</li>'
+				+'<li>'+reserve.reserve_count+'명</li>'
+				+'</ul>'
+				+'</div></li>';
+		}
+		rHtml+='</ul>';
+	}
+	
+	document.getElementById('reserve-list-box').innerHTML=rHtml;
+	
+	let aHtml='';
+	if(data.alarmList.length==0){
+		aHtml+='<p>신청 내역이 없습니다.</p>';
+	}else{
+		aHtml+='<ul class="cal-ul">'
+		for(var i=0; i<data.alarmList.length; i++){
+			var alarm=data.alarmList[i];
+			aHtml+='<li class="cal-list-item">'+
+				'<div class="img-wrapper"><img src="/img/storeUploadImg/'+alarm.store_img+'"></div>'
+				+'<div>'
+				+'<ul class="inner-ul">'
+				+'<li>'+alarm.store_name+'</li>'
+				+'<li>'+alarm.reserve_date+'</li>'
+				+'<li>'+alarm.reserve_time+'</li>'
+				+'<li>'+alarm.reserve_count+'명</li>'
+				+'</ul>'
+				+'</div></li>';
+			}
+		aHtml+='</ul>';
+	}
+	
+	document.getElementById('alarm-list-box').innerHTML=aHtml;
 }

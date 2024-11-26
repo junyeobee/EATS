@@ -6,7 +6,7 @@
     <title>My Page</title>
     <link rel="stylesheet" href="/css/user/myPageCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
-    
+    <link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
     <!-- 헤더 포함 -->
@@ -45,5 +45,8 @@
             </a>
         </div>
     </div>
+    
+    <%@include file="/WEB-INF/views/userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

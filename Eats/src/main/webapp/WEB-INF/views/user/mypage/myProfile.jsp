@@ -8,6 +8,7 @@
     <title>나의 정보</title>
     <link rel="stylesheet" href="/css/user/myProfileCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
     <!-- 헤더 포함 -->
@@ -49,5 +50,7 @@
             <a href="/user/mypage/editProfile" class="btn-link">프로필 수정</a>
         </div>
     </div>
+    <%@include file="../../userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

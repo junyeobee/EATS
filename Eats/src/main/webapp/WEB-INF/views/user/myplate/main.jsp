@@ -109,36 +109,63 @@ body{
     flex-direction: column;
     gap: 10px;
     padding: 5px 0px;
-    justify-content: center;
+	justify-content: flex-start;
 }
 .myplate-wrapper .info-wrapper .reserve-box{
 	width:90%;
 	background-color: #FFF8EB;
 	margin:0px auto;
-	height: 45%;
+    height: fit-content;
 }
-.myplate-wrapper .info-wrapper .reserve-box div:first-child{
+.myplate-wrapper .info-wrapper .reserve-box .title{
 	margin: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
 }  
-.myplate-wrapper .info-wrapper .reserve-box img, .myplate-wrapper .info-wrapper .alarm-box img{
+.title img{
 	width:20px;
 }
 .myplate-wrapper .info-wrapper .alarm-box{
 	width:90%;
 	background-color: #FECBC3;
 	margin: 0px auto;
-	height: 45%;
+	height: fit-content;
 }
-.myplate-wrapper .info-wrapper .alarm-box div:first-child{
+.myplate-wrapper .info-wrapper .alarm-box .title{
 	margin: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
+.cal-ul{
+	list-style: none;
+}
+.cal-list-item{
+	margin:10px;
+    width: 30%;
+    border-radius: 10px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    padding: 10px;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.cal-list-item .img-wrapper{
+	overflow: hidden;
+    width: 90%;
+}
+.cal-list-item .img-wrapper img{
+	width: 100%;
+}
+.inner-ul{
+	list-style: none;
+}
+.inner-ul li{
+	font-size: 12px;
+}
 /*나의 예약*/
 .myplate-wrapper .reserve-wrapper{
 	width: 90%;
@@ -392,16 +419,18 @@ h2{
 	<div class="info-wrapper">
 		<p id="selected_date"></p>
 		<div class="reserve-box">
-			<div>
+			<div class="title">
 				<img src="/img/user/storeInfo/cal_icon.png">
 				<span>예약</span>
 			</div>
+			<div id="reserve-list-box"></div>
 		</div>
 		<div class="alarm-box">
-			<div>
+			<div class="title">
 				<img src="/img/user/storeInfo/bell_icon.png">
 				<span>알림신청</span>
 			</div>
+			<div id="alarm-list-box"></div>
 		</div>
 	</div>
 </section>
@@ -591,7 +620,7 @@ h2{
 	</div>
 </section>
 <%@include file="/WEB-INF/views/userFooter.jsp" %>
-</body>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	  const tabList = document.querySelectorAll('.tab-list li');
@@ -671,4 +700,5 @@ var reserveItems=document.querySelectorAll('.info-bottom');
 <script type="text/javascript" src="../js/httpRequest.js"></script>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script type="text/javascript" src="/js/myplate/myplateCal.js"></script>
+</body>
 </html>

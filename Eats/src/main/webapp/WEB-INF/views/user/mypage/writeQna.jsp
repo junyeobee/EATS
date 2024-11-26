@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,9 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1:1 문의 작성</title>
     <link rel="stylesheet" href="/css/user/myPageCss.css"> <!-- 스타일 시트 -->
-    <link rel="stylesheet" href="./css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
+<%@include file="../../userHeader.jsp" %>
 <div class="container">
     <h1>1:1 문의 작성</h1>
 
@@ -99,6 +102,7 @@
         background-color: #5a6268;
     }
 </style>
-
+<%@include file="../../userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

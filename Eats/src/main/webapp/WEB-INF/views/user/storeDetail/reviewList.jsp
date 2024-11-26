@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateReviewList(reviews) {
-    	alert(reviews.length);
+    	
         const reviewListWrap = document.querySelector('.rev-list-wrap');
         if (!reviews || reviews.length === 0) {
             reviewListWrap.innerHTML = '<div>아직 리뷰가 없습니다! 첫 리뷰를 작성해보세요</div>';
