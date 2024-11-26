@@ -84,10 +84,10 @@
 									${dto.rev_idx }
 								</td>
 								<td class="a_left">
-									${dto.rev_content }
+									${dto.rev_content }...
 								</td>
 								<td class="a_left">
-									${dto.del_reason }
+									${dto.del_reason }...
 								</td>
 							</tr>
 						</c:forEach>

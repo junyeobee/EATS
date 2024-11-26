@@ -95,16 +95,21 @@
 	    var num = tr + "/" + td;
 	}
 	
-	function grid_setting(date_check) {
+	//function grid_setting(date_check) {
+	function grid_setting() {
 		
-		if(date_check > 0){
+		var input_for_num = $("#input_for_num").val();
+		//alert(input_for_num);
+		
+		//if(input_for_num > 0){
+		if(input_for_num > 0){
 			//confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
 			
 			//예약된 테이블이 있을 수 있어 삭제후 삽입 안되게 막음
 			alert("영업중인 매장의 그리드는 수정할 수 없습니다.");
 			
 		}else {
-			grid_setting_action();
+			//grid_setting_action();
 		}
 	}
 			
@@ -270,7 +275,10 @@
 					</c:if>
 					
 					<input type="button" class="btn_black ml20" value="그리드 확인" onclick="grid_view()">
+					<!-- 
 					<input type="submit" class="btn_skyblue ml20 view_btn" ${view_yn} value="그리드 설정" onclick="grid_setting(${for_num})">
+					 -->
+					<input type="submit" class="btn_skyblue ml20 view_btn" ${view_yn} value="그리드 설정" onclick="grid_setting()">
 				</div>
 				
 				
@@ -366,6 +374,7 @@
 							</tr>
 						</c:forEach>
 					</table>
+					<input type="hidden" name="" id="input_for_num" class="" value="${for_num}">
 				</div>
 					
 			</div>

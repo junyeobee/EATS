@@ -130,7 +130,15 @@
 				<tr>
 					<th>no.</th>
 					
-					<c:if test="${storeCheck != 'out'}">
+					<c:if test="${empty storeCheck || storeCheck == 'waiting'}">
+						<th class="ws300">매장명</th>
+						<th class="ws200">전화번호</th>
+						<th class="ws600">주소</th>
+						<th class="ws200">대표자명</th>
+						<th class="ws400">승인/반려</th>
+					</c:if>
+					
+					<c:if test="${storeCheck == 'in'}">
 						<th class="ws300">매장명</th>
 						<th class="ws200">전화번호</th>
 						<th class="ws600">주소</th>
@@ -230,6 +238,17 @@
 							<c:if test="${storeCheck == 'out'}">
 								<td class="a_center">
 									(${dto.su_reason })
+								</td>
+							</c:if>
+							<c:if test="${empty storeCheck || storeCheck == 'waiting'}">
+								<td class="a_center">
+									<input type="button" name="" id="" class="btn_orange" value="승인" onclick="infoUpdate_Act(${dto.su_idx }, '승인', ${dto.store_idx })">
+									<input type="button" name="" id="cancel_before_${dto.su_idx }" class="btn_black" value="반려" onclick="cancel_box_open(${dto.su_idx })">
+								
+									<div class="cancel_box" id="cancel_box_${dto.su_idx }">
+										<input type="text" name="" id="cancel_input_${dto.su_idx }" class="ws200" placeholder="반려사유를 입력해주세요." value="">
+										<input type="button" name="" id="" class="btn_red" value="반려하기" onclick="infoUpdate_Act(${dto.su_idx }, '반려', ${dto.store_idx })">
+									</div>
 								</td>
 							</c:if>
 							
