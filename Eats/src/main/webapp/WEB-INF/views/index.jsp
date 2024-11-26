@@ -70,6 +70,7 @@ menu, ol, ul {
 .swiper-pagination-bullet-active {
 	background-color: #f3553c;
 }
+
 </style>
 <title>EATS</title>
 </head>

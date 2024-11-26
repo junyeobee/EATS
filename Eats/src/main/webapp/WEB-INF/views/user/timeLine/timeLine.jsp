@@ -54,7 +54,7 @@ body {
 	border-radius: 8px 8px 0 0;
 	padding: 20px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	max-width: 905px;
+	width: 870px;
 	margin: 0 auto;
 	background: white;
 	margin-top:60px;
@@ -179,7 +179,7 @@ body {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
-	background-color: #ffd699;
+	background-color: #e7e7e7; /* 색상변경 */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -420,7 +420,13 @@ color:black;
 					<div class="profile-image">
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
-						<img src="${pf.profile_image}" alt="Profile Image">
+					<c:if test="${empty pf.profile_image }">
+        		<td><img src="/myPageImg/default-icon.png"></td>
+        		</c:if>
+        		<c:if test="${!empty pf.profile_image }">
+        		<td><img src="${pf.profile_image}"></td>
+        		</c:if>
+						<%-- <img src="${pf.profile_image}" alt="Profile Image"> --%>
 						<p> ${pf.user_nickname}</p>	
 						
 					

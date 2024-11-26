@@ -117,11 +117,14 @@ input[type="button"] {
 	color: white;
 }
 
+
+
+
 .btn-delete {
 	padding: 8px 20px;
 	margin-left: 10px;
 	border: none;
-	border-radius: 4px;
+	border-radius: 4px;.
 	cursor: pointer;
 }
 
