@@ -57,6 +57,12 @@
             font-weight: 500;
         }
 
+        .logo img{
+            width: 64px;
+            height: 56px;
+            cursor: pointer;
+        }
+
         .create-button {
             background-color: #191919;
             color: white;
@@ -208,7 +214,7 @@
 <body>
     <header class="header">
         <div class="container header-content">
-            <div class="logo">잇츠로고</div>
+            <div class="logo"><img src = "../img/store/storeLogo.png" onclick = "window.location.href='/storeMain'"></div>
             <a onclick="window.open('/store/storeReport/subscribe','subscribe','width=484px','height=500px')" class="create-button">리뷰 보고서 구독하기</a>
         </div>
     </header>
@@ -256,39 +262,6 @@
             </div>
         </div>
     </section>
-
-    <section class="integrations">
-        <div class="container">
-            <h2>지금 받아보세요</h2>
-            <div class="integration-grid">
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Zapier">
-                    <p>Zapier</p>
-                </div>
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Google Sheets">
-                    <p>Google Sheets</p>
-                </div>
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Slack">
-                    <p>Slack</p>
-                </div>
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Google Analytics">
-                    <p>Google Analytics</p>
-                </div>
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Hubspot">
-                    <p>Hubspot</p>
-                </div>
-                <div class="integration-item">
-                    <img src="/api/placeholder/56/56" alt="Salesforce">
-                    <p>Salesforce</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="cta">
         <div class="container">
             <h2>정기 구독 신청하기</h2>

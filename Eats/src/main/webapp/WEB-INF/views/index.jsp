@@ -356,8 +356,8 @@ menu, ol, ul {
 		</div><!-- category div (e) -->
 	</div> <!-- main div (e) -->
 	</section>
-</body>
 <%@include file="userFooter.jsp" %>
+</body>
 <script type="text/javascript" src="../js/userHeader.js"></script>
 <script>
 	var locationBox = document.getElementById("location_box");

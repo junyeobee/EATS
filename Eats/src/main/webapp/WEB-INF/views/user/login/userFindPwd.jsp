@@ -113,7 +113,7 @@ function showResult(){
 <body>
 	<div class="form-wrapper">
 		<div class="logo-wrapper">
-			<a href="/"><img src="/img/eats_logo.png"></a>
+			<a href="/"><img src="/svg/logo_icon_red.svg"></a>
 		</div>
 		<div class="title-wrapper">
 			<h3>비밀번호 찾기</h3>

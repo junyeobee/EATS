@@ -1,6 +1,7 @@
-@charset "UTF-8";
+/* @charset "UTF-8";
 body{
 	font-family: "Noto Sans KR", sans-serif;
+	background-color: #FECBC3;
 }
 .logo-wrapper{
 	width:20%;
@@ -14,8 +15,12 @@ body{
 	text-align:center;
 }
 .form-wrapper{
-	width:50%;
-	margin:100px auto;
+	width: 50%;
+    margin: 100px auto;
+    background: #fefefe;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 .table-wrapper{
 	width:100%;
@@ -41,7 +46,7 @@ body{
     font-size: 13px;
 }
 .form-wrapper table tr td:first-child{
-	/* width:70%; */	
+	width:70%;	
 	text-align:end;
 }
 .form-wrapper table tr td:nth-child(2){
@@ -61,7 +66,7 @@ body{
 input[type="text"]{
 	width: 100%;
     padding: 15px 0;
-	background-color: #FFF8EB;
+	background-color: #fefefe;
     border: 1px solid gray;
     height: 30px;
     border-radius: 5px;
@@ -76,8 +81,115 @@ input[type="button"]{
     border-radius: 5px;
     border: 0;
     font-family: "Noto Sans KR", sans-serif;
-	background-color:#FFB53C;
-	color:#FFF8EB;
+	background-color:#F3553C;
+	color:#FEFEFE;
 	border:0;
 	width:60%;
+} */
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #FECBC3;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-wrapper {
+  width: 500px;
+  background: #fefefe;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo-wrapper {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-wrapper img {
+  width: 120px;
+  height: auto;
+}
+
+.title-wrapper {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title-wrapper p {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.table-wrapper {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0 15px;
+}
+
+tr {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+td:first-child {
+  flex: 1;
+}
+
+td:last-child {
+  width: 120px;
+}
+input{
+	font-family: "Noto Sans KR", sans-serif;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #F3553C;
+  outline: none;
+}
+
+input[type="button"] {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #F3553C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[type="button"]:hover {
+  background-color: #e13e25;
+}
+
+.message {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+  padding-left: 5px;
+}
+
+#code-message {
+  color: #F3553C;
 }

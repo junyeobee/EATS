@@ -7,15 +7,16 @@
 }
 body{
 	font-family: "Noto Sans KR", sans-serif;
+	background-color: #FECBC3;
 }
 .id-show-wrapper{
-	width:50%;
-	margin:100px auto;
-	border:2px solid #FFB53C;
-	border-radius:10px;
-	background-color:#FFF8EB;
-	height: 500px;
-    box-shadow: 1px 1px 1px 1px lightgray;
+    width: 50%;
+    margin: 100px auto;
+    border: 2px solid #fefefe;
+    border-radius: 10px;
+    background-color: #fefefe;
+    height: 500px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 .logo-wrapper{
 	width:20%;
@@ -59,8 +60,8 @@ body{
     border-radius: 5px;
     border: 0;
     font-family: "Noto Sans KR", sans-serif;
-	background-color:#FFB53C;
-	color:#FFF8EB;
+	background-color:#f3553c;
+	color:#fefefe;
 	border:0;
 }
 .link-wrapper a{

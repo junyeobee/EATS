@@ -8,6 +8,7 @@
     <title>1:1 문의</title>
     <link rel="stylesheet" href="/css/user/myPageCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
     <style>
 /* 컨테이너 기본 스타일 */
 .container {
@@ -256,5 +257,7 @@ h1 {
             <button onclick="location.href='/user/mypage/writeQna'">글쓰기</button>
         </div>
     </div>
+    <%@include file="../../userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>
