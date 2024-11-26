@@ -16,12 +16,14 @@
 
     <div class="container">
         <!-- 프로필 섹션 -->
-        <div class="profile">
-            <img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/svg/profile_icon.svg'}" 
-                 alt="프로필 이미지" class="profile-img">
-            <div class="profile-name">${userProfile.user_nickname}</div>
-            <div class="profile-points">${userProfile.user_point} 포인트</div>
-        </div>
+<div class="profile">
+    <img src="${not empty userProfile.profile_image ? userProfile.profile_image : '/svg/profile_icon.svg'}" 
+         alt="프로필 이미지" class="profile-img">
+    <div class="profile">
+        <div class="profile-name">${userProfile.user_nickname}</div>
+    </div>
+</div>
+
 
         <!-- 정보 테이블 -->
         <h1>나의 정보</h1>

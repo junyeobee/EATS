@@ -25,9 +25,14 @@ public class MypageServiceImple implements MypageService {
     public EatsUserDTO getUserProfile(int user_idx) {
         return mypageMapper.getUserProfile(user_idx);
     }
-
+    @Override
+    public EatsUserProfileDTO getUserProfile1(int user_idx) {
+        // Mapper에서 사용자 프로필 가져오기
+        return mypageMapper.getUserProfile1(user_idx);
+    }
     @Override
     public EatsUserProfileDTO getUserProfileDetail(int user_idx) {
+    	
         return mypageMapper.getUserProfileDetail(user_idx);
     }
 

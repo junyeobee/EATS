@@ -13,6 +13,9 @@ public interface MypageMapper {
 
     // 마이페이지 정보 가져오기 (EatsUserDTO)
     EatsUserDTO getUserProfile(int user_idx);
+    
+    EatsUserProfileDTO getUserProfile1(int user_idx);
+
 
     // 나의 정보 상세보기 (EatsUserProfileDTO)
     EatsUserProfileDTO getUserProfileDetail(int user_idx);
@@ -62,4 +65,6 @@ public interface MypageMapper {
 	
 	UserQnaDTO selectQnaDetail(int uqnaIdx);
 
+	
+	
 }
