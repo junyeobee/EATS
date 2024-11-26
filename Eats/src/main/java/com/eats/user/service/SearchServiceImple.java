@@ -117,7 +117,12 @@ public class SearchServiceImple implements SearchService {
 
 		if (selectedTime != null && !selectedTime.equals("")) {
 			for (int i = 0; i < storeList.size(); i++) {
-				String[] breakTime = storeList.get(i).getStime_break().split("-");
+				Map<String, Object> timeMap = new HashMap<>();
+				timeMap.put("store_idx",storeList.get(i).getStore_idx());
+				timeMap.put("week",week);
+
+				StoreTimeDTO sdto = mp.getStoreTimes(timeMap);
+				String[] breakTime = sdto.getStime_break().split("-");
 
 				int bshour = Integer.parseInt(breakTime[0].split(":")[0]);
 				int bsmin = Integer.parseInt(breakTime[0].split(":")[1]);

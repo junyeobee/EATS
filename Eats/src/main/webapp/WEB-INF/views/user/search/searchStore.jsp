@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="./css/user/searchCss.css">
 <link rel="stylesheet" href="./css/user/userHeader.css">
+<link rel="stylesheet" href="./css/user/userFooter.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
 <link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 
@@ -292,6 +293,7 @@ menu, ol, ul {
 
 
 </body>
+<%@include file="../../userFooter.jsp" %>
 <!-- services 라이브러리 불러오기 -->
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
