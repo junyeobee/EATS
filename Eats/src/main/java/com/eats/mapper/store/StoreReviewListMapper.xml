@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eats.mapper.store.StoreReviewListMapper">
-	<select id="getReivewLists" resultType = "com.eats.store.model.reviewList.ReviewsListDTO">
-		select 
-		    r.rev_idx,r.rev_writedate, u.user_nickname, r.rev_score, r.rev_content 
-		from 
-		    review r 
-		join 
-		    reservation res 
-		on 
-		    res.reserve_idx = r.reserve_idx 
-		join
-		    user_profile u 
-		on 
-		    u.user_idx = res.user_idx 
-		where store_idx = #{storeIdx}
+	<select id = "getReviewCount">
+		SELECT 
+			count(*)
+		FROM review r 
+		JOIN reservation res ON res.reserve_idx = r.reserve_idx 
+		JOIN user_profile u ON u.user_idx = res.user_idx 
+		WHERE store_idx = #{storeIdx}
+	</select>
+	<select id="getReivewLists" parameterType = "map" resultType = "com.eats.store.model.reviewList.ReviewsListDTO">
+		SELECT * FROM (
+			SELECT ROWNUM AS rnum, a.* FROM (
+				SELECT 
+					r.rev_idx, r.rev_writedate, u.user_nickname, 
+					r.rev_score, r.rev_content 
+				FROM review r 
+				JOIN reservation res ON res.reserve_idx = r.reserve_idx 
+				JOIN user_profile u ON u.user_idx = res.user_idx 
+				WHERE store_idx = #{storeIdx}
+				ORDER BY r.rev_idx DESC
+			) a WHERE ROWNUM <![CDATA[<=]]> #{end}
+		) WHERE rnum <![CDATA[>=]]> #{start}
 	</select>
 	<select id = "getReviewDetail" resultType = "com.eats.store.model.reviewList.ReviewDetailDTO">
 		select 
