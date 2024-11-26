@@ -9,9 +9,7 @@
 <%@ include file="../store_Header.jsp"%>
 		<%@ include file="../nav.jsp"%>
 <title>메뉴 수정</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
-	rel="stylesheet">
+
 <style>
 
 
@@ -63,10 +61,11 @@ body {
 }
 
 .menu-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 1rem;
-	margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    row-gap: 1.6rem; /* 행 간격 */
+    column-gap: 2rem; /* 열 간격 */
+    margin-bottom: 2rem;
 }
 
 .menu-item {
@@ -77,6 +76,7 @@ body {
 	border: 2px solid transparent;
 	cursor: pointer;
 	transition: all 0.2s ease;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .menu-item.selected {
@@ -195,6 +195,12 @@ position: relative;
 right:0;
 
 }
+.menu_wrap{
+width:1400px;
+
+overflow: hidden;
+
+}
 </style>
 </head>
 
@@ -230,6 +236,7 @@ right:0;
 		<input type="button" value="등록하기" class="add-button" onclick="location.href='StoreMenuInsert'"> 
 		
 		</div>
+		<div class="menu_wrap">
 		<div class="menu-grid" id="menuList">
 			<!-- 메뉴 아이템 반복 -->
 			<c:if test="${empty menu }">
@@ -257,7 +264,7 @@ right:0;
 				<input type="hidden" name="menu_idx" value="${menu.menu_idx }">
 			</c:forEach>
 		</div>
-		
+		</div>
 	
 	</form>
 
