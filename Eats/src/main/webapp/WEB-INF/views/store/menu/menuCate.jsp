@@ -67,7 +67,7 @@ h1 {
 	background-color: #f8f9fa;
 	padding: 20px;
 	border-radius: 4px;
-	min-height: 400px;
+	min-height: 660px;
 	width: 600px;
 }
 
