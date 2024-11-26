@@ -46,24 +46,27 @@ public class StoreLoginController {
 
 		ModelAndView mav = new ModelAndView();
 		 
-		int storeIdx = service.storeLogin(storeId, storePwd);
+		int loginOk = service.storeLogin(storeId, storePwd);
+		
 		
 		String msg = "";
+		
+		if (loginOk ==3) {
+			Integer storeIdx = service.storeIdx(storeId);
 
-		if (storeIdx > 0) {
-			msg = "로그인 성공";
-			
 			session.setAttribute("storeId",storeId);
 			
 			session.setAttribute("storeIdx", storeIdx);
 			
-			System.out.println(storeIdx); 
+			System.out.println("매장번호"+storeIdx); 
 			
 			String storeName = service.storeName(storeIdx);
+			msg = "로그인 성공 storeIdx:"+storeIdx+"가게명"+storeName;
 			
 			session.setAttribute("storeName", storeName);
 			
 			System.out.println("가게이름"+storeName);
+			
 			
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl", "storeMain"); 

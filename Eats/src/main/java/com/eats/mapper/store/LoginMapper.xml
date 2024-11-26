@@ -16,6 +16,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 
+	<select id="storeIdx" parameterType="String" resultType="Integer">
+	 	select 
+	 	store_idx
+	 	from 
+	 	store_account
+	 	where store_id=#{storeId}
+	</select>
+
 	<select id="findId"
 		parameterType="com.eats.store.model.EatsStoreDTO" resultType="String">
 

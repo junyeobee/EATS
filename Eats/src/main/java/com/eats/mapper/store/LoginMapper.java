@@ -16,4 +16,6 @@ public interface LoginMapper {
 	
 	public String storeName(int storeIdx);
 	
+	public Integer storeIdx(String storeId);
+	
 }
