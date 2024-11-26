@@ -32,7 +32,7 @@
 	.cb_top span {font-weight:600; font-size:14px;}
 	.cateBoxing > * {float:left; width:620px; margin:30px 15px;}
 	.cateBox { border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding:20px; }
-	.cateBox .cb_bottom {height:40px;}
+	.cateBox .cb_bottom {min-height:40px;}
 	.cateBox .cb_bottom > span {display:inline-block; padding:5px; background-color:#5dd5ff; border-radius:5px; margin:5px;}
 	
 	
