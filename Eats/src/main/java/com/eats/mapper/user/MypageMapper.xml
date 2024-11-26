@@ -70,17 +70,20 @@
         WHERE user_idx = #{user_idx}
     </select>
 
+
     <!-- 찜 관련 -->
-    <select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
-        SELECT * FROM (
-            SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
-                   ROWNUM AS rnum
-            FROM JJIM jjim
-            JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
-            WHERE jjim.USER_IDX = #{user_idx}
-            ORDER BY store.STORE_NAME
-        ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
-    </select>
+<select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
+    SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize}
+</select>
+
 
     <select id="getTotalJjimCount" resultType="int">
         SELECT COUNT(*)

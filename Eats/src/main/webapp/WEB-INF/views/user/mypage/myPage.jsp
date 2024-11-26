@@ -23,9 +23,6 @@
 <img src="${not empty userProfile1.profile_image ? userProfile1.profile_image : '/svg/profile_icon.svg'}?timestamp=${currentTime}" 
      alt="프로필 이미지" class="profile-img">
             <div class="profile-name">${userProfile1.user_nickname}</div>
-                <div class="profile-points">
-                    현재 포인트: <strong>${userProfile1.user_point}</strong> 점
-                </div> 
            	</div>
 
         <!-- 메뉴 섹션 -->

@@ -255,7 +255,8 @@ public class MypageController {
         if (jjimList == null || jjimList.isEmpty()) {
             model.addAttribute("jjim", null); // 찜 리스트가 없음을 명시
         } else {
-            model.addAttribute("jjimList", jjimList); // 전체 찜 리스트 전달
+            // 찜 목록과 함께 store_image도 전달
+            model.addAttribute("jjimList", jjimList); 
         }
 
         model.addAttribute("currentPage", page);
@@ -263,6 +264,7 @@ public class MypageController {
 
         return "user/mypage/myJjim";  // 반환 타입을 String으로 수정, 뷰 이름 반환
     }
+
 
 
     // 찜 삭제
