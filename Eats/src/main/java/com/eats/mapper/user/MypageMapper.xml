@@ -11,19 +11,31 @@
         WHERE user_idx = #{user_idx}
     </select>
     
-    <select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
-        SELECT user_idx, user_nickname, user_intro, profile_image
-        FROM user_profile
-        WHERE user_idx = #{user_idx}
-    </select>
+<select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT 
+        user_idx, 
+        user_nickname, 
+        user_intro, 
+        user_point, 
+        profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
+
 
     <!-- 나의 정보 상세보기 -->
-    <select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">
-        SELECT user_idx, user_nickname, user_intro, user_location, user_tel, user_point, profile_image
-        FROM user_profile
-        WHERE user_idx = #{user_idx}
-    </select>
-
+<select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT 
+        user_idx, 
+        user_nickname, 
+        user_intro, 
+        user_location, 
+        user_tel, 
+        user_point, 
+        profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
     <!-- 나의 정보 수정 -->
     
 <update id="updateUserProfile">

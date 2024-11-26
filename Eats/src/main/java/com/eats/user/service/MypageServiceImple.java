@@ -28,6 +28,7 @@ public class MypageServiceImple implements MypageService {
 
     @Override
     public EatsUserProfileDTO getUserProfileDetail(int user_idx) {
+    	
         return mypageMapper.getUserProfileDetail(user_idx);
     }
 

@@ -64,6 +64,8 @@ public class MypageController {
         // 사용자 기본 정보 가져오기
         EatsUserDTO userProfile = mypageService.getUserProfile(user_idx);
         EatsUserProfileDTO userProfile1 = mypageService.getUserProfile1(user_idx);
+
+
         if (userProfile == null) {
             mav.setViewName("error");
             mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
@@ -73,6 +75,7 @@ public class MypageController {
 
         mav.addObject("userProfile", userProfile);
         mav.addObject("userProfile1", userProfile1);
+        mav.addObject("currentTime", currentTime);
         mav.setViewName("user/mypage/myPage");
         return mav;
     }
@@ -90,12 +93,12 @@ public class MypageController {
 
         EatsUserProfileDTO userProfile = mypageService.getUserProfileDetail(user_idx);
 
-        // 디버깅: 프로필 이미지 확인
-        if (userProfile != null) {
-            System.out.println("Profile Image Path: " + userProfile.getProfile_image());
-        } else {
-            System.out.println("User profile is null.");
-        }
+//        // 디버깅: 프로필 이미지 확인
+//        if (userProfile != null) {
+//            System.out.println("Profile Image Path: " + userProfile.getProfile_image());
+//        } else {
+//            System.out.println("User profile is null.");
+//        }
 
         mav.addObject("userProfile", userProfile);
         mav.setViewName("user/mypage/myProfile");
