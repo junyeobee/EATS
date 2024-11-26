@@ -110,7 +110,7 @@ public class SearchServiceImple implements SearchService {
 			}
 		}
 
-		//map.put("week", week);
+		map.put("week", week);
 
 		List<HYStoreDTO> storeList = mp.getStoreInfo(map);
 

@@ -422,7 +422,7 @@ function showDetail(i){
 
             const reviewIdx = document.querySelector('.modal-content').dataset.reviewIdx;
             
-            sendRequest('/store/review/revDelreq', 'rev_idx=' + reviewIdx, function() {
+            sendRequest('/store/review/revDelreq', 'rev_idx=' + reviewIdx+'&reason='+reason, function() {
                 if (XHR.readyState == 4) {
                     if (XHR.status == 200) {
                         alert('리뷰 삭제 요청이 정상적으로 처리되었습니다.');

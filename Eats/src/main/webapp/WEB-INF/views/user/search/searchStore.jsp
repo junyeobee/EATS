@@ -244,7 +244,7 @@ menu, ol, ul {
 						onclick="viewStoreDetail(${list.store_idx},'${selectedDate }')">
 						<div class="store_info_top">
 							<div class="store_ingo_img_box">
-								<img class="store_info_img" src="${list.store_img }" />
+								<img class="store_info_img" src="/img/storeUploadImg/${list.store_img }" />
 							</div>
 							<div class="store_info_title">
 								<div class="store_info_title_line">

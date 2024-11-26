@@ -75,7 +75,7 @@ public class StoreReviewController {
 	
 	@GetMapping("/store/review/revDelreq")
 	@ResponseBody
-	public ResponseEntity<String> reviewDelReq(String rev_idx){
+	public ResponseEntity<String> reviewDelReq(String rev_idx,String reason){
 		int parseIdx = Integer.parseInt(rev_idx);
 		int result = service.getRevRequest(parseIdx);
 		//이거 요청상태로 xhr객체 200일때, 204일때 얼럿창으로 처리하면됨
@@ -83,8 +83,10 @@ public class StoreReviewController {
 		if(result > 0){
 			return ResponseEntity.status(204).body("이미 삭제 신청한 리뷰입니다.");
 		}else{
-			System.out.println(parseIdx);
-			int insertResult = service.insertRevReq(parseIdx);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("storeIdx", parseIdx);
+			map.put("reason", reason);
+			int insertResult = service.insertRevReq(map);
 			System.out.println(insertResult);
 			if(insertResult == 0) {
 				return ResponseEntity.status(204).body("삭제 신청 실패");

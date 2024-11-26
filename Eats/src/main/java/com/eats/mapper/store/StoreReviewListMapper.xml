@@ -54,7 +54,7 @@
 	<select id = "getRevRequest">
 		select count(*) from rev_del where rev_idx = #{rev_idx}
 	</select>
-	<insert id="insertRevReq">
-		insert into rev_del values(#{rev_idx}, sysdate, 0, null)
+	<insert id="insertRevReq" parameterType="map">
+		insert into rev_del values(#{storeIdx}, sysdate, 0, null,#{reason})
 	</insert>
 </mapper>

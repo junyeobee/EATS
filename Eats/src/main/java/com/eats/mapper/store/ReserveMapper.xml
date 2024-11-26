@@ -6,22 +6,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.eats.mapper.store.ReserveMapper">
 	<select id="tables" parameterType="map" resultType="com.eats.store.model.reserve.TableDTO">
 		select 
-			table_num, 
-			sts_num as cnt, 
+			sts.table_num, 
+			sts.sts_num as cnt, 
 			NVL(reserve_state, -1) as stat, 
 			cv.cate_value_name as tabletype
 		from 
-			store_table_set sts 
+			store_table_set sts               
 		left join 
 			reservation r 
 		on 
 			r.reserve_table_idx = sts.sts_idx 
 			and store_idx = #{storeIdx}
 			and reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD') 
-			and reserve_time = #{time} 
-		left join 
-			cate_value cv 
-		on 
+			and reserve_time = #{time}
+		left JOIN category c ON sts.STS_TYPE_IDX = c.CATE_IDX
+	    left JOIN CATE_VALUE cv ON c.CATE_VALUE_IDX = cv.CATE_VALUE_IDX
+		left join store_table_set sts
+        on 
 			sts.sts_type_idx = cv.cate_value_idx
 		order by 
 			table_num asc
