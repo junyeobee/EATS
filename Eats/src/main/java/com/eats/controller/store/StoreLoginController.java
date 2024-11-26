@@ -148,7 +148,7 @@ public class StoreLoginController {
 		
 		String dbEmail=service.storeidCheckForFindPwd(storeId);
 		
-		System.out.println(dbEmail);
+	 System.out.println(dbEmail);
 		
 		ModelAndView mv=new ModelAndView();
 		
