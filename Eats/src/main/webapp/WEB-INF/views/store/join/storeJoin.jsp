@@ -182,7 +182,7 @@ margin-top:5px;
 			</div>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="biz_num">사업자 등록 번호</label> <input type="text" maxLength="11"
+					<label for="biz_num">사업자 등록 번호</label> <input type="text" maxLength="12"
 						id="biz_num" name="biz_num" class="form-control" placeholder="예시) 123-45-78910" onkeyup="autoBizNum(value)"/>
 				</div>
 				<div class="alert-text" id="checkBiz">

@@ -30,10 +30,9 @@
 	</select>
 
 	<select id="getStoreInfo" parameterType="Map" resultType="com.eats.store.model.HYStoreDTO">
-		select c.*, avg_price, store_img
-		from (select distinct b.*
-		from (select a.*, stime_start, stime_end, stime_break
-		from (select * from store
+		select b.*, avg_price, store_img
+		from (
+		select a.* from (select distinct * from store
 		where
 		<if test="city!=null and city!='' and unit!=null and unit!='' ">
 			store_addr like #{city}||'%'||#{unit}||'%' and 
@@ -41,7 +40,7 @@
 		<if test="word!=null and word!=''">
 			store_name like '%'||#{word}||'%' and
 		</if>
-		store_state='TRUE')a, store_time)b
+		store_state='TRUE')a
 		<if test="tag.size()>0">
 			,
 		</if>
@@ -52,16 +51,20 @@
 			category where category.cate_value_idx=#{tagList.valueidx})
 		</foreach>
 		<if test="tag.size()>0">
-			cate where b.store_idx=cate.store_idx
+			cate where a.store_idx=cate.store_idx
 		</if>
-		)c, (select store_idx, round(avg(menu_price),0) avg_price
+		)b, (select store_idx, round(avg(menu_price),0) avg_price
 		from menu, menu_cate where menu.m_cate_idx=menu_cate.m_cate_idx
 		group by store_idx)price, store_img
-		where c.store_idx=price.store_idx and store_img.store_idx=price.store_idx and img_order=1
+		where b.store_idx=price.store_idx and store_img.store_idx=price.store_idx and img_order=1
 		order by store_area asc
 	</select>
 	
 	<select id="getStoreStimeDay" parameterType="Map" resultType="Integer">
 		select count(*) from store_time where store_idx=#{store_idx} and stime_day=#{week}
+	</select>
+	
+	<select id="getStoreTimes" parameterType="Map" resultType="com.eats.store.model.StoreTimeDTO">
+		select * from store_time where store_idx=#{store_idx} and stime_day=#{week}
 	</select>
 </mapper>

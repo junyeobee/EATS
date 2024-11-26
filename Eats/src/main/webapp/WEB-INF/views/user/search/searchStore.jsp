@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="./css/user/searchCss.css">
 <link rel="stylesheet" href="./css/user/userHeader.css">
+<link rel="stylesheet" href="./css/user/userFooter.css">
 <link rel="stylesheet" href="./css/user/modalCss.css">
 <link rel="stylesheet" href="../css/user/storeDetail/reserveCal.css">
 
@@ -263,14 +264,14 @@ menu, ol, ul {
 									<div class="store_time_box">
 										<div class="store_last_time_box">
 											<div class="store_last_time_text">영업시간</div>
-											<div class="store_last_time_time">${list.stime_start }</div>
+											<div class="store_last_time_time">${tMap[list.store_idx].stime_start }</div>
 											<div class="store_last_time_text">-</div>
-											<div class="store_last_time_time">${list.stime_end }</div>
+											<div class="store_last_time_time">${tMap[list.store_idx].stime_end }</div>
 										</div>
-										<c:if test="${!empty list.stime_break }">
+										<c:if test="${!empty tMap[list.store_idx].stime_break }">
 											<div class="store_break_time_box">
 												<div class="store_break_time_text">브레이크 타임</div>
-												<div class="store_break_time_time">${list.stime_break }</div>
+												<div class="store_break_time_time">${tMap[list.store_idx].stime_break }</div>
 											</div>
 										</c:if>
 									</div>
@@ -292,6 +293,7 @@ menu, ol, ul {
 
 
 </body>
+<%@include file="../../userFooter.jsp" %>
 <!-- services 라이브러리 불러오기 -->
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9201b2fc722dd09f6ce9211e3b210a1&libraries=services"></script>
