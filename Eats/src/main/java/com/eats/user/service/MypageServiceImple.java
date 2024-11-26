@@ -25,14 +25,14 @@ public class MypageServiceImple implements MypageService {
     public EatsUserDTO getUserProfile(int user_idx) {
         return mypageMapper.getUserProfile(user_idx);
     }
+
     @Override
     public EatsUserProfileDTO getUserProfile1(int user_idx) {
-        // Mapper에서 사용자 프로필 가져오기
         return mypageMapper.getUserProfile1(user_idx);
     }
+
     @Override
     public EatsUserProfileDTO getUserProfileDetail(int user_idx) {
-    	
         return mypageMapper.getUserProfileDetail(user_idx);
     }
 
@@ -47,11 +47,11 @@ public class MypageServiceImple implements MypageService {
         return result > 0; // 업데이트 성공 여부 반환
     }
 
-    
-    // 찜 목록
+    // 찜 목록 (매장 이미지 포함)
     @Override
     public List<JjimDTO> getJjimList(int user_idx, int page, int pageSize) {
         int offset = (page - 1) * pageSize;
+        // 찜 목록에 매장 이미지 추가
         return mypageMapper.getJjimList(user_idx, offset, pageSize);
     }
 
@@ -69,17 +69,10 @@ public class MypageServiceImple implements MypageService {
 
     @Override
     public List<ReviewDTO> getReviewList(int user_idx, int page, int pageSize) {
-//        int startRow = (page - 1) * pageSize + 1;
-//        int endRow = page * pageSize;
-    	int offset = (page - 1) * pageSize;
-//    	
-//        Map<String, Object> paramMap = new HashMap<>();
-//        paramMap.put("user_idx", user_idx);
-//        paramMap.put("startRow", startRow);
-//        paramMap.put("endRow", endRow);
-
+        int offset = (page - 1) * pageSize;
         return mypageMapper.getReviewList(user_idx, offset, pageSize);
     }
+
     @Override
     public int getTotalReviewCount(int user_idx) {
         return mypageMapper.getTotalReviewCount(user_idx); // 변환 불필요
@@ -88,50 +81,43 @@ public class MypageServiceImple implements MypageService {
     // 결제 내역
     @Override
     public List<PaymentDTO> getPaymentList(int user_idx, int page, int pageSize) {
-
-    	int offset = (page - 1) * pageSize;
+        int offset = (page - 1) * pageSize;
         return mypageMapper.getPaymentList(user_idx, offset, pageSize);
     }
 
     @Override
     public int getTotalPaymentCount(int user_idx) {
-    	return mypageMapper.getTotalPaymentCount(user_idx);
-        
+        return mypageMapper.getTotalPaymentCount(user_idx);
     }
 
-	@Override
-	public EatsUserProfileDTO getUserProfile1(Integer user_idx) {
-		return mypageMapper.getUserProfile1(user_idx);
-	}
-
-	@Override
-	public List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize) {
-	    return mypageMapper.selectUserQnaList(user_idx, keyword, status, offset, pageSize);
-	}
-
-	@Override
-	public int getTotalQnaCount(int user_idx, String keyword, String status) {
-	    return mypageMapper.getTotalQnaCount(user_idx, keyword, status);
-	}
-
+    @Override
+    public EatsUserProfileDTO getUserProfile1(Integer user_idx) {
+        return mypageMapper.getUserProfile1(user_idx);
+    }
 
     @Override
-    
+    public List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize) {
+        return mypageMapper.selectUserQnaList(user_idx, keyword, status, offset, pageSize);
+    }
+
+    @Override
+    public int getTotalQnaCount(int user_idx, String keyword, String status) {
+        return mypageMapper.getTotalQnaCount(user_idx, keyword, status);
+    }
+
+    @Override
     public boolean saveUserQna(UserQnaDTO userQna) {
-        // Mapper 호출하여 데이터 저장
         int result = mypageMapper.insertUserQna(userQna);
         return result > 0; // 성공 여부 반환
     }
-    
+
     @Override
     public UserQnaDTO getQnaDetail(int uqnaIdx) {
         return mypageMapper.selectQnaDetail(uqnaIdx);
     }
 
-	@Override
-	public List<UserQnaDTO> getUserQnaList(Integer userIdx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    @Override
+    public List<UserQnaDTO> getUserQnaList(Integer userIdx) {
+        return null; // 필요에 따라 수정
+    }
 }
