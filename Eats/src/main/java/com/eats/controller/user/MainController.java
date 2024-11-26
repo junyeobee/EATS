@@ -57,9 +57,8 @@ public class MainController {
 		}
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
-		
-        String todate = today.format(formatter);
-		System.out.println(todate);
+		String todate = today.format(formatter);
+        
         List<BannerDTO> bannerList = ms.getBannerForSwiper(todate);
         
         ModelAndView mv = new ModelAndView();
@@ -81,30 +80,28 @@ public class MainController {
 			List<Integer> likeCount = new ArrayList<>();
 			for (int idx : revIdxList) {
 				reviewData.add(ms.getReview(idx));
-				likeCount.add(ms.getLikeCount(idx));
+				//likeCount.add(ms.getLikeCount(idx));
 			}
 
 			List<Double> storePoint = new ArrayList<>();
 			List<Integer> followCount = new ArrayList<>();
 			
-			List<String> tags = new ArrayList<>();
-
+			
+			Map<Integer, String[]> tagMap = new HashMap<>();
 			for (ReviewDTO rev_dto : reviewData) {
-				if(rev_dto!=null) {
+				if(rev_dto!=null&&rev_dto.getRev_tag()!=null) {
 					storePoint.add(ms.getStorePoint(rev_dto.getStore_idx()));
 					followCount.add(ms.getFollowerCount(rev_dto.getUser_idx()));
-	
+					
 					String[] tag_arr = rev_dto.getRev_tag().split(",");
-					for(String str:tag_arr) {
-						tags.add(str);
-					}
+					tagMap.put(rev_dto.getRev_idx(), tag_arr);
 				}
 				
 				mv.addObject("reviewData", reviewData);
 				mv.addObject("storePoint", storePoint);
-				mv.addObject("likeCount", likeCount);
+				//mv.addObject("likeCount", likeCount);
 				mv.addObject("followCount", followCount);
-				mv.addObject("tags", tags);
+				mv.addObject("tagMap", tagMap);
 			}
 		}
 
@@ -160,7 +157,6 @@ public class MainController {
 		Cookie cks[] = req.getCookies();
 		
 		for(Cookie temp:cks) {
-			System.out.println(temp.getName());
 			if (temp.getName().equals("cityCk")) {
 				temp.setMaxAge(0);
 			}

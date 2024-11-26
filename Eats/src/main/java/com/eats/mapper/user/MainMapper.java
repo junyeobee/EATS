@@ -20,7 +20,7 @@ public interface MainMapper {
 	public List<String> getUnitList(int area_idx);
 	
 	public List<Integer> getPopularReviews(String cityWord, String unitWord);
-	public ReviewDTO getReview(int rev_idx);
+	public ReviewDTO getReview(int user_idx);
 	public Double getStorePoint(int store_idx);
 	public Integer getLikeCount(int rev_idx);
 	public Integer getFollowerCount(int user_idx);
