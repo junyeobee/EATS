@@ -7,6 +7,7 @@
     <title>문의 상세 보기</title>
     <link rel="stylesheet" href="/css/user/myPageCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
     <style>
         /* 컨테이너 스타일 */
         .container {
@@ -144,5 +145,7 @@
             <button onclick="window.history.back();" class="btn-back">돌아가기</button>
         </div>
     </div>
+    <%@include file="../../userFooter.jsp" %>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

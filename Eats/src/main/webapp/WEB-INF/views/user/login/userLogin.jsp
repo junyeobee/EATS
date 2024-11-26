@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>EATS - LOGIN</title>
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
 <script>
 function checkForm(){
 	var inputId=document.getElementById('userId').value;
@@ -30,10 +32,17 @@ function checkForm(){
 <link rel="stylesheet" href="/css/user/userLoginCss.css">
 </head>
 <body>
+<div class="empty">
+	<img src="/img/user/girl.png" style="max-height: 500px;">
+	<h1>WELCOME</h1>
+	<!-- <img src="/img/user/chef.png" style="height: 300px; position: absolute; top: 30%; left: 20%;"> -->
+	<img src="/img/user/boy.png" style="position: absolute; bottom: 0; right: 34.3%; max-height: 500px;">
+</div>
+<div data-aos="zoom-in" style="width:40%;">
 <form name="user_login_form" id="user_login_form" onsubmit="return checkForm()" action="/user/login" method="post">
 	<div class="login-wrapper">
 		<div class="logo-wrapper">
-			<a href="/"><img src="/img/eats_logo.png"></a>
+			<a href="/"><img src="/svg/logo_icon_red.svg"></a>
 		</div>
 		<div class="text-wrapper">
 			<input type="text" name="userId" id="userId" placeholder="아이디" value="${cookie.saveId.value }">
@@ -53,5 +62,9 @@ function checkForm(){
 	</div>
 	<input type="hidden" name="callback" value="${callback }">
 </form>
+</div>
+<script> 
+	AOS.init(); // 자바스크립트로 init()을 해야 동작한다.
+</script>
 </body>
 </html>

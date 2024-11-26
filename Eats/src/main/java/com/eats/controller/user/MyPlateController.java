@@ -39,6 +39,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MyPlateController {
 	
+	public final static int POINT=500; //지급할 포인트 상수로 저장
+	
 	@Autowired
 	private UserReviewService reviewService;
 	
@@ -113,7 +115,6 @@ public class MyPlateController {
 			@RequestParam(value="rev_tag", required=false) String rev_tag,
 			Model model, HttpServletRequest req,
 			HttpSession session) {
-		System.out.println(rev_content);
 		String failedCallback=req.getHeader("Referer"); //실패 시 돌아갈 페이지 가져오기
 		
 		String projectPath=System.getProperty("user.dir");
@@ -174,7 +175,7 @@ public class MyPlateController {
 			
 			Map<String, Integer> pointParam=new HashMap<String, Integer>();
 			pointParam.put("user_idx", user_idx);
-			pointParam.put("update_point", crPoint+1000);
+			pointParam.put("update_point", crPoint+POINT);
 			int log_result=reviewService.pointLog(pointParam);
 			if(log_result>0) {
 				int pointResult=reviewService.givePoint(user_idx);
@@ -325,7 +326,7 @@ public class MyPlateController {
 		return mv;
 	}
 	
-	@PostMapping("/user/myplate/getTodayList")
+	@GetMapping("/user/myplate/getTodayList")
 	@ResponseBody
 	public Map<String, List> myplateCalendar(String date, HttpSession session){
 		Integer user_idx = (Integer)session.getAttribute("user_idx");
@@ -342,7 +343,7 @@ public class MyPlateController {
 			map.put("reserveList", reserveList);
 			map.put("alarmList", alarmList);
 		}
-		
+		System.out.println(map);
 		return map;
 	}
 }

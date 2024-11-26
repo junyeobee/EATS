@@ -7,6 +7,7 @@
     <title>내 정보 수정</title>
     <link rel="stylesheet" href="/css/user/editProfileCss.css">
     <link rel="stylesheet" href="/css/user/userHeader.css">
+    <link rel="stylesheet" href="/css/user/userFooter.css">
 </head>
 <body>
     <!-- 헤더 포함 -->
@@ -57,7 +58,7 @@
             </div>
         </form>
     </div>
-
+	<%@include file="/WEB-INF/views/userFooter.jsp" %>
     <!-- 파일 업로드 및 유효성 검사 스크립트 -->
     <script>
         // 폼 유효성 검사
@@ -127,5 +128,6 @@
             input.click(); // 파일 선택 창 열기
         }
     </script>
+    <script type="text/javascript" src="/js/userHeader.js"></script>
 </body>
 </html>

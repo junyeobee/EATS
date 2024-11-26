@@ -327,6 +327,6 @@ body{
 	</c:if>
 </section>
 <%@include file="/WEB-INF/views/userFooter.jsp" %>
-</body>
 <script type="text/javascript" src="../js/userHeader.js"></script>
+</body>
 </html>
