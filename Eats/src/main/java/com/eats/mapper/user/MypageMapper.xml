@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eats.mapper.user.MypageMapper">
 
@@ -73,7 +74,7 @@
 
     <!-- 찜 관련 -->
 <select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
-    SELECT * FROM (
+<!--     SELECT * FROM (
         SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
                ROWNUM AS rnum
         FROM JJIM jjim
@@ -81,7 +82,19 @@
         WHERE jjim.USER_IDX = #{user_idx}
         ORDER BY store.STORE_NAME
     ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize} -->
+    SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL, 
+               store_img.STORE_IMG,  -- 매장 이미지 추가
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        LEFT JOIN STORE_IMG store_img ON store.STORE_IDX = store_img.STORE_IDX AND store_img.IMG_ORDER = 1 
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
     WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize}
+    
 </select>
 
 

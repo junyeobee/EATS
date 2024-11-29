@@ -44,7 +44,7 @@ menu, ol, ul {
 }
 
 .my_contents {
-	overflow: auto;
+	overflow: visible;
 	font-family: "Noto Sans KR", sans-serif;
 	width: 1240px;
 	/*

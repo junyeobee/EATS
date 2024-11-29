@@ -35,8 +35,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			r.STORE_IDX = #{store_idx}
 		AND 
 			TO_CHAR(r.RESERVE_DATE, 'YYYY-MM') = TO_CHAR(sysdate,'yyyy-mm')
-		AND 
-			r.RESERVE_STATE = 3
 		GROUP BY 
 			u.USER_GENDER
 	</select>

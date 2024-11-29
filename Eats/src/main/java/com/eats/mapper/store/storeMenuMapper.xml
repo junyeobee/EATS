@@ -3,17 +3,20 @@
   
 <mapper namespace="com.eats.mapper.store.storeMenuMapper">
 
-	<select id="storeCateList" resultType="com.eats.store.model.MenuDTO">
-		select * from MENU_CATE
+	<select id="storeCateList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
+		select * from 
+		menu_cate mc
+		join store s on s.store_idx=mc.store_idx 
+		where s.store_idx=#{storeIdx}
 	</select>
 	
 	
-	<select id="storeMenuList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
-		select * 
-		from 
-		MENU
+	<select id="storeMenuList" parameterType="map" resultType="com.eats.store.model.MenuDTO">
+		select * from menu m
+		join menu_cate mc on mc.m_cate_idx=m.m_cate_idx
+		where mc.store_idx=#{storeIdx}
 		<if test="idx!=0">
-			where m_cate_idx = #{idx}
+			and mc.m_cate_idx = #{idx}
 		</if>
 	</select>
 	
@@ -45,7 +48,7 @@
 	
 	
 	<!-- 카테고리 등록 -->
-	<insert id="insertCate" parameterType="com.eats.store.model.MenuDTO">
+	<insert id="insertCate" parameterType="com.eats.store.model.MenuDTO" >
 	
 	INSERT INTO MENU_CATE (
     	M_CATE_IDX,

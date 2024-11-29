@@ -37,7 +37,9 @@ public class LoginController {
 		
 		String uri=request.getHeader("Referer");
 		if(uri!=null && !uri.contains("user/login")) {
-			session.setAttribute("callbackUri", uri);
+			if(!uri.contains("/userJoin")) {
+				session.setAttribute("callbackUri", uri);
+			}			
 		}
 		//로그인 페이지로 이동
 		return "/user/login/userLogin";
@@ -97,7 +99,6 @@ public class LoginController {
 		session.removeAttribute("user_nickname");
 		
 		String uri=request.getHeader("referer");
-		System.out.println(uri);
 		if(uri==null || uri.contains("/user/myPlate") || uri.contains("/timeLineMain") || uri.contains("mypage")) {
 			uri="/";
 		}else {

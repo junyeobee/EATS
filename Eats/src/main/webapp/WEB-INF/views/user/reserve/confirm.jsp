@@ -82,6 +82,9 @@ img{
     width: 95%;
     margin: 0px auto 20px auto;
 }
+textarea{
+	font-size: 25px;
+}
 </style>
 <link rel="stylesheet" href="/css/user/userHeader.css">
 </head>

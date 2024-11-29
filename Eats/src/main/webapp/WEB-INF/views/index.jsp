@@ -274,7 +274,7 @@ menu, ol, ul {
 				<c:forEach var="jcnt" items="${jcntList }">
 					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${jcnt.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="${jcnt.store_img }" />
+							<img class="reserve_img" src="/img/storeUploadImg/${jcnt.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">
@@ -321,7 +321,7 @@ menu, ol, ul {
 				<c:forEach var="point" items="${pointList }">
 					<div class="store_reserve" onclick="location.href='/user/storeInfo?store_idx=${point.store_idx}';">
 						<div class="store_reserve_box">
-							<img class="reserve_img" src="/img/user/review/${point.store_img }" />
+							<img class="reserve_img" src="/img/storeUploadImg/${point.store_img }" />
 
 							<div class="store_reserve_info">
 								<div class="store_reserve_info_box">

@@ -424,7 +424,7 @@ color:black;
         		<td><img src="/img/user/profile/default-icon.png"></td>
         		</c:if>
         		<c:if test="${!empty pf.profile_image }">
-        			<td><img src="/img/user/profile/${pf.profile_image}"></td>
+        			<td><img src="${pf.profile_image}"></td>
         		</c:if>
 						<%-- <img src="${pf.profile_image}" alt="Profile Image"> --%>
 						<p> ${pf.user_nickname}</p>	
@@ -474,7 +474,7 @@ color:black;
         		<td><img src="/img/user/profile/default-icon.png"></td>
         	</c:if>
         	<c:if test="${!empty fdto.profile_image }">
-        		<td><img src="/img/user/profile/${fdto.profile_image}"></td>
+        		<td><img src="${fdto.profile_image}"></td>
         	</c:if>
          	<td>${fdto.user_nickname }</td>
          	<td><button class="unfollow-btn" data-idx="${fdto.following_idx}" id="${fdto.following_idx}">팔로잉</button></td>
@@ -510,7 +510,7 @@ color:black;
 					<div class="user-profile"><img src="/img/user/profile/default-icon.png"></div>
 					</c:if>
 					<c:if test="${!empty dto.profile_image }">
-						<div class="user-profile"><img src="/img/user/profile/${dto.profile_image }"></div>
+						<div class="user-profile"><img src="${dto.profile_image }"></div>
 					</c:if>
 						<span>${dto.user_nickname }</span>
 						<button class="follow-btn" data-idx="${dto.user_idx}" id="${dto.user_idx}">팔로우</button>
@@ -532,13 +532,18 @@ color:black;
 					<!-- 리뷰 카드 1 -->
 					<div class="review-card">
 						<div class="reviewer-info">
-							<div class="reviewer-profile"><img src="/img/user/profile/${dto.profile_image}"></div>
+							<c:if test="${empty dto.profile_image }">
+								<div class="reviewer-profile"><img src="/img/user/profile/default-icon.png"></div>
+							</c:if>
+							<c:if test="${!empty dto.profile_image }">
+								<div class="reviewer-profile"><img src="${dto.profile_image}"></div>
+							</c:if>
 							<div>
 								<div class="reviewer-name">${dto.user_nickname}</div>
 								<div class="reviewer-location">${dto.rev_writedate }</div>
 							</div>
 						</div>
-
+						<c:if test="${!empty dto.rev_img }">
 						<div class="image-slider">
 							<button class="slider-button prev"><</button>
 							<button class="slider-button next">></button>
@@ -551,6 +556,7 @@ color:black;
 								</c:forEach>
 							</div>
 						</div>
+						</c:if>
 						<div class="rating">⭐${dto.rev_score }</div>
 						<div class="review-content">${dto.rev_content}</div>
 

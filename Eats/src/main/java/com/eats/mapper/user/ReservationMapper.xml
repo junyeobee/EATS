@@ -11,7 +11,7 @@
 			FROM
 				STORE_TABLE_SET
 			WHERE
-				SG_IDX=(
+				SG_IDX in (
 					SELECT
 						SG_IDX
 					FROM
@@ -111,7 +111,7 @@
 	            WHERE cate_idx IN (
 	            	SELECT sts_type_idx
 	            	FROM store_table_set
-	            	WHERE sg_idx = (
+	            	WHERE sg_idx in (
 				        SELECT sg_idx 
 				        FROM store_grid 
 				        WHERE store_idx = #{store_idx}
@@ -206,10 +206,10 @@
 		    AND r.RESERVE_STATE IN (0, 1)
 		)
 		AND a.res_hour = #{reserve_time}
-		AND sts.sts_type_idx = (
+		AND sts.sts_type_idx IN (
 			SELECT cate_idx
 			FROM category
-			WHERE cate_value_idx = (
+			WHERE cate_value_idx in (
 				SELECT cate_value_idx 
 			    FROM cate_value 
 			    WHERE cate_value_name=#{reserve_table}

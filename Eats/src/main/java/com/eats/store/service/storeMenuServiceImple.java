@@ -1,6 +1,7 @@
 package com.eats.store.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,14 +27,14 @@ public class storeMenuServiceImple implements storeMenuService {
 
 
 	@Override
-	public List<MenuDTO> storeCateList() {
-		List<MenuDTO> lists = mapper.storeCateList();
+	public List<MenuDTO> storeCateList(Integer storeIdx) {
+		List<MenuDTO> lists = mapper.storeCateList(storeIdx);
 		return lists;
 	}
 
 	@Override
-	public List<MenuDTO> storeMenuList(Integer idx) {
-		List<MenuDTO> lists = mapper.storeMenuList(idx);
+	public List<MenuDTO> storeMenuList(Map<String, Integer> map) {
+		List<MenuDTO> lists = mapper.storeMenuList(map);
 		return lists;
 	}
 
@@ -74,7 +75,7 @@ public class storeMenuServiceImple implements storeMenuService {
 	}
 
 	@Override
-	public int insertCate(int storeIdx, String cateName, String mCateInfo) {
+	public int insertCate(Integer storeIdx, String cateName, String mCateInfo) {
 		int result = mapper.insertCate(storeIdx, cateName, mCateInfo);
 		return result;
 	}

@@ -252,6 +252,7 @@ public class MypageController {
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
         List<JjimDTO> jjimList = mypageService.getJjimList(user_idx, page, pageSize);
+
         if (jjimList == null || jjimList.isEmpty()) {
             model.addAttribute("jjim", null); // 찜 리스트가 없음을 명시
         } else {
@@ -259,6 +260,7 @@ public class MypageController {
             model.addAttribute("jjimList", jjimList); 
         }
 
+        
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 

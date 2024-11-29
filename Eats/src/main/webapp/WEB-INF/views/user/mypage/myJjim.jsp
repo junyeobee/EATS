@@ -23,7 +23,12 @@
                 <div class="jjim-item">
                     <div class="store-info">
                         <!-- 매장 이미지 추가 -->
-                        <img src="${jjim.store_image}" alt="Store Image" class="store-image">
+                        <c:if test="${!empty jjim.store_img }">
+                        <img src="/img/storeUploadImg/${jjim.store_img}" alt="Store Image" class="store-image">
+                        </c:if>
+                        <c:if test="${empty jjim.store_img}">
+                        <img src="/img/storeUploadImg/default_restaurant.png" alt="Store Image" class="store-image">
+                        </c:if>
                         <h2>${jjim.store_name}</h2>
                         <p>주소: ${jjim.store_addr}</p>
                         <p>전화번호: ${jjim.store_tel}</p>

@@ -371,8 +371,11 @@ function toggleMenuSelection(menuIdx) {
 function submitSelectedMenus() {
 
     const form = document.deleteMenu;
+    if(selectedMenuIdxs.length===0){
+    	alert('삭제할 메뉴를 선택해주세요');
+    	return;
+    }
     form.querySelectorAll('input[name="menu_idx"]').forEach(input => input.remove());
-    
     selectedMenuIdxs.forEach(idx => {
         const input = document.createElement('input');
         input.type = 'hidden';

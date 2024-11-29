@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,12 +46,16 @@ public class StoreMenuController {
 	/* private String db_filePath = "/store/"; */
 
 	@GetMapping("storeMenuList")
-	public ModelAndView storeCateList(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx) {
-
-		List<MenuDTO> lists = service.storeCateList();
+	public ModelAndView storeCateList(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx,HttpSession session) {
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
+		
+		System.out.println("윤나"+storeIdx);
+		List<MenuDTO> lists = service.storeCateList(storeIdx);
 		ModelAndView mav = new ModelAndView();
-
-		List<MenuDTO> menu = service.storeMenuList(idx);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeIdx", storeIdx);
+		map.put("idx", idx);
+		List<MenuDTO> menu = service.storeMenuList(map);
 		mav.addObject("menu", menu);
 		mav.addObject("lists", lists);
 
@@ -61,8 +67,12 @@ public class StoreMenuController {
 	
 	@ResponseBody
 	@GetMapping("/menuListAjax")
-	public List<MenuDTO> storeMenuAjax(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx) {
-		List<MenuDTO> menu = service.storeMenuList(idx);
+	public List<MenuDTO> storeMenuAjax(@RequestParam(value = "idx", required = false, defaultValue = "0") Integer idx, HttpSession session) {
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeIdx", storeIdx);
+		map.put("idx", idx);
+		List<MenuDTO> menu = service.storeMenuList(map);
 
 		return menu;
 	}
@@ -75,9 +85,9 @@ public class StoreMenuController {
 
 	
 	@GetMapping("/menuUpdatePage/{menu_idx}")
-	public ModelAndView menuUpdatePage(@PathVariable("menu_idx") Integer menuIdx) {
-		
-		List<MenuDTO> lists = service.storeCateList();
+	public ModelAndView menuUpdatePage(@PathVariable("menu_idx") Integer menuIdx,HttpSession session) {
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
+		List<MenuDTO> lists = service.storeCateList(storeIdx);
 		MenuDTO info = service.updateMenuInfo(menuIdx);
 		ModelAndView mav = new ModelAndView();
 
@@ -182,8 +192,12 @@ public class StoreMenuController {
 	
 	// 메뉴 등록 페이지
 	@GetMapping("/StoreMenuInsert")
-	public ModelAndView StoreMenuInsert() {
-		List<MenuDTO> lists = service.storeCateList();
+	public ModelAndView StoreMenuInsert(HttpSession session) {
+		
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
+
+		
+		List<MenuDTO> lists = service.storeCateList(storeIdx);
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("lists", lists);
@@ -238,9 +252,11 @@ public class StoreMenuController {
 
 	// 카테고리 관리
 	@GetMapping("/storeMenuCate")
-	public ModelAndView storeMenuCate() {
+	public ModelAndView storeMenuCate( HttpSession session) {
 
-		List<MenuDTO> lists = service.storeCateList();
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
+		System.out.println("윤나"+storeIdx);
+		List<MenuDTO> lists = service.storeCateList(storeIdx);
 
 		ModelAndView mav = new ModelAndView();
 
@@ -290,8 +306,8 @@ public class StoreMenuController {
 			@RequestParam(value = "m_cate_info", required = false, defaultValue = "") String mCateInfo,
 			
 			HttpSession session) {
+		Integer storeIdx=(Integer)session.getAttribute("storeIdx");
 		
-		int storeIdx = (int)session.getAttribute("storeIdx");
 		System.out.println("스토어 번호!!!:"+storeIdx);
 		
 		int result = service.insertCate(storeIdx, cateName, mCateInfo);

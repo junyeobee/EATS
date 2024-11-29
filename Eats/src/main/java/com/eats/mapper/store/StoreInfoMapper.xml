@@ -4,16 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eats.mapper.store.StoreInfoMapper">
 	<select id="getStoreInfo" resultType="com.eats.store.model.HYStoreDTO">
-		SELECT
-			S.*, P.AREA_NAME AS parent_area_name, A.AREA_NAME
+        SELECT
+			S.*, A.AREA_NAME
 		FROM
-			STORE S, AREA A, AREA P
+			STORE S, AREA A
 		WHERE
 			S.STORE_IDX=#{store_idx}
 		AND
 			S.STORE_AREA=A.AREA_IDX
-		AND 
-			P.AREA_IDX=A.PARENT_IDX
 	</select>
 	<select id="getStoreImg" resultType="com.eats.store.model.HYStoreImgDTO">
    		SELECT
@@ -185,6 +183,8 @@
 			ON RES.USER_IDX = U.USER_IDX
 		WHERE
 			RES.STORE_IDX = #{store_idx}
+		AND
+			R.REV_STATE = 1
 		ORDER BY
 			R.REV_WRITEDATE DESC
 	</select>

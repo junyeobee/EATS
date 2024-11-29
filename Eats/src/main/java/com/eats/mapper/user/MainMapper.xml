@@ -40,7 +40,7 @@
 		</if>
 		)a
 		where reservation.store_idx=a.store_idx)b
-		where review.reserve_idx=b.reserve_idx)c
+		where review.reserve_idx=b.reserve_idx AND REVIEW.REV_STATE=1)c
 		where follow.following_idx=c.user_idx
 		group by following_idx
 		order by count(*) desc))
@@ -53,7 +53,7 @@
 		from (select a.*, store_name, store_addr
 		from (select review.*, user_idx, store_idx, reserve_date
         from review, reservation where
-		review.reserve_idx=reservation.reserve_idx and user_idx=#{user_idx})a, store
+		review.reserve_idx=reservation.reserve_idx AND REVIEW.REV_STATE=1 and user_idx=#{user_idx})a, store
 		where store.store_idx=a.store_idx)b, user_profile
 		where user_profile.user_idx=b.user_idx
 		order by DBMS_RANDOM.VALUE)
@@ -67,7 +67,8 @@
 		(select review.*, store_idx
 		from review, reservation
 		where
-		review.reserve_idx=reservation.reserve_idx and
+		review.reserve_idx=reservation.reserve_idx and 
+		REVIEW.REV_STATE = 1 AND
 		store_idx=#{store_idx}))a
 	</select>
 
@@ -86,7 +87,7 @@
 	
 	<select id="getReviewCountByStoreIdx" parameterType="Integer" resultType="Integer">
 		select count(*) from review, reservation
-		where review.reserve_idx=reservation.reserve_idx
+		where review.reserve_idx=reservation.reserve_idx AND REVIEW.REV_STATE=1
 		and store_idx=#{store_idx}
 	</select>
 	
@@ -123,7 +124,7 @@
 		where store_time.store_idx=a.store_idx)b, store_img
 		where b.store_idx=store_img.store_idx and img_order=1)c,
 		(select store_idx, round(avg(rev_score),2) point from review, reservation
-		where reservation.reserve_idx=review.reserve_idx
+		where reservation.reserve_idx=review.reserve_idx AND REVIEW.REV_STATE=1
 		group by store_idx)p
 		where c.store_idx=p.store_idx
 		order by point desc)d)

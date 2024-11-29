@@ -47,9 +47,9 @@ public class KakaoPayService {
 			parameters.put("quantity", "1");
 			parameters.put("total_amount", "11900");
 			parameters.put("tax_free_amount", "0");
-			parameters.put("approval_url", "http://localhost:9090/store/storeReport/success");
-			parameters.put("cancel_url", "http://localhost:9090/store/storeReport/cancel");
-			parameters.put("fail_url", "http://localhost:9090/store/storeReport/fail");
+			parameters.put("approval_url", "http://192.168.0.43:9090/store/storeReport/success");
+			parameters.put("cancel_url", "http://192.168.0.43:9090/store/storeReport/cancel");
+			parameters.put("fail_url", "http://192.168.0.43:9090/store/storeReport/fail");
 			log.info("Request to KakaoPay: {}", parameters);
 			
 			HttpEntity<Map<String, String>> body = new HttpEntity<>(parameters, headers);

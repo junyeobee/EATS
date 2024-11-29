@@ -100,7 +100,7 @@
 		
 		var input_for_num = $("#input_for_num").val();
 		//alert(input_for_num);
-		
+		console.log(input_for_num);
 		//if(input_for_num > 0){
 		if(input_for_num > 0){
 			//confirm("기존 데이터는 삭제됩니다. 그리드를 수정하시겠습니까?") && grid_setting_delete();
@@ -109,7 +109,7 @@
 			alert("영업중인 매장의 그리드는 수정할 수 없습니다.");
 			
 		}else {
-			//grid_setting_action();
+			grid_setting_action();
 		}
 	}
 			

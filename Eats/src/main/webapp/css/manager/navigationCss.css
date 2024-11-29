@@ -1,9 +1,11 @@
 @charset "UTF-8";
 .navigation_category {
     width: 200px;
-    height:auto;
+    height: 100%;
     background-color: #FFEDD0;
-        min-height: 900px;
+    min-height: 900px;
+    position: absolute;
+    left: 0;
 }
 
 .navi_cate_box {

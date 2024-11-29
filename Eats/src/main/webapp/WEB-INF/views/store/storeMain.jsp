@@ -532,7 +532,7 @@
         document.addEventListener('DOMContentLoaded', () => {
 			let no = ${empty dash.reserveNoshowOrCancel.statecnt ? 0 : dash.reserveNoshowOrCancel.statecnt};
 			let d = ${dash.dailyReserve};
-			if(d != null && d != 0){
+			if(d != null){
 				let rate = 100 - ((no / d) * 100);
 				document.getElementById('visitRate').innerText = rate.toFixed(2) + '%';
 			}else{

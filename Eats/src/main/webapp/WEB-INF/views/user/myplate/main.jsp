@@ -140,6 +140,7 @@ body{
 }
 .cal-ul{
 	list-style: none;
+	display: flex;
 }
 .cal-list-item{
 	margin:10px;

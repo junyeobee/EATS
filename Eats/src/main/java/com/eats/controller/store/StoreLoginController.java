@@ -46,8 +46,8 @@ public class StoreLoginController {
 
 		ModelAndView mav = new ModelAndView();
 		 
+
 		int loginOk = service.storeLogin(storeId, storePwd);
-		
 		
 		String msg = "";
 		
@@ -61,12 +61,10 @@ public class StoreLoginController {
 			System.out.println("매장번호"+storeIdx); 
 			
 			String storeName = service.storeName(storeIdx);
-			msg = "로그인 성공 storeIdx:"+storeIdx+"가게명"+storeName;
+			msg = storeName+" 로그인되었습니다.";
 			
 			session.setAttribute("storeName", storeName);
-			
-			System.out.println("가게이름"+storeName);
-			
+						
 			
 			mav.setViewName("store/login/storeLoginMsg");
 			mav.addObject("goUrl", "storeMain"); 

@@ -16,7 +16,7 @@
 <form id="user_join_form" name="user_join_form" action="userJoin" method="post">
 <div class="user_join_wrap">
 	<div class="logo-wrapper">
-		<a href="/"><img src="/img/eats_logo.png"></a>
+		<a href="/"><img src="/svg/logo_icon_red.svg"></a>
 		<hr>
 	</div>
 	<div class="user_join_title"><p>회 원 가 입</p></div>
