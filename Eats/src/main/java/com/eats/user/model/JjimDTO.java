@@ -6,25 +6,29 @@ public class JjimDTO {
     private String store_name; // 매장 이름
     private String store_addr; // 매장 주소
     private String store_tel;  // 매장 전화번호
+    private String store_image; // 매장 이미지 URL
+    private String store_img;
 
     // 기본 생성자
     public JjimDTO() {}
-    
-    public JjimDTO(int user_idx, int store_idx) {
-    	this.user_idx = user_idx;
-    	this.store_idx = store_idx;
-    }
 
-    // 모든 필드를 포함하는 생성자
-    public JjimDTO(int user_idx, int store_idx, String store_name, String store_addr, String store_tel) {
+    public JjimDTO(int user_idx, int store_idx) {
         this.user_idx = user_idx;
         this.store_idx = store_idx;
-        this.store_name = store_name;
-        this.store_addr = store_addr;
-        this.store_tel = store_tel;
     }
 
-    // Getter & Setter
+	public JjimDTO(int user_idx, int store_idx, String store_name, String store_addr, String store_tel,
+			String store_img) {
+		super();
+		this.user_idx = user_idx;
+		this.store_idx = store_idx;
+		this.store_name = store_name;
+		this.store_addr = store_addr;
+		this.store_tel = store_tel;
+		this.store_img = store_img;
+	}
+
+	// Getter & Setter
     public int getUser_idx() {
         return user_idx;
     }
@@ -65,4 +69,13 @@ public class JjimDTO {
         this.store_tel = store_tel;
     }
 
+	public String getStore_img() {
+		return store_img;
+	}
+
+	public void setStore_img(String store_img) {
+		this.store_img = store_img;
+	}
+
+  
 }

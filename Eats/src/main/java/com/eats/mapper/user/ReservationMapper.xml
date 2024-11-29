@@ -206,10 +206,10 @@
 		    AND r.RESERVE_STATE IN (0, 1)
 		)
 		AND a.res_hour = #{reserve_time}
-		AND sts.sts_type_idx = (
+		AND sts.sts_type_idx IN (
 			SELECT cate_idx
 			FROM category
-			WHERE cate_value_idx = (
+			WHERE cate_value_idx in (
 				SELECT cate_value_idx 
 			    FROM cate_value 
 			    WHERE cate_value_name=#{reserve_table}

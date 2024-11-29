@@ -29,6 +29,18 @@
                 }
             }
             
+            let currentDate = year + '-' + date;
+            let params = 'store_idx=' + 1 + '&date=' + currentDate;
+            sendRequest('/reportIsCreated', params, function(response) {
+                let isNotCreated = response;
+                if (isNotCreated) {
+                    document.getElementById('createReport').style.display = 'block';
+                    document.getElementById('report-cardsection').classList.add('blur');
+                } else {
+                    document.getElementById('createReport').style.display = 'none';
+                    document.getElementById('report-cardsection').classList.remove('blur');
+                }
+            }, 'GET');
             //있으면 생성유도, 없으면 생성버튼 숨김
             select.addEventListener('change', function(e) {
                 let currentDate = e.target.value;
@@ -59,6 +71,8 @@
         function result(){
                 let params = "store_idx=" + 1;
                 sendRequest('/weekreportTest', params, analyze,'GET');
+                document.getElementById('report-cardsection').classList.remove('blur');
+                document.getElementById('createReport').style.display='none';
         }
         //차트 모듈, 컬러는 그냥 ui컬러에서 가져옴
         const ChartManager = {
@@ -1106,10 +1120,8 @@
 <body>
     <%@ include file="../store_Header.jsp" %>
     <div class="container">
-        <a id="click_me" onclick="result()">매장명</a>
-        <form action="/storeReportCreate" method="Post">
-            <button id="createReport">보고서 받아보기</button>
-        </form>
+        <a id="click_me" onclick="result()">파브리키친 11월 보고서</a>
+        <button id="createReport" onclick = "result()">보고서 받아보기</button>
         <div class="report-card">
             <select class="date-select"></select>
             <div id="report-cardsection">

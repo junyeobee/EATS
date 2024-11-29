@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
+
 <%@ include file="../common/header.jsp" %>
 
 <link rel="stylesheet" href="/css/manager/qnaDetailCss.css">
@@ -11,7 +13,10 @@
     <div class="info-box">
         <p><strong>제목:</strong> ${userQna.uqna_title}</p>
         <p><strong>내용:</strong> ${userQna.uqna_content}</p>
-        <p><strong>문의일:</strong> ${userQna.uqna_wdate}</p>
+        <p><strong>문의일:</strong> 
+            <fmt:formatDate value="${userQna.uqna_wdate}" pattern="yyyy-MM-dd" />
+        </p>
+        
         <p><strong>처리 상태:</strong>
             <c:choose>
                 <c:when test="${userQna.uqna_stat == 1}">처리완료</c:when>
@@ -39,7 +44,6 @@
         </div>
     </c:if>
 </div>
-
 
 <script>
     // 답변 입력 여부 확인

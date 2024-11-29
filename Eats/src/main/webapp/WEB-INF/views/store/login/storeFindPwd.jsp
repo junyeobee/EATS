@@ -39,7 +39,7 @@
 			var inputId=document.getElementById('store_id').value;
 			var inputEmail = document.getElementById('store_email').value;
 			
-			alert(inputId+inputEmail);
+			/* alert(inputId+inputEmail); */
 			
 			if(idCheckState){
 				if(inputEmail===null || inputEmail===''){

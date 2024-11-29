@@ -43,6 +43,10 @@ pageEncoding="UTF-8"%>
     border-radius: 8px;
     background-color: #f8fafc;
 }
+.user-profile img {
+	width: 18px;
+    height: 18px;
+}
 #logout{
     cursor: pointer;
     font-size: 13px;
@@ -76,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function(){
             <i class="icon-bell"></i>
         </div>
         <div class="user-profile">
-            <img src="" alt="profile" width="32" height="32">
+            <img src="/img/storeUploadImg/default_restaurant.png" alt="profile" width="32" height="32">
             <span>${sessionScope.storeName}</span>
             <span id ="logout">로그아웃</span>
         </div>

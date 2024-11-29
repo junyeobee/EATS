@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.eats.mapper.user.MypageMapper">
 
@@ -11,19 +12,31 @@
         WHERE user_idx = #{user_idx}
     </select>
     
-    <select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
-        SELECT user_idx, user_nickname, user_intro, profile_image
-        FROM user_profile
-        WHERE user_idx = #{user_idx}
-    </select>
+<select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT user_idx, 
+           user_nickname, 
+           user_intro, 
+           user_location, 
+           user_tel, 
+           user_point AS user_point,  <!-- 명시적 매핑 -->
+           profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
 
     <!-- 나의 정보 상세보기 -->
-    <select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">
-        SELECT user_idx, user_nickname, user_intro, user_location, user_tel, user_point, profile_image
-        FROM user_profile
-        WHERE user_idx = #{user_idx}
-    </select>
-
+<select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT 
+        user_idx, 
+        user_nickname, 
+        user_intro, 
+        user_location, 
+        user_tel, 
+        user_point, 
+        profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
     <!-- 나의 정보 수정 -->
     
 <update id="updateUserProfile">
@@ -58,17 +71,32 @@
         WHERE user_idx = #{user_idx}
     </select>
 
+
     <!-- 찜 관련 -->
-    <select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
-        SELECT * FROM (
-            SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
-                   ROWNUM AS rnum
-            FROM JJIM jjim
-            JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
-            WHERE jjim.USER_IDX = #{user_idx}
-            ORDER BY store.STORE_NAME
-        ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
-    </select>
+<select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
+<!--     SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize} -->
+    SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL, 
+               store_img.STORE_IMG,  -- 매장 이미지 추가
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        LEFT JOIN STORE_IMG store_img ON store.STORE_IDX = store_img.STORE_IDX AND store_img.IMG_ORDER = 1 
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize}
+    
+</select>
+
 
     <select id="getTotalJjimCount" resultType="int">
         SELECT COUNT(*)

@@ -547,7 +547,7 @@
 			}else{
 				const genderData = {
 					male: ${dash.gendercnt[0].visitorcnt},
-					female: 0
+					female: ${dash.gendercnt[1].visitorcnt}
             	};
 				createGenderChart(genderData);
 			}

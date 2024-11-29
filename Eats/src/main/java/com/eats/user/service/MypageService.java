@@ -21,7 +21,7 @@ public interface MypageService {
 
     // 나의 정보 업데이트
     boolean updateUserProfile(EatsUserProfileDTO userProfile);
-    
+
     // 찜 목록
     List<JjimDTO> getJjimList(int user_idx, int page, int pageSize);
 
@@ -36,29 +36,28 @@ public interface MypageService {
 
     // 리뷰 총 개수 가져오기
     int getTotalReviewCount(int user_idx);
-    
+
     // 결제 내역
     List<PaymentDTO> getPaymentList(int user_idx, int page, int pageSize);
 
     // 결제 총 개수
     int getTotalPaymentCount(int user_idx);
 
-	EatsUserProfileDTO getUserProfile1(Integer user_idx);
-	
-	// 1:1 문의 검색 목록 가져오기
-	
-	List<UserQnaDTO> getUserQnaList(Integer userIdx);
+    // 사용자 정보
+    EatsUserProfileDTO getUserProfile1(Integer user_idx);
 
-	// 검색 조건에 따른 문의 총 개수
-	int getTotalQnaCount(int user_idx, String keyword, String status);
+    // 1:1 문의 검색 목록 가져오기
+    List<UserQnaDTO> getUserQnaList(Integer userIdx);
 
-	
+    // 검색 조건에 따른 문의 총 개수
+    int getTotalQnaCount(int user_idx, String keyword, String status);
+
     // 1:1 문의 저장
     boolean saveUserQna(UserQnaDTO userQna);
-    
+
     UserQnaDTO getQnaDetail(int uqnaIdx);
 
-	List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize);
+    List<UserQnaDTO> searchUserQnaList(int user_idx, String keyword, String status, int offset, int pageSize);
 
-
+	EatsUserProfileDTO getUserProfile1(int user_idx);
 }

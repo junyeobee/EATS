@@ -54,7 +54,7 @@ body {
 	border-radius: 8px 8px 0 0;
 	padding: 20px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	max-width: 905px;
+	width: 870px;
 	margin: 0 auto;
 	background: white;
 	margin-top:60px;
@@ -179,7 +179,7 @@ body {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
-	background-color: #ffd699;
+	background-color: #e7e7e7; /* 색상변경 */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -420,7 +420,13 @@ color:black;
 					<div class="profile-image">
 					
 					<!-- 이미지 값 넣어주기, 경로 수정시 수정하기- 완료 -->
-						<img src="${pf.profile_image}" alt="Profile Image">
+					<c:if test="${empty pf.profile_image }">
+        		<td><img src="/img/user/profile/default-icon.png"></td>
+        		</c:if>
+        		<c:if test="${!empty pf.profile_image }">
+        			<td><img src="${pf.profile_image}"></td>
+        		</c:if>
+						<%-- <img src="${pf.profile_image}" alt="Profile Image"> --%>
 						<p> ${pf.user_nickname}</p>	
 						
 					
@@ -465,7 +471,7 @@ color:black;
         <c:forEach var="fdto" items="${follow }">
         <tr>
         	<c:if test="${empty fdto.profile_image }">
-        		<td><img src="/myPageImg/default-icon.png"></td>
+        		<td><img src="/img/user/profile/default-icon.png"></td>
         	</c:if>
         	<c:if test="${!empty fdto.profile_image }">
         		<td><img src="${fdto.profile_image}"></td>
@@ -501,7 +507,7 @@ color:black;
 
 					<div class="user-card">
 					<c:if test="${empty dto.profile_image }">
-					<div class="user-profile"><img src="/myPageImg/default-icon.png"></div>
+					<div class="user-profile"><img src="/img/user/profile/default-icon.png"></div>
 					</c:if>
 					<c:if test="${!empty dto.profile_image }">
 						<div class="user-profile"><img src="${dto.profile_image }"></div>
@@ -526,13 +532,18 @@ color:black;
 					<!-- 리뷰 카드 1 -->
 					<div class="review-card">
 						<div class="reviewer-info">
-							<div class="reviewer-profile"><img src="${dto.profile_image}"></div>
+							<c:if test="${empty dto.profile_image }">
+								<div class="reviewer-profile"><img src="/img/user/profile/default-icon.png"></div>
+							</c:if>
+							<c:if test="${!empty dto.profile_image }">
+								<div class="reviewer-profile"><img src="${dto.profile_image}"></div>
+							</c:if>
 							<div>
 								<div class="reviewer-name">${dto.user_nickname}</div>
 								<div class="reviewer-location">${dto.rev_writedate }</div>
 							</div>
 						</div>
-
+						<c:if test="${!empty dto.rev_img }">
 						<div class="image-slider">
 							<button class="slider-button prev"><</button>
 							<button class="slider-button next">></button>
@@ -545,6 +556,7 @@ color:black;
 								</c:forEach>
 							</div>
 						</div>
+						</c:if>
 						<div class="rating">⭐${dto.rev_score }</div>
 						<div class="review-content">${dto.rev_content}</div>
 
@@ -642,7 +654,7 @@ function showSendResult() {
                     reviewerInfoDiv.className = 'reviewer-info';
                     
                     var img = document.createElement('img');
-                    img.src = dto.profile_image;
+                    img.src = '/img/user/profile/'+dto.profile_image;
                    img.style.borderRadius = '50%';
                     img.style.width = '45px';
                     img.style.height = '45px';

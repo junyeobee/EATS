@@ -61,17 +61,18 @@ public class MypageController {
             return mav;
         }
 
-        // 사용자 기본 정보 가져오기
-        EatsUserDTO userProfile = mypageService.getUserProfile(user_idx);
+        // 사용자 프로필 가져오기 (포인트 포함)
         EatsUserProfileDTO userProfile1 = mypageService.getUserProfile1(user_idx);
-        if (userProfile == null) {
-            mav.setViewName("error");
-            mav.addObject("message", "사용자 정보를 찾을 수 없습니다.");
-            return mav;
-        }
-        long currentTime = System.currentTimeMillis(); // 현재 시간 추가
 
-        mav.addObject("userProfile", userProfile);
+//        // 디버깅: 데이터 확인
+//        if (userProfile1 != null) {
+//            System.out.println("Controller (MyPage): User Point = " + userProfile1.getUser_point());
+//            System.out.println("Controller (MyPage): User Nickname = " + userProfile1.getUser_nickname());
+//        } else {
+//            System.out.println("Controller (MyPage): userProfile1 is null.");
+//        }
+
+        // JSP로 데이터 전달
         mav.addObject("userProfile1", userProfile1);
         mav.setViewName("user/mypage/myPage");
         return mav;
@@ -90,12 +91,12 @@ public class MypageController {
 
         EatsUserProfileDTO userProfile = mypageService.getUserProfileDetail(user_idx);
 
-        // 디버깅: 프로필 이미지 확인
-        if (userProfile != null) {
-            System.out.println("Profile Image Path: " + userProfile.getProfile_image());
-        } else {
-            System.out.println("User profile is null.");
-        }
+//        // 디버깅: 프로필 이미지 확인
+//        if (userProfile != null) {
+//            System.out.println("Profile Image Path: " + userProfile.getProfile_image());
+//        } else {
+//            System.out.println("User profile is null.");
+//        }
 
         mav.addObject("userProfile", userProfile);
         mav.setViewName("user/mypage/myProfile");
@@ -251,17 +252,21 @@ public class MypageController {
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
         List<JjimDTO> jjimList = mypageService.getJjimList(user_idx, page, pageSize);
+
         if (jjimList == null || jjimList.isEmpty()) {
             model.addAttribute("jjim", null); // 찜 리스트가 없음을 명시
         } else {
-            model.addAttribute("jjimList", jjimList); // 전체 찜 리스트 전달
+            // 찜 목록과 함께 store_image도 전달
+            model.addAttribute("jjimList", jjimList); 
         }
 
+        
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 
         return "user/mypage/myJjim";  // 반환 타입을 String으로 수정, 뷰 이름 반환
     }
+
 
 
     // 찜 삭제

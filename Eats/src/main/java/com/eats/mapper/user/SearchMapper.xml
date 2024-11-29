@@ -30,7 +30,7 @@
 	</select>
 
 	<select id="getStoreInfo" parameterType="Map" resultType="com.eats.store.model.HYStoreDTO">
-		select b.*, avg_price, store_img
+		select distinct b.*, avg_price, store_img
 		from (
 		select a.* from (select distinct * from store
 		where

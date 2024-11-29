@@ -91,13 +91,13 @@ public class StoreReportController {
 		AnalyzerDTO.AnalysisResult result = new AnalyzerDTO.AnalysisResult();
 
 		Map<String, List<String>> atmosphere = new HashMap<>();
-		atmosphere.put("긍정", Arrays.asList("깨끗해요", "편안해요"));
-		atmosphere.put("부정", Arrays.asList("시끄러워요"));
+		atmosphere.put("긍정", Arrays.asList("깨끗해요", "편안해요","분위기가 좋아요","친절해요"));
+		atmosphere.put("부정", Arrays.asList("시끄러워요","좁아요"));
 		result.setAtmosphere(atmosphere);
 
 		Map<String, List<String>> service = new HashMap<>();
-		service.put("긍정", Arrays.asList("친절해요", "빨라요"));
-		service.put("부정", Arrays.asList("불친절해요"));
+		service.put("긍정", Arrays.asList("친절해요", "빨라요","서비스가 좋아요"));
+		service.put("부정", Arrays.asList("불친절해요","느려요"));
 		result.setService(service);
 
 		List<Map<String, AnalyzerDTO.MenuEvaluation>> menuList = new ArrayList<>();

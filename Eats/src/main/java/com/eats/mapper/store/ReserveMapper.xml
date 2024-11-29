@@ -5,28 +5,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.eats.mapper.store.ReserveMapper">
 	<select id="tables" parameterType="map" resultType="com.eats.store.model.reserve.TableDTO">
-		select 
-			sts.table_num, 
-			sts.sts_num as cnt, 
-			NVL(reserve_state, -1) as stat, 
-			cv.cate_value_name as tabletype
-		from 
-			store_table_set sts               
-		left join 
-			reservation r 
-		on 
-			r.reserve_table_idx = sts.sts_idx 
-			and store_idx = #{storeIdx}
-			and reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD') 
-			and reserve_time = #{time}
-		left JOIN category c ON sts.STS_TYPE_IDX = c.CATE_IDX
-	    left JOIN CATE_VALUE cv ON c.CATE_VALUE_IDX = cv.CATE_VALUE_IDX
-		left join store_table_set sts
-        on 
-			sts.sts_type_idx = cv.cate_value_idx
-		where sts.sg_idx in (select sg_idx from store_grid where store_idx = #{storeIdx})
-		order by 
-			table_num asc
+		SELECT 
+		    sts.table_num, 
+		    sts.sts_num as cnt, 
+		    NVL(r.reserve_state, -1) as stat, 
+		    cv.cate_value_name as tabletype
+		FROM 
+		    store_table_set sts               
+		LEFT JOIN 
+		    reservation r 
+		    ON r.reserve_table_idx = sts.sts_idx 
+		    AND r.store_idx = #{storeIdx}
+		    AND r.reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD') 
+		    AND r.reserve_time = #{time}
+		JOIN 
+		    category c 
+		    ON sts.sts_type_idx = c.cate_idx
+		JOIN 
+		    cate_value cv 
+		    ON c.cate_value_idx = cv.cate_value_idx
+		WHERE 
+		    sts.sg_idx = (SELECT sg_idx FROM store_grid WHERE store_idx = #{storeIdx})
+		ORDER BY 
+		    sts.table_num ASC
 	</select>
 	<select id = "reserveList" parameterType="map" resultType="com.eats.store.model.reserve.ReserveListDTO">
 		SELECT 
