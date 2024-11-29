@@ -7,7 +7,6 @@ public class JjimDTO {
     private String store_addr; // 매장 주소
     private String store_tel;  // 매장 전화번호
     private String store_image; // 매장 이미지 URL
-    private String store_img;
 
     // 기본 생성자
     public JjimDTO() {}
