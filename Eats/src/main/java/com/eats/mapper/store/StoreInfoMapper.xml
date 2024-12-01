@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eats.mapper.store.StoreInfoMapper">
+	<select id="getStoreInfo" resultType="com.eats.store.model.HYStoreDTO">
+        SELECT
+			S.*, A.AREA_NAME
+		FROM
+			STORE S, AREA A
+		WHERE
+			S.STORE_IDX=#{store_idx}
+		AND
+			S.STORE_AREA=A.AREA_IDX
+	</select>
+	<select id="getStoreImg" resultType="com.eats.store.model.HYStoreImgDTO">
+   		SELECT
+   			*
+   		FROM
+   			STORE_IMG
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY
+   			IMG_ORDER ASC
+	</select>
+	<select id="getStoreTime" resultType="com.eats.store.model.StoreTimeDTO">
+		SELECT
+			*
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+	</select>
+	<select id="getStoreNews" resultType="com.eats.store.model.HYStoreNewsDTO">
+   		SELECT
+   			*
+   		FROM
+   			STORE_NEWS
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY
+   			S_NEWS_IDX DESC
+	</select>
+	<select id="getStoreMenuCate" resultType="com.eats.store.model.HYMenuCateDTO">
+   		SELECT
+   			*
+   		FROM
+   			MENU_CATE
+   		WHERE
+   			STORE_IDX=#{store_idx}
+   		ORDER BY 
+   			M_CATE_IDX ASC
+	</select>
+	<select id="getStoreMenu" resultType="com.eats.store.model.HYMenuDTO">
+   		SELECT
+   			*
+   		FROM
+   			MENU
+   		WHERE
+   			M_CATE_IDX IN (
+   				SELECT
+   					M_CATE_IDX
+   				FROM
+   					MENU_CATE
+   				WHERE
+   					STORE_IDX=#{store_idx}
+   			)
+	</select>
+	<select id="getStoreConvinient" resultType="com.eats.store.model.CategoryDTO">
+   		SELECT
+   			C.*, K.CATE_KEY_NAME, V.CATE_VALUE_NAME
+   		FROM
+   			CATEGORY C, CATE_KEY K, CATE_VALUE V
+   		WHERE 
+   			C.STORE_IDX=#{store_idx}
+   		AND
+   			C.CATE_KEY_IDX=(
+   				SELECT
+   					CATE_KEY_IDX
+   				FROM
+   					CATE_KEY
+   				WHERE
+   					CATE_KEY_NAME = '편의시설'
+   			)
+   		AND
+   			C.CATE_KEY_IDX=K.CATE_KEY_IDX
+   		AND
+   			C.CATE_VALUE_IDX=V.CATE_VALUE_IDX
+	</select>
+	<select id="getJjimCnt" resultType="int" parameterType="int">
+   		SELECT
+   			COUNT(*)
+   		FROM
+   			JJIM
+   		WHERE
+   			STORE_IDX=#{store_idx}
+	</select>
+	<select id="getTodayTime" resultType="com.eats.store.model.StoreTimeDTO" parameterType="map">
+		SELECT
+			*
+		FROM
+			STORE_TIME
+		WHERE
+			STORE_IDX=#{store_idx}
+		AND
+			STIME_DAY=#{kor_today}
+	</select>
+	<select id="getRevCount" resultType="int" parameterType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX IN (
+				SELECT
+					RESERVE_IDX
+				FROM
+					RESERVATION
+				WHERE
+					STORE_IDX = #{store_idx}
+			)
+		AND REV_STATE=1
+	</select>
+	<select id="getAvgRevScore" resultType="double" parameterType="int">
+		SELECT
+			COALESCE(ROUND(AVG(REV_SCORE), 1), 0)
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX IN (
+				SELECT
+					RESERVE_IDX
+				FROM
+					RESERVATION
+				WHERE
+					STORE_IDX = #{store_idx}
+			)
+		AND
+			REV_STATE = 1
+	</select>
+	<select id="checkJjim" parameterType="com.eats.user.model.JjimDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			JJIM
+		WHERE
+			USER_IDX=#{user_idx}
+		AND
+			STORE_IDX=#{store_idx}
+	</select>
+	<insert id="insertJjim" parameterType="com.eats.user.model.JjimDTO">
+		INSERT INTO
+			JJIM
+		VALUES(
+			#{user_idx}
+			, #{store_idx}
+		)
+	</insert>
+	<delete id="deleteJjim" parameterType="com.eats.user.model.JjimDTO">
+		DELETE FROM
+			JJIM
+		WHERE
+			USER_IDX=#{user_idx}
+		AND
+			STORE_IDX=#{store_idx}
+	</delete>
+	<select id="getStoreBriefInfo" parameterType="int" resultType="map">
+		SELECT
+			STORE_IDX, STORE_NAME
+		FROM
+			STORE
+		WHERE
+			STORE_IDX = #{store_idx}
+	</select>
+	<select id="getReviewList" parameterType="int" resultType="map">
+		SELECT
+			R.*, U.USER_NICKNAME, U.PROFILE_IMAGE
+		FROM
+			REVIEW R
+		INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+		AND
+			R.REV_STATE = 1
+		ORDER BY
+			R.REV_WRITEDATE DESC
+	</select>
+	<select id="getSortedReviewList" parameterType="map" resultType="map">
+        SELECT 
+            r.*, 
+            u.USER_NICKNAME,
+            u.PROFILE_IMAGE
+        FROM 
+            review r
+        INNER JOIN RESERVATION RES 
+			ON R.RESERVE_IDX = RES.RESERVE_IDX
+		INNER JOIN USER_PROFILE U 
+			ON RES.USER_IDX = U.USER_IDX
+		WHERE
+			RES.STORE_IDX = #{store_idx}
+        <choose>
+            <when test='sortType == "latest"'>
+                ORDER BY r.rev_writedate DESC
+            </when>
+            <when test='sortType == "high_rating"'>
+                ORDER BY r.rev_score DESC, r.rev_writedate DESC
+            </when>
+            <when test='sortType == "low_rating"'>
+                ORDER BY r.rev_score ASC, r.rev_writedate DESC
+            </when>
+            <otherwise>
+                ORDER BY r.rev_writedate DESC
+            </otherwise>
+        </choose>
+    </select>
+	<select id="getRevMenuList" parameterType="java.util.List" resultType="map">
+		SELECT 
+			*
+	    FROM 
+	    	MENU
+	    WHERE 
+	    	MENU_IDX IN
+	    <foreach collection="list" item="menuIdx" open="(" separator="," close=")">
+	        #{menuIdx}
+	    </foreach>
+	</select>
+	<select id="getFoodType" parameterType="int" resultType="String">
+		SELECT 
+			CATE_VALUE_NAME
+		FROM 
+			CATE_VALUE
+		WHERE 
+			CATE_VALUE_IDX IN (
+			    SELECT 
+			    	CATE_VALUE_IDX 
+			    FROM 
+			    	CATEGORY 
+			    WHERE 
+			    	STORE_IDX = #{store_idx}
+			    AND 
+			    	CATE_KEY_IDX = (
+			        	SELECT 
+			        		DISTINCT CATE_KEY_IDX
+				        FROM 
+				        	CATE_KEY
+				        WHERE 
+				        	CATE_KEY_NAME='음식 종류' 
+			    	)
+			) 
+	</select>
+</mapper>

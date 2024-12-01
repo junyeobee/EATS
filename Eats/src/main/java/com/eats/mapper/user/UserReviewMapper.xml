@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eats.mapper.user.UserReviewMapper">
+	<select id="getStoreInfoByReserveIdx" parameterType="int" resultType="map">
+		SELECT
+			S.*, SI.STORE_IMG
+		FROM
+			STORE S, STORE_IMG SI
+		WHERE
+			S.STORE_IDX = (
+				SELECT
+					STORE_IDX
+				FROM 
+					RESERVATION
+				WHERE 
+					RESERVE_IDX=#{reserve_idx}
+			)
+		AND
+			S.STORE_IDX = SI.STORE_IDX
+		AND
+			SI.IMG_ORDER = 1
+	</select>
+	<select id="getReserveInfo" parameterType="int" resultType="com.eats.user.model.ReservationDTO">
+		SELECT
+			*
+		FROM
+			RESERVATION
+		WHERE
+			RESERVE_IDX = #{reserve_idx}
+	</select>
+	<select id="getMenuCateListByReserveIdx" parameterType="int" resultType="com.eats.store.model.HYMenuCateDTO">
+		SELECT
+			*
+		FROM
+			MENU_CATE
+		WHERE
+			STORE_IDX=(
+				SELECT
+					STORE_IDX
+				FROM
+					RESERVATION
+				WHERE
+					RESERVE_IDX=${reserve_idx}
+			)
+	</select>
+	<select id="getMenuListByReserveIdx" parameterType="int" resultType="com.eats.store.model.HYMenuDTO">
+		SELECT
+			*
+		FROM
+			MENU
+		WHERE
+			M_CATE_IDX IN (
+				SELECT
+					M_CATE_IDX
+				FROM
+					MENU_CATE
+				WHERE
+					STORE_IDX=(
+						SELECT
+							STORE_IDX
+						FROM
+							RESERVATION
+						WHERE
+							RESERVE_IDX=#{reserve_idx}
+					)
+			)
+	</select>
+	<select id="getReviewInfoByReserve" parameterType="int" resultType="com.eats.user.model.ReservationDTO">
+		SELECT
+			*
+		FROM
+			REVIEW
+		WHERE
+			RESERVE_IDX=#{reserve_idx}
+	</select>
+	<select id="getTagList" resultType="String">
+		SELECT
+			CATE_VALUE_NAME
+		FROM
+			CATE_VALUE
+		WHERE
+			CATE_KEY_IDX IN (
+                SELECT
+                    CATE_KEY_IDX
+                FROM
+                    CATE_KEY
+                WHERE
+                    CATE_KEY_LEVEL = 2
+                AND 
+                    CATE_KEY_IDX != 5
+            )
+		ORDER BY CATE_KEY_IDX, CATE_VALUE_IDX
+	</select>
+	<insert id="insertReview" parameterType="com.eats.user.model.ReviewDTO">
+		INSERT INTO
+			REVIEW
+		VALUES(
+			REV_IDX_SEQ.NEXTVAL
+			, #{reserve_idx}
+			, #{rev_score}
+			, #{rev_content}
+			, SYSDATE
+			, 1
+			, #{rev_img}
+			, #{rev_menu}
+			, #{rev_tag}
+		)
+	</insert>
+	<!-- 리뷰 작성시 포인트 지급 -->
+	<update id="givePoint" parameterType="int">
+		UPDATE 
+			USER_PROFILE
+		SET 
+			USER_POINT=USER_POINT+500
+		WHERE
+			USER_IDX = #{user_idx}
+	</update>
+	<select id="getCurPoint" parameterType="int" resultType="int">
+		SELECT
+			USER_POINT
+		FROM
+			USER_PROFILE
+		WHERE
+			USER_IDX = #{user_idx}
+	</select>
+	<insert id="pointLog" parameterType="map">
+		INSERT INTO
+			POINT
+		VALUES(
+			POINT_IDX_SEQ.NEXTVAL
+			, #{user_idx}
+			, #{update_point}
+			, 500
+			, null
+		)
+	</insert>
+</mapper>

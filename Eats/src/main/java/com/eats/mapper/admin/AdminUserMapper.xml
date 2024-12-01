@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminUserMapper">
+	
+		<!-- 사용안함 시작 -->
+		<select id="userList" resultType="com.eats.admin.model.AdminUserDTO">
+			select 
+			    *  
+			from 
+				eats_user 
+			where 
+				user_idx != 1 
+		</select>
+		<!-- 사용안함 마침 -->
+		
+		
+		<select id="userListCnt" resultType="int">
+			select 
+			    count(*)   
+			from 
+				eats_user 
+			where 
+				user_idx != 1 
+				
+				<!-- 
+				<choose>
+		            <when test="search_key == 'user_name'">
+		                and user_name like #{search_value}
+		            </when>
+		            <when test="search_key == 'user_email'">
+		                and user_email like #{search_value}
+		            </when>
+		            <otherwise>
+		                and user_name like #{search_value} 
+		            </otherwise>
+		        </choose>
+		         -->
+	        
+		</select>
+		
+		
+		<select id="userListPage" resultType="com.eats.admin.model.AdminUserDTO">				
+			select * from 
+		    (
+		        select rownum as rnum, a.* from 
+		        (
+		            select 
+		            	user_idx, user_id, user_pwd, user_name, user_email, 
+		            	user_birth,
+		            	<!--
+		            	TO_CHAR(user_birth, 'YYYY-MM-DD') AS user_birth,  
+		            	 --> 
+		            	user_gender, join_method
+		            from eats_user 
+		            where 
+						user_idx != 1 
+						
+						<!-- 
+				        <choose>
+				            <when test="search_key == 'user_id'">
+				                and user_id like #{search_value}
+				            </when>
+				            <when test="search_key == 'user_name'">
+				                and user_name like #{search_value}
+				            </when>
+				        </choose>
+				         -->
+		            	
+		            order by user_idx desc
+		        ) a
+		    ) b
+		    where rnum <![CDATA[>=]]> (#{cp} - 1) * #{listSize} + 1 and rnum <![CDATA[<=]]> #{cp} * #{listSize}
+		</select>
+		
+		 
+	   <select id="userDetail" resultType="com.eats.admin.model.AdminUserDTO">
+			select 
+            	us.user_idx, us.user_id, us.user_pwd, us.user_name, us.user_email, 
+            	us.user_birth,
+            	<!--
+            	TO_CHAR(user_birth, 'YYYY-MM-DD') AS user_birth,  
+            	 --> 
+            	us.user_gender, us.join_method, 
+            	up.user_nickname, up.user_intro, up.user_tel, up.user_point   
+			from 
+				eats_user us
+			left join 
+				user_profile up on us.user_idx = up.user_idx 
+			WHERE 
+				us.user_idx = #{user_idx}
+	   </select>
+		
+	   <select id="storeChartList" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+	   </select>
+	   <!--
+	   		운영상태 ready, true, false
+	   		r, y, n
+	    -->
+	    
+	    
+	   <select id="adminStoreChartDetail" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			WHERE 
+				st.store_idx = #{st_idx}
+	   </select>
+	   
+	   
+	</mapper>
+	   

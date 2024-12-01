@@ -1,0 +1,275 @@
+@charset "UTF-8";
+
+	.contents {display: flex;}
+	
+	/* 이미지 */
+	.mainCont .mainCon_img {width:1300px; margin: 20px auto; background: #fff;  }
+	.mainCon_img .tableWrite_2 {border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 100px; }
+	
+	.mainCon_img .btnBox_top2 {width:1300px; }
+	.mainCon_img .btnBox_top2 > * {float:right; margin-top:-50px;}
+	
+	.img_align_left {height:60px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding:30px; text-align:center;}
+	.img_align_left > span {float:left; }
+	.img_align_left > span input.input_file {border: 1px solid #ccc; border-radius: 5px; padding: 5px 10px; width:200px; margin:0 10px;}
+    .img_align_left > span input.input_file::file-selector-button { display: none; }
+	
+	.img_align_left span.img_st_one {width:200px;  margin:0 10px;}
+	.img_align_left span img {width:200px;}
+	.hs200 {height:200px;}
+	.img_del_btn {width:92%; display:inline-block; text-align:right;}
+	
+	.hs400 {height:400px;}
+	
+	
+	/* 카테고리 > 태그,특징 */
+	.mainCont .mainCon_cate {width:1300px; margin: 0px auto; background: #fff;  }	
+	.mainCon_cate .btnBox_top2 {}
+	.mainCon_cate .btnBox_top2 > * {float:right; margin-top:-50px;}		
+	
+	
+	.cb_top {border:0px solid blue; margin-bottom:10px;}
+	.cb_top span {font-weight:600; font-size:14px;}
+	.cateBoxing > * {float:left; width:620px; margin:30px 15px;}
+	.cateBox { border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding:20px; }
+	.cateBox .cb_bottom {min-height:40px;}
+	.cateBox .cb_bottom > span {display:inline-block; padding:5px; background-color:#5dd5ff; border-radius:5px; margin:5px;}
+	
+	
+	
+	/* 그리드 */
+	.mainCon_1400 .gridBox {
+		padding: 10px; /* 테이블 주변에 여백을 추가 */
+	    background-color: white; /* 배경색을 추가해주면 테이블이 더 돋보임 */
+    }
+	.mainCon_1400 .gridBox .gridTable {
+		border-top:0px solid gray; border-collapse : collapse; margin:20px;		
+	}	
+	.mainCon_1400 .gridBox .gridTable tr td {width:200px; padding:5px; border:0px solid gray; text-align:center; }
+	.mainCon_1400 .gridBox .gridTable tr td div {padding:10px 10px 20px 10px; border-radius:10px; background:#90D7FF;}	
+	.mainCon_1400 .gridBox .gridTable select {border:0px solid #ffb1b1; background:#DAF0FF; color:dark-blue;}
+	.mainCon_1400 .gridBox .gridTable input {background:#90D7FF; border:0px;}	
+	
+	.grid_first_step {
+	    display: flex; /* 버튼들을 가로로 배치 */
+	    align-items: center; /* 버튼들이 세로로 중앙 정렬되도록 설정 */
+	}
+	
+	/* <버튼> */
+	/* 이미지관리-저장버튼 / 정보수정신청-신청하기버튼 / 소식리스트-글쓰기, 소식등록-저장버튼 */
+	.btn_black {cursor:pointer; background:black; color:white; text-align:center; border:1px solid black; border-radius:5px; padding:5px 10px;}
+	/* 소식관리-상세보기 버튼 */
+	.btn_skyblue {cursor:pointer; background:#349FFB; color:white; text-align:center; border:1px solid #2778BD; border-radius:5px; padding:5px 10px;}
+	
+	
+	/* 영업시간수정 테이블박스 */
+	.mainCont .mainCon_1000 {width:1300px; margin: 20px auto; background: #fff;  }
+	.mainCon_1000 .tableWrite_3 {
+		border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 100px; 
+	}
+	
+	.mainCon_1000 .tableWrite_3 table {width:100%;}
+	.mainCon_1000 .tableWrite_3 table tr {height:60px;}
+	.mainCon_1000 .tableWrite_3 table tr th {width:10%; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
+	.mainCon_1000 .tableWrite_3 table tr td { border-bottom:1px solid #eee;}
+	.mainCon_1000 .tableWrite_3 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_1000 .tableWrite_3 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	/* 영업상태 박스 */
+	.mainCon_1000 .workStateBox {border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 50px; }
+	.mainCon_1000 .workStateBox .detail_wsb {text-align:center;}
+	
+	
+	/* 정보수정신청 테이블박스 */
+	.mainCont .mainCon_info {width:1300px; margin: 20px auto; background: #fff;  }
+	.mainCon_info .two_contents {width:100%; height:150px;}
+	.mainCon_info .two_contents > * {float:left; width:570px; height:300px;}
+	.two_contents .tableWrite_4 {border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding:30px; }
+	.two_contents .tableWrite_4 table {width:100%;}
+	.two_contents .tableWrite_4 table tr {height:60px;}
+	.two_contents .tableWrite_4 table tr th {width:180px; text-align:right; padding-right:20px; border-bottom:1px solid #eee;}
+	.two_contents .tableWrite_4 table tr td {border-bottom:1px solid #eee;}
+	.two_contents .tableWrite_4 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.two_contents .tableWrite_4 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	/* 소식관리-소식등록, 수정, 상세보기 테이블박스 */
+	.mainCont .mainCon_800 {width:1400px; margin: 20px auto;}
+	.mainCon_800 .tableWrite_2 {border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 40px; }
+	.mainCon_800 .tableWrite_2 table {width:100%;}
+	.mainCon_800 .tableWrite_2 table tr {height:40px; }
+	.mainCon_800 .tableWrite_2 table tr th {text-align:left; padding-right:20px; border-bottom:0px solid #ddd;}
+	.mainCon_800 .tableWrite_2 table tr th.th_center { text-align:center;}
+	.mainCon_800 .tableWrite_2 table tr th.th_right { text-align:right;}
+	.mainCon_800 .tableWrite_2 table tr td {border-bottom:0px solid #ddd; padding:10px;}
+	.mainCon_800 .tableWrite_2 table tr:first-child th {border-bottom:0px solid #ddd;}
+	.mainCon_800 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	.mainCon_800 .tableWrite_2 table tr td pre {width:640px; }
+	.mainCon_800 .tableWrite_2 table tr td img {width:640px;}
+	
+	
+	/* 소식관리 수정 */
+	.img_th_span {display:inline-block; margin-left:60px;}
+	
+	
+	/* 소식관리 - 리스트 박스 */
+	.mainCont .mainCon_1400 {width:1400px; margin: 20px auto; }
+	.mainCon_1400 .tableList {}
+	.mainCon_1400 .tableList table {width:100%;}
+	.mainCon_1400 .tableList table thead tr th {height:50px; border-bottom:3px solid #ddd;}
+	.mainCon_1400 .tableList table tbody tr td {height:40px; border-bottom:1px solid #ddd;}
+	
+	
+	.tac {text-align:center;}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	hr {width:100%; border:1px solid #2778BD; margin:30px 0;}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* 이미지관리-저장버튼 박스, 정보수정신청-수정신청버튼 박스 */
+	.mainCont .btnBox_top > * {float:right; margin-top:-40px;}
+	
+	.mainCont .btnBox_bottom > * {float:right; margin-left:10px; margin-bottom:40px;}
+	
+	
+	.mainCont .mainCon_400 {width:400px;}
+	.mainCon_400 .tableWrite_2 {}
+	.mainCon_400 .tableWrite_2 table {width:100%;}
+	.mainCon_400 .tableWrite_2 table tr {height:40px; }
+	.mainCon_400 .tableWrite_2 table tr th {width:40%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr td {width:60%; border-bottom:1px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_400 .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	
+	
+	.mainCon_img .tableWrite_2 table {width:100%;}
+	.mainCon_img .tableWrite_2 table tr {height:40px; }
+	.mainCon_img .tableWrite_2 table tr th {width:40%; text-align:right; padding-right:20px; border-bottom:1px solid #ddd;}
+	.mainCon_img .tableWrite_2 table tr td {width:60%; border-bottom:1px solid #ddd;}
+	.mainCon_img .tableWrite_2 table tr:last-child th {border-bottom:0px solid #ddd;}
+	.mainCon_img .tableWrite_2 table tr:last-child td {border-bottom:0px solid #ddd;}
+	
+	
+	
+	
+	
+	
+	/* 이미지관리-등록된이미지 이미지박스, 소식상세보기 이미지박스 */
+	.contents .mainCont .mainCon_0 {} 
+	.mainCon_0 .mc0_imgBox {width:100%;}
+	.mainCon_0 .mc0_imgBox > span {display:inline-block; width:220px; vertical-align:top;}
+	
+	.mainCon_0 .mc0_imgBox span img {width:200px; margin:0 4%;}
+	.mainCon_0 .mc0_imgBox > span > span {float:right; width:10px; height:30px; margin-right:20px; font-size:20px;}
+	
+	
+	/*태그관리, 특징관리 페이지*/
+	/*
+	.cateBox {margin-bottom:50px; border:0px solid red;}
+	.cateBox .cb_top {border:0px solid blue;}
+	.cateBox .cb_top span {font-weight:600; font-size:14px;}
+	.cateBox .cb_bottom {}
+	.cateBox .cb_bottom > span {display:inline-block; padding:5px; background-color:#5dd5ff; border-radius:5px;}
+	*/
+	
+	
+	/* 이미지관리-삭제버튼 / 소식등록-취소버튼 */
+	.btn_gray {cursor:pointer; background:#ccc; color:black; text-align:center; border:1px solid #555; border-radius:5px; padding:5px 10px;}
+	
+	
+	/* 정보수정신청 input */
+	input[type='text'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
+	input[type='number'] {border:0px solid #ddd; border-bottom:1px solid #ddd;}
+	input[type='text']:focus {
+	    outline: none;  /* 포커스 시 outline 제거 */
+	    border: none;   /* 포커스 시 border 제거 (선택 사항) */
+	    border-bottom:1px solid #ddd;
+	}
+	
+	input[type='radio'] {}
+	
+	/* 소식등록 textarea */
+	textarea {width:98%; height:100px; background:#eee; border:1px solid #ccc;}
+	
+	select {
+		padding:5px; border:1px solid gray; border-radius:3px; 
+		/*
+		appearance:none; background:url('/img/select_icon.png') no-repeat right 0px center;
+		border:1px solid #999;
+		*/
+	}
+	
+	
+	.mt10 {margin-top:10px;}
+	.mt50 {margin-top:50px;}
+	
+	.mr10 {margin-right:10px;}
+	.mr40 {margin-right:40px;}
+	.mr100 {margin-right:100px;}
+	
+	.mb10 {margin-bottom:10px;}
+	.mb60 {margin-bottom:60px;}
+	
+	.ml10 {margin-left:10px;}
+	.ml20 {margin-left:20px;}
+	.ml200 {margin-left:120px;}
+	
+	
+	.ws50 {width:50px;}
+	.ws60 {width:60px;}
+	.ws80 {width:80px;}
+	.ws90 {width:90px;}
+	.ws100 {width:100px;}
+	.ws120 {width:120px;}
+	.ws300 {width:300px;}
+	.ws400 {width:400px;}
+	.ws600 {width:600px;}
+	.ws800 {width:800px;}
+	
+	.ws95p {width:95%;}
+	
+	.cspi {cursor:pointer;}
+	
+	.a_left {text-align:left; padding-left:10px;}
+	.a_left30 {text-align:left; padding-left:30px;}
+	.a_center {text-align:center;}
+	.a_right {text-align:right; padding-right:10px;}
+	

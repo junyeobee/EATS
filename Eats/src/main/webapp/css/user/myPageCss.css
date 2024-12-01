@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+/* 공통 스타일 */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FEFEFE; /* White background */
+}
+
+.container {
+    text-align: center;
+    width: 80%;
+    max-width: 1200px;
+    margin: 100px auto;
+    background-color: #FFFFFF;
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* 프로필 섹션 */
+.profile {
+    margin-bottom: 50px;
+}
+.profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #F3553C; /* Updated to match theme red */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.profile-name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #F3553C; /* Theme red */
+}
+.profile-points {
+    font-size: 1.5rem;
+    color: #777777;
+    margin-top: 10px;
+}
+
+/* 메뉴 섹션 */
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+.menu-item {
+    padding: 30px;
+    background-color: #FFF8EB; /* Light beige background */
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    text-decoration: none;
+    color: #333333;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+.menu-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    background-color: #F3553C; /* Theme red for hover */
+    color: #FFFFFF;
+}
+.menu-item img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+.menu-item:hover img {
+    transform: scale(1.1);
+}
+.menu-item div {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 40px 20px;
+    }
+    .profile img {
+        width: 120px;
+        height: 120px;
+    }
+    .profile-name {
+        font-size: 2rem;
+    }
+    .menu-item {
+        padding: 20px;
+    }
+    .menu-item img {
+        width: 60px;
+        height: 60px;
+    }
+}

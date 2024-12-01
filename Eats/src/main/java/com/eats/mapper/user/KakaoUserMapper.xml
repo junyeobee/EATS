@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.eats.mapper.user.KakaoUserMapper">
+	<select id="kakaoIdCheck" parameterType="String" resultType="com.eats.user.model.EatsUserDTO">
+		SELECT
+			E.USER_IDX, UP.USER_NICKNAME
+		FROM
+			EATS_USER E, USER_PROFILE UP
+		WHERE 
+			E.USER_ID=#{userId}
+		AND
+			UP.USER_IDX
+				=(SELECT
+					USER_IDX
+				FROM
+					EATS_USER
+				WHERE
+					KAKAO_ID=#{kakaoId}
+				)
+	</select>
+	<insert id="insertUser" parameterType="com.eats.kakao.model.KakaoUserDTO">
+		INSERT INTO EATS_USER
+		VALUES(
+		    USER_IDX_SEQ.NEXTVAL
+		    , NULL
+		    , NULL
+		    , #{nickname}
+		    , 'example'||user_idx_seq.currval||'@gmail.com'
+		    , '2024-10-15'
+		    , 0
+		    , 'KAKAO'
+		    , #{id}
+		) 
+	</insert>
+	<select id="getNewUserIdx" resultType="int">
+		SELECT
+			USER_IDX_SEQ.CURRVAL
+		FROM
+			DUAL
+	</select>
+	<insert id="insertUserProfile" parameterType="map">
+		INSERT INTO USER_PROFILE
+		VALUES(
+		    #{user_idx}
+		    , #{user_nickname}
+		    , NULL
+		    , NULL
+		    , '010-0000-0000'
+		    , 0 
+		    , null
+		)
+	</insert>
+</mapper>

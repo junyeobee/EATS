@@ -1,0 +1,103 @@
+@charset "UTF-8";
+body{
+	margin: 0px;
+	display: flex;
+	font-family: "Noto Sans KR", sans-serif;
+}
+.empty{
+	width: 60%;
+	background-color: #f3553c;
+	display: flex;
+	
+}
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+.empty h1{
+	color: #fefefe;
+    font-family: 'Tenada';
+    position: absolute;
+    top: 35%;
+    left: 13%;
+    font-size: 100px;
+}
+#user_login_form{
+	width:100%;
+	margin:100px auto;
+}
+.login-wrapper{
+	width:100%;
+	margin:auto;
+	text-align:center;
+}
+.logo-wrapper{
+	width:20%;
+	margin:20px auto;
+}
+.logo-wrapper img{
+	width:150px;
+}
+.text-wrapper{
+	width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.text-wrapper input{
+	width:95%;
+    margin-top: 20px;
+    background-color: #fefefe;
+    border: 1px solid gray;
+    height: 30px;
+    border-radius: 5px;
+    padding: 10px 5px 10px 10px;
+    color: #1E1E1E;
+    font-family: "Noto Sans KR", sans-serif;
+}
+.saveId-wrapper{
+	margin: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+}
+.button-wrapper{
+	display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+#button-login, #button-kakao{
+    font-size: 15px;
+    padding: 20px 0px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    border: 0;
+    font-family: "Noto Sans KR", sans-serif;
+}
+#button-login{
+	background-color:#F3553C;
+	color:#fefefe;
+}
+#button-kakao{
+	box-shadow: 0 0 0 1px #f3553c inset;
+    background-color: #fefefe;
+    background: url(/img/user/kakao_logo.png) no-repeat left center;
+    background-size: 40px;
+    background-position-x: 15px;
+}
+.findAcc-wrapper{
+	text-align:center;
+	margin-top:20px;
+	color:gray;
+}
+.findAcc-wrapper a{
+	text-decoration:none;
+	color:gray;
+}
+.findAcc-wrapper a:hover{
+	text-decoration:underline;
+}

@@ -1,0 +1,35 @@
+@charset "UTF-8";
+body{
+	width: 100%;
+	
+}
+.header_box {
+    width: 100%;
+    height: 140px;
+    background-color: #FFEDD0;
+    margin: 0 auto;
+    text-align: center;
+  position: relative;
+
+  font-family: "Noto Sans KR", sans-serif;
+}
+.header_logo_icon {
+    margin-top: 28px;
+  width: 156px;
+  object-fit: contain;
+}
+.header_logo_icon:hover {
+	cursor: pointer;
+}
+.header_profile_box {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 16px;
+    color: #461002;   
+}
+
+.header_profile_box a {
+	text-decoration: none;
+	color: #461002;   
+}

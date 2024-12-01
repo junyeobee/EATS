@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.user.MypageMapper">
+
+    <!-- 마이페이지 정보 가져오기 -->
+    <select id="getUserProfile" resultType="com.eats.user.model.EatsUserDTO">
+        SELECT user_idx, user_name, user_email, user_birth, user_gender, join_method
+        FROM eats_user
+        WHERE user_idx = #{user_idx}
+    </select>
+    
+<select id="getUserProfile1" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT user_idx, 
+           user_nickname, 
+           user_intro, 
+           user_location, 
+           user_tel, 
+           user_point AS user_point,  <!-- 명시적 매핑 -->
+           profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
+
+    <!-- 나의 정보 상세보기 -->
+<select id="getUserProfileDetail" resultType="com.eats.user.model.EatsUserProfileDTO">
+    SELECT 
+        user_idx, 
+        user_nickname, 
+        user_intro, 
+        user_location, 
+        user_tel, 
+        user_point, 
+        profile_image
+    FROM user_profile
+    WHERE user_idx = #{user_idx}
+</select>
+    <!-- 나의 정보 수정 -->
+    
+<update id="updateUserProfile">
+    UPDATE user_profile
+    SET 
+        user_nickname = #{user_nickname},
+        user_intro = #{user_intro},
+        user_location = #{user_location},
+        user_tel = #{user_tel},
+        profile_image = #{profile_image}  <!-- 프로필 이미지 경로 업데이트 -->
+    WHERE user_idx = #{user_idx}
+</update>
+
+
+    <!-- 프로필 이미지 수정 -->
+    <update id="updateProfileImage">
+        UPDATE user_profile
+        SET profile_image = #{profile_image}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 나의 정보 수정 화면 데이터 가져오기 -->
+    <select id="getEditProfile" resultType="com.eats.user.model.EatsUserProfileDTO">
+        SELECT user_idx, 
+               user_nickname, 
+               user_intro, 
+               user_location, 
+               user_tel, 
+               user_point, 
+               profile_image
+        FROM user_profile
+        WHERE user_idx = #{user_idx}
+    </select>
+
+
+    <!-- 찜 관련 -->
+<select id="getJjimList" resultType="com.eats.user.model.JjimDTO">
+<!--     SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL,
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize} -->
+    SELECT * FROM (
+        SELECT jjim.USER_IDX, jjim.STORE_IDX, store.STORE_NAME, store.STORE_ADDR, store.STORE_TEL, 
+               store_img.STORE_IMG,  -- 매장 이미지 추가
+               ROWNUM AS rnum
+        FROM JJIM jjim
+        JOIN STORE store ON jjim.STORE_IDX = store.STORE_IDX
+        LEFT JOIN STORE_IMG store_img ON store.STORE_IDX = store_img.STORE_IDX AND store_img.IMG_ORDER = 1 
+        WHERE jjim.USER_IDX = #{user_idx}
+        ORDER BY store.STORE_NAME
+    ) 
+    WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{pageSize}
+    
+</select>
+
+
+    <select id="getTotalJjimCount" resultType="int">
+        SELECT COUNT(*)
+        FROM JJIM
+        WHERE USER_IDX = #{user_idx}
+    </select>
+
+    <delete id="deleteJjim">
+        DELETE FROM JJIM
+        WHERE USER_IDX = #{user_idx} AND STORE_IDX = #{store_idx}
+    </delete>
+    
+    <!-- 리뷰 관련 -->
+    <select id="getReviewList" parameterType="map" resultType="com.eats.user.model.ReviewDTO">
+        SELECT * FROM (
+            SELECT 
+                r.REV_IDX, 
+                r.RESERVE_IDX, 
+                r.REV_SCORE, 
+                r.REV_CONTENT, 
+                r.REV_WRITEDATE,
+                r.REV_STATE, 
+                r.REV_IMG, 
+                r.REV_MENU, 
+                r.REV_TAG,
+                res.RESERVE_DATE, 
+                s.STORE_NAME, 
+                s.STORE_ADDR,
+                ROWNUM AS rnum
+            FROM 
+                REVIEW r
+            JOIN 
+                RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+            JOIN 
+                STORE s ON res.STORE_IDX = s.STORE_IDX
+            WHERE 
+                res.USER_IDX = #{user_idx}
+            ORDER BY 
+                r.REV_WRITEDATE DESC
+        ) WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
+    </select>
+
+    <select id="getTotalReviewCount" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEW r
+        JOIN RESERVATION res ON r.RESERVE_IDX = res.RESERVE_IDX
+        WHERE res.USER_IDX = #{user_idx}
+    </select>
+
+    <!-- 결제 관련 -->
+    <select id="getPaymentList" parameterType="map" resultType="com.eats.user.model.PaymentDTO">
+        SELECT * 
+        FROM (
+            SELECT 
+                pay.RESERVE_IDX,
+                store.STORE_NAME,
+                res.RESERVE_DATE,
+                pay.PAY_PRICE,
+                pay.PAY_METHOD,
+                res.RESERVE_STATE,
+                ROW_NUMBER() OVER (ORDER BY res.RESERVE_DATE DESC) AS rnum
+            FROM RESERVE_PAY pay
+            JOIN RESERVATION res ON pay.RESERVE_IDX = res.RESERVE_IDX
+            JOIN STORE store ON res.STORE_IDX = store.STORE_IDX
+            WHERE res.USER_IDX = #{user_idx}
+        )
+        WHERE rnum BETWEEN #{offset} AND #{offset} + #{pageSize} - 1
+    </select>
+
+    <select id="getTotalPaymentCount" parameterType="int" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM RESERVE_PAY pay
+        JOIN RESERVATION res ON pay.RESERVE_IDX = res.RESERVE_IDX
+        WHERE res.USER_IDX = #{user_idx}
+    </select>
+
+
+<!-- 검색 조건에 따른 문의 목록 -->
+  <!-- 사용자 문의 목록 조회 -->
+ <select id="selectUserQnaList" parameterType="map" resultType="com.eats.user.model.UserQnaDTO">
+    SELECT * FROM (
+        SELECT 
+            ROWNUM AS RNUM,
+            DATA.*
+        FROM (
+            SELECT 
+                UQNA_IDX,
+                USER_IDX,
+                UQNA_TITLE,
+                UQNA_CONTENT,
+                TO_CHAR(UQNA_WDATE, 'YYYY-MM-DD') AS UQNA_WDATE,
+                UQNA_STAT,
+                UQNA_TYPE,
+                UQNA_ANSWER
+            FROM USER_QNA
+            WHERE USER_IDX = #{userIdx}
+            <if test="keyword != null and keyword != ''">
+                AND UQNA_TITLE LIKE '%' || #{keyword} || '%'
+            </if>
+            <if test="status != null and status != ''">
+                AND UQNA_STAT = #{status}
+            </if>
+            ORDER BY UQNA_WDATE DESC
+        ) DATA
+         WHERE ROWNUM &lt;= #{offset} + #{pageSize}
+    )
+    WHERE RNUM &gt; #{offset}
+</select>
+
+
+    <!-- 사용자 문의 총 개수 -->
+    <select id="getTotalQnaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM USER_QNA
+        WHERE USER_IDX = #{userIdx}
+        <if test="keyword != null and keyword != ''">
+            AND UQNA_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="status != null and status != ''">
+            AND UQNA_STAT = #{status}
+        </if>
+    </select>
+<insert id="insertUserQna" parameterType="com.eats.user.model.UserQnaDTO">
+    INSERT INTO USER_QNA (
+        UQNA_IDX, USER_IDX, UQNA_TITLE, UQNA_CONTENT, UQNA_WDATE, UQNA_STAT, UQNA_TYPE
+    ) VALUES (
+        UQNA_IDX_SEQ.NEXTVAL, #{USER_IDX}, #{UQNA_TITLE}, #{UQNA_CONTENT}, SYSDATE, 0, '일반문의'
+    )
+</insert>
+<select id="selectQnaDetail" parameterType="int" resultType="com.eats.user.model.UserQnaDTO">
+    SELECT 
+        UQNA_IDX,
+        USER_IDX,
+        UQNA_TITLE,
+        UQNA_CONTENT,
+        TO_CHAR(UQNA_WDATE, 'YYYY-MM-DD') AS UQNA_WDATE,
+        UQNA_STAT,
+        UQNA_TYPE,
+        UQNA_ANSWER
+    FROM USER_QNA
+    WHERE UQNA_IDX = #{uqnaIdx}
+</select>
+
+</mapper>

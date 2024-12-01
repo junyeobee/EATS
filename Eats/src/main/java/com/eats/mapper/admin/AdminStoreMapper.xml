@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.eats.mapper.admin.AdminStoreMapper">
+		
+		<select id="storeList" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			left join 
+				gudok gd on st.store_idx = gd.store_idx
+		</select>
+		
+		<!--
+			1 활성/ 2 만료/ 3 일시정지
+			gd.stat가 1이면 프리미엄 아니면 일반 
+		 -->
+		 
+		 
+		<select id="storeListCnt" resultType="int">
+			select 
+			    count(*)   
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			left join 
+				gudok gd on st.store_idx = gd.store_idx
+		</select>
+		 
+		<select id="storeListPage" resultType="com.eats.admin.model.AdminStoreDTO">			
+			select * from 
+		    (
+		        select rownum as rnum, a.* from 
+		        (
+					select 
+					    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat 
+					from 
+					     store st 
+					left join 
+					    store_account sa on st.store_idx = sa.store_idx 
+					left join 
+						gudok gd on st.store_idx = gd.store_idx
+		            order by store_idx desc
+		        ) a
+		    ) b
+		    where rnum <![CDATA[>=]]> (#{cp} - 1) * #{listSize} + 1 and rnum <![CDATA[<=]]> #{cp} * #{listSize}
+		</select>
+		 
+		 
+	   <select id="adminStoreDetail" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_tel, sa.store_id, sa.store_email, gd.gudok_stat, 
+			    st.store_addr, st.store_daddr, st.store_biznum 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			left join 
+				gudok gd on st.store_idx = gd.store_idx
+			WHERE 
+				st.store_idx = #{st_idx}
+	   </select>
+	   
+		 
+	   <select id="storeTimeList" resultType="com.eats.store.model.StoreTimeDTO">
+			select 
+			    stime_idx, stime_day, stime_start, stime_end, stime_break 
+			from 
+			    store_time
+			WHERE 
+				store_idx = #{st_idx}
+			order by 
+				stime_idx 
+	   </select>
+		
+	   <select id="storeChartList" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+	   </select>
+	   <!--
+	   		운영상태 ready, true, false
+	   		r, y, n
+	    -->
+	    
+	    
+	   <select id="adminStoreChartDetail" resultType="com.eats.admin.model.AdminStoreDTO">
+			select 
+			    st.store_idx, st.store_name, st.store_state, st.store_tel, sa.store_id, sa.store_email 
+			from 
+			     store st 
+			left join 
+			    store_account sa on st.store_idx = sa.store_idx 
+			WHERE 
+				st.store_idx = #{st_idx}
+	   </select>
+	   
+	   
+		<insert id="storeTimeSave" parameterType="com.eats.store.model.StoreTimeDTO">
+			insert into store_time
+			values(STIME_IDX_SEQ.nextval,
+			#{store_idx},
+			#{stime_day},
+			#{stime_start},
+			#{stime_end},
+			#{stime_break})
+		</insert>
+		
+		
+		<update id="storeTimeUpdate" parameterType="com.eats.store.model.StoreTimeDTO">
+			update store_time set
+		        stime_start=#{stime_start}, 
+		        stime_end=#{stime_end}, 
+		        stime_break=#{stime_break}
+			where 
+				stime_idx=#{stime_idx}
+		</update>
+		
+		
+		<delete id="storeTimeDelete" parameterType="int">
+	      delete from store_time  
+	      where stime_idx=#{stime_idx}
+		</delete>
+		
+		
+		
+	   <select id="storeWorkData" resultType="String">
+			select 
+				store_state
+			from 
+			     store 
+			WHERE 
+				store_idx = #{store_idx}
+	   </select>
+		
+		<update id="storeWorkSet" parameterType="com.eats.store.model.StoreDTO">
+			update store set
+		        store_state=#{store_state}
+			where 
+				store_idx=#{store_idx}
+		</update>
+   
+	</mapper>

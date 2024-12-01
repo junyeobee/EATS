@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.eats.mapper.admin.BannerMapper">
+
+
+	<select id="bannerList" resultType="com.eats.admin.model.BannerDTO">
+		select * from
+		banner
+	</select>
+
+	<insert id="bannerInsert" parameterType="com.eats.admin.model.BannerDTO">
+		INSERT INTO banner (
+		BANNER_IDX,
+		BANNER_IMG,
+		BANNER_ORDER,
+		BANNER_NAME,
+		BANNER_URL,
+		BANNER_STAT,
+		BANNER_SDATE,
+		BANNER_EDATE
+		) VALUES (
+		banner_idx_seq.nextval,
+		#{banner_img},
+		#{banner_order},
+		#{banner_name},
+		#{banner_url},
+		#{banner_stat},
+		#{banner_sdate},
+		#{banner_edate}
+		)
+	</insert>
+
+
+	<delete id="deleteBanner" parameterType="java.util.List">
+	
+		delete from
+		BANNER
+		where
+		BANNER_IDX in
+		<foreach item="banner_idx" collection="list" open="(" separator="," close=")">
+			#{banner_idx}
+		</foreach>
+		
+	</delete>
+
+
+	<update id="bannerUpdate" parameterType="com.eats.admin.model.BannerDTO">
+
+		update 
+		BANNER
+		set
+		BANNER_IMG = #{banner_img},
+		BANNER_ORDER = #{banner_order},
+		BANNER_NAME = #{banner_name},
+		BANNER_URL = #{banner_url},
+		BANNER_STAT = #{banner_stat},
+		BANNER_SDATE =#{banner_sdate},
+		BANNER_EDATE = #{banner_edate}
+		where 
+		BANNER_IDX = #{banner_idx}
+		
+	</update>
+
+
+	<select id="bannerInfo"  parameterType="Integer" resultType="com.eats.admin.model.BannerDTO">
+	  select * from 
+	  banner
+	  where
+	  banner_idx=#{bannerIdx}
+	
+	</select>
+	
+		
+	
+
+
+</mapper>
+

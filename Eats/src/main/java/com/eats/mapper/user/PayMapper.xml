@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.eats.mapper.user.PayMapper">
+ 
+ 
+ 	<select id="storeInfo" resultType="com.eats.user.model.PayDTO">
+ 	
+ 		select store_name, us.*
+	from store st, (select user_name,user_tel
+                from eats_user eu join user_profile up on eu.user_idx=up.user_idx 
+                where eu.user_idx=#{userIdx}) us
+	where st.store_idx=#{storeIdx}	
+ 	
+ 	</select>
+ 
+ 
+   
+ </mapper>
+

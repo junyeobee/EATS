@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.eats.mapper.store.storeMenuMapper">
+
+	<select id="storeCateList" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
+		select * from 
+		menu_cate mc
+		join store s on s.store_idx=mc.store_idx 
+		where s.store_idx=#{storeIdx}
+	</select>
+	
+	
+	<select id="storeMenuList" parameterType="map" resultType="com.eats.store.model.MenuDTO">
+		select * from menu m
+		join menu_cate mc on mc.m_cate_idx=m.m_cate_idx
+		where mc.store_idx=#{storeIdx}
+		<if test="idx!=0">
+			and mc.m_cate_idx = #{idx}
+		</if>
+	</select>
+	
+	
+	<insert id="insertMenu" parameterType="com.eats.store.model.MenuDTO">
+	    
+        INSERT INTO 
+        MENU <!-- (MENU_IDX, M_CATE_IDX, MENU_NAME, MENU_PRICE, MENU_INFO, MENU_PREORDER, MENU_IMG) -->
+        VALUES (
+            MENU_IDX_SEQ.NEXTVAL, 
+            #{m_cate_idx},  
+            #{menu_name},  
+            #{menu_price}, 
+            #{menu_info},  
+            #{menu_img},
+             #{menu_preorder}
+        )
+ 
+	</insert>	
+
+	
+	<delete id="deleteMenuCate" parameterType="int">
+			delete 
+			from
+				MENU_CATE
+			where
+				m_cate_idx=#{m_cate_idx}	
+	</delete>
+	
+	
+	<!-- 카테고리 등록 -->
+	<insert id="insertCate" parameterType="com.eats.store.model.MenuDTO" >
+	
+	INSERT INTO MENU_CATE (
+    	M_CATE_IDX,
+    	STORE_IDX,
+    	M_CATE_NAME,
+    	M_CATE_INFO
+	) VALUES (
+    	M_CATE_IDX_SEQ.NEXTVAL, 
+    	#{storeIdx},      
+   	 	#{cateName},    
+    	#{mCateInfo}     
+	)
+
+	</insert>
+	
+	
+	
+	<!-- 선택한 메뉴삭제 -->
+	<delete id="deleteMenu" parameterType="java.util.List">
+		
+		delete from
+		MENU
+		where
+		menu_idx in 
+		<foreach item="menu_idx" collection="list" open="(" separator="," close=")">
+			#{menu_idx}
+		</foreach>
+		
+	</delete>
+	
+	
+	
+	<!-- 메뉴 수정 -->
+	<update id="updateMenu" parameterType="com.eats.store.model.MenuDTO">
+	
+		update
+		MENU
+		set
+		m_cate_idx=#{m_cate_idx},
+		menu_name=#{menu_name},
+		menu_price=#{menu_price},
+		menu_info=#{menu_info},
+		menu_img=#{menu_img},
+		menu_preorder=#{menu_preorder}
+		where
+		menu_idx=#{menu_idx}	
+			
+	</update>
+	
+	
+	
+	<!-- 수정할 메뉴 정보 불러오기 -->
+	<select id="updateMenuInfo" parameterType="Integer" resultType="com.eats.store.model.MenuDTO">
+		
+		select * from menu 
+		where
+		menu_idx=#{menu_idx}
+		
+	</select>
+	
+	
+
+	
+</mapper>
+

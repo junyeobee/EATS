@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.eats.mapper.admin.AdminQnaMapper">
+
+    <!-- 사용자 문의 리스트 조회 -->
+    <select id="findUserQnaList" parameterType="map" resultType="com.eats.admin.model.AdminUserQnaDTO">
+        SELECT * FROM (
+            SELECT USER_QNA.*, ROW_NUMBER() OVER (
+                ORDER BY
+                <choose>
+                    <when test="sortBy == 'title'"> UQNA_TITLE ${order} </when>
+                    <when test="sortBy == 'status'"> UQNA_STAT ${order} </when>
+                    <otherwise> UQNA_WDATE ${order} </otherwise>
+                </choose>
+            ) AS RNUM
+            FROM USER_QNA
+            WHERE 1=1
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND UQNA_TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        )
+        WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+    </select>
+
+    <!-- 매장 문의 리스트 조회 -->
+    <select id="findStoreQnaList" parameterType="map" resultType="com.eats.admin.model.AdminStoreQnaDTO">
+        SELECT * FROM (
+            SELECT STORE_QNA.*, ROW_NUMBER() OVER (
+                ORDER BY
+                <choose>
+                    <when test="sortBy == 'title'"> SQNA_TITLE ${order} </when>
+                    <when test="sortBy == 'status'"> SQNA_STAT ${order} </when>
+                    <otherwise> SQNA_WDATE ${order} </otherwise>
+                </choose>
+            ) AS RNUM
+            FROM STORE_QNA
+            WHERE 1=1
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND SQNA_TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        )
+        WHERE RNUM BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+    </select>
+
+    <!-- 사용자 문의 전체 개수 조회 -->
+    <select id="getUserQnaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM USER_QNA
+        WHERE 1=1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND UQNA_TITLE LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </select>
+
+    <!-- 매장 문의 전체 개수 조회 -->
+    <select id="getStoreQnaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM STORE_QNA
+        WHERE 1=1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND SQNA_TITLE LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </select>
+
+    <!-- 사용자 문의 상세 조회 -->
+    <select id="findUserQnaById" parameterType="int" resultType="com.eats.admin.model.AdminUserQnaDTO">
+        SELECT * FROM USER_QNA WHERE UQNA_IDX = #{uqnaIdx}
+    </select>
+
+    <!-- 매장 문의 상세 조회 -->
+    <select id="findStoreQnaById" parameterType="int" resultType="com.eats.admin.model.AdminStoreQnaDTO">
+        SELECT * FROM STORE_QNA WHERE SQNA_IDX = #{sqnaIdx}
+    </select>
+
+    <!-- 사용자 문의 답변 작성 -->
+    <update id="updateUserQnaReply">
+        UPDATE USER_QNA SET UQNA_ANSWER = #{answer}, UQNA_STAT = 1 WHERE UQNA_IDX = #{uqnaIdx}
+    </update>
+
+    <!-- 매장 문의 답변 작성 -->
+    <update id="updateStoreQnaReply">
+        UPDATE STORE_QNA SET SQNA_ANSWER = #{answer}, SQNA_STAT = 1 WHERE SQNA_IDX = #{sqnaIdx}
+    </update>
+
+</mapper>

@@ -1,0 +1,148 @@
+
+
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FEFEFE; /* 헤더 테마에 맞춘 부드러운 배경색 */
+    color: #333;
+    overflow-x: hidden; /* 가로 스크롤 제거 */
+}
+
+/* 컨테이너 스타일 */
+.container {
+    max-width: 900px; /* 컨테이너 너비 */
+    margin: 100px auto; /* 페이지 중앙 배치 */
+    padding: 40px; /* 내부 여백 */
+    background-color: #FFFFFF; /* 흰색 배경 */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 */
+}
+
+/* 제목 스타일 */
+.container h1 {
+    text-align: center;
+    font-size: 32px; /* 제목 크기 */
+    color: #F3553C; /* 헤더 테마 레드 */
+    margin-bottom: 40px;
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 18px; /* 라벨 크기 */
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"],
+.form-group textarea {
+    width: 100%;
+    padding: 15px; /* 입력 필드 높이 증가 */
+    font-size: 16px; /* 폰트 크기 증가 */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus,
+.form-group textarea:focus {
+    border-color: #F3553C; /* 헤더 테마 레드 */
+    background-color: #fff;
+}
+
+/* 텍스트 영역 스타일 */
+textarea {
+    resize: none; /* 크기 조정 비활성화 */
+    height: 120px; /* 텍스트 영역 높이 */
+}
+
+/* 이미지 업로드 버튼 스타일 */
+button.upload-btn {
+    background-color: #F3553C; /* 헤더 테마 레드 */
+    color: white;
+    font-size: 16px; /* 버튼 텍스트 크기 */
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    display: inline-block; /* 버튼 크기를 맞추기 위해 */
+    margin-top: 10px;
+}
+
+button.upload-btn:hover {
+    background-color: #E33B30; /* 레드 강조 호버 색상 */
+    transform: translateY(-2px); /* 약간 위로 이동 */
+}
+
+/* 버튼 그룹 스타일 */
+.button-group {
+    display: flex; /* 버튼을 가로로 배치 */
+    justify-content: center; /* 중앙 정렬 */
+    gap: 30px; /* 버튼 간 간격 */
+    margin-top: 30px;
+}
+
+.btn_save,
+.btn_back {
+    display: inline-block;
+    padding: 15px 25px; /* 버튼 크기 증가 */
+    font-size: 18px; /* 폰트 크기 증가 */
+    font-weight: bold;
+    color: white;
+    background-color: #F3553C; /* 기본 레드 버튼 */
+    border: none;
+    border-radius: 30px; /* 둥근 모서리 */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 더 강한 그림자 */
+}
+
+.btn_save:hover {
+    background-color: #E33B30; /* 저장하기 버튼 호버 시 색상 */
+}
+
+.btn_back {
+    background-color: #E0E0E0; /* 회색 버튼 */
+    color: #333;
+}
+
+.btn_back:hover {
+    background-color: #C0C0C0; /* 회색 강조 호버 색상 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 30px;
+    }
+
+    .button-group {
+        flex-direction: column; /* 버튼을 세로로 배치 */
+        gap: 15px;
+    }
+
+    .btn_save,
+    .btn_back {
+        width: 100%; /* 버튼 너비를 100%로 설정 */
+    }
+}

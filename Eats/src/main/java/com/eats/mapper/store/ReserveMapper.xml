@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eats.mapper.store.ReserveMapper">
+	<select id="tables" parameterType="map" resultType="com.eats.store.model.reserve.TableDTO">
+		SELECT 
+		    sts.table_num, 
+		    sts.sts_num as cnt, 
+		    NVL(r.reserve_state, -1) as stat, 
+		    cv.cate_value_name as tabletype
+		FROM 
+		    store_table_set sts               
+		LEFT JOIN 
+		    reservation r 
+		    ON r.reserve_table_idx = sts.sts_idx 
+		    AND r.store_idx = #{storeIdx}
+		    AND r.reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD') 
+		    AND r.reserve_time = #{time}
+		JOIN 
+		    category c 
+		    ON sts.sts_type_idx = c.cate_idx
+		JOIN 
+		    cate_value cv 
+		    ON c.cate_value_idx = cv.cate_value_idx
+		WHERE 
+		    sts.sg_idx = (SELECT sg_idx FROM store_grid WHERE store_idx = #{storeIdx})
+		ORDER BY 
+		    sts.table_num ASC
+	</select>
+	<select id = "reserveList" parameterType="map" resultType="com.eats.store.model.reserve.ReserveListDTO">
+		SELECT 
+			r.reserve_idx,
+			r.reserve_date,
+			r.reserve_time,
+			r.reserve_count,
+			r.reserve_table_idx,
+			r.request,
+			r.reserve_state,
+			r.reserve_applydate,
+			u.user_name,
+			up.user_tel,
+			up.user_nickname
+		FROM 
+			reservation r
+		JOIN eats_user u 
+			ON r.user_idx = u.user_idx
+		JOIN user_profile up 
+			ON u.user_idx = up.user_idx
+		WHERE 
+			r.store_idx = #{storeIdx}
+			AND r.reserve_date = TO_DATE(#{day}, 'YYYY-MM-DD')
+			AND r.reserve_time = #{time}
+	</select>
+
+	<select id="storeTime" parameterType="map" resultType="com.eats.store.model.reserve.StoreTimeDTO">
+		SELECT 
+			stime_start,
+			stime_end,
+			stime_break
+		FROM 
+			store_time
+		WHERE 
+			store_idx = #{storeIdx}
+			AND stime_day = #{stimeDay}
+	</select>
+	<update id="assignTable" parameterType="map">
+		UPDATE RESERVATION r
+		SET 
+			RESERVE_STATE = 1,
+			RESERVE_TABLE_IDX = (
+				SELECT sts.STS_IDX
+				FROM STORE_TABLE_SET sts
+				WHERE sts.TABLE_NUM = #{tableNum}
+				AND sts.STS_IDX IN (
+					SELECT sts2.STS_IDX 
+					FROM STORE_TABLE_SET sts2
+					INNER JOIN STORE_GRID sg ON sts2.SG_IDX = sg.SG_IDX
+					WHERE sg.STORE_IDX = #{storeIdx}
+				)
+				AND ROWNUM = 1
+			)
+		WHERE r.RESERVE_IDX = #{reserveIdx}
+	</update>
+
+    <select id="selectBinTables" parameterType="map" resultType="com.eats.store.model.reserve.BinTables">
+        SELECT sts.STS_IDX, sts.STS_NUM, sts.TABLE_NUM
+		FROM STORE_TABLE_SET sts
+		JOIN STORE_GRID sg ON sts.SG_IDX = sg.SG_IDX
+		WHERE sg.STORE_IDX = #{storeIdx}
+		AND sts.STS_IDX IN (
+			SELECT RESERVE_TABLE_IDX
+			FROM RESERVATION
+			WHERE STORE_IDX = #{storeIdx}
+			AND RESERVE_DATE = #{date}
+			AND RESERVE_TIME = #{time}
+			AND RESERVE_STATE = 2
+		)
+    </select>
+    
+    <select id="selectAlarms" parameterType="map" resultType="com.eats.store.model.reserve.AlarmDTO">
+        SELECT 
+            a.USER_IDX as user_idx,
+            u.USER_NAME as user_name,
+            u.USER_EMAIL as user_email,
+            a.S_ALARM_DATE as alarm_date,
+            a.S_ALARM_TIME as alarm_time,
+            a.S_ALARM_COUNT as alarm_count
+        FROM S_ALARM a
+        JOIN EATS_USER u ON a.USER_IDX = u.USER_IDX
+        WHERE a.STORE_IDX = #{storeIdx}
+          AND a.S_ALARM_DATE = #{date}
+          AND a.S_ALARM_TIME = #{time}
+    </select>
+</mapper>

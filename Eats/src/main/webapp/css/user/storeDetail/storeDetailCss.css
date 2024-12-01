@@ -1,0 +1,575 @@
+@charset "utf-8";
+body{
+	font-family: "Noto Sans KR", sans-serif;
+}
+.wrapper{
+	margin-top:50px;
+}
+/* contents */
+.content-wrap {
+	width: 836px;
+}
+.store-wrap {
+	position: relative; 
+	margin-top: 42px;
+}
+
+.store-wrap .tit-area {
+	padding-right: 90px;
+	font-weight: 800;
+}
+.store-wrap .tit-area .tit {
+	font-size: 30px;
+}
+.store-wrap .tit-area .cate {
+	display: inline-block; 
+	padding-left: 15px; 
+	font-size: 0;
+}
+.store-wrap .tit-area .cate span {
+	display: inline-block; 
+	font-size: 15px;
+}
+.store-wrap .tit-area .cate span + span {
+	position: relative; 
+	padding-left: 18px;
+}
+.store-wrap .tit-area .cate span + span:before {
+	content: ''; position: 
+	absolute; bottom: 0; 
+	left: 7px; 
+	width: 2px; 
+	height: 10px; 
+	background: #000; 
+	transform: translateY(-50%);
+}
+
+.store-wrap .info {
+	font-size: 15px;
+	cursor: pointer;
+}
+.store-wrap .info > span {
+	display: inline-block;
+}
+.store-wrap .info .start {
+	padding-left: 30px; 
+	background: url(/img/user/storeInfo/icon_star.png) no-repeat left center;
+}
+.store-wrap .info .review {
+	padding-left: 20px;
+}
+.store-wrap .recommend-non {
+	position: absolute; 
+	top: 10px; 
+	right: 0; 
+	padding-left: 42px; 
+	background: url(/svg/fork_icon_white.svg) no-repeat left center; 
+	color: #ff533c; 
+	font-size: 25px;
+	background-size: contain;
+	cursor: pointer;
+}
+.store-wrap .recommend {
+	position: absolute; 
+	top: 10px; 
+	right: 0; 
+	padding-left: 42px; 
+	background: url(/svg/fork_icon.svg) no-repeat left center; 
+	color: #ff533c; 
+	font-size: 25px;
+	background-size: contain;
+	cursor: pointer;
+}
+
+/* 매장 이미지 스와이프 */
+.swp-store {
+	height: 470px; 
+	margin-top: 20px; 
+	border: 1px solid #000;
+	background-color:#fefefe;
+}
+.swp-store img{
+	width:100%;
+}
+.swp-store .swiper-button-next, .swiper-button-prev {
+	color: #000;
+}
+
+/* bg 공통 박스 */
+.bg-box {
+	margin: 35px 0; 
+	padding: 15px; 
+	border-radius: 12px; 
+	background: #FFE8E4;
+}
+.bg-box .inner {
+	padding: 15px; 
+	border-radius: 12px; 
+	background: #fff;
+}
+.bg-box .inner + .inner {
+	margin-top: 24px;
+}
+.bg-box .inner .tit {
+	font-size: 15px; 
+	font-weight: 700;
+}
+.bg-box .inner .desc {
+	margin-top: 10px; 
+	font-size: 13px; 
+	font-weight: 700;
+}
+.bg-box .inner .convenience-list li {
+	display: inline-block; 
+	margin: 12px 12px 0 0; 
+	padding: 5px 15px; 
+	border: 1.5px solid #DFDFDF; 
+	border-radius: 40px; 
+	background:#fff; 
+	text-align: center;
+}
+
+.bg-box .inner.txt {
+	padding: 15px 38px;
+}
+
+/* 아코디언 */
+.acco-wrap .acco-head {
+	font-size: 0;
+}
+.acco-wrap .acco-head .btn-acco, .openMap {
+	position: relative;
+    display: flex;
+    padding-right: 36px;
+    font-size: 16px;
+    gap: 10px;
+}
+.acco-wrap .acco-head .btn-acco:after {
+	content:''; 
+	position: absolute; 
+	right: 0; 
+	top: 50%; 
+	width: 20px; 
+	height: 20px; 
+	background: url(/img/user/storeInfo/icon_down.png) no-repeat center center; 
+	transform: translateY(-45%); 
+	transform-origin: center center;
+}
+.openMap:after{
+	content:''; 
+	position: absolute; 
+	right: 0; 
+	top: 50%; 
+	width: 20px; 
+	height: 20px; 
+	/* background: url(/img/user/storeInfo/icon_down.png) no-repeat center center;  */
+	transform: translateY(-45%); 
+	transform-origin: center center;
+}
+.openMap .open-map-span{
+	cursor: pointer;
+	color:blue;
+	text-decoration: underline;
+}
+.acco-wrap .acco-head .btn-acco.on:after, .openMap.on:after {
+	transform: translateY(-45%) rotate(180deg);
+}
+.acco-wrap .acco-head i {
+	display: inline-block;
+	width: 20px; 
+	height: 20px;
+}
+.acco-wrap .acco-head i.map {
+	background: url(/img/user/storeInfo/icon_map.png) no-repeat left center;
+}
+.acco-wrap .acco-head i.clock {
+	position: relative; 
+	top: 2px; 
+	background: url(/img/user/storeInfo/icon_clock.png) no-repeat left center;
+}
+.acco-wrap .acco-body {
+	display: none; 
+	margin-top: 5px; 
+	padding-left: 26px; 
+	font-size: 15px;
+}
+
+.acco-wrap .acco-body .map-area {
+	display: flex;
+    width: 50%;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.acco-wrap + .desc {
+	padding-left: 26px; 
+	margin-top: 20px; 
+	font-size: 10px;
+}
+
+.acco-wrap .acco-body .time-list {
+	display: block;
+}
+.acco-wrap .acco-body .time-list li {
+	display: flex; 
+	font-size: 15px;
+}
+.acco-wrap .acco-body .time-list li span p{
+	color:gray;
+}
+.acco-wrap .acco-body .time-list li .item {
+	flex-basis: 28px;
+}
+.copy-link{
+	color:blue;
+}
+.copy-link:hover{
+	text-decoration:underline;
+}
+.today-day{
+	font-weight: 800;
+}
+/* 공지사항 스와이프 */
+.swp-noti {
+	position: relative; 
+	padding-bottom: 49px;
+}
+.swp-noti .swiper-wrapper{
+	height: auto !important;
+}
+.swp-noti .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.swp-noti .swiper-slide .inner {
+  width: 100%;
+}
+.swp-noti .swiper-pagination-bullets .swiper-pagination-bullet {
+	width: 10px; 
+	height: 10px; 
+	background: #ff533e;
+}
+.swp-noti .btn-area {
+	margin-top: 15px; 
+	text-align: center;
+}
+.swp-noti .btn-area .btn-more {
+	display: inline-block; 
+	padding: 5px 15px; 
+	border-radius: 10px; 
+	background: #FFF8EB; 
+	color:#5f420f; 
+	font-size: 10px; 
+	font-weight: 500;
+}
+.swp-noti .inner-content{
+	margin-top: 15px;
+	height: 0px;
+	overflow: hidden;
+	transition: height 0.5s ease;
+}
+.news-img-wrap{
+    overflow: hidden;
+    height: 300px;
+    display: flex;
+    align-items: center;
+}
+.news-img-wrap img{
+	height: 100%;
+}
+
+
+/* 리뷰 버튼 */
+.btn-review {
+    display: block;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #F3553C;
+    text-align: center;
+    width: 98%;
+    margin: auto;
+    color:#fefefe;
+}
+
+/* 메뉴 리스트 */
+.tab-wrap {
+	padding: 10px 37px;
+}
+.tab-wrap .tab-list {
+	margin-bottom: 20px;
+    font-size: 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* text-align: center; */
+    column-gap: 20px;
+    row-gap: 10px;
+}
+.tab-wrap .tab-list li {
+	display: inline-block; 
+	padding: 8px 28px; 
+	border:2px solid #F3553C;
+	border-radius: 20px; 
+	font-size: 15px; 
+	font-weight: 500;
+	background-color:#fefefe;
+	color: #F3553C;
+}
+.tab-wrap .tab-list li:hover{
+	background-color: #FFE8E4;
+}
+/* .tab-wrap .tab-list li + li {
+	margin-left: 24px;
+} */
+.tab-wrap .tab-list li.on {
+	background: #F3553C; 
+	color: #fefefe; 
+	font-weight: 700;
+}
+.tab-wrap .tab-contents .tab-panel {
+	display: none;
+}
+
+.tab-wrap .tab-contents .menu-list li {
+	display: flex; 
+	padding: 24px 20px; 
+	background: #fefefe;
+}
+.menu-img-wrap{
+	width:30%;
+	height:140px;
+	overflow: hidden;
+	text-align:center;
+	border:1px solid #F3553C;
+	margin:0px 20px;
+}
+.tab-wrap .tab-contents .menu-list li img {
+	/* margin-right: 20px; */
+	height:100%;
+}
+.tab-wrap .tab-contents .menu-list li .txt-area {
+	position: relative;
+	width:60%;
+}
+.tab-wrap .tab-contents .menu-list li .txt-area strong {
+	display: block; 
+	padding-right: 62px; 
+	font-size: 12px; 
+	font-weight: 500;
+}
+.tab-wrap .tab-contents .menu-list li .txt-area .price {
+	position: absolute; 
+	top: 4px; 
+	right: 0; 
+	font-size: 10px; 
+	font-weight: 500;
+}
+.tab-wrap .tab-contents .menu-list li .txt-area p {
+	margin-top: 18px; 
+	font-size: 10px; 
+	font-weight: 500;
+}
+.tab-wrap .tab-contents .menu-list li + li {
+	margin-top: 32px;
+}
+.tab-wrap .tab-contents .btn-menu-more {
+	display: none; 
+	width: 100%; 
+	margin-top: 28px; 
+	padding: 18px 0; 
+	border-radius: 10px; 
+	background: #FFB53C;
+	font-size: 15px; 
+	font-weight: 700; 
+	color: #fff; 
+	text-align: center;
+}
+/* 오른쪽 예약 영역 */
+.reservation {
+    position: sticky;
+    top: 0;
+    right: 0;
+    min-width: 328px;
+    width: 328px;
+    height: fit-content;
+    margin-top: 24px;
+    background: #FECBC3;
+    border-radius: 10px;
+    font-family: "Noto Sans KR", sans-serif;
+}
+.reservation div{
+    width: 95%;
+    margin: 10px auto;
+    background-color: #fefefe;
+}
+.reservation .cal-wrapper{
+    padding: 5px;
+    height: fit-content;
+    text-align: center;
+}
+.reservation .cnt-wrapper{
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+}
+.reservation .cnt-wrapper span{
+	width:30%;
+	text-align:center;
+}
+.reservation .cnt-wrapper div{
+	width:60%;
+	display:flex;
+	justify-content: flex-end;
+}
+.reservation .cnt-wrapper div input[type="button"]{
+	font-family: "Noto Sans KR", sans-serif;
+    background-color: #f3553c;
+    border: 0;
+    border-radius: 50%;
+    padding: 10px 15px;
+    font-size: 10px;
+    width: fit-content;
+    height: fit-content;
+    color: #fefefe;
+    font-weight: 900;
+}
+.reservation .cnt-wrapper div input[type="text"]{
+	border:0;
+	width:30%;
+	text-align:center;
+	font-family: "Noto Sans KR", sans-serif;
+}
+.reservation .time-wrapper{
+	height: 0;
+	overflow-y: auto;
+}
+.reservation .time-wrapper::-webkit-scrollbar, .reservation .table-wrapper::-webkit-scrollbar{
+	background-color: #fefefe;
+	/* opacity: 0.5; */
+}
+.reservation .time-wrapper::-webkit-scrollbar-thumb, .reservation .table-wrapper::-webkit-scrollbar{
+	background-color: #f3553c;
+	border-radius: 30px;
+}
+.reservation .time-wrapper::-webkit-scrollbar-track{
+	/* background-color: #FECBC3; */
+}
+.reservation .time-wrapper .label-area{
+	display:flex;
+	margin:0px;
+	padding-left: 18px;
+}
+.reservation .time-wrapper .label-area div{
+	margin:0px;
+	padding: 0px;
+	display:flex;
+	align-items: center;
+}
+.reservation .time-wrapper .label-area .yellow-label{
+	width:5px;
+	height: 5px;
+	background-color: #ffb53c;
+}
+.reservation .time-wrapper .label-area .red-label{
+	width:5px;
+	height: 5px;
+	background-color: #f3553c;
+}
+.reservation .time-wrapper .time-list-table{
+	width:90%;
+	margin:10px auto;
+	border:0;
+	height: fit-content;
+}
+.reservation .time-wrapper .time-list-table td{
+	width:23%;
+	padding:0;	
+	text-align: center;
+}
+.reservation .time-wrapper span{
+	display:flex;
+	width:95%;
+	padding: 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    text-align: center;
+    margin:5px auto;
+}
+.reservation .time-wrapper .time-list-y{
+	border: 3px solid #f3553c;
+	color: #f3553c;
+	cursor: pointer;
+}
+.reservation .time-wrapper .time-list-y:hover{
+	background-color:#FECBC3;
+}
+.reservation .time-wrapper .time-list-y.on{
+	background-color: #f3553c;
+	color:#fefefe;
+}
+.reservation .time-wrapper .time-list-n{
+	border: 3px solid #ffb53c;
+	color:#ffb53c;
+	cursor: pointer;
+}
+.reservation .time-wrapper .time-list-n:hover{
+	background-color: #FFE9C5;
+}
+.reservation .time-wrapper .time-list-n.on{
+	background-color: #ffb53c;
+	color:#fefefe;
+}
+.reservation .table-wrapper{
+    height: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+.reservation .table-wrapper .table-list{
+	border:3px solid #f3553c;
+	padding:10px;
+	border-radius: 30px;
+	color: #f3553c;
+	width:22%;
+	text-align:center;
+	font-size: 12px;
+	cursor: pointer;
+}
+.reservation .table-wrapper .table-list.on{
+	background-color: #f3553c;
+	color: #fefefe;
+}
+.reservation .btn-wrapper{
+	height:fit-content;
+	background-color: unset;
+	padding:0px;
+}
+.reservation .btn-wrapper .reserve-btn{
+    background-color: #f3553c;
+    border: 0;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    color: #fefefe;
+    font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
+}
+.reservation .btn-wrapper .alarm-btn{
+    background-color: #FFB53C;
+    border: 0;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    color: #fefefe;
+    font-size: 20px;
+    font-family: "Noto Sans KR", sans-serif;
+}
